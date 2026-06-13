@@ -103,7 +103,7 @@ from .visual_forge import (
     install_training_debug_pack, install_template_architecture, write_visual_sff2_bridge_pack,
     create_backup_snapshot, restore_latest_snapshot, log_error,
 )
-from .ui_tabs.asset_workspaces import SpriteLabTab
+from .ui_tabs.asset_workspaces import SpriteLabTab, StageBuilderTab
 from .ui_tabs.authority import AuthorityCoreTab, AuthorityLabTab
 from .ui_tabs.binary import BinaryWorkspaceTabs
 from .ui_tabs.closure_evidence import ClosureLabTab, EvidenceCoreTab
@@ -1235,42 +1235,8 @@ class MugenForgeApp(tk.Tk):
 
 
     def _build_stage_builder_tab(self):
-        stage = ttk.Frame(self.notebook)
-        self.stage_builder_frame = stage
-        stage.columnconfigure(1, weight=1)
-        stage.rowconfigure(1, weight=1)
-        header = ttk.LabelFrame(stage, text='No-code Stage Builder', padding=(8, 6))
-        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=6, pady=6)
-        ttk.Label(header, text='Create a starter M.U.G.E.N stage from one background image. MugenForge writes the stage DEF, SFF v1, source manifest, and README.', wraplength=1100, justify='left').grid(row=0, column=0, sticky='ew')
+        self.stage_builder_tab = StageBuilderTab(self)
 
-        self.stage_image_var = tk.StringVar(value='')
-        self.stage_name_var = tk.StringVar(value='new_stage')
-        self.stage_out_dir_var = tk.StringVar(value='')
-        self.stage_zoffset_var = tk.StringVar(value='')
-        self.stage_bound_var = tk.StringVar(value='320')
-        left = ttk.Frame(stage, padding=(6, 0))
-        left.grid(row=1, column=0, sticky='nsw')
-        box = ttk.LabelFrame(left, text='Stage settings', padding=(6, 6))
-        box.grid(row=0, column=0, sticky='ew')
-        rows = [('image', self.stage_image_var), ('stage name', self.stage_name_var), ('output folder', self.stage_out_dir_var), ('zoffset blank=auto', self.stage_zoffset_var), ('bound width', self.stage_bound_var)]
-        for i, (label, var) in enumerate(rows):
-            ttk.Label(box, text=label).grid(row=i, column=0, sticky='e', padx=2, pady=2)
-            ttk.Entry(box, textvariable=var, width=42).grid(row=i, column=1, sticky='w', padx=2, pady=2)
-        ttk.Button(box, text='Choose Background Image', command=self.stage_choose_image_ui).grid(row=len(rows), column=0, columnspan=2, sticky='ew', pady=2)
-        ttk.Button(box, text='Choose Output Folder', command=self.stage_choose_output_ui).grid(row=len(rows)+1, column=0, columnspan=2, sticky='ew', pady=2)
-        ttk.Button(box, text='Create Stage DEF + SFF', command=self.stage_create_ui).grid(row=len(rows)+2, column=0, columnspan=2, sticky='ew', pady=(8,2))
-
-        right = ttk.Frame(stage)
-        right.grid(row=1, column=1, sticky='nsew', padx=(0, 6), pady=(0, 6))
-        right.rowconfigure(0, weight=1)
-        right.columnconfigure(0, weight=1)
-        self.stage_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
-        y = ttk.Scrollbar(right, orient='vertical', command=self.stage_output.yview)
-        self.stage_output.configure(yscrollcommand=y.set)
-        self.stage_output.grid(row=0, column=0, sticky='nsew')
-        y.grid(row=0, column=1, sticky='ns')
-        self.notebook.add(stage, text='Stage Builder')
-        self.set_text(self.stage_output, 'Pick one background image and an output folder. The generated stage is a starter, not a finished camera/parallax setup.')
 
     def _build_run_test_tab(self):
         run = ttk.Frame(self.notebook)
