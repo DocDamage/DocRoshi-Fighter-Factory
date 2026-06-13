@@ -93,6 +93,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertIn('Closure Lab', tabs)
             self.assertIn('Evidence Core', tabs)
             self.assertIn('Forge Beyond', tabs)
+            self.assertIn('Forge Polish', tabs)
             self.assertEqual(selected, 'Operator Console')
             self.assertTrue(callable(getattr(app, 'operator_console_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'maintenance_core_one_click_ui', None)))
@@ -107,6 +108,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertTrue(callable(getattr(app, 'closure_lab_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'evidence_core_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'forge_beyond_one_click_ui', None)))
+            self.assertTrue(callable(getattr(app, 'forge_polish_one_click_ui', None)))
         finally:
             app.destroy()
 
