@@ -114,6 +114,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertIn('Project Home', tabs)
             self.assertIn('Visual Timeline', tabs)
             self.assertIn('Offset / Axis', tabs)
+            self.assertIn('Sound Cue Editor', tabs)
             self.assertIn('Forge Beyond', tabs)
             self.assertIn('Forge Polish', tabs)
             self.assertIn('Forge Timeline', tabs)

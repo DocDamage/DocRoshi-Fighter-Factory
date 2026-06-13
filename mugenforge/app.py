@@ -117,7 +117,7 @@ from .ui_tabs.plus_workspaces import FactoryPlusTab, ForgePlusTab, StudioPlusTab
 from .ui_tabs.rescue_lab import RescueLabTab
 from .ui_tabs.runtime_lab import RuntimeLabTab
 from .ui_tabs.sff2_bridge import Sff2BridgeTab
-from .ui_tabs.visual_forge_tabs import SpriteOffsetAxisTab, VisualForgeHomeTab, VisualTimelineTab
+from .ui_tabs.visual_forge_tabs import SoundCueEditorTab, SpriteOffsetAxisTab, VisualForgeHomeTab, VisualTimelineTab
 from .creator_os import (
     CREATOR_OS_VERSION, creator_os_one_click, write_character_blueprint,
     export_frame_data_sheet, export_input_cheatsheet, write_combo_routes,
@@ -1685,41 +1685,7 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
             log_error(self.project_root, 'Offset save', exc)
 
     def _build_sound_cue_editor_tab(self):
-        tab = ttk.Frame(self.notebook)
-        self.vf_sound_frame = tab
-        tab.columnconfigure(1, weight=1)
-        tab.rowconfigure(1, weight=1)
-        header = ttk.LabelFrame(tab, text='Sound Cue Editor', padding=(8, 6))
-        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=8, pady=8)
-        ttk.Label(header, text='Assign and time PlaySnd cues to specific StateDefs/AnimElem frames. Inserts are text-based with backups and should be verified in M.U.G.E.N.', wraplength=1120, justify='left').grid(row=0, column=0, sticky='ew')
-        left = ttk.Frame(tab, padding=(8, 0))
-        left.grid(row=1, column=0, sticky='nsw')
-        ttk.Button(left, text='Refresh / Build Cue Manifest', command=self.vf_refresh_sound_cues_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Label(left, text='Target StateDef').grid(row=1, column=0, sticky='w', pady=(8, 2))
-        self.vf_sound_state_var = tk.StringVar(value='200')
-        self.vf_sound_state_combo = ttk.Combobox(left, textvariable=self.vf_sound_state_var, width=34)
-        self.vf_sound_state_combo.grid(row=2, column=0, sticky='ew')
-        fields = ttk.LabelFrame(left, text='Cue', padding=(6, 6))
-        fields.grid(row=3, column=0, sticky='ew', pady=(8, 0))
-        self.vf_sound_frame_var = tk.StringVar(value='2')
-        self.vf_sound_group_var = tk.StringVar(value='5')
-        self.vf_sound_index_var = tk.StringVar(value='0')
-        self.vf_sound_channel_var = tk.StringVar(value='0')
-        for r, (label, var) in enumerate((('AnimElem frame', self.vf_sound_frame_var), ('Sound group', self.vf_sound_group_var), ('Sound index', self.vf_sound_index_var), ('Channel', self.vf_sound_channel_var))):
-            ttk.Label(fields, text=label).grid(row=r, column=0, sticky='w')
-            ttk.Entry(fields, textvariable=var, width=10).grid(row=r, column=1, sticky='w')
-        ttk.Button(fields, text='Add PlaySnd Cue (.bak)', command=self.vf_add_sound_cue_ui).grid(row=4, column=0, columnspan=2, sticky='ew', pady=(6, 0))
-        ttk.Button(left, text='Export Cue Manifest Only', command=self.vf_export_sound_cue_manifest_ui).grid(row=4, column=0, sticky='ew', pady=(8, 2))
-        right = ttk.Frame(tab, padding=(0, 0))
-        right.grid(row=1, column=1, sticky='nsew', padx=(0, 8), pady=(0, 8))
-        right.columnconfigure(0, weight=1)
-        right.rowconfigure(0, weight=1)
-        self.vf_sound_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
-        y = ttk.Scrollbar(right, orient='vertical', command=self.vf_sound_output.yview)
-        self.vf_sound_output.configure(yscrollcommand=y.set)
-        self.vf_sound_output.grid(row=0, column=0, sticky='nsew')
-        y.grid(row=0, column=1, sticky='ns')
-        self.notebook.add(tab, text='Sound Cue Editor')
+        self.sound_cue_editor_tab = SoundCueEditorTab(self)
 
     def vf_refresh_sound_cues_ui(self):
         if not self._vf_require_project():
