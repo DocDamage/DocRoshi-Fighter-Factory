@@ -13,6 +13,7 @@ import shutil
 import wave
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
+from .artifact_io import write_csv_artifact, write_text_artifact
 from .parsers import parse_air, parse_code, parse_def, read_text_safely, write_text_safely, COMMON_ANIMS
 from .move_wizard import find_character_file
 from .sff_codec import read_sff, export_sprite, sprite_lookup, SffSprite
@@ -91,12 +92,60 @@ def _suite_dir(root: Path) -> Path:
     return out
 
 
-def _write(root: Path, path: Path, text: str, result: Optional[CreatorSuiteResult] = None) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text.rstrip() + '\n', encoding='utf-8')
-    if result is not None:
-        result.add_created(root, path)
-    return path
+def _backup(path: Path) -> None:
+    path = Path(path)
+    if path.exists():
+        stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        path.with_name(path.name + f'.bak_{stamp}').write_bytes(path.read_bytes())
+
+
+def _write(root: Path, path: Path, text: str, result: Optional[CreatorSuiteResult] = None, *, changed: bool = False) -> Path:
+    return write_text_artifact(path, text, result, root, changed, track_existing=changed)
+
+
+def _csv(path: Path, rows: Sequence[Dict[str, object]], fields: Sequence[str]) -> Path:
+    return write_csv_artifact(path, rows, fields)
+
+
+def _code_files(root: Path) -> List[Path]:
+    exts = {'.cmd', '.cns', '.st'}
+    return [p for p in sorted(Path(root).rglob('*'), key=lambda x: str(x).lower()) if p.is_file() and p.suffix.lower() in exts]
+
+
+def _discover_files(root: Path) -> Dict[str, Optional[Path]]:
+    root = Path(root)
+    out: Dict[str, Optional[Path]] = {'root': root}
+    def_path = root / f'{root.name}.def'
+    if not def_path.exists():
+        defs = sorted(root.glob('*.def'), key=lambda p: p.name.lower())
+        def_path = defs[0] if defs else def_path
+    out['def'] = def_path if def_path.exists() else None
+    refs: Dict[str, str] = {}
+    if out['def']:
+        try:
+            files = parse_def(read_text_safely(out['def'])).get('files')
+            if files:
+                refs = {k.lower(): v.strip().strip('"') for k, v in files.values.items()}
+        except Exception:
+            refs = {}
+
+    def pick(key: str, ext: str) -> Optional[Path]:
+        if key in refs:
+            candidate = (root / refs[key]).resolve()
+            if candidate.exists():
+                return candidate
+        exact = root / f'{root.name}.{ext}'
+        if exact.exists():
+            return exact
+        matches = sorted(root.glob(f'*.{ext}'), key=lambda p: p.name.lower())
+        return matches[0] if matches else None
+
+    out['cmd'] = pick('cmd', 'cmd')
+    out['cns'] = pick('cns', 'cns') or pick('st', 'st')
+    out['air'] = pick('anim', 'air')
+    out['sff'] = pick('sprite', 'sff')
+    out['snd'] = pick('sound', 'snd')
+    return out
 
 
 def _slug(text: str) -> str:
@@ -499,10 +548,7 @@ def write_animation_doctor(root: Path) -> CreatorSuiteResult:
             'doctor_score': max(0, score),
         })
     csv_path = out / 'animation_doctor.csv'
-    with csv_path.open('w', newline='', encoding='utf-8') as f:
-        writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()) if rows else ['action'])
-        writer.writeheader()
-        writer.writerows(rows)
+    _csv(csv_path, rows, list(rows[0].keys()) if rows else ['action'])
     md = ['# Animation Doctor', '', f'AIR file: `{_rel(root, air_path)}`', '', '| Action | Label | Frames | Ticks | Seconds | CLSN1 | CLSN2 | Score | Notes |', '|---:|---|---:|---:|---:|---:|---:|---:|---|']
     for r in rows:
         notes = []
@@ -615,11 +661,8 @@ def create_sound_waveform_sheet(root: Path, wav_folder: Optional[Path] = None, m
         sheet.save(p)
         result.add_created(root, p)
     csv_path = out / 'sound_waveforms.csv'
-    with csv_path.open('w', newline='', encoding='utf-8') as f:
-        fields = ['file', 'channels', 'sample_rate', 'sample_width', 'frames', 'duration']
-        writer = csv.DictWriter(f, fieldnames=fields)
-        writer.writeheader()
-        writer.writerows(rows)
+    fields = ['file', 'channels', 'sample_rate', 'sample_width', 'frames', 'duration']
+    _csv(csv_path, rows, fields)
     result.add_created(root, csv_path)
     if not rows:
         result.add_warning('No WAV files found. Put WAVs in a sounds/ folder or open a project with a readable SND.')
@@ -672,12 +715,8 @@ def write_palette_doctor(root: Path) -> CreatorSuiteResult:
     md_path = out / 'PALETTE_DOCTOR.md'
     _write(root, md_path, '\n'.join(md), result)
     csv_path = out / 'palette_doctor_act.csv'
-    with csv_path.open('w', newline='', encoding='utf-8') as f:
-        fields = ['file', 'colors', 'unique_colors', 'duplicate_colors', 'first_color_rgb']
-        writer = csv.DictWriter(f, fieldnames=fields)
-        writer.writeheader()
-        for r in rows:
-            writer.writerow({k: r.get(k, '') for k in fields})
+    fields = ['file', 'colors', 'unique_colors', 'duplicate_colors', 'first_color_rgb']
+    _csv(csv_path, rows, fields)
     result.add_created(root, csv_path)
     return result
 
@@ -863,14 +902,14 @@ def _hitdef_blocks_in_text(text: str):
             yield m.start(1), m.end(1), block, kv
 
 
-def export_hitdef_tuning_sheet(root: Path) -> SuiteResult:
+def export_hitdef_tuning_sheet(root: Path) -> CreatorSuiteResult:
     """Export a beginner-editable CSV of HitDef tuning values.
 
     The creator can edit the CSV first, then use Apply HitDef Tuning Sheet to write values
     back to the code with backups. This keeps the code hidden until the user is ready.
     """
     root = Path(root)
-    r = SuiteResult('HitDef Tuning Sheet Export')
+    r = CreatorSuiteResult('HitDef Tuning Sheet Export')
     rows: List[Dict[str, object]] = []
     for path in _code_files(root):
         text = read_text_safely(path)
@@ -901,7 +940,7 @@ def export_hitdef_tuning_sheet(root: Path) -> SuiteResult:
     r.created_files.append('reports/hitdef_tuning_sheet.csv')
     md = [f'# HitDef Tuning Sheet: {root.name}', '', 'Edit `reports/hitdef_tuning_sheet.csv`, then use **Apply HitDef Tuning Sheet**. Backups are written first.', '', f'HitDefs exported: {len(rows)}', '', '## Beginner columns', '- `damage`: main damage value; keep small normals lower than supers.', '- `pausetime`: hit freeze feel.', '- `ground.velocity` / `air.velocity`: pushback/launch feel.', '- `hitflag` / `guardflag`: who the move can hit/block.', '']
     md += [f"- State `{row['state']}` in `{row['file']}` damage `{row['damage']}`" for row in rows[:200]] or ['- No HitDefs found yet.']
-    _write(out / 'HITDEF_TUNING_SHEET.md', '\n'.join(md) + '\n', r, root, changed=(out / 'HITDEF_TUNING_SHEET.md').exists())
+    _write(root, out / 'HITDEF_TUNING_SHEET.md', '\n'.join(md) + '\n', r, changed=(out / 'HITDEF_TUNING_SHEET.md').exists())
     r.notes.append(f'Exported {len(rows)} HitDef rows for no-code tuning.')
     return r
 
@@ -915,10 +954,10 @@ def _replace_or_add_kv(block: str, key: str, value: str) -> str:
     return block.rstrip() + f'\n{key} = {value}\n'
 
 
-def apply_hitdef_tuning_sheet(root: Path, csv_path: Optional[Path] = None) -> SuiteResult:
+def apply_hitdef_tuning_sheet(root: Path, csv_path: Optional[Path] = None) -> CreatorSuiteResult:
     """Apply reports/hitdef_tuning_sheet.csv back to HitDef blocks with backups."""
     root = Path(root)
-    r = SuiteResult('HitDef Tuning Sheet Apply')
+    r = CreatorSuiteResult('HitDef Tuning Sheet Apply')
     csv_path = Path(csv_path) if csv_path else root / 'reports' / 'hitdef_tuning_sheet.csv'
     if not csv_path.exists():
         r.warnings.append(f'Tuning sheet not found: {_rel(root, csv_path)}. Export it first.')
@@ -963,10 +1002,10 @@ def apply_hitdef_tuning_sheet(root: Path, csv_path: Optional[Path] = None) -> Su
     return r
 
 
-def write_artist_handoff_pack(root: Path) -> SuiteResult:
+def write_artist_handoff_pack(root: Path) -> CreatorSuiteResult:
     """Create a beginner-safe art/sound handoff folder for replacing assets."""
     root = Path(root)
-    r = SuiteResult('Artist / Sound Handoff Pack')
+    r = CreatorSuiteResult('Artist / Sound Handoff Pack')
     out = root / 'handoff'
     out.mkdir(parents=True, exist_ok=True)
     files = _discover_files(root)
@@ -1013,6 +1052,6 @@ def write_artist_handoff_pack(root: Path) -> SuiteResult:
     _csv(out / 'sound_requests.csv', sound_rows, ['file', 'group', 'sound', 'suggested_filename', 'status'])
     r.created_files.extend(['handoff/sprite_requests.csv', 'handoff/sound_requests.csv'])
     md = [f'# Artist / Sound Handoff Pack: {root.name}', '', 'This folder is for creators who do not want to edit packed `.sff` / `.snd` files by hand.', '', '## Sprite workflow', '1. Open `sprite_requests.csv`.', '2. Draw/replace the suggested PNG files.', '3. Use Sprite Lab / Sheet Import / Build SFF v1.', '4. Preview with Animation Player and CLSN Editor.', '', '## Sound workflow', '1. Open `sound_requests.csv`.', '2. Create WAV files with suggested names like `5_0.wav`.', '3. Use Sounds → Make WAV Manifest → Build SND.', '', f'- Sprite rows: {len(sprite_rows)}', f'- Sound rows: {len(sound_rows)}']
-    _write(out / 'README_HANDOFF.md', '\n'.join(md) + '\n', r, root, changed=(out / 'README_HANDOFF.md').exists())
+    _write(root, out / 'README_HANDOFF.md', '\n'.join(md) + '\n', r, changed=(out / 'README_HANDOFF.md').exists())
     r.notes.append('Created a handoff pack for art and sound replacement.')
     return r
