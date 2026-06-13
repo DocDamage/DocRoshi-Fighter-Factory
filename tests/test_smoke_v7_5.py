@@ -37,6 +37,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             'mugenforge.ui_tabs.binary',
             'mugenforge.ui_tabs.closure_evidence',
             'mugenforge.ui_tabs.continuity',
+            'mugenforge.ui_tabs.creator_hub',
             'mugenforge.ui_tabs.forge_workspaces',
             'mugenforge.ui_tabs.gap_closer',
             'mugenforge.ui_tabs.runtime_lab',
@@ -92,6 +93,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertIn('Authority Lab', tabs)
             self.assertIn('Closure Lab', tabs)
             self.assertIn('Evidence Core', tabs)
+            self.assertIn('Creator Hub', tabs)
             self.assertIn('Forge Beyond', tabs)
             self.assertIn('Forge Polish', tabs)
             self.assertIn('Forge Timeline', tabs)
@@ -108,6 +110,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertTrue(callable(getattr(app, 'authority_lab_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'closure_lab_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'evidence_core_one_click_ui', None)))
+            self.assertTrue(callable(getattr(app, 'creator_hub_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'forge_beyond_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'forge_polish_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'forge_timeline_one_click_ui', None)))
