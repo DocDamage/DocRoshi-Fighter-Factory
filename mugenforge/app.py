@@ -112,6 +112,7 @@ from .ui_tabs.forge_workspaces import ForgeBeyondTab, ForgePolishTab, ForgeTimel
 from .ui_tabs.gap_closer import GapCloserTab
 from .ui_tabs.image_factory import ImageFactoryTab
 from .ui_tabs.palette import PaletteTab
+from .ui_tabs.plus_workspaces import StudioPlusTab
 from .ui_tabs.rescue_lab import RescueLabTab
 from .ui_tabs.runtime_lab import RuntimeLabTab
 from .ui_tabs.sff2_bridge import Sff2BridgeTab
@@ -1217,87 +1218,7 @@ class MugenForgeApp(tk.Tk):
 
 
     def _build_studio_plus_tab(self):
-        plus_frame = ttk.Frame(self.notebook)
-        self.studio_plus_frame = plus_frame
-        plus_frame.columnconfigure(1, weight=1)
-        plus_frame.rowconfigure(1, weight=1)
-
-        header = ttk.LabelFrame(plus_frame, text='Studio Plus: Fighter Factory-style workflows, no-code first', padding=(8, 6))
-        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=6, pady=6)
-        header.columnconfigure(0, weight=1)
-        intro = (
-            'Use these tools when you want the editor to do the boring work: diagnose the project, repair missing basics, build placeholder assets, '
-            'export animation previews, make contact sheets, clone AIR actions, batch-import sprites, snapshot the project, and package a cleaner release.'
-        )
-        ttk.Label(header, text=intro, wraplength=1080, justify='left').grid(row=0, column=0, sticky='ew')
-
-        left = ttk.Frame(plus_frame, padding=(6, 0))
-        left.grid(row=1, column=0, sticky='nsw')
-
-        doctor = ttk.LabelFrame(left, text='Project doctor / release', padding=(6, 6))
-        doctor.grid(row=0, column=0, sticky='ew', pady=(0, 6))
-        ttk.Button(doctor, text='Full Studio Doctor Report', command=self.plus_doctor_report_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Button(doctor, text='Write MD + JSON Reports', command=self.plus_write_reports_ui).grid(row=1, column=0, sticky='ew', pady=2)
-        ttk.Button(doctor, text='Auto Fix / Build Missing Assets', command=self.plus_auto_fix_ui).grid(row=2, column=0, sticky='ew', pady=2)
-        ttk.Button(doctor, text='Make Snapshot ZIP', command=self.plus_snapshot_ui).grid(row=3, column=0, sticky='ew', pady=2)
-        ttk.Button(doctor, text='Build Release ZIP + Manifest', command=self.plus_release_zip_ui).grid(row=4, column=0, sticky='ew', pady=2)
-
-        assets = ttk.LabelFrame(left, text='Asset tools', padding=(6, 6))
-        assets.grid(row=1, column=0, sticky='ew', pady=(0, 6))
-        ttk.Button(assets, text='SFF Contact Sheet PNG', command=self.plus_contact_sheet_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Button(assets, text='Batch Import Sprite Folder -> SFF v1', command=self.plus_batch_import_sprites_ui).grid(row=1, column=0, sticky='ew', pady=2)
-        ttk.Button(assets, text='Generate AIR From SFF Groups', command=lambda: self.plus_air_from_sff_ui(False)).grid(row=2, column=0, sticky='ew', pady=2)
-        ttk.Button(assets, text='Append AIR From SFF Groups (.bak)', command=lambda: self.plus_air_from_sff_ui(True)).grid(row=3, column=0, sticky='ew', pady=2)
-        ttk.Button(assets, text='Export Action GIF', command=self.plus_export_action_gif_ui).grid(row=4, column=0, sticky='ew', pady=2)
-
-        action_box = ttk.LabelFrame(left, text='Animation lab fields', padding=(6, 6))
-        action_box.grid(row=2, column=0, sticky='ew', pady=(0, 6))
-        self.plus_action_var = tk.StringVar(value='0')
-        self.plus_clone_source_var = tk.StringVar(value='200')
-        self.plus_clone_new_var = tk.StringVar(value='1200')
-        self.plus_tick_scale_var = tk.StringVar(value='1.0')
-        self.plus_x_offset_var = tk.StringVar(value='0')
-        self.plus_y_offset_var = tk.StringVar(value='0')
-        fields = [
-            ('GIF action', self.plus_action_var),
-            ('Clone source', self.plus_clone_source_var),
-            ('Clone new', self.plus_clone_new_var),
-            ('Tick scale', self.plus_tick_scale_var),
-            ('X offset', self.plus_x_offset_var),
-            ('Y offset', self.plus_y_offset_var),
-        ]
-        for i, (label, var) in enumerate(fields):
-            ttk.Label(action_box, text=label).grid(row=i, column=0, sticky='e', padx=(0, 4), pady=1)
-            ttk.Entry(action_box, textvariable=var, width=10).grid(row=i, column=1, sticky='w', pady=1)
-        ttk.Button(action_box, text='Clone AIR Action Variant (.bak)', command=self.plus_clone_air_action_ui).grid(row=len(fields), column=0, columnspan=2, sticky='ew', pady=(4, 2))
-
-        import_box = ttk.LabelFrame(left, text='Batch import defaults', padding=(6, 6))
-        import_box.grid(row=3, column=0, sticky='ew', pady=(0, 6))
-        self.plus_import_group_var = tk.StringVar(value='9000')
-        self.plus_axis_x_var = tk.StringVar(value='32')
-        self.plus_axis_y_var = tk.StringVar(value='64')
-        self.plus_ticks_var = tk.StringVar(value='5')
-        for i, (label, var) in enumerate((('Default group', self.plus_import_group_var), ('Axis X', self.plus_axis_x_var), ('Axis Y', self.plus_axis_y_var), ('Ticks', self.plus_ticks_var))):
-            ttk.Label(import_box, text=label).grid(row=i, column=0, sticky='e', padx=(0, 4), pady=1)
-            ttk.Entry(import_box, textvariable=var, width=10).grid(row=i, column=1, sticky='w', pady=1)
-
-        stage_box = ttk.LabelFrame(left, text='Extra creator tools', padding=(6, 6))
-        stage_box.grid(row=4, column=0, sticky='ew')
-        ttk.Button(stage_box, text='Create Stage Template', command=self.plus_stage_template_ui).grid(row=0, column=0, sticky='ew', pady=2)
-
-        right = ttk.Frame(plus_frame, padding=(0, 0))
-        right.grid(row=1, column=1, sticky='nsew', padx=(0, 6), pady=(0, 6))
-        right.rowconfigure(0, weight=1)
-        right.columnconfigure(0, weight=1)
-        self.plus_output = tk.Text(right, wrap='none', font=('Consolas', 10), state='disabled')
-        plus_y = ttk.Scrollbar(right, orient='vertical', command=self.plus_output.yview)
-        plus_x = ttk.Scrollbar(right, orient='horizontal', command=self.plus_output.xview)
-        self.plus_output.configure(yscrollcommand=plus_y.set, xscrollcommand=plus_x.set)
-        self.plus_output.grid(row=0, column=0, sticky='nsew')
-        plus_y.grid(row=0, column=1, sticky='ns')
-        plus_x.grid(row=1, column=0, sticky='ew')
-        self.notebook.add(plus_frame, text='Studio Plus')
-        self.set_text(self.plus_output, 'Open a character folder, then run Full Studio Doctor Report. The Auto Fix button repairs common beginner blockers and generates placeholder assets so you can get back to the creative parts.')
+        self.studio_plus_tab = StudioPlusTab(self)
 
 
     def _build_factory_plus_tab(self):

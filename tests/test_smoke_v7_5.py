@@ -42,6 +42,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             'mugenforge.ui_tabs.gap_closer',
             'mugenforge.ui_tabs.image_factory',
             'mugenforge.ui_tabs.palette',
+            'mugenforge.ui_tabs.plus_workspaces',
             'mugenforge.ui_tabs.rescue_lab',
             'mugenforge.ui_tabs.runtime_lab',
             'mugenforge.ui_tabs.sff2_bridge',
@@ -102,6 +103,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertIn('Rescue Lab', tabs)
             self.assertIn('Image Factory', tabs)
             self.assertIn('Palettes', tabs)
+            self.assertIn('Studio Plus', tabs)
             self.assertIn('Forge Beyond', tabs)
             self.assertIn('Forge Polish', tabs)
             self.assertIn('Forge Timeline', tabs)
