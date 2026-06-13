@@ -25,6 +25,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
 
         for name in [
             'mugenforge.app_mixins',
+            'mugenforge.app_state',
             'mugenforge.handoff_core',
             'mugenforge.operator_console',
             'mugenforge.maintenance_core',

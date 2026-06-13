@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import tkinter as tk
 from tkinter import ttk
-from pathlib import Path
 
 from .app_mixins import AppBehaviorMixins
+from .app_state import initialize_app_state
 from .ui_tabs.core_builders import AppCoreTabBuilders
 
 APP_TITLE = 'MugenForge Studio 7.5 Continuity Core'
@@ -15,38 +15,7 @@ class MugenForgeApp(AppCoreTabBuilders, AppBehaviorMixins, tk.Tk):
         self.title(APP_TITLE)
         self.geometry('1400x850')
         self.minsize(1050, 680)
-        self.project_root: Path | None = None
-        self.current_path: Path | None = None
-        self.dirty = False
-        self.air_actions = []
-        self.sff_info = None
-        self.sff_path: Path | None = None
-        self.sff_sprite_lookup = {}
-        self.current_preview_image = None
-        self.snd_info = None
-        self.snd_path: Path | None = None
-        self.air_line_actions = []
-        self.clsn_boxes = []
-        self.sheet_path: Path | None = None
-        self.sheet_slices = []
-        self.sheet_preview_photo = None
-        self.clsn_sprite_photo = None
-        self.clsn_canvas_origin = (0, 0)
-        self.clsn_drag = None
-        self.clsn_drawn_boxes = []
-        self.anim_action_var = tk.StringVar()
-        self.anim_frame_var = tk.IntVar(value=0)
-        self.anim_speed_var = tk.DoubleVar(value=1.0)
-        self.anim_zoom_var = tk.IntVar(value=2)
-        self.anim_loop_var = tk.BooleanVar(value=True)
-        self.anim_after_id = None
-        self.anim_is_playing = False
-        self.anim_photo = None
-        self.wizard_vars = {}
-        self.wizard_preview_cache = None
-        self.auto_preset_items = []
-        self.auto_last_package = None
-        self.palette_info = None
+        initialize_app_state(self)
         self._build_ui()
         self._bind_keys()
 
