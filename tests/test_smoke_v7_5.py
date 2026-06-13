@@ -43,6 +43,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             'mugenforge.ui_actions.palette',
             'mugenforge.ui_actions.plus_workspaces',
             'mugenforge.ui_actions.quality_lab',
+            'mugenforge.ui_actions.sprite_pipeline',
             'mugenforge.ui_actions.visual_forge',
             'mugenforge.ui_tabs.asset_workspaces',
             'mugenforge.ui_tabs.authority',
