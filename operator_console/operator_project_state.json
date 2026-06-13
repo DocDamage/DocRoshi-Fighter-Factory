@@ -1,0 +1,72 @@
+{
+  "tool": "MugenForge Studio",
+  "operator_console_version": "7.5.0",
+  "generated_at": "2026-06-13T19:25:53",
+  "project_root": ".",
+  "project_name": "",
+  "main_files": {
+    "def": "",
+    "air": "",
+    "cmd": "",
+    "cns": "",
+    "sff": "",
+    "snd": ""
+  },
+  "file_counts_by_extension": {
+    ".bat": 1,
+    ".csv": 7,
+    ".html": 1,
+    ".json": 9,
+    ".md": 41,
+    ".py": 56,
+    ".txt": 11,
+    ".zip": 3
+  },
+  "missing_required": [
+    ".def",
+    ".air",
+    ".cmd",
+    ".cns",
+    ".sff",
+    ".snd"
+  ],
+  "air": {
+    "action_count": 0,
+    "frame_count": 0,
+    "actions": [],
+    "missing_common_actions": []
+  },
+  "code": {
+    "command_count": 0,
+    "commands": [],
+    "state_count": 0,
+    "states": [],
+    "hitdef_count": 0,
+    "missing_state_targets": [],
+    "issues": []
+  },
+  "sff": {
+    "present": false
+  },
+  "snd": {
+    "present": false
+  },
+  "report_dirs": {
+    "operator_console": {
+      "path": "operator_console",
+      "file_count": 10,
+      "total_bytes": 20558,
+      "latest_mtime": 1781378753.9090912
+    }
+  },
+  "recent_report_dirs": [
+    {
+      "name": "operator_console",
+      "file_count": 10,
+      "total_bytes": 20558,
+      "latest_mtime": "2026-06-13T19:25:53"
+    }
+  ],
+  "blocker_count": 6,
+  "operator_score": 44
+}

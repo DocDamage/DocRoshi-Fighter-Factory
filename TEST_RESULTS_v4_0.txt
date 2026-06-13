@@ -1,0 +1,63 @@
+MugenForge Studio v4.0 Forge Beyond test results
+Generated: 2026-06-13
+
+Commands run:
+
+1. Module compilation
+   cd /mnt/data/mugenforge_studio_v4_0
+   python -m compileall -q mugenforge
+   Result: PASS
+
+2. Import/version smoke test
+   import mugenforge
+   from mugenforge.app import APP_TITLE
+   from mugenforge.forge_beyond import FORGE_BEYOND_VERSION, ImageEditSpec, run_source_image_editor, import_archive_project
+   Checked:
+   - mugenforge.__version__ == 4.0.0
+   - APP_TITLE == MugenForge Studio 4.0 Forge Beyond
+   - Forge Beyond version == 4.0.0
+   - Forge Beyond helper imports succeeded
+   Result: PASS
+
+3. Tkinter UI smoke test under Xvfb
+   Instantiated MugenForgeApp.
+   Verified title: MugenForge Studio 4.0 Forge Beyond.
+   Verified notebook loads with 38 tabs.
+   Verified Project Home is selected at startup.
+   Verified Forge Beyond tab exists.
+   Result: PASS
+
+4. Forge Beyond backend smoke test on a generated character
+   Created a fresh character with parsers.make_new_character.
+   Ran:
+   - run_forge_beyond_pass
+   - export_command_sheet
+   - apply_command_sheet
+   - export_air_batch_sheet
+   - apply_air_batch_sheet
+   - write_state_graph
+   - write_variable_usage_map
+   - write_sprite_sound_cross_reference
+   - write_template_plugin_foundation
+   - write_stage_authoring_pack
+   - build_forge_beyond_release_bundle
+   - run_source_image_editor
+   - import_archive_project
+   Verified key outputs:
+   - forge_beyond/FORGE_BEYOND_DASHBOARD.md
+   - forge_beyond/reports/CAPABILITY_MATRIX.md
+   - forge_beyond/reports/UNIFIED_PROJECT_INDEX.md
+   - forge_beyond/graphs/state_graph.html
+   - forge_beyond/sheets/command_editor_sheet.csv
+   - forge_beyond/sheets/air_batch_editor_sheet.csv
+   - forge_beyond/maps/variable_usage.csv
+   - forge_beyond/templates/forge_beyond_template_manifest.json
+   - forge_beyond/stage_authoring/STAGE_AUTHORING_PACK.md
+   Result: PASS
+   Notes: one cross-reference warning is expected on a bare starter project without real SFF/SND assets.
+
+Honest limitation checks:
+- README retains clean-room/IP statement.
+- README retains full arbitrary mature SFF v2 limitation.
+- Forge Beyond capability matrix uses source-based SFF2 language and does not claim byte-perfect arbitrary SFF2 mutation.
+- Generated gameplay remains described as starter scaffolding that needs playtesting.

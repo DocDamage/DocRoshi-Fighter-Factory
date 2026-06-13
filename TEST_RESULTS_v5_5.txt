@@ -1,0 +1,44 @@
+MugenForge Studio v5.5 Binary Maturity — Test Results
+
+PASS: python -m compileall -q mugenforge
+PASS: import/version smoke
+  mugenforge.__version__ = 5.5.0
+  APP_TITLE = MugenForge Studio 5.5 Binary Maturity
+  BINARY_CORE_VERSION = 5.5.0
+  BINARY_DEEP_VERSION = 5.5.0
+  BINARY_MATURITY_VERSION = 5.5.0
+
+PASS: Standard SFF2 builder/reader/export smoke
+  Built common-table SFF2 candidate from source manifest.
+  Parsed variant: sff2-standard.
+  Tested payload modes: png32, raw8, rle8, rle5, lz5.
+  Exported decoded PNG images for all 5 controlled sprite records.
+
+PASS: Backend Binary Core smoke on generated character
+  Created generated character.
+  Replaced generated SFF with v5.5 standard SFF2 candidate.
+  Created generated SND from WAV manifest.
+  One-Click Binary Core v5.5 Pass completed.
+  SFF2 decoded payload export produced 5 PNGs.
+  SFF axis sheet exported.
+  Enabled SFF axis row applied into patched SFF copy.
+  SND slot patch sheet exported.
+  Enabled same-size WAV slot patch applied into patched SND copy.
+  Runtime validation scaffold written.
+
+PASS: Binary Maturity one-click pass
+  Created Binary Maturity report, edit workspace, source build candidate path, SND patch sheet, runtime harness, and bundle.
+
+PASS: Binary Deep one-click pass
+  Created deep SFF2 inspection/export/mutation reports, SND patch artifacts, runtime lab, codec probe suite, and bundle.
+
+PASS: Codec Core compatibility pass
+  Created consolidated dashboard/bundle and delegated to Binary Core/Binary Deep.
+  Expected warning when no runtime evidence logs existed yet.
+
+PASS: Tkinter UI smoke under Xvfb
+  App instantiated successfully.
+  Title verified.
+  Binary Core tab present.
+  Binary Deep tab present.
+  Binary Maturity tab present.

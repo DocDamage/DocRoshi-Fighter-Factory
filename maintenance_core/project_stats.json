@@ -1,0 +1,39 @@
+{
+  "root": "/mnt/data/mugenforge_studio_v7_5",
+  "exists": true,
+  "file_counts": {
+    ".bat": 1,
+    ".csv": 8,
+    ".html": 1,
+    ".json": 8,
+    ".md": 38,
+    ".py": 56,
+    ".pyc": 49,
+    ".txt": 10,
+    ".zip": 4
+  },
+  "character_files": {
+    "def": "",
+    "air": "",
+    "cmd": "",
+    "cns": "",
+    "sff": "",
+    "snd": ""
+  },
+  "air_actions": 0,
+  "cmd_commands": 0,
+  "states": 0,
+  "controllers": 0,
+  "scan_warnings": [],
+  "missing_required": [
+    ".def",
+    ".air",
+    ".cmd",
+    ".cns",
+    ".sff",
+    ".snd"
+  ],
+  "missing_references": [],
+  "code_issues": [],
+  "asset_issues": []
+}

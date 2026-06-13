@@ -1,0 +1,27 @@
+[
+  {
+    "claim_area": "Clean-room status",
+    "safe_claim": "MugenForge is a clean-room Python/Tkinter M.U.G.E.N creator suite.",
+    "do_not_claim": "Do not claim Fighter Factory / VirtuallTek source reuse."
+  },
+  {
+    "claim_area": "SFF2",
+    "safe_claim": "Common SFF2 workflows include parser/export/candidate build/triage paths.",
+    "do_not_claim": "Do not claim perfect arbitrary custom/encrypted/historical SFF2 support without corpus evidence."
+  },
+  {
+    "claim_area": "SND",
+    "safe_claim": "SND workflows include WAV extraction/rebuild and guarded candidate patching when metadata is reliable.",
+    "do_not_claim": "Do not claim blind in-place mutation of arbitrary legacy SND files."
+  },
+  {
+    "claim_area": "Runtime",
+    "safe_claim": "Runtime/Evidence/Authority tools can configure local engine runs, parse logs, and index evidence.",
+    "do_not_claim": "Do not claim bundled or emulated M.U.G.E.N/IKEMEN authority."
+  },
+  {
+    "claim_area": "Gameplay",
+    "safe_claim": "Generated code is scaffolded and tunable through sheets and evidence loops.",
+    "do_not_claim": "Do not claim generated moves are balanced/final without playtesting."
+  }
+]

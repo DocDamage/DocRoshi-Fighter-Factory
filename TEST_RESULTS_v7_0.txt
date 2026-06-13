@@ -1,0 +1,77 @@
+MugenForge Studio v7.0 Authority Lab — Test Results
+
+Commands run from /mnt/data/mugenforge_studio_v7_0.
+
+1. Module compilation
+   Command: python -m compileall -q mugenforge
+   Result: PASS
+
+2. Import/version smoke
+   Command:
+     import mugenforge
+     from mugenforge.app import APP_TITLE
+     from mugenforge.evidence_core import EVIDENCE_CORE_VERSION
+     from mugenforge.closure_lab import CLOSURE_LAB_VERSION
+   Result: PASS
+     mugenforge.__version__ = 7.0.0
+     APP_TITLE = MugenForge Studio 7.0 Authority Lab
+     EVIDENCE_CORE_VERSION = 7.0.0
+     CLOSURE_LAB_VERSION = 7.0.0
+
+3. Closure Lab backend smoke on generated character
+   Result: PASS
+     write_closure_dashboard: PASS
+     write_engine_adapter_suite: PASS with expected warning for blank engine path
+     validate_engine_adapter_suite: PASS with expected warning for blank engine path
+     run_engine_adapter_suite(dry_run=True): PASS
+     build_offline_runtime_simulation(start_state=200): PASS
+     build_sff2_corpus_validator: PASS with expected warning when no dropped corpus exists
+     write_sff2_unknown_triage: PASS
+     export_direct_mutation_commit_sheet: PASS
+     export_gameplay_tuning_sheet: PASS
+     apply_gameplay_tuning_sheet: PASS
+     write_report_evidence_contract: PASS
+     build_closure_lab_bundle: PASS
+     run_closure_lab_pass: PASS
+
+4. Evidence Core backend smoke on generated character
+   Result: PASS
+     write_evidence_core_dashboard: PASS
+     write_engine_profile_template: PASS
+     validate_engine_profile: PASS with expected warning for blank engine path
+     run_engine_profile(dry_run=True): PASS
+     export_runtime_scenario_sheet: PASS
+     ingest_runtime_evidence: PASS
+     parse_runtime_logs_and_results: PASS
+     write_evidence_release_gate: PASS
+     run_binary_corpus_validation: PASS
+     write_unknown_binary_recovery_workspace: PASS
+     export_candidate_install_sheet: PASS
+     export_playtest_tuning_sheet: PASS
+     build_evidence_core_bundle: PASS
+     run_evidence_core_pass: PASS
+
+5. Tkinter UI smoke under Xvfb
+   Result: PASS
+     MugenForgeApp instantiated successfully.
+     Window title: MugenForge Studio 7.0 Authority Lab.
+     Observed tab count: 49.
+     Authority Lab tab present: True.
+     Evidence Core tab present: True.
+     Closure Lab tab present: True.
+     Gap Closer tab present: True.
+     Runtime Lab tab present: True.
+     Authority Core tab present: True.
+
+6. Generated output spot checks
+   Result: PASS
+     closure_lab/CLOSURE_LAB_START_HERE.md exists.
+     closure_lab/offline_runtime/offline_runtime_trace.csv exists.
+     closure_lab/engine_adapters/engine_adapter_config.json exists.
+     closure_lab/sff2_corpus/sff2_corpus_results.csv exists.
+     closure_lab/mutation_commit/mutation_commit_sheet.csv exists.
+     closure_lab/gameplay_tuning/gameplay_tuning_sheet.csv exists.
+     closure_lab/evidence_contract/report_evidence_contract.json exists.
+
+7. ZIP verification
+   Result: PASS after packaging.

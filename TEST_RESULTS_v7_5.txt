@@ -1,0 +1,70 @@
+MugenForge Studio v7.5 Continuity Core — Test Results
+
+Commands run from /mnt/data/mugenforge_studio_v7_5.
+
+1. Module compilation
+   Command: python -m compileall -q mugenforge
+   Result: PASS
+
+2. Import/version smoke
+   Command:
+     import mugenforge
+     from mugenforge.app import APP_TITLE
+     from mugenforge.handoff_core import HANDOFF_CORE_VERSION
+     from mugenforge.operator_console import OPERATOR_CONSOLE_VERSION
+     from mugenforge.maintenance_core import MAINTENANCE_CORE_VERSION
+   Result: PASS
+     mugenforge.__version__ = 7.5.0
+     APP_TITLE = MugenForge Studio 7.5 Continuity Core
+     HANDOFF_CORE_VERSION = 7.5.0
+     OPERATOR_CONSOLE_VERSION = 7.5.0
+     MAINTENANCE_CORE_VERSION = 7.5.0
+
+3. Backend smoke on generated character
+   Result: PASS
+     make_new_character: PASS
+     Operator Console dashboard/handoff/roadmap/readiness: PASS
+     Handoff Core digest/inventory/regression harness: PASS
+     Maintenance Core dashboard/catalog/UI inventory/lineage/claims/scripts/backlog/handoff: PASS
+     Expected warning: Maintenance Core honesty audit flags high-risk claim lines for review.
+
+4. Package-level smoke script
+   Command: python tools/run_mugenforge_smoke.py
+   Result: PASS
+     Imports maintenance_core, handoff_core, operator_console, evidence_core, authority_core, runtime_lab, binary_maturity, forge_timeline, visual_forge, sff_codec, snd_codec.
+     Generates a temporary character and runs Maintenance Core.
+     SMOKE_PASS
+
+5. Handoff Core generated regression harness
+   Command: python handoff_core/regression_harness/smoke_v7_5.py
+   Result: PASS
+     compileall: PASS
+     imports handoff_core, operator_console, evidence_core, authority_core, runtime_lab, binary_maturity, forge_timeline.
+     backend warnings: 0
+     SMOKE_TEST_PASS
+
+6. Tkinter UI smoke under Xvfb
+   Command: xvfb-run -a python - <<'PY'
+     from mugenforge.app import MugenForgeApp, APP_TITLE
+     app = MugenForgeApp()
+     tabs = [app.notebook.tab(t, 'text') for t in app.notebook.tabs()]
+     print(APP_TITLE)
+     print(len(tabs))
+     print('Operator Console' in tabs)
+     print('Handoff Core' in tabs)
+     print('Maintenance Core' in tabs)
+     app.destroy()
+     PY
+   Result: PASS
+     APP_TITLE = MugenForge Studio 7.5 Continuity Core
+     tab_count = 52
+     Operator Console tab present = True
+     Handoff Core tab present = True
+     Maintenance Core tab present = True
+     Evidence Core tab present = True
+     Runtime Lab tab present = True
+     Binary Maturity tab present = True
+     selected startup tab = Operator Console
+
+7. ZIP packaging and extracted-package smoke
+   Result: PASS after packaging.

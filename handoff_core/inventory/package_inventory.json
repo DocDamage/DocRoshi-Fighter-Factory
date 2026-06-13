@@ -1,0 +1,1118 @@
+{
+  "tool": "MugenForge Studio",
+  "package_version": "7.5.0",
+  "handoff_core_version": "7.5.0",
+  "generated_at": "2026-06-13T19:25:51",
+  "package_root": ".",
+  "app_title": "MugenForge Studio 7.5 Continuity Core",
+  "tabs": [
+    "Editor",
+    "Analysis",
+    "Code Map",
+    "AIR Timeline",
+    "CLSN Editor",
+    "Sprites",
+    "Sheet Import",
+    "Sounds",
+    "Binary / Preview",
+    "Animation Player",
+    "Code Assistant",
+    "Move Wizard",
+    "Feature Bank",
+    "Factory Max",
+    "Factory Ultra",
+    "Creator OS",
+    "Factory Ultra",
+    "Quality Lab",
+    "Creator Suite",
+    "Creator Hub",
+    "SFF2 Bridge",
+    "Rescue Lab",
+    "Image Factory",
+    "Palettes",
+    "Studio Plus",
+    "Factory+",
+    "Forge+ Doctor",
+    "Sprite Lab",
+    "Stage Builder",
+    "Run / Test",
+    "Project Home",
+    "Visual Timeline",
+    "Offset / Axis",
+    "Sound Cue Editor",
+    "Move Composer 2.0",
+    "Migration Wizard",
+    "Training Debug",
+    "Templates / Plugins",
+    "Backups / Logs",
+    "Forge Beyond",
+    "Forge Polish",
+    "Forge Timeline",
+    "Binary Core",
+    "Binary Deep",
+    "Binary Maturity",
+    "Runtime Lab",
+    "Gap Closer",
+    "Authority Core",
+    "Authority Lab",
+    "Closure Lab",
+    "Evidence Core",
+    "Handoff Core",
+    "Operator Console",
+    "Maintenance Core"
+  ],
+  "tab_count": 54,
+  "module_count": 56,
+  "total_python_lines": 53409,
+  "modules": [
+    {
+      "module": "smoke_v7_5",
+      "path": "handoff_core/regression_harness/smoke_v7_5.py",
+      "bytes": 1604,
+      "lines": 48,
+      "classes": 0,
+      "functions": 0,
+      "constants": "ROOT",
+      "syntax_error": "",
+      "sha256": "9dd57b1f2dea19622ab5982dbd9c5e813b248bb0cce34069f355fa24228a316a",
+      "class_names": "",
+      "function_names": ""
+    },
+    {
+      "module": "package_release",
+      "path": "maintenance_core/scripts/package_release.py",
+      "bytes": 1256,
+      "lines": 42,
+      "classes": 0,
+      "functions": 3,
+      "constants": "ROOT, OUT, SKIP_PARTS, SKIP_SUFFIXES",
+      "syntax_error": "",
+      "sha256": "29d8d01d97a6ed07aeeff0ae6891c6b341fa922a059711508d3da5b02791317e",
+      "class_names": "",
+      "function_names": "_find_root, should_skip, main"
+    },
+    {
+      "module": "print_latest_handoff",
+      "path": "maintenance_core/scripts/print_latest_handoff.py",
+      "bytes": 557,
+      "lines": 16,
+      "classes": 0,
+      "functions": 1,
+      "constants": "ROOT, CANDIDATES",
+      "syntax_error": "",
+      "sha256": "db36396fc6bc1b9062c9aa0cc1a172e9f72adb10bc947bbd0acfd4371c422a89",
+      "class_names": "",
+      "function_names": "_find_root"
+    },
+    {
+      "module": "run_mugenforge_smoke",
+      "path": "maintenance_core/scripts/run_mugenforge_smoke.py",
+      "bytes": 1838,
+      "lines": 53,
+      "classes": 0,
+      "functions": 3,
+      "constants": "ROOT",
+      "syntax_error": "",
+      "sha256": "b1bc412971eeeaa82a0a2eeb6fd574dc992157c1854171cdef14637accdf6d08",
+      "class_names": "",
+      "function_names": "_find_root, run, main"
+    },
+    {
+      "module": "__init__",
+      "path": "mugenforge/__init__.py",
+      "bytes": 22,
+      "lines": 1,
+      "classes": 0,
+      "functions": 0,
+      "constants": "",
+      "syntax_error": "",
+      "sha256": "e018fd72720b7ef8d255690fa54053e22a691afdb651465c4afbde3c1a9772e3",
+      "class_names": "",
+      "function_names": ""
+    },
+    {
+      "module": "air_tools",
+      "path": "mugenforge/air_tools.py",
+      "bytes": 5441,
+      "lines": 142,
+      "classes": 3,
+      "functions": 5,
+      "constants": "ACTION_RE, FRAME_RE, CLSN_RE, CLSN_LINE_RE",
+      "syntax_error": "",
+      "sha256": "c3feeedde6a5df74661fbc34fa1391f5b146ebb087a99cb43cdac3edda846883",
+      "class_names": "AirLineClsnBox, AirLineFrame, AirLineAction",
+      "function_names": "parse_air_with_lines, find_frame, normalize_box, validate_boxes, update_frame_clsn_text"
+    },
+    {
+      "module": "app",
+      "path": "mugenforge/app.py",
+      "bytes": 500565,
+      "lines": 9465,
+      "classes": 1,
+      "functions": 1,
+      "constants": "APP_TITLE",
+      "syntax_error": "",
+      "sha256": "0e7d0e8cfe0927be279f9f7c5d4aabfc0812a9b40e52adb36c3c1f4b12038548",
+      "class_names": "MugenForgeApp",
+      "function_names": "main"
+    },
+    {
+      "module": "authority_core",
+      "path": "mugenforge/authority_core.py",
+      "bytes": 49801,
+      "lines": 1032,
+      "classes": 1,
+      "functions": 41,
+      "constants": "AUTHORITY_CORE_VERSION, TEXT_CODE_EXTS, BINARY_EXTS, EVIDENCE_EXTS, ERROR_RE, WARN_RE, TELEMETRY_RE",
+      "syntax_error": "",
+      "sha256": "ea27066a6ae526d1cbe234b371e6154d680dc8dd0202c5c3e1f8464666e584cf",
+      "class_names": "AuthorityCoreResult",
+      "function_names": "_uniq, _rel, _timestamp, _authority_dir, _write, _write_json, _read_json, _csv_write, _csv_read, _sha256, _backup_file, _discover_files, _code_files, _first_int, _project_char_name, _default_engine_config, _engine_config_path, _read_engine_config, write_authority_dashboard, write_engine_contract_profiles, validate_engine_configuration, _contract_args, _expand_args, build_engine_command, run_authoritative_engine_scenario, parse_engine_run_results, _telemetry_rows, write_runtime_reconciliation_report, _corpus_root, write_sff_snd_corpus_validation_suite"
+    },
+    {
+      "module": "authority_lab",
+      "path": "mugenforge/authority_lab.py",
+      "bytes": 50374,
+      "lines": 1059,
+      "classes": 1,
+      "functions": 32,
+      "constants": "AUTHORITY_LAB_VERSION, CODE_EXTS, BINARY_EXTS, EVIDENCE_EXTS",
+      "syntax_error": "",
+      "sha256": "1c6de6c2a85612532441f540946b624d46e795a0983f0fcd0fb8d91cbc5739d0",
+      "class_names": "AuthorityLabResult",
+      "function_names": "_uniq, _now, _rel, _auth_dir, _write_text, _write_json, _write_csv, _sha256, _read_json, _main_def, _def_refs, _project_files, _code_files, _all_state_defs, _all_change_targets, _air_actions, _anim_duration, _first_int, _evidence_files, write_authority_dashboard, verify_engine_profile, build_source_runtime_simulation, _byte_entropy, _fingerprint_sff, validate_sff2_corpus, _candidate_binary_files, export_verified_binary_commit_sheet, apply_verified_binary_commit_sheet, write_gameplay_tuning_workbench, write_evidence_authority_gate"
+    },
+    {
+      "module": "automation_bank",
+      "path": "mugenforge/automation_bank.py",
+      "bytes": 235330,
+      "lines": 3786,
+      "classes": 3,
+      "functions": 87,
+      "constants": "_BASE_BUILD_FEATURE_PACKAGE, _BASE_BUILD_FEATURE_PACKAGE_V22, _V22_BUILD_FEATURE_PACKAGE, _V24_BUILD_FEATURE_PACKAGE, _V25_DOC_IDS, _V25_SYSTEM_IDS, _V25_BUILD_FEATURE_PACKAGE, _V26_DOC_IDS, _V26_BUILD_FEATURE_PACKAGE, _V26_DOC_IDS, _V26_MOVE_IDS, _FINAL_V26_PREV_BUILD_FEATURE_PACKAGE, _QUALITY_BASE_BUILD_FEATURE_PACKAGE, _QUALITY_IDS, _RESCUE_BASE_BUILD_FEATURE_PACKAGE, _RESCUE_IDS, _CREATOR_HUB_PRESETS, _CREATOR_HUB_IDS, _CREATOR_HUB_PREV_BUILD_FEATURE_PACKAGE",
+      "syntax_error": "",
+      "sha256": "00f2c803896c4710972e77fe26f7658b06dcf6828d7cbffaa4d0e6c054a82dcf",
+      "class_names": "FeaturePreset, FeaturePackage, ApplyResult",
+      "function_names": "available_presets, get_preset, preset_display_list, preset_by_display, _marker, _wrap, _spec, _pack_from_specs, _basic_air_actions, _common_command_bank, _debug_overlay_block, _simple_pose_state, _simple_pose_air, build_feature_package, package_preview_text, _timestamp, _backup_path, _append_unique, _fallback_file, apply_feature_package, apply_preset, apply_beginner_pack, default_project_profile, beginner_guide_text, _ensure_def_files_section, auto_setup_project, beginner_project_status, export_code_bank_template, _movement_fx_state, _state_minus_one"
+    },
+    {
+      "module": "binary_core",
+      "path": "mugenforge/binary_core.py",
+      "bytes": 124142,
+      "lines": 2711,
+      "classes": 2,
+      "functions": 83,
+      "constants": "BINARY_CORE_VERSION, IMAGE_SUFFIXES, TRUTH_NOTE, BINARY_CORE_VERSION, TRUTH_NOTE, BINARY_CORE_VERSION, TRUTH_NOTE",
+      "syntax_error": "",
+      "sha256": "aadd7c22415ac2f1b038af58627fcc9adc028905ff4604c9c2583d09ab7e37e9",
+      "class_names": "BinaryCoreResult, Sff2ProbeRecord",
+      "function_names": "_uniq, _flex_path, _rel, _now, _bc, _write_text, _write_json, _write_csv, _sha256, _backup, _file, _image_files, _parse_group_image, _image_size, _truth_lines, _u32, _i16, _u16, _header_slots, _find_embedded_pngs, _find_pcx_markers, _probe_mugenforge_png_subset, write_sff2_inspection, inspect_sff2_native, export_sff2_payloads, export_supported_sff2_payloads, export_sff_axis_sheet, _truthy, _safe_int, apply_sff_axis_sheet"
+    },
+    {
+      "module": "binary_deep",
+      "path": "mugenforge/binary_deep.py",
+      "bytes": 77282,
+      "lines": 1768,
+      "classes": 2,
+      "functions": 60,
+      "constants": "BINARY_DEEP_VERSION, SFF2_NATIVE_HEADER_SIZE, SFF2_RECORD_SIZE, SFF2_NATIVE_MAGIC, IMAGE_SUFFIXES, SFF2_FORMAT_LABELS, CAPABILITY_NOTE",
+      "syntax_error": "",
+      "sha256": "a6b001345fdd811800ef7933c6f34603448de3ad18a29f301fa2179d06bd907a",
+      "class_names": "DeepSff2Record, DeepSff2Table",
+      "function_names": "_now, _rel, _bd, _bc, _write_text, _write_json, _write_csv, _sha256, _safe_int, _truthy, _file, _backup, _u16, _i16, _u32, _i32, _clamp_i16, _clamp_u16, _image_files, _parse_group_image, _image_size, _png_payload, _find_embedded_pngs, _find_pcx_ranges, _candidate_header_values, _plausible_record_fields, _payload_hint, _score_record, _parse_table_candidate, discover_deep_sff2_tables"
+    },
+    {
+      "module": "binary_maturity",
+      "path": "mugenforge/binary_maturity.py",
+      "bytes": 32967,
+      "lines": 718,
+      "classes": 1,
+      "functions": 23,
+      "constants": "BINARY_MATURITY_VERSION, IMAGE_SUFFIXES, WAV_SUFFIXES, MATURITY_NOTE",
+      "syntax_error": "",
+      "sha256": "3747e766e7d88083ecc5321ecaced14c9f8a234452eabb9e9284ebd890021f81",
+      "class_names": "BinaryMaturityResult",
+      "function_names": "_uniq, _rel, _now, _bm, _write_text, _write_json, _write_csv, _sha256, _find_file, _truth_lines, _is_standard_sff2, write_sff2_maturity_report, export_sff2_edit_workspace, _truthy, _safe_int, apply_sff2_edit_workspace, build_sff2_from_source_folder, export_snd_slot_patch_sheet, apply_snd_slot_patch_sheet, write_runtime_test_harness, run_runtime_test_harness, build_binary_maturity_bundle, run_binary_maturity_pass"
+    },
+    {
+      "module": "closure_core",
+      "path": "mugenforge/closure_core.py",
+      "bytes": 67576,
+      "lines": 1458,
+      "classes": 3,
+      "functions": 47,
+      "constants": "CLOSURE_CORE_VERSION, CODE_EXTS, IMAGE_EXTS, AUDIO_EXTS, BINARY_EXTS",
+      "syntax_error": "",
+      "sha256": "c02a2743ed1d933af03be799eab46e21fcf875e83df5599446092f8798eb26e7",
+      "class_names": "ClosureResult, MicroState, MicroScenario",
+      "function_names": "_now, _uniq, _rel, _closure_dir, _write_text, _write_json, _csv_write, _csv_read, _sha256, _first_int, _first_float_pair, _discover_files, _code_files, _all_binary_files, _read_runtime_config, write_closure_dashboard, _build_state_index, _build_air_index, _anim_elem_at, _compare, _eval_atom, _controller_triggers_true, _scenario_rows_from_project, _ensure_micro_scenario_sheet, build_micro_runtime_model, _load_micro_scenarios, _simulate_one, run_micro_runtime_scenarios, write_engine_autoprobe, _collect_evidence_files"
+    },
+    {
+      "module": "closure_lab",
+      "path": "mugenforge/closure_lab.py",
+      "bytes": 63450,
+      "lines": 1389,
+      "classes": 1,
+      "functions": 47,
+      "constants": "CLOSURE_LAB_VERSION, CODE_EXTS, BINARY_EXTS, EVIDENCE_EXTS",
+      "syntax_error": "",
+      "sha256": "89908ed33632ed4c602029aa2c804d3f6a08c65244bd94c29c1384cc844c0353",
+      "class_names": "ClosureLabResult",
+      "function_names": "_uniq, _now, _rel, _closure_dir, _write_text, _write_json, _write_csv, _read_json, _backup_file, _main_def, _def_refs, _project_files, _code_files, _safe_int, _safe_float, _numbers, _number_pair, _all_states, _all_hitdefs, _load_air_actions, _anim_element, _anim_total_ticks, _eval_trigger_expr, _compare, _controller_triggers_true, build_offline_runtime_simulation, write_engine_adapter_suite, validate_engine_adapter_suite, run_engine_adapter_suite, build_sff2_corpus_validator"
+    },
+    {
+      "module": "code_authoring",
+      "path": "mugenforge/code_authoring.py",
+      "bytes": 6798,
+      "lines": 213,
+      "classes": 1,
+      "functions": 8,
+      "constants": "COMMAND_REF_RE",
+      "syntax_error": "",
+      "sha256": "472e0278df309f42da87a1c0df2ac4ff87bd6b05958cac02785a24ffd3e1734c",
+      "class_names": "CodeAuthoringReport",
+      "function_names": "command_template, negative_one_changestate_template, attack_state_template, projectile_state_template, helper_explod_template, inspect_code_text, inspect_character_folder, package_character_zip"
+    },
+    {
+      "module": "codec_core",
+      "path": "mugenforge/codec_core.py",
+      "bytes": 5720,
+      "lines": 144,
+      "classes": 0,
+      "functions": 14,
+      "constants": "CODEC_CORE_VERSION",
+      "syntax_error": "",
+      "sha256": "aaef4dd83b0680ea44552ffe757b05f113f1cf5b9ea05ab343d8bc5f869e7503",
+      "class_names": "",
+      "function_names": "_rel, _cc, _write_text, _write_json, write_codec_core_dashboard, write_sff2_full_decode_export, export_sff2_mutation_sheet, apply_sff2_mutation_sheet, apply_sff2_axis_patch_copy, export_snd_mutation_sheet, apply_snd_mutation_sheet, ingest_runtime_evidence, build_codec_core_bundle, run_codec_core_pass"
+    },
+    {
+      "module": "creator_hub",
+      "path": "mugenforge/creator_hub.py",
+      "bytes": 43558,
+      "lines": 716,
+      "classes": 1,
+      "functions": 28,
+      "constants": "",
+      "syntax_error": "",
+      "sha256": "a6de99366c26d5b592ffc952c3223d2586b7c9f148b65ae180397760160043e9",
+      "class_names": "CreatorHubResult",
+      "function_names": "_uniq, _rel, _hub_dir, _write, _write_json, _code_files, _read_code_texts, _all_commands, _all_states, _parse_hitdefs, _nearest_state_before, _first_int, _normalize_input, _command_family, _difficulty_for_input, _damage_recommendation, _score_badge, write_creator_dashboard, write_project_task_board, write_input_conflict_lab, write_balance_autotune_plan, write_combo_trial_pack, write_asset_request_pack, write_no_code_recipe_book, write_controller_mapping_sheet, write_release_website, write_patch_macro_bank, run_creator_hub_pass"
+    },
+    {
+      "module": "creator_os",
+      "path": "mugenforge/creator_os.py",
+      "bytes": 48351,
+      "lines": 1097,
+      "classes": 1,
+      "functions": 49,
+      "constants": "CREATOR_OS_VERSION, _FUNCTION_BANK, _BALANCE_PRESETS",
+      "syntax_error": "",
+      "sha256": "c5cd09d59a9e8e2ada568b196c8eca4444848ae0a2a4589d2c9e45ffba38c864",
+      "class_names": "CreatorOSResult",
+      "function_names": "_uniq, _creator_dir, _write, _rel, _timestamp, _backup, _code_files, _read_code, _first_int, _state_defs_targets_anims, _command_defs, _air_action_numbers, _hitdef_blocks, _estimate_state_anim_map, _air_total_ticks, _system_score, creator_os_status_report, write_creator_os_dashboard, write_function_bank, write_frame_data_sheet, write_move_tuning_board, write_input_mapper_template, _replace_command_block, apply_input_mapper, write_combo_routes_template, apply_combo_routes, _safe_state_stub, auto_fix_missing_statedefs, _air_placeholder, auto_create_missing_air_actions"
+    },
+    {
+      "module": "creator_suite",
+      "path": "mugenforge/creator_suite.py",
+      "bytes": 36089,
+      "lines": 541,
+      "classes": 1,
+      "functions": 30,
+      "constants": "CREATOR_SUITE_VERSION, IMAGE_SUFFIXES, SOUND_SUFFIXES, PALETTE_SUFFIXES, TEXT_SUFFIXES, HITDEF_TUNING_FIELDS",
+      "syntax_error": "",
+      "sha256": "f02228c70fb77b5a36d683f515c55e0b948257ddce12317d34aefb4d0fcdd36d",
+      "class_names": "SuiteResult",
+      "function_names": "_now, _rel, _backup, _write, _append_once, _discover_files, _code_files, _img_size, _csv, _recipe, write_character_dna_profile, write_asset_library, _commands, write_move_lab, write_combo_tree, write_art_task_board, install_beginner_tuning_panel, make_project_time_machine_snapshot, write_creator_dashboard, write_final_qa_release_plan, write_training_pack, write_creator_indexes, one_click_creator_autopilot, creator_suite_profile_report, _hitdef_blocks_for_sheet, export_hitdef_tuning_sheet, _truthy_apply, _update_key_in_block, apply_hitdef_tuning_sheet, write_artist_handoff_pack"
+    },
+    {
+      "module": "creator_suite_visual",
+      "path": "mugenforge/creator_suite_visual.py",
+      "bytes": 49826,
+      "lines": 1018,
+      "classes": 1,
+      "functions": 27,
+      "constants": "IMAGE_EXTS, AUDIO_EXTS",
+      "syntax_error": "",
+      "sha256": "2f9a98bc5756fcab8580eef41a79443e62fb965a3ec218c046468f80b7c6d37d",
+      "class_names": "CreatorSuiteResult",
+      "function_names": "_uniq, _rel, _suite_dir, _write, _slug, _safe_int, _find_images, _parse_sprite_filename, _image_size, _load_sprite_image, _find_action_by_number, create_sff2_source_project, make_animation_contact_sheets, make_onion_skin_previews, write_animation_doctor, create_sound_waveform_sheet, write_palette_doctor, write_no_code_recipe_bank, write_combo_blueprint, write_creator_command_center, create_release_comparison_report, run_creator_suite_pass, _hitdef_blocks_in_text, export_hitdef_tuning_sheet, _replace_or_add_kv, apply_hitdef_tuning_sheet, write_artist_handoff_pack"
+    },
+    {
+      "module": "engine_authority",
+      "path": "mugenforge/engine_authority.py",
+      "bytes": 56488,
+      "lines": 1035,
+      "classes": 1,
+      "functions": 34,
+      "constants": "ENGINE_AUTHORITY_VERSION, CODE_EXTS, BINARY_EXTS, EVIDENCE_EXTS",
+      "syntax_error": "",
+      "sha256": "d0381551aaef2fcc87a849a1374da27382d81d7ca4722f1d9f7821eea421eaee",
+      "class_names": "AuthorityResult",
+      "function_names": "_uniq, _now, _rel, _auth_dir, _write_text, _write_json, _write_csv, _read_json, _hash_file, _main_def, _def_refs, _project_files, _code_files, _all_air_actions, _parse_int, _trigger_summary, _anim_elem_from_trigger, _time_from_trigger, _state_and_controller_rows, build_supported_runtime_model, write_external_engine_validator, _find_evidence_files, write_runtime_evidence_certificate, write_binary_corpus_validator, _find_png_spans, _find_pcx_offsets, write_sff2_forensic_recovery, export_binary_promotion_sheet, apply_verified_binary_promotions, write_gameplay_closure_pack"
+    },
+    {
+      "module": "evidence_core",
+      "path": "mugenforge/evidence_core.py",
+      "bytes": 70282,
+      "lines": 1466,
+      "classes": 1,
+      "functions": 64,
+      "constants": "EVIDENCE_CORE_VERSION, TEXT_EXTS, BINARY_EXTS, EVIDENCE_EXTS, ERROR_PATTERNS, WARNING_PATTERNS",
+      "syntax_error": "",
+      "sha256": "c86b4e3dd47962d3bd7bbdcbadb32e09fe7adb5011a778ae95dd710586dc1e85",
+      "class_names": "EvidenceCoreResult",
+      "function_names": "_uniq, _rel, _ec, _write_text, _write_json, _write_csv, _read_csv, _truthy, _now, _sha256, _safe_copy, _project_files, _discover_main_files, write_evidence_core_dashboard, write_engine_profile_template, _load_engine_profile, _expand_arg, validate_engine_profile, run_engine_profile, export_runtime_scenario_sheet, ingest_runtime_evidence, _runtime_result_files, _uniq_paths, parse_runtime_logs_and_results, write_evidence_release_gate, run_binary_corpus_validation, _find_png_segments, _find_wav_segments, _find_pcx_segments, write_unknown_binary_recovery_workspace"
+    },
+    {
+      "module": "factory_max",
+      "path": "mugenforge/factory_max.py",
+      "bytes": 39541,
+      "lines": 891,
+      "classes": 1,
+      "functions": 24,
+      "constants": "FACTORY_MAX_VERSION, IMAGE_SUFFIXES, TEXT_SUFFIXES",
+      "syntax_error": "",
+      "sha256": "30d78491dd783908f84c7d627be5a7398f56b936c79ce3a66fc7426ac94c73e3",
+      "class_names": "MaxResult",
+      "function_names": "_now, _rel, _backup, _write, _discover_files, _all_code_files, _image_dimensions_from_payload, _air_sprite_refs, factory_max_profile_report, write_codesense_bank, write_state_graph, write_organizer_manifest, suggest_clsn_from_sff, retime_air, renumber_air_actions, create_storyboard_template, create_screenpack_template, create_sound_autobank, create_quick_test_suite, safe_import_from_project, build_factory_max_release_zip, one_click_factory_max_upgrade, image_factory_process_folder, make_palette_variants"
+    },
+    {
+      "module": "factory_plus",
+      "path": "mugenforge/factory_plus.py",
+      "bytes": 62749,
+      "lines": 1364,
+      "classes": 2,
+      "functions": 64,
+      "constants": "FACTORY_PLUS_VERSION, _IMAGE_NAME_PATTERNS",
+      "syntax_error": "",
+      "sha256": "5cbe2ad7e126db2fe4e8c4270d08a6a0efb60c574bb1a04b31fd62c6e2b99958",
+      "class_names": "FactoryPlusResult, CharacterFiles",
+      "function_names": "_backup, _rel, _first, discover_character_files, _append_unique, _action_block, ensure_required_animations, _air_sprite_pairs, rebuild_placeholder_sff_from_air, _sprite_id_from_name, bulk_import_sprite_folder, installed_feature_ids, _all_code_text, export_move_list, export_state_map, export_balance_sheet, deep_factory_doctor, write_doctor_report, write_function_bank, write_start_here, smart_complete_project, build_release_zip, project_doctor_report, write_factory_doctor_report, one_click_upgrade, ensure_standard_air_actions, write_move_list_markdown, write_move_list_html, export_state_graph, asset_inventory"
+    },
+    {
+      "module": "factory_ultra",
+      "path": "mugenforge/factory_ultra.py",
+      "bytes": 59128,
+      "lines": 1213,
+      "classes": 1,
+      "functions": 67,
+      "constants": "FACTORY_ULTRA_VERSION, CODE_SUFFIXES, TEXT_SUFFIXES, IMAGE_SUFFIXES, ASSET_SUFFIXES",
+      "syntax_error": "",
+      "sha256": "c50b9912fb36dcba4ccfdac0a8fff2baa0a60cacd91bd01491945c8802cf7c7b",
+      "class_names": "UltraResult",
+      "function_names": "_now, _rel, _backup, _write, _write_json, _discover_files, _code_files, _text_files, _images, _counts, _intish, _damage_pair, _air_stats, _hit_records, _feature_hits, _cmd_commands, write_ultra_audit, write_input_conflict_report, write_balance_lab, generate_balance_lab, write_frame_data_report, generate_frame_data_lab, write_combo_lab, write_combo_trial_builder, write_smart_next_steps, generate_beginner_task_board, write_creator_home_dashboard, ultra_project_dashboard, write_beginner_command_center, write_no_code_function_map"
+    },
+    {
+      "module": "ff_plus",
+      "path": "mugenforge/ff_plus.py",
+      "bytes": 23607,
+      "lines": 557,
+      "classes": 0,
+      "functions": 21,
+      "constants": "",
+      "syntax_error": "",
+      "sha256": "0a5a322daffca58bc5541a640f8ef6afb84095c0a08d8592810289b6599a8316",
+      "class_names": "",
+      "function_names": "_timestamp, _backup, _write_file, _merge, _relative, ensure_ff_plus_workspace, make_hitbox_preset_library, _main_files, _installed_feature_ids, ff_plus_dashboard_report, generate_action_catalog, generate_asset_index, generate_move_list, write_smart_code_bank, generate_release_checklist, install_required_actions_library, install_smart_cancel_suite, install_training_suite, install_ff_plus_authoring_pack, one_click_fighter_factory_plus_pass, ff_plus_summary_after_result"
+    },
+    {
+      "module": "ff_plus_tools",
+      "path": "mugenforge/ff_plus_tools.py",
+      "bytes": 26153,
+      "lines": 664,
+      "classes": 0,
+      "functions": 24,
+      "constants": "IMAGE_INPUT_EXTS, WAV_EXTS",
+      "syntax_error": "",
+      "sha256": "8bcd399b82ecc2a1a24c3527fd8c2dbdecb3a61d6ba6116f5c7beda77e8209ae",
+      "class_names": "",
+      "function_names": "_need_pillow, _safe_stem, image_files, wav_files, summarize_image_folder, make_sprite_contact_sheet, _trim_transparency, _place_on_canvas, normalize_sprite_folder, convert_images_to_pcx, make_animation_gif, make_air_from_image_sequence, build_sff_from_image_folder, build_act_from_folder, sound_cue_sheet, _first_def, project_move_summary, export_move_list, write_creator_manual, full_project_report, create_stage_from_image, write_mugen_launch_config, read_mugen_launch_config, launch_mugen"
+    },
+    {
+      "module": "forge_beyond",
+      "path": "mugenforge/forge_beyond.py",
+      "bytes": 57024,
+      "lines": 1104,
+      "classes": 2,
+      "functions": 50,
+      "constants": "FORGE_BEYOND_VERSION, TEXT_SUFFIXES, CODE_SUFFIXES, IMAGE_SUFFIXES, AUDIO_SUFFIXES, SKIP_PARTS",
+      "syntax_error": "",
+      "sha256": "7db55da8bceb2dd8d4f77904f7c4a589d8183934685284e7c50a7d6baf90455f",
+      "class_names": "ForgeBeyondResult, ImageEditSpec",
+      "function_names": "_timestamp, _uniq, _safe_name, _rel, _beyond_dir, _docs_dir, _reports_dir, _sheets_dir, _graphs_dir, _write_text, _write_json, _write_csv, _backup_text_file, _all_files, _code_files, _image_files, _wav_files, _first_int, _category_for_file, _discover_files, _commands_from_project, _state_controller_rows, import_archive_project, run_source_image_editor, write_capability_matrix, write_project_organizer_manifest, write_codesense_report, write_asset_deep_audit, write_unified_project_index, export_command_sheet"
+    },
+    {
+      "module": "forge_flow",
+      "path": "mugenforge/forge_flow.py",
+      "bytes": 59382,
+      "lines": 1228,
+      "classes": 1,
+      "functions": 45,
+      "constants": "FORGE_FLOW_VERSION, CODE_SUFFIXES, TEXT_SUFFIXES, IMAGE_SUFFIXES, AUDIO_SUFFIXES, GENERATED_PARTS",
+      "syntax_error": "",
+      "sha256": "a3eb79ede606c20387510b4d0d2c9be7f4fc6c375c9773aa04f4be84e133c25a",
+      "class_names": "ForgeFlowResult",
+      "function_names": "_timestamp, _uniq, _safe_name, _rel, _out, _write_text, _write_json, _write_csv, _read_csv, _all_files, _code_files, _image_files, _wav_files, _act_files, _truthy, _int, _float, _discover_files, _backup_file, _set_text_state, _project_stats, write_flow_mode_dashboard, _anim_elem_from_values, _parent_state_events, _sound_pair, build_move_flow_model, export_move_flow_sheet, _format_air_line, _find_state_targets_for_anim, _insert_playsnd_block"
+    },
+    {
+      "module": "forge_polish",
+      "path": "mugenforge/forge_polish.py",
+      "bytes": 55665,
+      "lines": 1029,
+      "classes": 1,
+      "functions": 44,
+      "constants": "FORGE_POLISH_VERSION, CODE_SUFFIXES, IMAGE_SUFFIXES, TEXT_SUFFIXES, SAFE_TEMPLATE_EXTS, BLOCKED_TEMPLATE_EXTS, SKIP_PARTS, GENERATED_PARTS",
+      "syntax_error": "",
+      "sha256": "5415056ba9064ce3002cec3691f9b4894a90111de29f10d557bb8102eccac91e",
+      "class_names": "ForgePolishResult",
+      "function_names": "_timestamp, _uniq, _safe_name, _rel, _out, _write_text, _write_json, _write_csv, _read_csv, _all_files, _code_files, _image_files, _discover_files, _int, _truthy, _backup_text_file, write_beginner_next_steps_dashboard, _issue, _issues_markdown, validate_command_sheet, validate_air_batch_sheet, validate_all_edit_sheets, _anim_elem, _sound_pair, export_sound_cue_apply_sheet, _insert_playsnd, apply_sound_cue_sheet, _sprite_key_from_name, _sprite_source_lookup, build_sprite_backed_timeline_preview"
+    },
+    {
+      "module": "forge_timeline",
+      "path": "mugenforge/forge_timeline.py",
+      "bytes": 81371,
+      "lines": 1666,
+      "classes": 1,
+      "functions": 58,
+      "constants": "FORGE_TIMELINE_VERSION, CODE_SUFFIXES, TEXT_SUFFIXES, IMAGE_SUFFIXES, PALETTE_SUFFIXES, SKIP_PARTS, GENERATED_PARTS",
+      "syntax_error": "",
+      "sha256": "bf3245e0b61f6d6132543cc9411abecdfea748580c8a404d561f1aeddda57990",
+      "class_names": "ForgeTimelineResult",
+      "function_names": "_timestamp, _uniq, _safe_name, _rel, _out, _write_text, _write_json, _write_csv, _read_csv, _all_files, _code_files, _image_files, _palette_files, _discover_files, _int, _float, _truthy, _backup_text_file, _read_air_actions, _first_int_in, _parse_int_pair, _trigger_anim_elem, _state_records, _code_events, _events_by_anim, build_integrated_move_timeline_model, _timeline_html, _draw_integrated_timeline_png, export_move_timeline_edit_sheet, _replace_air_frame_lines"
+    },
+    {
+      "module": "gap_closer",
+      "path": "mugenforge/gap_closer.py",
+      "bytes": 56805,
+      "lines": 1133,
+      "classes": 1,
+      "functions": 44,
+      "constants": "GAP_CLOSER_VERSION, CODE_EXTS, BINARY_EXTS, EVIDENCE_EXTS",
+      "syntax_error": "",
+      "sha256": "88dc7832539a1a421053ad773461fe62ed363d13d07be6a052e85a25877bb380",
+      "class_names": "GapCloserResult",
+      "function_names": "_uniq, _now, _rel, _gap_dir, _write_text, _write_json, _write_csv, _read_csv, _backup_file, _sha256, _main_def, _project_files, _code_files, _char_name, _first_int, _numbers, write_gap_closer_dashboard, _limitation_status, probe_engine_profile, _guess_engine_kind, _recommended_profile_templates, _probe_command, build_source_runtime_model, _runtime_risk, _build_static_traces, build_engine_scenario_sessions, _scenario_rows, _slug, build_engine_backed_readiness_gate, _evidence_files"
+    },
+    {
+      "module": "handoff_core",
+      "path": "mugenforge/handoff_core.py",
+      "bytes": 25399,
+      "lines": 628,
+      "classes": 1,
+      "functions": 25,
+      "constants": "HANDOFF_CORE_VERSION, TEXT_EXTS, SKIP_DIRS",
+      "syntax_error": "",
+      "sha256": "448cb64ebef4d651628d8698c59c3e50c3add70b62db6ed4dcf8ef09382b9914",
+      "class_names": "HandoffResult",
+      "function_names": "_uniq, _rel, _out, _write, _write_json, _write_csv, _sha256, _iter_files, _module_summary, _find_app_title, _tab_names, _project_summary, _is_package_root, _package_root_for, collect_package_inventory, write_package_inventory, write_context_digest, _roadmap_rows, write_roadmap_backlog, write_honest_scope_ledger, write_next_chat_prompt, write_development_handoff, write_regression_harness, build_handoff_bundle, run_handoff_core_pass"
+    },
+    {
+      "module": "maintenance_core",
+      "path": "mugenforge/maintenance_core.py",
+      "bytes": 38666,
+      "lines": 863,
+      "classes": 1,
+      "functions": 26,
+      "constants": "MAINTENANCE_CORE_VERSION, TEXT_EXTS, DOC_EXTS, SKIP_DIRS",
+      "syntax_error": "",
+      "sha256": "fe68517f1226c379006313b20a23c3a6c154c3c5e0a1cc272ed8def9f33f6bf4",
+      "class_names": "MaintenanceResult",
+      "function_names": "_unique, _repo_root, _package_dir, _mc_dir, _rel, _write, _write_json, _write_csv, _sha256, _iter_files, _module_files, _safe_read, _parse_ast, _callable_signature, _unparse, _project_stats, write_maintainer_dashboard, write_module_api_catalog, write_ui_tab_inventory, write_release_lineage, write_honesty_claims_audit, write_regression_test_scripts, write_maintenance_backlog, write_handoff_for_next_chat, build_maintenance_bundle, run_maintenance_core_pass"
+    },
+    {
+      "module": "move_wizard",
+      "path": "mugenforge/move_wizard.py",
+      "bytes": 9331,
+      "lines": 319,
+      "classes": 2,
+      "functions": 12,
+      "constants": "",
+      "syntax_error": "",
+      "sha256": "3cfc33072e55e4ab2e5e878fcc50d8a7da9503211c10aca8c3e98fb0d1b1bc1f",
+      "class_names": "MoveWizardSpec, MoveWizardPackage",
+      "function_names": "_safe_int, normalize_spec, command_block, attack_state_block, projectile_state_block, movement_state_block, air_block, build_move_package, find_def_file, find_character_file, append_block, append_move_to_project"
+    },
+    {
+      "module": "no_code_director",
+      "path": "mugenforge/no_code_director.py",
+      "bytes": 17861,
+      "lines": 365,
+      "classes": 1,
+      "functions": 14,
+      "constants": "",
+      "syntax_error": "",
+      "sha256": "a489c9041b2d7e94277307da0515674dea5babdd7e1d66621c99d1a823af11d9",
+      "class_names": "ArchetypeProfile",
+      "function_names": "archetype_names, _profile, archetype_preview_text, _merge, _write_text_if_changed, _write_csv, _dashboard_text, _sprite_rows, _move_rows, write_no_code_dashboard, _auto_build_placeholder_sff, _auto_build_placeholder_snd, one_click_playable_skeleton, no_code_director_summary"
+    },
+    {
+      "module": "no_code_workflow",
+      "path": "mugenforge/no_code_workflow.py",
+      "bytes": 1459,
+      "lines": 42,
+      "classes": 0,
+      "functions": 5,
+      "constants": "",
+      "syntax_error": "",
+      "sha256": "42cf9ef8b8bfaf0f39a85ddb6dff28378a0c8ff925383acdd142a1dba1611d12",
+      "class_names": "",
+      "function_names": "write_creator_profile, build_placeholder_sff_from_air, build_placeholder_snd, beginner_doctor_report, make_playable_prototype"
+    },
+    {
+      "module": "operator_console",
+      "path": "mugenforge/operator_console.py",
+      "bytes": 35254,
+      "lines": 783,
+      "classes": 1,
+      "functions": 25,
+      "constants": "OPERATOR_CONSOLE_VERSION, TEXT_EXTS, BINARY_EXTS, SKIP_PARTS",
+      "syntax_error": "",
+      "sha256": "9bd1da29c224f23be7aadc4e2363c2af7767b4bb45b85a683e4781bfae6de2cc",
+      "class_names": "OperatorResult",
+      "function_names": "_uniq, _rel, _now, _console_dir, _write, _write_json, _write_csv, _file_sha256, _all_project_files, _safe_read, _discover_main_files, _project_counts, _code_files, _text_files, _existing_report_dirs, inspect_project_state, _phase_status, _markdown_table, write_operator_dashboard, write_next_chat_handoff, write_operator_roadmap, write_decision_log_template, build_operator_context_bundle, write_release_readiness_packet, run_operator_console_pass"
+    },
+    {
+      "module": "palette_tools",
+      "path": "mugenforge/palette_tools.py",
+      "bytes": 3005,
+      "lines": 90,
+      "classes": 1,
+      "functions": 7,
+      "constants": "",
+      "syntax_error": "",
+      "sha256": "c43058d91755ead95f163f373968ef3551644cfeac132e9058d213dcafa7b785",
+      "class_names": "PaletteInfo",
+      "function_names": "_clamp, read_act, write_act, palette_to_json_text, write_palette_json, build_act_from_image, remap_palette_order"
+    },
+    {
+      "module": "parsers",
+      "path": "mugenforge/parsers.py",
+      "bytes": 17845,
+      "lines": 398,
+      "classes": 9,
+      "functions": 14,
+      "constants": "TEXT_EXTS, IMAGE_EXTS, CHAR_REQUIRED_EXTS, COMMON_ANIMS",
+      "syntax_error": "",
+      "sha256": "d0380848ba0f5a4d36b61f2865c3fe477a679d9a217d6c8b04b0284461637744",
+      "class_names": "DefSection, AirClsnBox, AirFrame, AirAction, CmdCommand, StateController, StateDef, CodeScan, ProjectAudit",
+      "function_names": "read_text_safely, write_text_safely, strip_inline_comment, parse_def, parse_air, parse_code, referenced_files_from_def, resolve_reference, scan_project, summarize_sff, summarize_snd, summarize_act, summarize_binary, make_new_character"
+    },
+    {
+      "module": "polish_lab",
+      "path": "mugenforge/polish_lab.py",
+      "bytes": 3518,
+      "lines": 106,
+      "classes": 0,
+      "functions": 13,
+      "constants": "POLISH_LAB_VERSION",
+      "syntax_error": "",
+      "sha256": "0d4b97016d1f5c9ca574317ca3949e2b4f1d8b234412d6527a82691628d74b24",
+      "class_names": "",
+      "function_names": "run_polish_pass, preview_command_sheet_apply, preview_air_batch_sheet_apply, export_sound_cue_sheet, preview_sound_cue_sheet_apply, validate_sound_cue_sheet, write_sprite_timeline_preview, write_state_graph_canvas_model, validate_template_pack, write_stage_source_preview, write_backup_browser, write_beginner_dashboard_v41, build_polish_reports_bundle"
+    },
+    {
+      "module": "quality_lab",
+      "path": "mugenforge/quality_lab.py",
+      "bytes": 39892,
+      "lines": 808,
+      "classes": 1,
+      "functions": 28,
+      "constants": "TEXT_EXTS, IMAGE_EXTS",
+      "syntax_error": "",
+      "sha256": "01d36c23b1ced83931fe3ddcc2da242af50809b1d248cd99cdbdedd199b8435b",
+      "class_names": "QualityLabResult",
+      "function_names": "_uniq, _safe_stem, _rel, _ql_dir, _write, _code_files, _read_code, _parse_numeric_pair, _first_int, _command_defs_and_uses, _state_defs_targets_and_anims, _hitdef_rows, _playsnd_refs, _def_file_references, build_reference_matrix, _matrix_score, write_advanced_audit, write_searchable_html_index, write_move_cards, _decode_sprite_image, _alpha_bbox, build_alpha_clsn_suggestions, write_alpha_clsn_air_copy, write_animation_timing_sheet, create_asset_swap_pack, create_backup_restore_bundle, write_beginner_fix_plan, run_quality_lab_pass"
+    },
+    {
+      "module": "rescue_lab",
+      "path": "mugenforge/rescue_lab.py",
+      "bytes": 18145,
+      "lines": 424,
+      "classes": 2,
+      "functions": 18,
+      "constants": "RESCUE_LAB_VERSION, IMAGE_EXTS, BINARY_EXTS",
+      "syntax_error": "",
+      "sha256": "cce700a1f7e28edca4da218364a09a4008a5afa4ac6cd7bf8810509d7de8b022",
+      "class_names": "RescueAsset, RescueResult",
+      "function_names": "_rel, _now, _discover_main_files, _write_json, _write_text, _find_pngs, _find_wavs, _pcx_candidate_offsets, _find_pcxs, scan_binary_for_embedded_assets, scan_project_embedded_assets, _load_embedded_manifest, _air_unique_sprite_refs, build_recovery_manifest_from_air, build_recovered_sff_v1, create_rescue_contact_sheet, write_beginner_rescue_plan, run_rescue_lab_pass"
+    },
+    {
+      "module": "runtime_lab",
+      "path": "mugenforge/runtime_lab.py",
+      "bytes": 48012,
+      "lines": 1014,
+      "classes": 1,
+      "functions": 44,
+      "constants": "RUNTIME_LAB_VERSION, TEXT_CODE_EXTS, EVIDENCE_EXTS, LOG_PATTERNS",
+      "syntax_error": "",
+      "sha256": "35201a7d9ff8c90de60abab4264d898e2a9f35aaa8bcda6bc20219800190ecb7",
+      "class_names": "RuntimeLabResult",
+      "function_names": "_uniq, _rel, _runtime_dir, _write, _write_json, _timestamp, _backup_text, _code_files, _main_def, _char_name, _discover_files, _read_runtime_config, _default_config, _csv_write, _csv_read, _commands, _states, _hitdefs, write_runtime_config_template, export_runtime_launch_profiles, _shell_quote, _bat_quote, build_runtime_launch_scripts, install_runtime_debug_overlay, write_runtime_test_plan, _candidate_log_paths, parse_runtime_logs, _sha256, build_runtime_evidence_index, write_runtime_regression_checklist"
+    },
+    {
+      "module": "runtime_runner",
+      "path": "mugenforge/runtime_runner.py",
+      "bytes": 2736,
+      "lines": 63,
+      "classes": 0,
+      "functions": 1,
+      "constants": "",
+      "syntax_error": "",
+      "sha256": "fc565996e9fc3b88c57398e6fb1dc7cab27c12c4e46707a7a2dcc9fe339126e9",
+      "class_names": "",
+      "function_names": "main"
+    },
+    {
+      "module": "sff2_bridge",
+      "path": "mugenforge/sff2_bridge.py",
+      "bytes": 17806,
+      "lines": 396,
+      "classes": 1,
+      "functions": 15,
+      "constants": "IMAGE_EXTS",
+      "syntax_error": "",
+      "sha256": "f1e778dff3790876b6e4d2abd9aa552cb76b32a9b9558d99b392a233d20549d1",
+      "class_names": "BridgeResult",
+      "function_names": "_rel, _write_text, _image_files, parse_group_image_from_name, _image_size, _axis_for, scan_image_folder_for_sprmake, _copy_images, write_sprmake2_def, write_sprmake2_bridge_project, run_sprmake2, export_current_sff1_to_sff2_source, inspect_sprmake2_def, create_sff2_source_pack_zip, write_sff2_bridge_guide"
+    },
+    {
+      "module": "sff2_codec",
+      "path": "mugenforge/sff2_codec.py",
+      "bytes": 37520,
+      "lines": 914,
+      "classes": 4,
+      "functions": 23,
+      "constants": "SFF_SIGNATURE, SFF2_VERSION_BYTES, SFF21_VERSION_BYTES, SFF2_SPRITE_RECORD_SIZE, SFF2_PALETTE_RECORD_SIZE, SFF2_HEADER_SIZE, FORMAT_NAMES",
+      "syntax_error": "",
+      "sha256": "e8b7b62c88f2b2e983b6f5c03329810946cac2af05401b62b8eae1cd3cbce3f6",
+      "class_names": "Sff2Error, Sff2PaletteRecord, Sff2SpriteRecord, Sff2Info",
+      "function_names": "_u16, _i16, _u32, _safe_u32, _in_range, _looks_like_standard_sff2, read_sff2, _palette_payload, palette_rgba, _indices_to_rgba_image, decode_rle8_indices, encode_rle8_indices, _try_decode_rle5_indices, _unpack_5bit_indices, _try_decode_lz5_indices, decode_sprite_image, export_sff2_sprites, write_sff2_axis_sheet, patch_sff2_axis_copy, _image_to_payload, build_sff2_from_manifest, write_sff2_report, export_sff2_decoded_images"
+    },
+    {
+      "module": "sff_codec",
+      "path": "mugenforge/sff_codec.py",
+      "bytes": 127732,
+      "lines": 2985,
+      "classes": 7,
+      "functions": 82,
+      "constants": "SFF_SIGNATURE, SFF2_FORMAT_NAMES, SFF2_NAME_TO_FORMAT, SFF2_IMAGE_FORMATS, SFF2_DECODABLE_FORMATS, SFF2_EXPERIMENTAL_FORMATS, SFF2_STANDARD_VERSIONS, SFF2_LEGACY_LITTLE_VERSION, SFF2_FORMAT_NAMES, SFF2_NAME_TO_FORMAT",
+      "syntax_error": "",
+      "sha256": "fabebe4a9e032982d8eb487a200bd1ab30a54cd02000fc2250f76daba295c4da",
+      "class_names": "SffSprite, SffInfo, Sff2PaletteRecord, Sff2StandardRecord, Sff2PaletteRecord, Sff2ImageRecord, Sff2StandardInfo",
+      "function_names": "_u32, _i16, _u16, read_sff, _safe_u32, _inspect_sff2_header, _find_all, sprite_lookup, export_sprite, export_all_sprites, try_convert_to_png, summarize_sff_detailed, _encode_image_to_pcx_bytes, _load_manifest_records, build_sff_v1_from_manifest, stage_sff_replacement_manifest, _load_replacement_records, build_sff_v1_from_replacement_manifest, summarize_replacement_manifest, summarize_manifest_for_sff, _mf_i16, _mf_u8, _mf_try_u32, _mf_plausible_range, _mf_parse_sff2_standard, _mf_unpack_payload, _mf_decode_rle_pairs, _mf_encode_rle_pairs, _mf_decode_lz5_stream, _mf_encode_lz5_literal"
+    },
+    {
+      "module": "snd_codec",
+      "path": "mugenforge/snd_codec.py",
+      "bytes": 14958,
+      "lines": 378,
+      "classes": 2,
+      "functions": 16,
+      "constants": "SND_SIGNATURE, MUGENFORGE_SND_HEADER_SIZE, MUGENFORGE_SND_FIRST_OFFSET",
+      "syntax_error": "",
+      "sha256": "0056633724d4e42ad47f2a9b4836aca27383f53c373cd2d4e20eaa25bc804756",
+      "class_names": "SndSound, SndInfo",
+      "function_names": "_u32, _i32, _u16, _parse_wave_fmt, _infer_legacy_ids, read_snd, export_sound, export_all_sounds, _id_from_filename, make_snd_manifest_from_wav_folder, _load_snd_manifest, build_snd_from_manifest, summarize_snd_manifest, summarize_snd_detailed, make_silent_wav, make_placeholder_sound_bank"
+    },
+    {
+      "module": "spritesheet_tools",
+      "path": "mugenforge/spritesheet_tools.py",
+      "bytes": 4117,
+      "lines": 126,
+      "classes": 1,
+      "functions": 6,
+      "constants": "",
+      "syntax_error": "",
+      "sha256": "789c26d04b4d5f434422f9a3e27c40fce1fdd8f0f25b11e517e7773d4a5d33a9",
+      "class_names": "SheetSlice",
+      "function_names": "require_pillow, compute_grid_slices, export_grid_slices, write_manifest, make_air_action_from_slices, make_preview_image"
+    },
+    {
+      "module": "studio_plus",
+      "path": "mugenforge/studio_plus.py",
+      "bytes": 36516,
+      "lines": 879,
+      "classes": 1,
+      "functions": 28,
+      "constants": "",
+      "syntax_error": "",
+      "sha256": "6c049672e41eb7b46b8aa0ece940148ee5dcf674939a991dfe6c598cacb42e29",
+      "class_names": "StudioPlusResult",
+      "function_names": "_now_tag, _backup, _safe_rel, _main_def, _def_file_paths, _feature_markers, _action_numbers, _air_sprite_refs, _state_numbers, _score_from_findings, project_findings, _duplicate_report, studio_plus_report_text, write_studio_plus_report, write_studio_plus_report_json, _common_action_block, append_missing_standard_air_actions, auto_fix_project_plus, write_beginner_docs, make_project_snapshot, build_release_zip_plus, create_sff_contact_sheet, export_action_gif, batch_import_sprite_folder_to_sff, _infer_group_image, generate_air_from_sff_groups, clone_air_action_variant, make_stage_template"
+    },
+    {
+      "module": "visual_forge",
+      "path": "mugenforge/visual_forge.py",
+      "bytes": 41262,
+      "lines": 950,
+      "classes": 5,
+      "functions": 34,
+      "constants": "VISUAL_FORGE_VERSION, TEXT_SUFFIXES, IMAGE_SUFFIXES, AUDIO_SUFFIXES, SKIP_BACKUP_PARTS",
+      "syntax_error": "",
+      "sha256": "671de65c40ace4f33e99dad78a956bf1690d4a37f74a7a3e05d9ef55d8e00e3d",
+      "class_names": "VisualForgeResult, BeginnerProjectSpec, TimelineSelection, SoundCueSpec, MigrationSpec",
+      "function_names": "_safe_name, _timestamp, _uniq, _rel, _vf_dir, _docs_dir, _write_text, _write_json, backup_file, log_error, _replace_or_add_kv, _int, _first_int, create_visual_forge_project, write_beginner_project_home, _code_files, _extract_anim_elem, _collect_code_events, build_visual_timeline_model, write_visual_timeline_manifest, _format_air_frame_line, update_air_frame_ticks, update_air_frame_offset, build_sprite_offset_model, write_sound_cue_manifest, add_sound_cue_controller, compose_move2, migrate_existing_character, install_training_debug_pack, install_template_architecture"
+    },
+    {
+      "module": "package_release",
+      "path": "tools/package_release.py",
+      "bytes": 1256,
+      "lines": 42,
+      "classes": 0,
+      "functions": 3,
+      "constants": "ROOT, OUT, SKIP_PARTS, SKIP_SUFFIXES",
+      "syntax_error": "",
+      "sha256": "29d8d01d97a6ed07aeeff0ae6891c6b341fa922a059711508d3da5b02791317e",
+      "class_names": "",
+      "function_names": "_find_root, should_skip, main"
+    },
+    {
+      "module": "print_latest_handoff",
+      "path": "tools/print_latest_handoff.py",
+      "bytes": 557,
+      "lines": 16,
+      "classes": 0,
+      "functions": 1,
+      "constants": "ROOT, CANDIDATES",
+      "syntax_error": "",
+      "sha256": "db36396fc6bc1b9062c9aa0cc1a172e9f72adb10bc947bbd0acfd4371c422a89",
+      "class_names": "",
+      "function_names": "_find_root"
+    },
+    {
+      "module": "run_mugenforge_smoke",
+      "path": "tools/run_mugenforge_smoke.py",
+      "bytes": 1896,
+      "lines": 53,
+      "classes": 0,
+      "functions": 3,
+      "constants": "ROOT",
+      "syntax_error": "",
+      "sha256": "8c7ec2c567c79a543174e2f8ad1b319d0d0f05d20041c2262304f1199293ab51",
+      "class_names": "",
+      "function_names": "_find_root, run, main"
+    }
+  ],
+  "text_artifacts": [
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 29546,
+      "sha256": "b0bf3dfd3e7edf487afa04a2fde0a67204a563dbf2c5e7891859e0d49631314f"
+    },
+    {
+      "path": "handoff_core/digest/context_digest.json",
+      "bytes": 969,
+      "sha256": "c0fad8c0fb288b230d2607169be0071b7c78b4087c36ef9e83d28a6b7ed79621"
+    },
+    {
+      "path": "handoff_core/digest/CONTEXT_DIGEST.md",
+      "bytes": 832,
+      "sha256": "13f429ffc53f6c0fbf1bc5b1e189aef83774429622c319c7c6e34a41bb7fda84"
+    },
+    {
+      "path": "handoff_core/handoff/CURRENT_STATE_HANDOFF.md",
+      "bytes": 1799,
+      "sha256": "175603aa21db5bbc21381205748bf5a911a830c9ae0da3fed1b8d9c107297655"
+    },
+    {
+      "path": "handoff_core/handoff/NEXT_CHAT_PROMPT.md",
+      "bytes": 1188,
+      "sha256": "a1cca46f84b74d40759d9bededd9cb2f571601913430b7f29115537557e030ff"
+    },
+    {
+      "path": "handoff_core/HANDOFF_CORE_START_HERE.md",
+      "bytes": 501,
+      "sha256": "b41e3c46751830dcfccb80d57e4906360db8cd0b0df41aadca18d34e4f0374b0"
+    },
+    {
+      "path": "handoff_core/inventory/package_inventory.json",
+      "bytes": 53833,
+      "sha256": "65c294748f967127ef6351c03acf60ac591d48045a910b82ee548657a031834b"
+    },
+    {
+      "path": "handoff_core/inventory/PACKAGE_INVENTORY.md",
+      "bytes": 2815,
+      "sha256": "b0a5ee6e6da497dc37f275fec61160c6893f8402c46554c1a161ad8242e88623"
+    },
+    {
+      "path": "handoff_core/inventory/package_modules.csv",
+      "bytes": 30734,
+      "sha256": "c92bc380579240e30f8c3ee6b18f5194d7ee6d1a9d9b7ef762614185edbf7ac8"
+    },
+    {
+      "path": "handoff_core/regression_harness/REGRESSION_HARNESS.md",
+      "bytes": 445,
+      "sha256": "403c6220b9f0f299a3a45e8b2a531c1b31524ebb7973b72d54b255e074ea1ec9"
+    },
+    {
+      "path": "handoff_core/roadmap/roadmap_backlog.csv",
+      "bytes": 900,
+      "sha256": "2f52b64a6a076a4e5f857f6959e6d982dc5415640a0abee3aff57f5b86886a2a"
+    },
+    {
+      "path": "handoff_core/roadmap/ROADMAP_BACKLOG.md",
+      "bytes": 1105,
+      "sha256": "25049ff37d4ef779efca305d7a194ed353207c42f10a82e4a0e4ad13a99c9406"
+    },
+    {
+      "path": "handoff_core/scope/honest_scope_ledger.json",
+      "bytes": 1182,
+      "sha256": "a6a628d69cf90dc1d1ff2ec9b133cafeea87a05baa742a382877dd0d74d7fdb3"
+    },
+    {
+      "path": "handoff_core/scope/HONEST_SCOPE_LEDGER.md",
+      "bytes": 1077,
+      "sha256": "3c5a3be0c470e2a17ecf4dfc89371895166787fea25a901088fe6462f5a0de3a"
+    },
+    {
+      "path": "maintenance_core/HANDOFF_FOR_NEXT_CHAT.md",
+      "bytes": 3777,
+      "sha256": "64ff05a2b3a7e0438c6c621aaaf3f8b156b8356d2f4f467aa6c022130080b1e1"
+    },
+    {
+      "path": "maintenance_core/honesty_claims/honesty_claims_audit.csv",
+      "bytes": 494791,
+      "sha256": "0585d5991c8d908aa34506ce8b135e29a48e318384e940304b7106640495ea01"
+    },
+    {
+      "path": "maintenance_core/honesty_claims/honesty_claims_audit.md",
+      "bytes": 14674,
+      "sha256": "5aac0f73378b9d27eea233bc0714dd1ebf863c2617ae2b8ec126521d9cf773bc"
+    },
+    {
+      "path": "maintenance_core/MAINTAINER_START_HERE.md",
+      "bytes": 1460,
+      "sha256": "b5e09a8218b835abb53a2cde1bbc0abfd02740c23e66e85e94a7fcbb26352ad6"
+    },
+    {
+      "path": "maintenance_core/maintenance_backlog.md",
+      "bytes": 1624,
+      "sha256": "c6d2d30dbffa6646a8d4adb25365e35d5910149cd6a1bba52e511e99020b6569"
+    },
+    {
+      "path": "maintenance_core/maintenance_core_bundle_manifest.json",
+      "bytes": 249,
+      "sha256": "e12399758b8f30813f98eebd50728d8a5be193eddaf0e88d7d103df243ba380e"
+    },
+    {
+      "path": "maintenance_core/module_catalog/module_api_catalog.csv",
+      "bytes": 291647,
+      "sha256": "f256485a6b11f83c02a93d9b9c7d16951c692a1741da892f55901b1872539f5d"
+    },
+    {
+      "path": "maintenance_core/module_catalog/module_api_catalog.json",
+      "bytes": 606013,
+      "sha256": "6b3b9c68d180f634d6ff923d4dd88ee518dbb3598cdd4b61a1a84b722b411a4d"
+    },
+    {
+      "path": "maintenance_core/project_stats.json",
+      "bytes": 616,
+      "sha256": "119657ed4b46f7bf0c0db06d4ce8d468fe28d943fc51e41e9c52da705bddde3e"
+    },
+    {
+      "path": "maintenance_core/release_lineage/release_lineage.json",
+      "bytes": 7673,
+      "sha256": "581c762903e05327b81ba2fd8a58f668f7041218b485fd82bc3a64aa6bbb7e96"
+    },
+    {
+      "path": "maintenance_core/release_lineage/release_lineage.md",
+      "bytes": 2383,
+      "sha256": "d011727fe59939f0fcd16c96d87252ed656860f1bfe995292983789fe822d28e"
+    },
+    {
+      "path": "maintenance_core/scripts/README.md",
+      "bytes": 256,
+      "sha256": "70cd1e866e9dfa2551ba0acfee468cd1baee78877c29346b571391a219fe2d83"
+    },
+    {
+      "path": "maintenance_core/ui_inventory/ui_tab_inventory.csv",
+      "bytes": 2664,
+      "sha256": "d4983f65c768e070b8872d129a50569144465626acb66230a6077cf8b307cc37"
+    },
+    {
+      "path": "maintenance_core/ui_inventory/ui_tab_inventory.md",
+      "bytes": 5124,
+      "sha256": "1d78a4c05b2cfab182676a7f4ef1ea1675319dc46f470ea4dcf3053be4e6c0af"
+    },
+    {
+      "path": "MUGENFORGE_HANDOFF_v3_5.md",
+      "bytes": 2612,
+      "sha256": "1a3ad60ca615c1bc0f1b51383452973630378203e904488a20786d3252b6084c"
+    },
+    {
+      "path": "MUGENFORGE_HANDOFF_v4_0.md",
+      "bytes": 4393,
+      "sha256": "9f5592652bc3773df580259ab0bb868dc327e372a25567ca6b5d5c944a8452b1"
+    },
+    {
+      "path": "MUGENFORGE_HANDOFF_v4_1.md",
+      "bytes": 1894,
+      "sha256": "18c8efdb949ae30c28e9da3ae4de7d01ca1ae4d6120bbc6b5844204beb1412b3"
+    },
+    {
+      "path": "MUGENFORGE_HANDOFF_v4_5.md",
+      "bytes": 2788,
+      "sha256": "baffbd3a1e54a25a558f48391001accd073d5f71f77234beb854356462af8b64"
+    },
+    {
+      "path": "MUGENFORGE_HANDOFF_v5_0.md",
+      "bytes": 1331,
+      "sha256": "7efd25a08b10f1c91b24e73da4c4fecec1857d4c1abfc4512222714214f91fa4"
+    },
+    {
+      "path": "MUGENFORGE_HANDOFF_v5_5.md",
+      "bytes": 858,
+      "sha256": "4d067e39766f325c7f90fdbbc566e9e13eff9dffbb1b35f1bf6fcda6116f3620"
+    },
+    {
+      "path": "MUGENFORGE_HANDOFF_v6_1.md",
+      "bytes": 2075,
+      "sha256": "d5b1bd9da6d9171ee41dddfa66798d7354b05834cebc1761023f1301e1fc9110"
+    },
+    {
+      "path": "MUGENFORGE_HANDOFF_v7_0.md",
+      "bytes": 1345,
+      "sha256": "f2024b25af013c8c73304122deca9d70724684797b62acfbe50f0ef8e620208d"
+    },
+    {
+      "path": "MUGENFORGE_HANDOFF_v7_5.md",
+      "bytes": 1799,
+      "sha256": "175603aa21db5bbc21381205748bf5a911a830c9ae0da3fed1b8d9c107297655"
+    },
+    {
+      "path": "NEXT_CHAT_PROMPT_v7_5.md",
+      "bytes": 1188,
+      "sha256": "a1cca46f84b74d40759d9bededd9cb2f571601913430b7f29115537557e030ff"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3575,
+      "sha256": "056d82b650611b1755783803ff93b90e5969438b0b81a1740c12ebad665bd061"
+    },
+    {
+      "path": "RELEASE_SUMMARY_v3_5.md",
+      "bytes": 5713,
+      "sha256": "db818a9d52cf177470dabd0320ec7d612366611e606b658d308954d6af614528"
+    },
+    {
+      "path": "RELEASE_SUMMARY_v4_0.md",
+      "bytes": 2000,
+      "sha256": "5c7d1efe7cc530cabf6ded258a626d9ef001f1e72a2d9b8a3d3a133918887b38"
+    },
+    {
+      "path": "RELEASE_SUMMARY_v4_1.md",
+      "bytes": 3701,
+      "sha256": "dda4dab98c0dd37461f161a1be95910aa7b43cbf5a1b166852a7edb273c78f03"
+    },
+    {
+      "path": "RELEASE_SUMMARY_v4_5.md",
+      "bytes": 3739,
+      "sha256": "d2fec22a294e7e6a4bb42fb568f7370e35280b448d414ae0cc93ad4428f8c27e"
+    },
+    {
+      "path": "RELEASE_SUMMARY_v5_0.md",
+      "bytes": 2603,
+      "sha256": "9f6201c405e0969de44440f49dd39cd18323198840b77e6d47d01c23ba94545a"
+    },
+    {
+      "path": "RELEASE_SUMMARY_v5_5.md",
+      "bytes": 2138,
+      "sha256": "a6a1ef6ce2c95437335397762290c8512e25b4973879e04d9afb74896a4ac4dd"
+    },
+    {
+      "path": "RELEASE_SUMMARY_v6_1.md",
+      "bytes": 2767,
+      "sha256": "3be823ba7af2f2f75e61a19188180be502ceedd1bbd6d3379e8c082d714bee3f"
+    },
+    {
+      "path": "RELEASE_SUMMARY_v7_0.md",
+      "bytes": 3848,
+      "sha256": "2011d9322137600f1fe4b4d2de759c667f1b2015c5e251625c8517567e0ccb86"
+    },
+    {
+      "path": "RELEASE_SUMMARY_v7_5.md",
+      "bytes": 3028,
+      "sha256": "214d3cddbb508ad92f26e01e0b9c64fbe4412b2fcf4b0c7c56d6c907fa07e7af"
+    },
+    {
+      "path": "requirements.txt",
+      "bytes": 15,
+      "sha256": "e36848f673847de9ea26fbde287f64d9f34bb0fe7b0546beeeb612148544c4d8"
+    },
+    {
+      "path": "run_windows.bat",
+      "bytes": 41,
+      "sha256": "f9278034725690dab66e49f973421fc14a0a254bcf540a0108ac986a927f6d03"
+    },
+    {
+      "path": "TEST_RESULTS_v3_5.txt",
+      "bytes": 341,
+      "sha256": "ed0a315cf3606c372a71fd9cf25a192f08a280fb93e7e6004b245f503fcfdfef"
+    },
+    {
+      "path": "TEST_RESULTS_v4_0.txt",
+      "bytes": 2333,
+      "sha256": "2f9d3c41dc83215d260c0d88baa8633fcf8abc3a210e7db4095ca6b0ef5bc8b2"
+    },
+    {
+      "path": "TEST_RESULTS_v4_1.txt",
+      "bytes": 2124,
+      "sha256": "524967818ad84fb66b0e70e276709ee21f4b6c5219ff917036168d2397505c28"
+    },
+    {
+      "path": "TEST_RESULTS_v4_5.txt",
+      "bytes": 1187,
+      "sha256": "2b68919eb4918f09f053d82164e22cb9e3ffac5013272b7b2fb2312928dba3d1"
+    },
+    {
+      "path": "TEST_RESULTS_v5_0.txt",
+      "bytes": 2260,
+      "sha256": "9e57134717e0abeb88dba171e04f4d488cf752c74f9f747e30d376a1cdb369a3"
+    },
+    {
+      "path": "TEST_RESULTS_v5_5.txt",
+      "bytes": 1736,
+      "sha256": "c09d2ddce8b0386e0694a1a3522529533c2eca3385d52fa0fe1a0e07017e9f1a"
+    },
+    {
+      "path": "TEST_RESULTS_v6_1.txt",
+      "bytes": 2199,
+      "sha256": "36cda2718e6cdcd50f860fea025e6aac5bdb7249196aecd93f2adcc1b88e14ef"
+    },
+    {
+      "path": "TEST_RESULTS_v7_0.txt",
+      "bytes": 2974,
+      "sha256": "85d09ad1c7fa4a90b4c5bfe6b13a8902100527f507eae7b764cf733d61f34bd3"
+    },
+    {
+      "path": "TEST_RESULTS_v7_5.txt",
+      "bytes": 2647,
+      "sha256": "ec94003aba7353897d07fa06492aa10340ab522836956a2b4bdf0dd281f52c80"
+    }
+  ],
+  "handoff_target_summary": {
+    "root": ".",
+    "exists": true,
+    "extension_counts": {
+      ".bat": 1,
+      ".csv": 5,
+      ".html": 1,
+      ".json": 7,
+      ".md": 36,
+      ".py": 56,
+      ".pyc": 49,
+      ".txt": 10,
+      ".zip": 2
+    },
+    "core_files": {
+      ".def": [],
+      ".air": [],
+      ".cmd": [],
+      ".cns": [],
+      ".st": [],
+      ".sff": [],
+      ".snd": []
+    }
+  }
+}

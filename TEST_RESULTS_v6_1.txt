@@ -1,0 +1,63 @@
+MugenForge Studio v6.1 Runtime Lab — Test Results
+=================================================
+
+Environment
+-----------
+Working tree: /mnt/data/mugenforge_studio_v6_1
+Run command: python -m mugenforge.app
+
+Compile / import
+----------------
+PASS: python -m compileall -q mugenforge
+PASS: import mugenforge, mugenforge.app, and mugenforge.runtime_lab
+Observed version: 6.1.0
+Observed title: MugenForge Studio 6.1 Runtime Lab
+Observed Runtime Lab backend version: 6.1.0
+
+Backend Runtime Lab smoke test
+------------------------------
+Test project: /mnt/data/v61_final_runtime_smoke/runtimehero
+Synthetic runtime log: runtime_lab/logs/engine_smoke.log
+
+PASS: write_runtime_config_template
+PASS: export_runtime_launch_profiles
+PASS: build_runtime_launch_scripts
+PASS: install_runtime_debug_overlay
+PASS: write_runtime_test_plan
+PASS: parse_runtime_logs
+PASS: build_runtime_evidence_index
+PASS: write_runtime_regression_checklist
+PASS: write_runtime_readiness_report
+PASS: build_runtime_lab_bundle
+PASS: run_runtime_lab_pass
+
+Verified runtime artifacts
+--------------------------
+PASS: runtime_lab/runtime_config.json
+PASS: runtime_lab/launch_profiles.csv
+PASS: runtime_lab/launchers/
+PASS: runtime_lab/runtime_test_plan.csv
+PASS: runtime_lab/runtime_log_findings.csv
+PASS: runtime_lab/runtime_evidence_index.csv
+PASS: runtime_lab/runtime_regression_checklist.csv
+PASS: runtime_lab/runtime_readiness_report.json
+PASS: runtime_lab/RUNTIME_LAB_START_HERE.md
+
+UI smoke test
+-------------
+PASS: Tkinter app instantiated under Xvfb.
+PASS: APP_TITLE = MugenForge Studio 6.1 Runtime Lab.
+PASS: Runtime Lab tab present.
+PASS: Binary Maturity tab retained.
+Observed tab count: 44.
+
+Expected warnings
+-----------------
+The launch-script workflow reports a warning when no local engine executable is configured. This is expected: MugenForge does not bundle M.U.G.E.N/IKEMEN and requires the user to point Runtime Lab at their own engine install.
+
+Package verification
+--------------------
+PASS: Created /mnt/data/mugenforge_studio_v6_1.zip.
+PASS: Extracted ZIP into /mnt/data/test_zip_v61.
+PASS: python -m compileall -q mugenforge inside extracted package.
+PASS: Import/version smoke inside extracted package.

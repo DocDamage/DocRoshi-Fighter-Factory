@@ -1,0 +1,103 @@
+{
+  "tool": "MugenForge Studio",
+  "operator_console_version": "7.5.0",
+  "generated_at": "2026-06-13T19:25:53",
+  "project": "",
+  "operator_score": 44,
+  "release_recommendation": "hold",
+  "blockers": [
+    {
+      "phase": "Project skeleton",
+      "status": "needs work",
+      "reason": "Missing: .def, .air, .cmd, .cns, .sff, .snd",
+      "next_action": "Run Project Home / Beginner Wizard or Auto Setup if base files are missing."
+    },
+    {
+      "phase": "Move logic",
+      "status": "needs work",
+      "reason": "0 StateDefs, 0 commands, 0 HitDefs.",
+      "next_action": "Use Move Composer 2.0 / Forge Timeline to author and tune moves."
+    },
+    {
+      "phase": "Sprites / SFF",
+      "status": "needs work",
+      "reason": "No SFF file detected.",
+      "next_action": "Use Binary Maturity for existing SFF2, or Sheet Import / SFF2 Bridge for source images."
+    },
+    {
+      "phase": "Sounds / SND",
+      "status": "needs work",
+      "reason": "No SND file detected.",
+      "next_action": "Use Sound Cue Editor, Binary Core SND sheets, or source WAV rebuild workflow."
+    }
+  ],
+  "warnings": [
+    {
+      "phase": "Runtime evidence",
+      "status": "not started",
+      "reason": "No runtime/evidence artifacts found yet.",
+      "next_action": "Run Runtime Lab or Evidence Core with your local M.U.G.E.N/IKEMEN executable."
+    },
+    {
+      "phase": "Release packaging",
+      "status": "not started",
+      "reason": "No release/export artifacts found yet.",
+      "next_action": "Run Release ZIP / Evidence Bundle / Operator Context Bundle near ship time."
+    }
+  ],
+  "phase_status": [
+    {
+      "phase": "Project skeleton",
+      "status": "needs work",
+      "reason": "Missing: .def, .air, .cmd, .cns, .sff, .snd",
+      "next_action": "Run Project Home / Beginner Wizard or Auto Setup if base files are missing."
+    },
+    {
+      "phase": "Animation coverage",
+      "status": "pass",
+      "reason": "0 AIR actions, 0 common actions missing.",
+      "next_action": "Use Factory+ Required Animation Repair or Visual Timeline to fill/replace placeholder actions."
+    },
+    {
+      "phase": "Move logic",
+      "status": "needs work",
+      "reason": "0 StateDefs, 0 commands, 0 HitDefs.",
+      "next_action": "Use Move Composer 2.0 / Forge Timeline to author and tune moves."
+    },
+    {
+      "phase": "State routing",
+      "status": "pass",
+      "reason": "No missing numeric ChangeState/SelfState targets found.",
+      "next_action": "Use State Graph / Authority Lab to inspect and retarget broken transitions."
+    },
+    {
+      "phase": "Sprites / SFF",
+      "status": "needs work",
+      "reason": "No SFF file detected.",
+      "next_action": "Use Binary Maturity for existing SFF2, or Sheet Import / SFF2 Bridge for source images."
+    },
+    {
+      "phase": "Sounds / SND",
+      "status": "needs work",
+      "reason": "No SND file detected.",
+      "next_action": "Use Sound Cue Editor, Binary Core SND sheets, or source WAV rebuild workflow."
+    },
+    {
+      "phase": "Runtime evidence",
+      "status": "not started",
+      "reason": "No runtime/evidence artifacts found yet.",
+      "next_action": "Run Runtime Lab or Evidence Core with your local M.U.G.E.N/IKEMEN executable."
+    },
+    {
+      "phase": "Release packaging",
+      "status": "not started",
+      "reason": "No release/export artifacts found yet.",
+      "next_action": "Run Release ZIP / Evidence Bundle / Operator Context Bundle near ship time."
+    }
+  ],
+  "honest_scope": [
+    "This readiness packet is a management gate, not a M.U.G.E.N/IKEMEN emulator.",
+    "Ship decisions should include external-engine logs/screenshots/videos where possible.",
+    "Binary candidate installs should be verified with hashes and rollback manifests."
+  ]
+}

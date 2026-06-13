@@ -1,0 +1,53 @@
+MugenForge Studio v4.1 Forge Polish - Test Results
+===================================================
+
+Environment:
+- Python package root: /mnt/data/mugenforge_studio_v4_1
+- Command: python -m mugenforge.app
+- Dependency file: requirements.txt
+
+Static checks:
+- python -m compileall -q mugenforge: PASS
+
+Import/version smoke test:
+- import mugenforge: PASS
+- mugenforge.__version__: 4.1.0
+- from mugenforge.app import APP_TITLE: PASS
+- APP_TITLE: MugenForge Studio 4.1 Forge Polish
+- from mugenforge import forge_polish: PASS
+- forge_polish.FORGE_POLISH_VERSION: 4.1.0
+- from mugenforge.polish_lab import POLISH_LAB_VERSION: PASS
+
+Backend workflow smoke test on generated character:
+- make_new_character: PASS
+- Forge Beyond command sheet export: PASS
+- Forge Beyond AIR batch sheet export: PASS
+- Forge Polish command sheet validation preview: PASS
+- Forge Polish AIR batch validation preview: PASS
+- Editable sound cue sheet export: PASS
+- Enabled sound cue apply with backup creation: PASS
+- Sprite-backed timeline contact sheet generation: PASS
+- State graph canvas model/artifacts generation: PASS
+- Template architecture validation: PASS
+- Stage source-art preview path: PASS with expected warning when no source image exists
+- Backup history indexing: PASS
+- Forge Polish report bundle generation: PASS
+- One-Click Polish Pass: PASS
+
+Generated artifact checks:
+- forge_polish/BEGINNER_DASHBOARD_v4_1.html exists: PASS
+- forge_polish/timeline_preview/timeline_contact_sheet.png exists: PASS
+- forge_polish/state_graph_canvas/state_graph_canvas_model.json exists: PASS
+- forge_polish/sheets/sound_cue_apply_sheet.csv exists: PASS
+- MugenForge Forge Polish Sound Cue marker found in CNS after enabled apply: PASS
+- backup rows detected after apply/pass: PASS
+
+Tkinter UI smoke test under Xvfb:
+- MugenForgeApp instantiated: PASS
+- App title verified: PASS
+- Notebook tab count: 39
+- Forge Polish tab present: PASS
+
+Notes:
+- Stage source-art preview emits a warning when no stage/source image is present; this is expected and documented.
+- No full arbitrary mature SFF v2 binary editing/rebuilding was added or claimed.

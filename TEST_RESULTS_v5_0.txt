@@ -1,0 +1,70 @@
+MugenForge Studio v5.0 Binary Core — Test Results
+=================================================
+
+Environment
+-----------
+- Python package path: /mnt/data/mugenforge_studio_v5_0
+- Main dependency present for image/sprite tests: Pillow
+
+Commands
+--------
+cd /mnt/data/mugenforge_studio_v5_0
+python -m compileall -q mugenforge
+
+python - <<'PY'
+import mugenforge
+from mugenforge.app import APP_TITLE
+from mugenforge.binary_core import BINARY_CORE_VERSION
+print(mugenforge.__version__)
+print(APP_TITLE)
+print(BINARY_CORE_VERSION)
+PY
+
+Result
+------
+PASS
+- Version: 5.0.0
+- Title: MugenForge Studio 5.0 Binary Core
+- Binary Core backend: 5.0.0
+
+Backend smoke test
+------------------
+PASS on generated character with real generated SFF/SND test assets:
+- New character creation.
+- SFF v1 build from PNG sprite manifest.
+- SND build from WAV manifest.
+- Binary Core dashboard generation.
+- Binary safety/hash report generation.
+- SFF/SFF2 native inspection generation.
+- Supported SFF payload extraction.
+- SFF axis sheet export.
+- SFF axis sheet patched-copy apply; patched SFF readback verified updated axis values.
+- SND bank sheet export.
+- SND waveform preview generation.
+- SND rebuilt-candidate apply; rebuilt SND readback verified sounds present.
+- Binary roundtrip report generation.
+- One-Click Binary Core Pass.
+
+Experimental SFF2 PNG-subset fixture
+------------------------------------
+PASS
+- Built a source workspace from PNG sprites.
+- Built a MugenForge experimental PNG-table SFF2-style copy.
+- Conservative probe found PNG payload records.
+- Probe reported valid group/image/axis metadata.
+
+Tkinter UI smoke test
+---------------------
+PASS under Xvfb:
+- App instantiated successfully.
+- Title verified: MugenForge Studio 5.0 Binary Core.
+- Notebook tab count: 41.
+- Binary Core tab present.
+
+Expected limitations
+--------------------
+- Full arbitrary mature SFF2 extraction/rebuild/mutation is still not implemented.
+- RLE5/RLE8/LZ5 payload decoding is not implemented.
+- SFF axis apply creates patched SFF copies instead of overwriting originals.
+- SND bank apply creates rebuilt SND candidates instead of overwriting originals.
+- Experimental PNG-table SFF2-style copy is for MugenForge pipeline inspection/testing, not a Sprmake2 replacement.

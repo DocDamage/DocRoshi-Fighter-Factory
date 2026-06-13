@@ -1,0 +1,221 @@
+{
+  "generated": "2026-06-13T19:18:18",
+  "docs": [
+    {
+      "file": "RELEASE_SUMMARY_v3_5.md",
+      "version_hint": "3.5",
+      "heading": "MugenForge Studio v3.5 \"Visual Forge\" — Release Summary",
+      "bytes": 5713,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "db818a9d52cf177470dabd0320ec7d612366611e606b658d308954d6af614528"
+    },
+    {
+      "file": "RELEASE_SUMMARY_v4_0.md",
+      "version_hint": "4.0",
+      "heading": "MugenForge Studio v4.0 Forge Beyond — Release Summary",
+      "bytes": 2000,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "5c7d1efe7cc530cabf6ded258a626d9ef001f1e72a2d9b8a3d3a133918887b38"
+    },
+    {
+      "file": "RELEASE_SUMMARY_v4_1.md",
+      "version_hint": "4.1",
+      "heading": "MugenForge Studio v4.1 \"Forge Polish\" Release Summary",
+      "bytes": 3701,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "dda4dab98c0dd37461f161a1be95910aa7b43cbf5a1b166852a7edb273c78f03"
+    },
+    {
+      "file": "RELEASE_SUMMARY_v4_5.md",
+      "version_hint": "4.5",
+      "heading": "MugenForge Studio v4.5 Timeline Core — Release Summary",
+      "bytes": 3739,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "d2fec22a294e7e6a4bb42fb568f7370e35280b448d414ae0cc93ad4428f8c27e"
+    },
+    {
+      "file": "RELEASE_SUMMARY_v5_0.md",
+      "version_hint": "5.0",
+      "heading": "MugenForge Studio v5.0 Binary Core — Release Summary",
+      "bytes": 2603,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "9f6201c405e0969de44440f49dd39cd18323198840b77e6d47d01c23ba94545a"
+    },
+    {
+      "file": "RELEASE_SUMMARY_v5_5.md",
+      "version_hint": "5.5",
+      "heading": "MugenForge Studio v5.5 — Binary Maturity",
+      "bytes": 2138,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "a6a1ef6ce2c95437335397762290c8512e25b4973879e04d9afb74896a4ac4dd"
+    },
+    {
+      "file": "RELEASE_SUMMARY_v6_1.md",
+      "version_hint": "6.1",
+      "heading": "MugenForge Studio v6.1 Runtime Lab — Release Summary",
+      "bytes": 2767,
+      "modified": "2026-06-13T18:24:17",
+      "sha256": "3be823ba7af2f2f75e61a19188180be502ceedd1bbd6d3379e8c082d714bee3f"
+    },
+    {
+      "file": "RELEASE_SUMMARY_v7_0.md",
+      "version_hint": "7.0",
+      "heading": "MugenForge Studio v7.0 Authority Lab — Release Summary",
+      "bytes": 3848,
+      "modified": "2026-06-13T18:59:54",
+      "sha256": "2011d9322137600f1fe4b4d2de759c667f1b2015c5e251625c8517567e0ccb86"
+    },
+    {
+      "file": "MUGENFORGE_HANDOFF_v3_5.md",
+      "version_hint": "3.5",
+      "heading": "MugenForge Studio Handoff — v3.5 Visual Forge",
+      "bytes": 2612,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "1a3ad60ca615c1bc0f1b51383452973630378203e904488a20786d3252b6084c"
+    },
+    {
+      "file": "MUGENFORGE_HANDOFF_v4_0.md",
+      "version_hint": "4.0",
+      "heading": "MugenForge Studio Handoff — v4.0 Forge Beyond",
+      "bytes": 4393,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "9f5592652bc3773df580259ab0bb868dc327e372a25567ca6b5d5c944a8452b1"
+    },
+    {
+      "file": "MUGENFORGE_HANDOFF_v4_1.md",
+      "version_hint": "4.1",
+      "heading": "MugenForge Studio Handoff — v4.1 Forge Polish",
+      "bytes": 1894,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "18c8efdb949ae30c28e9da3ae4de7d01ca1ae4d6120bbc6b5844204beb1412b3"
+    },
+    {
+      "file": "MUGENFORGE_HANDOFF_v4_5.md",
+      "version_hint": "4.5",
+      "heading": "MugenForge Studio Handoff — v4.5 Timeline Core",
+      "bytes": 2788,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "baffbd3a1e54a25a558f48391001accd073d5f71f77234beb854356462af8b64"
+    },
+    {
+      "file": "MUGENFORGE_HANDOFF_v5_0.md",
+      "version_hint": "5.0",
+      "heading": "MugenForge Studio Handoff — v5.0 Binary Core",
+      "bytes": 1331,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "7efd25a08b10f1c91b24e73da4c4fecec1857d4c1abfc4512222714214f91fa4"
+    },
+    {
+      "file": "MUGENFORGE_HANDOFF_v5_5.md",
+      "version_hint": "5.5",
+      "heading": "MugenForge Studio Handoff — v5.5 Binary Maturity",
+      "bytes": 858,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "4d067e39766f325c7f90fdbbc566e9e13eff9dffbb1b35f1bf6fcda6116f3620"
+    },
+    {
+      "file": "MUGENFORGE_HANDOFF_v6_1.md",
+      "version_hint": "6.1",
+      "heading": "MugenForge Studio Handoff — v6.1 Runtime Lab",
+      "bytes": 2075,
+      "modified": "2026-06-13T18:24:18",
+      "sha256": "d5b1bd9da6d9171ee41dddfa66798d7354b05834cebc1761023f1301e1fc9110"
+    },
+    {
+      "file": "MUGENFORGE_HANDOFF_v7_0.md",
+      "version_hint": "7.0",
+      "heading": "MugenForge Studio Handoff — v7.0 Authority Lab",
+      "bytes": 1345,
+      "modified": "2026-06-13T18:59:54",
+      "sha256": "f2024b25af013c8c73304122deca9d70724684797b62acfbe50f0ef8e620208d"
+    },
+    {
+      "file": "MUGENFORGE_HANDOFF_v7_5.md",
+      "version_hint": "7.5",
+      "heading": "MugenForge Studio Handoff — v7.5 Maintenance Core",
+      "bytes": 3777,
+      "modified": "2026-06-13T19:18:08",
+      "sha256": "0a447e3a0333e23ccc4173bf335b0895fb62b04791727abc5a05d89c1645c369"
+    },
+    {
+      "file": "TEST_RESULTS_v3_5.txt",
+      "version_hint": "3.5",
+      "heading": "",
+      "bytes": 341,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "ed0a315cf3606c372a71fd9cf25a192f08a280fb93e7e6004b245f503fcfdfef"
+    },
+    {
+      "file": "TEST_RESULTS_v4_0.txt",
+      "version_hint": "4.0",
+      "heading": "",
+      "bytes": 2333,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "2f9d3c41dc83215d260c0d88baa8633fcf8abc3a210e7db4095ca6b0ef5bc8b2"
+    },
+    {
+      "file": "TEST_RESULTS_v4_1.txt",
+      "version_hint": "4.1",
+      "heading": "",
+      "bytes": 2124,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "524967818ad84fb66b0e70e276709ee21f4b6c5219ff917036168d2397505c28"
+    },
+    {
+      "file": "TEST_RESULTS_v4_5.txt",
+      "version_hint": "4.5",
+      "heading": "",
+      "bytes": 1187,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "2b68919eb4918f09f053d82164e22cb9e3ffac5013272b7b2fb2312928dba3d1"
+    },
+    {
+      "file": "TEST_RESULTS_v5_0.txt",
+      "version_hint": "5.0",
+      "heading": "",
+      "bytes": 2260,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "9e57134717e0abeb88dba171e04f4d488cf752c74f9f747e30d376a1cdb369a3"
+    },
+    {
+      "file": "TEST_RESULTS_v5_5.txt",
+      "version_hint": "5.5",
+      "heading": "",
+      "bytes": 1736,
+      "modified": "2026-06-13T18:18:32",
+      "sha256": "c09d2ddce8b0386e0694a1a3522529533c2eca3385d52fa0fe1a0e07017e9f1a"
+    },
+    {
+      "file": "TEST_RESULTS_v6_1.txt",
+      "version_hint": "6.1",
+      "heading": "",
+      "bytes": 2199,
+      "modified": "2026-06-13T18:27:54",
+      "sha256": "36cda2718e6cdcd50f860fea025e6aac5bdb7249196aecd93f2adcc1b88e14ef"
+    },
+    {
+      "file": "TEST_RESULTS_v7_0.txt",
+      "version_hint": "7.0",
+      "heading": "",
+      "bytes": 2974,
+      "modified": "2026-06-13T19:00:24",
+      "sha256": "85d09ad1c7fa4a90b4c5bfe6b13a8902100527f507eae7b764cf733d61f34bd3"
+    },
+    {
+      "file": "README.md",
+      "version_hint": "7.0",
+      "heading": "MugenForge Studio v7.0 Authority Lab",
+      "bytes": 6128,
+      "modified": "2026-06-13T18:59:54",
+      "sha256": "a9f673a85fd56198700aab0e8ace2a2b57474d3783baca1441a06fc5f60eddb9"
+    },
+    {
+      "file": "CHANGELOG.md",
+      "version_hint": "7.0.0",
+      "heading": "Changelog",
+      "bytes": 27447,
+      "modified": "2026-06-13T18:59:54",
+      "sha256": "d1451405cfeab1403a16443ddae03bbd5dea19ec123fa4481d936b84a4e29dcb"
+    }
+  ]
+}
