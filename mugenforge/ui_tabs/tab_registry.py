@@ -11,6 +11,7 @@ WORKSPACE_ROLES = (
     'Release',
     'Maintenance',
 )
+WORKSPACE_ROLE_CHOICES = ('All', *WORKSPACE_ROLES)
 
 
 @dataclass(frozen=True)
@@ -65,3 +66,5 @@ FEATURE_TABS = (
 )
 
 FEATURE_TAB_BUILDERS = tuple(tab.builder for tab in FEATURE_TABS)
+FEATURE_TAB_LABELS = tuple(tab.label for tab in FEATURE_TABS)
+FEATURE_TAB_ROLES = {tab.label: tab.role for tab in FEATURE_TABS}

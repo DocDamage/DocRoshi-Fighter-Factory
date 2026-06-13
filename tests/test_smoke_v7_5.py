@@ -77,13 +77,23 @@ class MugenForgeSmokeTests(unittest.TestCase):
 
     def test_feature_tab_registry_matches_builders(self):
         from mugenforge.ui_tabs.app_builders import AppTabBuilders
-        from mugenforge.ui_tabs.tab_registry import FEATURE_TAB_BUILDERS, FEATURE_TABS, WORKSPACE_ROLES
+        from mugenforge.ui_tabs.tab_registry import (
+            FEATURE_TAB_BUILDERS,
+            FEATURE_TAB_LABELS,
+            FEATURE_TAB_ROLES,
+            FEATURE_TABS,
+            WORKSPACE_ROLE_CHOICES,
+            WORKSPACE_ROLES,
+        )
 
         builders = [tab.builder for tab in FEATURE_TABS]
         labels = [tab.label for tab in FEATURE_TABS]
         roles = {tab.role for tab in FEATURE_TABS}
 
         self.assertEqual(tuple(builders), FEATURE_TAB_BUILDERS)
+        self.assertEqual(tuple(labels), FEATURE_TAB_LABELS)
+        self.assertEqual({tab.label: tab.role for tab in FEATURE_TABS}, FEATURE_TAB_ROLES)
+        self.assertEqual(WORKSPACE_ROLE_CHOICES, ('All', *WORKSPACE_ROLES))
         self.assertEqual(len(builders), len(set(builders)))
         self.assertEqual(len(labels), len(set(labels)))
         self.assertTrue(roles.issubset(set(WORKSPACE_ROLES)))
@@ -188,6 +198,14 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertTrue(callable(getattr(app, 'forge_beyond_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'forge_polish_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'forge_timeline_one_click_ui', None)))
+            app.workspace_role_var.set('Visual')
+            app.apply_workspace_role()
+            self.assertEqual(app.notebook.tab(app.feature_tab_ids_by_label['Visual Timeline'], 'state'), 'normal')
+            self.assertEqual(app.notebook.tab(app.feature_tab_ids_by_label['Operator Console'], 'state'), 'hidden')
+            app.workspace_role_var.set('All')
+            app.apply_workspace_role()
+            self.assertEqual(app.notebook.tab(app.feature_tab_ids_by_label['Operator Console'], 'state'), 'normal')
+            self.assertEqual(app.notebook.tab(app.feature_tab_ids_by_label['Handoff Core'], 'state'), 'normal')
         finally:
             app.destroy()
 

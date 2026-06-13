@@ -6,6 +6,7 @@ from tkinter import ttk
 from .app_mixins import AppBehaviorMixins
 from .app_state import initialize_app_state
 from .ui_tabs.core_builders import AppCoreTabBuilders
+from .ui_tabs.tab_registry import WORKSPACE_ROLE_CHOICES
 
 APP_TITLE = 'MugenForge Studio 7.5 Continuity Core'
 
@@ -43,7 +44,17 @@ class MugenForgeApp(AppCoreTabBuilders, AppBehaviorMixins, tk.Tk):
         ttk.Button(toolbar, text='Find TODOs', command=self.find_todos).grid(row=0, column=6, padx=2)
         ttk.Button(toolbar, text='Package ZIP', command=self.package_character).grid(row=0, column=7, padx=2)
         self.status_var = tk.StringVar(value='Open a M.U.G.E.N character folder to begin.')
-        ttk.Label(toolbar, textvariable=self.status_var).grid(row=0, column=8, padx=10, sticky='w')
+        ttk.Label(toolbar, text='Workspace').grid(row=0, column=8, padx=(12, 2), sticky='e')
+        workspace_combo = ttk.Combobox(
+            toolbar,
+            textvariable=self.workspace_role_var,
+            values=WORKSPACE_ROLE_CHOICES,
+            width=13,
+            state='readonly',
+        )
+        workspace_combo.grid(row=0, column=9, padx=2)
+        workspace_combo.bind('<<ComboboxSelected>>', self.apply_workspace_role)
+        ttk.Label(toolbar, textvariable=self.status_var).grid(row=0, column=10, padx=10, sticky='w')
 
         paned = ttk.Panedwindow(self, orient=tk.HORIZONTAL)
         paned.grid(row=1, column=0, sticky='nsew')

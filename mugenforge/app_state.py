@@ -38,3 +38,4 @@ def initialize_app_state(app: Any) -> None:
     app.auto_preset_items = []
     app.auto_last_package = None
     app.palette_info = None
+    app.workspace_role_var = tk.StringVar(value='All')

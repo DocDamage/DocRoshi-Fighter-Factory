@@ -3,7 +3,7 @@ from __future__ import annotations
 import tkinter as tk
 from tkinter import ttk
 
-from .tab_registry import FEATURE_TAB_BUILDERS
+from .tab_registry import FEATURE_TAB_BUILDERS, FEATURE_TAB_LABELS, FEATURE_TAB_ROLES
 
 
 class AppCoreTabBuilders:
@@ -323,3 +323,29 @@ class AppCoreTabBuilders:
     def _build_feature_tabs(self):
         for builder_name in FEATURE_TAB_BUILDERS:
             getattr(self, builder_name)()
+        self._index_feature_tabs()
+
+    def _index_feature_tabs(self):
+        self.feature_tab_ids_by_label = {}
+        for tab_id in self.notebook.tabs():
+            label = self.notebook.tab(tab_id, 'text')
+            if label in FEATURE_TAB_ROLES:
+                self.feature_tab_ids_by_label[label] = tab_id
+
+    def apply_workspace_role(self, event=None):
+        role = self.workspace_role_var.get()
+        visible_tabs = set(FEATURE_TAB_LABELS)
+        if role != 'All':
+            visible_tabs = {label for label, tab_role in FEATURE_TAB_ROLES.items() if tab_role == role}
+
+        current_tabs = set(self.notebook.tabs())
+        for label in FEATURE_TAB_LABELS:
+            tab_id = self.feature_tab_ids_by_label.get(label)
+            if tab_id is None:
+                continue
+            if label in visible_tabs:
+                if tab_id not in current_tabs:
+                    self.notebook.add(tab_id)
+                self.notebook.tab(tab_id, state='normal')
+            elif tab_id in current_tabs:
+                self.notebook.hide(tab_id)
