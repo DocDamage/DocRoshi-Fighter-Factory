@@ -11,6 +11,13 @@ import shutil
 import zipfile
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
+from .artifact_io import (
+    rel_path as _rel,
+    timestamp as _timestamp,
+    write_csv_artifact,
+    write_json_artifact,
+    write_text_artifact,
+)
 from .parsers import (
     COMMON_ANIMS,
     parse_air,
@@ -88,10 +95,6 @@ class ImageEditSpec:
     palette_colors: int = 0
 
 
-def _timestamp() -> str:
-    return datetime.now().strftime("%Y%m%d_%H%M%S")
-
-
 def _uniq(items: Iterable[str]) -> List[str]:
     out: List[str] = []
     seen = set()
@@ -105,13 +108,6 @@ def _uniq(items: Iterable[str]) -> List[str]:
 
 def _safe_name(name: str) -> str:
     return re.sub(r"[^A-Za-z0-9_\-]+", "_", str(name or "")).strip("_") or "project"
-
-
-def _rel(root: Path, path: Path | str) -> str:
-    try:
-        return str(Path(path).resolve().relative_to(Path(root).resolve())).replace("\\", "/")
-    except Exception:
-        return str(path).replace("\\", "/")
 
 
 def _beyond_dir(root: Path) -> Path:
@@ -145,34 +141,15 @@ def _graphs_dir(root: Path) -> Path:
 
 
 def _write_text(root: Path, path: Path, text: str, result: Optional[ForgeBeyondResult] = None, changed: bool = False) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    existed = path.exists()
-    path.write_text(text.rstrip() + "\n", encoding="utf-8")
-    if result is not None:
-        (result.changed_files if existed or changed else result.created_files).append(_rel(root, path))
-    return path
+    return write_text_artifact(path, text, result, root, changed, track_existing=True)
 
 
 def _write_json(root: Path, path: Path, payload: object, result: Optional[ForgeBeyondResult] = None, changed: bool = False) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    existed = path.exists()
-    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    if result is not None:
-        (result.changed_files if existed or changed else result.created_files).append(_rel(root, path))
-    return path
+    return write_json_artifact(path, payload, result, root, changed, track_existing=True)
 
 
 def _write_csv(root: Path, path: Path, rows: Sequence[Dict[str, object]], fields: Sequence[str], result: Optional[ForgeBeyondResult] = None) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    existed = path.exists()
-    with path.open("w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=list(fields))
-        writer.writeheader()
-        for row in rows:
-            writer.writerow({field: row.get(field, "") for field in fields})
-    if result is not None:
-        (result.changed_files if existed else result.created_files).append(_rel(root, path))
-    return path
+    return write_csv_artifact(path, rows, fields, result, root, track_existing=True)
 
 
 def _backup_text_file(path: Path, root: Path, label: str = "forge_beyond") -> Optional[Path]:
