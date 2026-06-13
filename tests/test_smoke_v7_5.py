@@ -105,6 +105,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertIn('Palettes', tabs)
             self.assertIn('Studio Plus', tabs)
             self.assertIn('Factory+', tabs)
+            self.assertIn('Forge+ Doctor', tabs)
             self.assertIn('Forge Beyond', tabs)
             self.assertIn('Forge Polish', tabs)
             self.assertIn('Forge Timeline', tabs)

@@ -172,3 +172,53 @@ class FactoryPlusTab(AppBackedTab):
             self.app.factory_plus_output,
             'Open or create a character folder, then use Smart Complete / Repair. Factory+ writes backups before modifying existing text/code files.',
         )
+
+
+class ForgePlusTab(AppBackedTab):
+    def __init__(self, app):
+        super().__init__(app)
+        self._build()
+
+    def _build(self):
+        forge = ttk.Frame(self.notebook)
+        self.frame = forge
+        self.app.forge_plus_frame = forge
+        forge.columnconfigure(1, weight=1)
+        forge.rowconfigure(1, weight=1)
+
+        header = ttk.LabelFrame(forge, text='Forge+ Doctor / Better-than-FF Automation', padding=(8, 6))
+        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=6, pady=6)
+        header.columnconfigure(0, weight=1)
+        ttk.Label(header, text=(
+            'This tab is the beginner cockpit: diagnose the whole character, write readable docs, repair missing basics, '
+            'rebuild placeholder assets, and export creator-facing move lists without hand-editing code.'
+        ), wraplength=1050, justify='left').grid(row=0, column=0, sticky='ew')
+
+        left = ttk.Frame(forge, padding=(6, 0))
+        left.grid(row=1, column=0, sticky='nsw')
+        actions = ttk.LabelFrame(left, text='Project actions', padding=(6, 6))
+        actions.grid(row=0, column=0, sticky='ew')
+        ttk.Button(actions, text='Run Forge+ Doctor', command=self.app.forge_plus_report_ui).grid(row=0, column=0, sticky='ew', pady=2)
+        ttk.Button(actions, text='Auto Setup / Repair Basics', command=self.app.auto_setup_project_ui).grid(row=1, column=0, sticky='ew', pady=2)
+        ttk.Button(actions, text='One-Click Prototype / Rebuild Assets', command=self.app.auto_one_click_skeleton_ui).grid(row=2, column=0, sticky='ew', pady=2)
+        ttk.Button(actions, text='Beginner Doctor Report', command=self.app.factory_doctor_ui).grid(row=3, column=0, sticky='ew', pady=2)
+        ttk.Button(actions, text='Export Move List', command=self.app.forge_plus_export_move_list_ui).grid(row=4, column=0, sticky='ew', pady=2)
+        ttk.Button(actions, text='Write Creator Manual', command=self.app.forge_plus_creator_manual_ui).grid(row=5, column=0, sticky='ew', pady=2)
+        ttk.Button(actions, text='Package Character ZIP', command=self.app.package_character).grid(row=6, column=0, sticky='ew', pady=2)
+        ttk.Button(actions, text='Refresh Project Tree', command=self.app.reload_project).grid(row=7, column=0, sticky='ew', pady=2)
+
+        fast = ttk.LabelFrame(left, text='Fast beginner route', padding=(6, 6))
+        fast.grid(row=1, column=0, sticky='ew', pady=(6, 0))
+        ttk.Label(fast, text='1. Auto Setup / Repair\n2. Feature Bank archetype\n3. One-Click Prototype\n4. Animation Player\n5. CLSN Editor\n6. Package ZIP', justify='left').grid(row=0, column=0, sticky='w')
+
+        right = ttk.Frame(forge, padding=(0, 0))
+        right.grid(row=1, column=1, sticky='nsew', padx=(0, 6), pady=(0, 6))
+        right.rowconfigure(0, weight=1)
+        right.columnconfigure(0, weight=1)
+        self.app.forge_plus_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
+        y = ttk.Scrollbar(right, orient='vertical', command=self.app.forge_plus_output.yview)
+        self.app.forge_plus_output.configure(yscrollcommand=y.set)
+        self.app.forge_plus_output.grid(row=0, column=0, sticky='nsew')
+        y.grid(row=0, column=1, sticky='ns')
+        self.notebook.add(forge, text='Forge+ Doctor')
+        self._set_text(self.app.forge_plus_output, 'Open a character folder, then run Forge+ Doctor. This gives a plain-English score and next step.')
