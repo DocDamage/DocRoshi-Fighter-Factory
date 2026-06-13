@@ -4,8 +4,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from datetime import datetime
 import ast
-import csv
-import hashlib
 import html
 import json
 import os
@@ -16,6 +14,13 @@ import sys
 import zipfile
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
+from .artifact_io import (
+    rel_path as _rel,
+    sha256_file as _sha256,
+    write_csv_artifact as _write_csv,
+    write_json_artifact as _write_json,
+    write_text_artifact,
+)
 from .parsers import parse_air, parse_code, parse_def, read_text_safely, scan_project, write_text_safely
 from .move_wizard import find_character_file
 
@@ -94,41 +99,8 @@ def _mc_dir(root: Path) -> Path:
     return out
 
 
-def _rel(root: Path, path: Path | str) -> str:
-    try:
-        return str(Path(path).resolve().relative_to(Path(root).resolve())).replace('\\', '/')
-    except Exception:
-        return str(path).replace('\\', '/')
-
-
 def _write(path: Path, text: str) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    write_text_safely(path, text.rstrip() + '\n')
-    return path
-
-
-def _write_json(path: Path, payload: object) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-    return path
-
-
-def _write_csv(path: Path, rows: Sequence[Dict[str, object]], fields: Sequence[str]) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open('w', encoding='utf-8', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=list(fields), extrasaction='ignore')
-        writer.writeheader()
-        for row in rows:
-            writer.writerow({field: row.get(field, '') for field in fields})
-    return path
-
-
-def _sha256(path: Path) -> str:
-    h = hashlib.sha256()
-    with path.open('rb') as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b''):
-            h.update(chunk)
-    return h.hexdigest()
+    return write_text_artifact(path, text, writer=write_text_safely)
 
 
 def _iter_files(root: Path, *, suffixes: Optional[set[str]] = None, max_size: int = 5_000_000) -> Iterable[Path]:
