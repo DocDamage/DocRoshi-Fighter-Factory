@@ -103,7 +103,7 @@ from .visual_forge import (
     install_training_debug_pack, install_template_architecture, write_visual_sff2_bridge_pack,
     create_backup_snapshot, restore_latest_snapshot, log_error,
 )
-from .ui_tabs.asset_workspaces import SpriteLabTab, StageBuilderTab
+from .ui_tabs.asset_workspaces import RunTestTab, SpriteLabTab, StageBuilderTab
 from .ui_tabs.authority import AuthorityCoreTab, AuthorityLabTab
 from .ui_tabs.binary import BinaryWorkspaceTabs
 from .ui_tabs.closure_evidence import ClosureLabTab, EvidenceCoreTab
@@ -1239,34 +1239,8 @@ class MugenForgeApp(tk.Tk):
 
 
     def _build_run_test_tab(self):
-        run = ttk.Frame(self.notebook)
-        self.run_test_frame = run
-        run.columnconfigure(1, weight=1)
-        run.rowconfigure(1, weight=1)
-        header = ttk.LabelFrame(run, text='Run / Test Helper', padding=(8, 6))
-        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=6, pady=6)
-        ttk.Label(header, text='Store a local M.U.G.E.N executable path and launch it from the editor. This does not bundle M.U.G.E.N; it only points to your own install.', wraplength=1100, justify='left').grid(row=0, column=0, sticky='ew')
-        self.run_mugen_exe_var = tk.StringVar(value='')
-        left = ttk.Frame(run, padding=(6, 0))
-        left.grid(row=1, column=0, sticky='nsw')
-        box = ttk.LabelFrame(left, text='M.U.G.E.N path', padding=(6, 6))
-        box.grid(row=0, column=0, sticky='ew')
-        ttk.Entry(box, textvariable=self.run_mugen_exe_var, width=52).grid(row=0, column=0, sticky='ew')
-        ttk.Button(box, text='Choose MUGEN Executable', command=self.run_choose_mugen_exe_ui).grid(row=1, column=0, sticky='ew', pady=2)
-        ttk.Button(box, text='Save Launch Config', command=self.run_save_launch_config_ui).grid(row=2, column=0, sticky='ew', pady=2)
-        ttk.Button(box, text='Launch MUGEN', command=self.run_launch_mugen_ui).grid(row=3, column=0, sticky='ew', pady=2)
-        ttk.Button(box, text='Write select.def Entry Snippet', command=self.run_select_def_snippet_ui).grid(row=4, column=0, sticky='ew', pady=2)
-        right = ttk.Frame(run)
-        right.grid(row=1, column=1, sticky='nsew', padx=(0, 6), pady=(0, 6))
-        right.rowconfigure(0, weight=1)
-        right.columnconfigure(0, weight=1)
-        self.run_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
-        y = ttk.Scrollbar(right, orient='vertical', command=self.run_output.yview)
-        self.run_output.configure(yscrollcommand=y.set)
-        self.run_output.grid(row=0, column=0, sticky='nsew')
-        y.grid(row=0, column=1, sticky='ns')
-        self.notebook.add(run, text='Run / Test')
-        self.set_text(self.run_output, 'Open a project and set your own M.U.G.E.N executable path. The config is stored in the character folder.')
+        self.run_test_tab = RunTestTab(self)
+
 
     # ------------------------------------------------------------------
     # Visual Forge v3.5 beginner-first workflow tabs

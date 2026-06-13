@@ -142,3 +142,48 @@ class StageBuilderTab(AppBackedTab):
         y.grid(row=0, column=1, sticky='ns')
         self.notebook.add(stage, text='Stage Builder')
         self._set_text(self.app.stage_output, 'Pick one background image and an output folder. The generated stage is a starter, not a finished camera/parallax setup.')
+
+
+class RunTestTab(AppBackedTab):
+    def __init__(self, app):
+        super().__init__(app)
+        self._build()
+
+    def _build(self):
+        run = ttk.Frame(self.notebook)
+        self.frame = run
+        self.app.run_test_frame = run
+        run.columnconfigure(1, weight=1)
+        run.rowconfigure(1, weight=1)
+
+        header = ttk.LabelFrame(run, text='Run / Test Helper', padding=(8, 6))
+        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=6, pady=6)
+        ttk.Label(
+            header,
+            text='Store a local M.U.G.E.N executable path and launch it from the editor. This does not bundle M.U.G.E.N; it only points to your own install.',
+            wraplength=1100,
+            justify='left',
+        ).grid(row=0, column=0, sticky='ew')
+
+        self.app.run_mugen_exe_var = tk.StringVar(value='')
+        left = ttk.Frame(run, padding=(6, 0))
+        left.grid(row=1, column=0, sticky='nsw')
+        box = ttk.LabelFrame(left, text='M.U.G.E.N path', padding=(6, 6))
+        box.grid(row=0, column=0, sticky='ew')
+        ttk.Entry(box, textvariable=self.app.run_mugen_exe_var, width=52).grid(row=0, column=0, sticky='ew')
+        ttk.Button(box, text='Choose MUGEN Executable', command=self.app.run_choose_mugen_exe_ui).grid(row=1, column=0, sticky='ew', pady=2)
+        ttk.Button(box, text='Save Launch Config', command=self.app.run_save_launch_config_ui).grid(row=2, column=0, sticky='ew', pady=2)
+        ttk.Button(box, text='Launch MUGEN', command=self.app.run_launch_mugen_ui).grid(row=3, column=0, sticky='ew', pady=2)
+        ttk.Button(box, text='Write select.def Entry Snippet', command=self.app.run_select_def_snippet_ui).grid(row=4, column=0, sticky='ew', pady=2)
+
+        right = ttk.Frame(run)
+        right.grid(row=1, column=1, sticky='nsew', padx=(0, 6), pady=(0, 6))
+        right.rowconfigure(0, weight=1)
+        right.columnconfigure(0, weight=1)
+        self.app.run_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
+        y = ttk.Scrollbar(right, orient='vertical', command=self.app.run_output.yview)
+        self.app.run_output.configure(yscrollcommand=y.set)
+        self.app.run_output.grid(row=0, column=0, sticky='nsew')
+        y.grid(row=0, column=1, sticky='ns')
+        self.notebook.add(run, text='Run / Test')
+        self._set_text(self.app.run_output, 'Open a project and set your own M.U.G.E.N executable path. The config is stored in the character folder.')
