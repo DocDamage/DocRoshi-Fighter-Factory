@@ -4,12 +4,18 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from datetime import datetime
 import ast
-import csv
-import hashlib
 import json
 import re
 import zipfile
 from typing import Dict, Iterable, List, Optional, Sequence
+
+from .artifact_io import (
+    rel_path as _rel,
+    sha256_file as _sha256,
+    write_csv_artifact,
+    write_json_artifact,
+    write_text_artifact,
+)
 
 try:
     from . import __version__ as PACKAGE_VERSION
@@ -83,13 +89,6 @@ def _uniq(items: Iterable[str]) -> List[str]:
     return out
 
 
-def _rel(root: Path, path: Path | str) -> str:
-    try:
-        return str(Path(path).resolve().relative_to(Path(root).resolve())).replace('\\', '/')
-    except Exception:
-        return str(path).replace('\\', '/')
-
-
 def _out(root: Path, *parts: str) -> Path:
     path = Path(root) / 'handoff_core'
     for part in parts:
@@ -99,43 +98,15 @@ def _out(root: Path, *parts: str) -> Path:
 
 
 def _write(root: Path, path: Path, text: str, result: Optional[HandoffResult] = None) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    existed = path.exists()
-    path.write_text(text.rstrip() + '\n', encoding='utf-8')
-    if result is not None:
-        if existed:
-            result.add_changed(root, path)
-        else:
-            result.add_created(root, path)
-    return path
+    return write_text_artifact(path, text, result, root, track_existing=True)
 
 
 def _write_json(root: Path, path: Path, data: object, result: Optional[HandoffResult] = None) -> Path:
-    return _write(root, path, json.dumps(data, indent=2, ensure_ascii=False), result)
+    return write_json_artifact(path, data, result, root, track_existing=True)
 
 
 def _write_csv(root: Path, path: Path, rows: Sequence[Dict[str, object]], fields: Sequence[str], result: Optional[HandoffResult] = None) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    existed = path.exists()
-    with path.open('w', encoding='utf-8', newline='') as f:
-        w = csv.DictWriter(f, fieldnames=list(fields))
-        w.writeheader()
-        for row in rows:
-            w.writerow({field: row.get(field, '') for field in fields})
-    if result is not None:
-        if existed:
-            result.add_changed(root, path)
-        else:
-            result.add_created(root, path)
-    return path
-
-
-def _sha256(path: Path) -> str:
-    h = hashlib.sha256()
-    with path.open('rb') as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b''):
-            h.update(chunk)
-    return h.hexdigest()
+    return write_csv_artifact(path, rows, fields, result, root, track_existing=True)
 
 
 def _iter_files(root: Path) -> List[Path]:

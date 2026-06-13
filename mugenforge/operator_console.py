@@ -11,6 +11,13 @@ import re
 import zipfile
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
+from .artifact_io import (
+    rel_path as _rel,
+    timestamp as _now,
+    write_csv_artifact,
+    write_json_artifact,
+    write_text_artifact,
+)
 from .parsers import COMMON_ANIMS, parse_air, parse_code, parse_def, read_text_safely, scan_project, write_text_safely
 from .move_wizard import find_character_file
 from .sff_codec import read_sff
@@ -82,17 +89,6 @@ def _uniq(items: Iterable[str]) -> List[str]:
     return out
 
 
-def _rel(root: Path, path: Path | str) -> str:
-    try:
-        return str(Path(path).resolve().relative_to(Path(root).resolve())).replace('\\', '/')
-    except Exception:
-        return str(path).replace('\\', '/')
-
-
-def _now() -> str:
-    return datetime.now().strftime('%Y%m%d_%H%M%S')
-
-
 def _console_dir(root: Path) -> Path:
     out = Path(root) / 'operator_console'
     out.mkdir(parents=True, exist_ok=True)
@@ -100,43 +96,15 @@ def _console_dir(root: Path) -> Path:
 
 
 def _write(root: Path, path: Path, text: str, result: Optional[OperatorResult] = None, *, changed: bool = False) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    existed = path.exists()
-    write_text_safely(path, text.rstrip() + '\n')
-    if result is not None:
-        if existed or changed:
-            result.add_changed(root, path)
-        else:
-            result.add_created(root, path)
-    return path
+    return write_text_artifact(path, text, result, root, changed, track_existing=True, writer=write_text_safely)
 
 
 def _write_json(root: Path, path: Path, data: object, result: Optional[OperatorResult] = None) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    existed = path.exists()
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-    if result is not None:
-        if existed:
-            result.add_changed(root, path)
-        else:
-            result.add_created(root, path)
-    return path
+    return write_json_artifact(path, data, result, root, track_existing=True)
 
 
 def _write_csv(root: Path, path: Path, rows: Sequence[Dict[str, object]], fields: Sequence[str], result: Optional[OperatorResult] = None) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    existed = path.exists()
-    with path.open('w', encoding='utf-8', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=list(fields))
-        writer.writeheader()
-        for row in rows:
-            writer.writerow({field: row.get(field, '') for field in fields})
-    if result is not None:
-        if existed:
-            result.add_changed(root, path)
-        else:
-            result.add_created(root, path)
-    return path
+    return write_csv_artifact(path, rows, fields, result, root, track_existing=True)
 
 
 def _file_sha256(path: Path, max_bytes: Optional[int] = None) -> str:

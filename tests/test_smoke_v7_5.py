@@ -150,6 +150,9 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertTrue(backup.exists())
             self.assertIn('.bak_test_', backup.name)
 
+            write_text_artifact(data, 'rewritten json path as text', result, root, track_existing=True)
+            self.assertIn('out/data.json', result.changed_files)
+
     def test_continuity_backends_write_expected_artifacts(self):
         from mugenforge.handoff_core import write_context_digest, write_package_inventory, write_regression_harness
         from mugenforge.operator_console import write_next_chat_handoff, write_operator_dashboard, write_operator_roadmap

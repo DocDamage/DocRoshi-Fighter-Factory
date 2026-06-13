@@ -32,26 +32,36 @@ def write_text_artifact(
     root: Optional[Path] = None,
     changed: bool = False,
     *,
+    track_existing: bool = False,
     writer: Optional[Callable[[Path, str], object]] = None,
 ) -> Path:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
+    existed = path.exists()
     content = text.rstrip() + '\n'
     if writer is None:
         path.write_text(content, encoding='utf-8')
     else:
         writer(path, content)
     if result is not None:
-        record_artifact(result, path, root, changed=changed)
+        record_artifact(result, path, root, changed=changed or (track_existing and existed))
     return path
 
 
-def write_json_artifact(path: Path, payload: object, result: Optional[object] = None, root: Optional[Path] = None) -> Path:
+def write_json_artifact(
+    path: Path,
+    payload: object,
+    result: Optional[object] = None,
+    root: Optional[Path] = None,
+    *,
+    track_existing: bool = False,
+) -> Path:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
+    existed = path.exists()
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     if result is not None:
-        record_artifact(result, path, root)
+        record_artifact(result, path, root, changed=track_existing and existed)
     return path
 
 
@@ -61,16 +71,19 @@ def write_csv_artifact(
     fields: Sequence[str],
     result: Optional[object] = None,
     root: Optional[Path] = None,
+    *,
+    track_existing: bool = False,
 ) -> Path:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
+    existed = path.exists()
     with path.open('w', encoding='utf-8', newline='') as handle:
         writer = csv.DictWriter(handle, fieldnames=list(fields))
         writer.writeheader()
         for row in rows:
             writer.writerow({field: row.get(field, '') for field in fields})
     if result is not None:
-        record_artifact(result, path, root)
+        record_artifact(result, path, root, changed=track_existing and existed)
     return path
 
 
