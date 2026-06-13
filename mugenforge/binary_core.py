@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from datetime import datetime
 from io import BytesIO
@@ -14,6 +14,7 @@ import wave
 import zipfile
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
+from .binary_results import BinaryCoreResult
 from .move_wizard import find_character_file
 from .sff_codec import (
     SFF_SIGNATURE,
@@ -33,58 +34,6 @@ TRUTH_NOTE = (
     'SFF v1 axis patch-copy workflows, SND WAV-bank rebuild candidates, and source-based SFF2 workspaces. '
     'It refuses unsupported arbitrary SFF2 mutation instead of guessing.'
 )
-
-
-@dataclass
-class BinaryCoreResult:
-    title: str = 'Binary Core Result'
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    skipped_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def add_created(self, *args: object) -> None:
-        self.created_files.append(_flex_path(*args))
-
-    def add_changed(self, *args: object) -> None:
-        self.changed_files.append(_flex_path(*args))
-
-    def add_skipped(self, msg: object) -> None:
-        self.skipped_files.append(str(msg))
-
-    def add_warning(self, msg: object) -> None:
-        self.warnings.append(str(msg))
-
-    def add_note(self, msg: object) -> None:
-        self.notes.append(str(msg))
-
-    def merge(self, other: object, label: Optional[str] = None) -> 'BinaryCoreResult':
-        if not other:
-            return self
-        prefix = f'{label}: ' if label else ''
-        for attr in ('created_files', 'changed_files', 'skipped_files', 'warnings', 'notes'):
-            vals = getattr(other, attr, []) or []
-            getattr(self, attr).extend(prefix + str(v) for v in vals)
-        return self
-
-    def to_text(self) -> str:
-        lines = [self.title, '=' * max(12, len(self.title)), f'Generated: {datetime.now().isoformat(timespec="seconds")}', '']
-        for label, values in [
-            ('Notes', _uniq(self.notes)),
-            ('Created files/artifacts', _uniq(self.created_files)),
-            ('Changed files', _uniq(self.changed_files)),
-            ('Skipped', _uniq(self.skipped_files)),
-            ('Warnings', _uniq(self.warnings)),
-        ]:
-            if values:
-                lines.append(label + ':')
-                lines.extend(f'- {v}' for v in values)
-                lines.append('')
-        if len(lines) <= 4:
-            lines.append('No changes made.')
-        return '\n'.join(lines).rstrip() + '\n'
-
 
 @dataclass
 class Sff2ProbeRecord:
@@ -139,14 +88,6 @@ def _uniq(items: Iterable[object]) -> List[str]:
             seen.add(s)
             out.append(s)
     return out
-
-
-def _flex_path(*args: object) -> str:
-    if len(args) >= 2:
-        return _rel(Path(args[0]), Path(str(args[1])))
-    if args:
-        return str(args[0])
-    return ''
 
 
 def _rel(root: Path, path: Path | str) -> str:

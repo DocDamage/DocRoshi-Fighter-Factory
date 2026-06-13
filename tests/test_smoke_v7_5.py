@@ -26,6 +26,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
         for name in [
             'mugenforge.app_mixins',
             'mugenforge.app_state',
+            'mugenforge.binary_results',
             'mugenforge.handoff_core',
             'mugenforge.operator_console',
             'mugenforge.maintenance_core',
@@ -101,6 +102,22 @@ class MugenForgeSmokeTests(unittest.TestCase):
         for builder in builders:
             with self.subTest(builder=builder):
                 self.assertTrue(hasattr(AppTabBuilders, builder))
+
+    def test_binary_result_model_stays_reexported(self):
+        from mugenforge.binary_core import BinaryCoreResult as ReexportedBinaryCoreResult
+        from mugenforge.binary_results import BinaryCoreResult
+
+        self.assertIs(ReexportedBinaryCoreResult, BinaryCoreResult)
+
+        result = BinaryCoreResult('Binary smoke')
+        result.add_note('ready')
+        result.add_note('ready')
+        result.add_warning('check corpus')
+
+        text = result.to_text()
+        self.assertIn('Binary smoke', text)
+        self.assertEqual(text.count('- ready'), 1)
+        self.assertIn('- check corpus', text)
 
     def test_continuity_backends_write_expected_artifacts(self):
         from mugenforge.handoff_core import write_context_digest, write_package_inventory, write_regression_harness
