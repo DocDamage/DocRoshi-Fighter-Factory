@@ -3,14 +3,14 @@ from __future__ import annotations
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
 from datetime import datetime
-import csv
 import json
 import re
 import shutil
 import traceback
 import zipfile
-from typing import Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Dict, Iterable, List, Optional
 
+from .artifact_io import rel_path as _rel, write_csv_artifact, write_json_artifact, write_text_artifact
 from .parsers import (
     COMMON_ANIMS,
     parse_air,
@@ -140,13 +140,6 @@ def _uniq(items: Iterable[str]) -> List[str]:
     return out
 
 
-def _rel(root: Path, path: Path | str) -> str:
-    try:
-        return str(Path(path).resolve().relative_to(Path(root).resolve())).replace("\\", "/")
-    except Exception:
-        return str(path).replace("\\", "/")
-
-
 def _vf_dir(root: Path) -> Path:
     out = Path(root) / "visual_forge"
     out.mkdir(parents=True, exist_ok=True)
@@ -160,27 +153,11 @@ def _docs_dir(root: Path) -> Path:
 
 
 def _write_text(root: Path, path: Path, text: str, result: Optional[VisualForgeResult] = None, changed: bool = False) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    existed = path.exists()
-    path.write_text(text.rstrip() + "\n", encoding="utf-8")
-    if result is not None:
-        if existed or changed:
-            result.add_changed(root, path)
-        else:
-            result.add_created(root, path)
-    return path
+    return write_text_artifact(path, text, result, root, changed, track_existing=True)
 
 
 def _write_json(root: Path, path: Path, payload: object, result: Optional[VisualForgeResult] = None, changed: bool = False) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    existed = path.exists()
-    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    if result is not None:
-        if existed or changed:
-            result.add_changed(root, path)
-        else:
-            result.add_created(root, path)
-    return path
+    return write_json_artifact(path, payload, result, root, changed, track_existing=True)
 
 
 def backup_file(path: Path, root: Optional[Path] = None, reason: str = "visual_forge") -> Optional[Path]:
@@ -525,14 +502,8 @@ def write_visual_timeline_manifest(root: Path, action_number: Optional[int] = No
                 "clsn1_count": frame.get("clsn1_count", ""),
                 "clsn2_count": frame.get("clsn2_count", ""),
             })
-    csv_path.parent.mkdir(parents=True, exist_ok=True)
-    with csv_path.open("w", encoding="utf-8", newline="") as fh:
-        fields = ["action", "label", "frame_index", "elem", "group", "image", "offset_x", "offset_y", "ticks", "clsn1_count", "clsn2_count"]
-        writer = csv.DictWriter(fh, fieldnames=fields)
-        writer.writeheader()
-        for row in rows:
-            writer.writerow(row)
-    result.add_created(root, csv_path)
+    fields = ["action", "label", "frame_index", "elem", "group", "image", "offset_x", "offset_y", "ticks", "clsn1_count", "clsn2_count"]
+    write_csv_artifact(csv_path, rows, fields, result, root, track_existing=True)
     result.notes.append("Timeline manifest is source-derived from AIR and parsed code controllers. It is not an engine-authoritative frame-data capture.")
     return result
 
@@ -642,13 +613,8 @@ def write_sound_cue_manifest(root: Path) -> VisualForgeResult:
     _write_json(root, _vf_dir(root) / "sound_cue_manifest.json", payload, result)
     csv_path = _vf_dir(root) / "sound_cues.csv"
     fields = ["state", "anim", "frame", "value", "channel", "source_file", "line"]
-    csv_path.parent.mkdir(parents=True, exist_ok=True)
-    with csv_path.open("w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=fields)
-        writer.writeheader()
-        for e in events:
-            writer.writerow({k: e.get(k, "") for k in fields})
-    result.add_created(root, csv_path)
+    rows = [{field: event.get(field, "") for field in fields} for event in events]
+    write_csv_artifact(csv_path, rows, fields, result, root, track_existing=True)
     return result
 
 
