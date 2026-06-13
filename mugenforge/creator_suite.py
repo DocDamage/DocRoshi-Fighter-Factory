@@ -6,6 +6,7 @@ from datetime import datetime
 import csv, json, re, zipfile
 from typing import Dict, List, Optional, Sequence, Tuple
 
+from .artifact_io import write_csv_artifact, write_text_artifact
 from .parsers import parse_air, parse_code, parse_def, read_text_safely, scan_project, write_text_safely
 from .sff_codec import read_sff, sprite_lookup
 from .snd_codec import read_snd
@@ -53,13 +54,9 @@ def _backup(path: Path) -> None:
     if path.exists(): path.with_name(path.name + f".bak_{_now()}").write_bytes(path.read_bytes())
 
 def _write(path: Path, text: str, result: Optional[SuiteResult] = None, root: Optional[Path] = None, changed: bool = False) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
     existed = path.exists()
     if existed and changed: _backup(path)
-    write_text_safely(path, text)
-    if result is not None:
-        (result.changed_files if existed or changed else result.created_files).append(_rel(root or path.parent, path))
-    return path
+    return write_text_artifact(path, text, result, root, changed, track_existing=True, writer=write_text_safely)
 
 def _append_once(path: Path, marker: str, block: str, result: SuiteResult, root: Path) -> None:
     existing = read_text_safely(path) if path.exists() else ""
@@ -108,11 +105,8 @@ def _img_size(path: Path) -> Tuple[str, str]:
         with Image.open(path) as im: return str(im.size[0]), str(im.size[1])
     except Exception: return "", ""
 
-def _csv(path: Path, rows: Sequence[Dict[str, object]], fields: Sequence[str]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=list(fields)); w.writeheader()
-        for row in rows: w.writerow({k: row.get(k, "") for k in fields})
+def _csv(path: Path, rows: Sequence[Dict[str, object]], fields: Sequence[str]) -> Path:
+    return write_csv_artifact(path, rows, fields)
 
 def _recipe(archetype: str, experience: str, button_layout: str, power_style: str) -> Dict[str, object]:
     kits = {
