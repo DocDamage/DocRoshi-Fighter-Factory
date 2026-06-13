@@ -24,6 +24,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
         self.assertEqual(APP_TITLE, 'MugenForge Studio 7.5 Continuity Core')
 
         for name in [
+            'mugenforge.app_mixins',
             'mugenforge.handoff_core',
             'mugenforge.operator_console',
             'mugenforge.maintenance_core',
