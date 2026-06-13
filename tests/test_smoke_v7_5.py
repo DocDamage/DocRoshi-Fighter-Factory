@@ -105,6 +105,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertIn('Factory Max', tabs)
             self.assertIn('Factory Ultra', tabs)
             self.assertIn('Creator OS', tabs)
+            self.assertIn('Quality Lab', tabs)
             self.assertIn('Creator Hub', tabs)
             self.assertIn('SFF2 Bridge', tabs)
             self.assertIn('Rescue Lab', tabs)

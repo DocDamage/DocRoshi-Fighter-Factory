@@ -327,3 +327,75 @@ class FactoryUltraTab(AppBackedTab):
             self.app.factory_ultra_output,
             'Best route for beginners: Create/New Character -> One-Click Ultra Production Pass -> replace art/sound -> Animation Player + CLSN Editor -> Frame Data/Balance/Asset labs -> Build Ultra Release ZIP.',
         )
+
+
+class QualityLabTab(AppBackedTab):
+    def __init__(self, app):
+        super().__init__(app)
+        self._build()
+
+    def _build(self):
+        ql = ttk.Frame(self.notebook)
+        self.frame = ql
+        self.app.quality_lab_frame = ql
+        ql.columnconfigure(1, weight=1)
+        ql.rowconfigure(1, weight=1)
+        header = ttk.LabelFrame(ql, text='Quality Lab: beginner-safe audit, polish, and asset handoff', padding=(8, 6))
+        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=6, pady=6)
+        header.columnconfigure(0, weight=1)
+        intro = (
+            'Quality Lab is the polish/repair layer: it checks commands, states, AIR actions, SFF sprite refs, SND sound refs, '
+            'HitDef tuning, timing, and beginner next steps. It writes reports, asset-swap packs, backups, move cards, and auto-CLSN suggestions '
+            'without forcing a non-coder to edit raw CMD/CNS/AIR by hand.'
+        )
+        ttk.Label(header, text=intro, wraplength=1120, justify='left').grid(row=0, column=0, sticky='ew')
+
+        left = ttk.Frame(ql, padding=(6, 0))
+        left.grid(row=1, column=0, sticky='nsw')
+
+        main = ttk.LabelFrame(left, text='One-click / no-code quality operations', padding=(6, 6))
+        main.grid(row=0, column=0, sticky='ew')
+        ttk.Button(main, text='One-Click Quality Lab Pass', command=self.app.quality_lab_one_click_ui).grid(row=0, column=0, sticky='ew', pady=2)
+        ttk.Button(main, text='Advanced Audit / Reference Matrix', command=self.app.quality_lab_audit_ui).grid(row=1, column=0, sticky='ew', pady=2)
+        ttk.Button(main, text='Searchable HTML Project Index', command=self.app.quality_lab_index_ui).grid(row=2, column=0, sticky='ew', pady=2)
+        ttk.Button(main, text='Beginner Fix Plan', command=self.app.quality_lab_fix_plan_ui).grid(row=3, column=0, sticky='ew', pady=2)
+
+        author = ttk.LabelFrame(left, text='Creator-facing reports', padding=(6, 6))
+        author.grid(row=1, column=0, sticky='ew', pady=(6, 0))
+        ttk.Button(author, text='Write Move Cards', command=self.app.quality_lab_move_cards_ui).grid(row=0, column=0, sticky='ew', pady=2)
+        ttk.Button(author, text='Animation Timing Sheet', command=self.app.quality_lab_timing_ui).grid(row=1, column=0, sticky='ew', pady=2)
+        ttk.Button(author, text='Asset Swap Pack', command=self.app.quality_lab_asset_swap_ui).grid(row=2, column=0, sticky='ew', pady=2)
+
+        auto = ttk.LabelFrame(left, text='Automatic hitbox assistance', padding=(6, 6))
+        auto.grid(row=2, column=0, sticky='ew', pady=(6, 0))
+        self.app.quality_lab_clsn_padding_var = tk.StringVar(value='2')
+        ttk.Label(auto, text='alpha padding').grid(row=0, column=0, sticky='e', padx=2)
+        ttk.Entry(auto, textvariable=self.app.quality_lab_clsn_padding_var, width=8).grid(row=0, column=1, sticky='w', padx=2)
+        ttk.Button(auto, text='Generate Alpha CLSN Suggestions', command=self.app.quality_lab_alpha_clsn_ui).grid(row=1, column=0, columnspan=2, sticky='ew', pady=2)
+        ttk.Button(auto, text='Create AIR Copy With Auto Body CLSN', command=self.app.quality_lab_alpha_copy_ui).grid(row=2, column=0, columnspan=2, sticky='ew', pady=2)
+
+        safety = ttk.LabelFrame(left, text='Safety', padding=(6, 6))
+        safety.grid(row=3, column=0, sticky='ew', pady=(6, 0))
+        ttk.Button(safety, text='Backup + Restore Bundle', command=self.app.quality_lab_backup_ui).grid(row=0, column=0, sticky='ew', pady=2)
+
+        self.app.quality_lab_note = tk.Text(left, wrap='word', width=46, height=10, font=('Consolas', 9), state='disabled')
+        self.app.quality_lab_note.grid(row=4, column=0, sticky='ew', pady=(6, 0))
+        self._set_text(
+            self.app.quality_lab_note,
+            'The one-click pass is intentionally safe: it writes reports, copies, exports, and suggestions. It does not overwrite your main AIR with generated hitboxes unless you manually use the copy/replacement workflow.',
+        )
+
+        right = ttk.Frame(ql)
+        right.grid(row=1, column=1, sticky='nsew', padx=(0, 6), pady=(0, 6))
+        right.rowconfigure(0, weight=1)
+        right.columnconfigure(0, weight=1)
+        self.app.quality_lab_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
+        y = ttk.Scrollbar(right, orient='vertical', command=self.app.quality_lab_output.yview)
+        self.app.quality_lab_output.configure(yscrollcommand=y.set)
+        self.app.quality_lab_output.grid(row=0, column=0, sticky='nsew')
+        y.grid(row=0, column=1, sticky='ns')
+        self.notebook.add(ql, text='Quality Lab')
+        self._set_text(
+            self.app.quality_lab_output,
+            'Open a character folder, then run One-Click Quality Lab Pass. Use the generated WHAT_TO_FIX_NEXT.md before manually editing code.',
+        )
