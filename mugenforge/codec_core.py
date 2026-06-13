@@ -2,44 +2,21 @@ from __future__ import annotations
 
 from pathlib import Path
 from datetime import datetime
-import json
 import shutil
 import zipfile
 from typing import Optional
 
+from .artifact_io import rel_path as _rel, write_json_artifact as _write_json, write_text_artifact as _write_text
 from .binary_core import BinaryCoreResult, run_binary_core_pass, write_runtime_validation_lab, apply_sff_axis_sheet
 from . import binary_deep as bd
 
 CODEC_CORE_VERSION = '5.5.0'
 
 
-def _rel(root: Path, path: Path | str) -> str:
-    try:
-        return str(Path(path).resolve().relative_to(Path(root).resolve())).replace('\\', '/')
-    except Exception:
-        return str(path).replace('\\', '/')
-
-
 def _cc(root: Path) -> Path:
     out = Path(root) / 'codec_core'
     out.mkdir(parents=True, exist_ok=True)
     return out
-
-
-def _write_text(path: Path, text: str, res: Optional[BinaryCoreResult] = None, root: Optional[Path] = None) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text.rstrip() + '\n', encoding='utf-8')
-    if res is not None:
-        res.created_files.append(_rel(root or path.parent, path))
-    return path
-
-
-def _write_json(path: Path, payload: object, res: Optional[BinaryCoreResult] = None, root: Optional[Path] = None) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-    if res is not None:
-        res.created_files.append(_rel(root or path.parent, path))
-    return path
 
 
 def write_codec_core_dashboard(root: Path) -> BinaryCoreResult:
