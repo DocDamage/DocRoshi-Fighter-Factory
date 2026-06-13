@@ -111,6 +111,7 @@ from .ui_tabs.creator_hub import CreatorHubTab
 from .ui_tabs.forge_workspaces import ForgeBeyondTab, ForgePolishTab, ForgeTimelineTab
 from .ui_tabs.gap_closer import GapCloserTab
 from .ui_tabs.image_factory import ImageFactoryTab
+from .ui_tabs.palette import PaletteTab
 from .ui_tabs.rescue_lab import RescueLabTab
 from .ui_tabs.runtime_lab import RuntimeLabTab
 from .ui_tabs.sff2_bridge import Sff2BridgeTab
@@ -1212,40 +1213,7 @@ class MugenForgeApp(tk.Tk):
 
 
     def _build_palette_tab(self):
-        palette_frame = ttk.Frame(self.notebook)
-        self.palette_frame = palette_frame
-        palette_frame.columnconfigure(0, weight=1)
-        palette_frame.rowconfigure(1, weight=1)
-        top = ttk.Frame(palette_frame, padding=(4, 4))
-        top.grid(row=0, column=0, sticky='ew')
-        ttk.Button(top, text='Open ACT', command=self.choose_act_palette).grid(row=0, column=0, padx=3)
-        ttk.Button(top, text='Export Palette JSON', command=self.export_palette_json_ui).grid(row=0, column=1, padx=3)
-        ttk.Button(top, text='Build ACT From Image', command=self.build_act_from_image_ui).grid(row=0, column=2, padx=3)
-        ttk.Button(top, text='Move Selected Color To Index 0', command=self.palette_move_selected_to_zero_ui).grid(row=0, column=3, padx=3)
-        body = ttk.Panedwindow(palette_frame, orient=tk.HORIZONTAL)
-        body.grid(row=1, column=0, sticky='nsew', padx=4, pady=4)
-        left = ttk.Frame(body)
-        left.columnconfigure(0, weight=1)
-        left.rowconfigure(0, weight=1)
-        self.palette_tree = ttk.Treeview(left, columns=('rgb','hex'), show='tree headings')
-        self.palette_tree.heading('#0', text='Index')
-        self.palette_tree.heading('rgb', text='RGB')
-        self.palette_tree.heading('hex', text='Hex')
-        self.palette_tree.column('#0', width=70, anchor='e')
-        self.palette_tree.column('rgb', width=160)
-        self.palette_tree.column('hex', width=100)
-        self.palette_tree.grid(row=0, column=0, sticky='nsew')
-        self.palette_tree.bind('<<TreeviewSelect>>', self.on_palette_select)
-        body.add(left, weight=1)
-        right = ttk.Frame(body)
-        right.columnconfigure(0, weight=1)
-        right.rowconfigure(0, weight=1)
-        self.palette_canvas = tk.Canvas(right, bg='white', width=560, height=560)
-        self.palette_canvas.grid(row=0, column=0, sticky='nsew')
-        self.palette_info_text = tk.Text(right, wrap='word', height=8, font=('Consolas', 10), state='disabled')
-        self.palette_info_text.grid(row=1, column=0, sticky='ew', pady=(4,0))
-        body.add(right, weight=2)
-        self.notebook.add(palette_frame, text='Palettes')
+        self.palette_tab = PaletteTab(self)
 
 
     def _build_studio_plus_tab(self):
