@@ -57,6 +57,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             'mugenforge.ui_tabs.binary',
             'mugenforge.ui_tabs.closure_evidence',
             'mugenforge.ui_tabs.continuity',
+            'mugenforge.ui_tabs.core_builders',
             'mugenforge.ui_tabs.creator_factory_tabs',
             'mugenforge.ui_tabs.creator_hub',
             'mugenforge.ui_tabs.forge_workspaces',
