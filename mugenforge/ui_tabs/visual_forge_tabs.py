@@ -285,3 +285,57 @@ class SoundCueEditorTab(AppBackedTab):
         self.app.vf_sound_output.grid(row=0, column=0, sticky='nsew')
         y.grid(row=0, column=1, sticky='ns')
         self.notebook.add(tab, text='Sound Cue Editor')
+
+
+class MoveComposer2Tab(AppBackedTab):
+    def __init__(self, app):
+        super().__init__(app)
+        self._build()
+
+    def _build(self):
+        tab = ttk.Frame(self.notebook)
+        self.frame = tab
+        self.app.vf_composer2_frame = tab
+        tab.columnconfigure(1, weight=1)
+        tab.rowconfigure(1, weight=1)
+        header = ttk.LabelFrame(tab, text='Move Composer 2.0', padding=(8, 6))
+        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=8, pady=8)
+        ttk.Label(
+            header,
+            text='A no-code move builder tied to Visual Timeline, Sound Cue, and AIR/CLSN scaffolding. Preview first, then append to project files with backups.',
+            wraplength=1120,
+            justify='left',
+        ).grid(row=0, column=0, sticky='ew')
+        left = ttk.Frame(tab, padding=(8, 0))
+        left.grid(row=1, column=0, sticky='nsw')
+        self.app.vf_compose_vars = {}
+        defaults = [
+            ('move_name', 'Light Punch'), ('command_name', 'light_punch'), ('command_input', 'x'), ('move_type', 'attack'),
+            ('state_no', '200'), ('anim_no', '200'), ('sprite_group', '200'), ('start_image', '0'),
+            ('frame_count', '4'), ('ticks', '4'), ('hit_frame', '2'), ('damage', '35'),
+            ('sound_group', '5'), ('sound_index', '0'), ('hit_x1', '18'), ('hit_y1', '-72'), ('hit_x2', '58'), ('hit_y2', '-36'),
+            ('body_x1', '-18'), ('body_y1', '-88'), ('body_x2', '18'), ('body_y2', '0'),
+        ]
+        for row, (key, value) in enumerate(defaults):
+            ttk.Label(left, text=key).grid(row=row, column=0, sticky='e', padx=(0, 4), pady=1)
+            var = tk.StringVar(value=value)
+            self.app.vf_compose_vars[key] = var
+            if key == 'move_type':
+                ttk.Combobox(left, textvariable=var, values=('attack', 'projectile', 'movement'), state='readonly', width=18).grid(row=row, column=1, sticky='w', pady=1)
+            else:
+                ttk.Entry(left, textvariable=var, width=20).grid(row=row, column=1, sticky='w', pady=1)
+        ttk.Button(left, text='Preview Move Package', command=self.app.vf_composer2_preview).grid(row=len(defaults), column=0, columnspan=2, sticky='ew', pady=(8, 2))
+        ttk.Button(left, text='Append To Project (.bak)', command=self.app.vf_composer2_append).grid(row=len(defaults) + 1, column=0, columnspan=2, sticky='ew', pady=2)
+        ttk.Button(left, text='Open Visual Timeline', command=lambda: self.notebook.select(self.app.vf_timeline_frame)).grid(row=len(defaults) + 2, column=0, columnspan=2, sticky='ew', pady=2)
+        right = ttk.Frame(tab, padding=(0, 0))
+        right.grid(row=1, column=1, sticky='nsew', padx=(0, 8), pady=(0, 8))
+        right.columnconfigure(0, weight=1)
+        right.rowconfigure(0, weight=1)
+        self.app.vf_composer2_output = tk.Text(right, wrap='none', font=('Consolas', 10), state='disabled')
+        y = ttk.Scrollbar(right, orient='vertical', command=self.app.vf_composer2_output.yview)
+        x = ttk.Scrollbar(right, orient='horizontal', command=self.app.vf_composer2_output.xview)
+        self.app.vf_composer2_output.configure(yscrollcommand=y.set, xscrollcommand=x.set)
+        self.app.vf_composer2_output.grid(row=0, column=0, sticky='nsew')
+        y.grid(row=0, column=1, sticky='ns')
+        x.grid(row=1, column=0, sticky='ew')
+        self.notebook.add(tab, text='Move Composer 2.0')
