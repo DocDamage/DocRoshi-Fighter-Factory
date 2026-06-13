@@ -107,7 +107,7 @@ from .ui_tabs.authority import AuthorityCoreTab, AuthorityLabTab
 from .ui_tabs.binary import BinaryWorkspaceTabs
 from .ui_tabs.closure_evidence import ClosureLabTab, EvidenceCoreTab
 from .ui_tabs.continuity import HandoffCoreTab, MaintenanceCoreTab, OperatorConsoleTab
-from .ui_tabs.creator_factory_tabs import AutoBuilderTab, CreatorOSTab, FactoryMaxTab, FactoryUltraTab, QualityLabTab
+from .ui_tabs.creator_factory_tabs import AutoBuilderTab, CreatorOSTab, CreatorSuiteTab, FactoryMaxTab, FactoryUltraTab, QualityLabTab
 from .ui_tabs.creator_hub import CreatorHubTab
 from .ui_tabs.forge_workspaces import ForgeBeyondTab, ForgePolishTab, ForgeTimelineTab
 from .ui_tabs.gap_closer import GapCloserTab
@@ -136,7 +136,7 @@ from .creator_os import (
     build_creator_os_release_zip,
 )
 from .creator_suite import (
-    CREATOR_SUITE_VERSION, one_click_creator_autopilot, creator_suite_profile_report,
+    one_click_creator_autopilot, creator_suite_profile_report,
     write_character_dna_profile, write_asset_library, write_move_lab,
     write_combo_tree, write_art_task_board, install_beginner_tuning_panel,
     make_project_time_machine_snapshot, write_creator_dashboard as write_suite_creator_dashboard,
@@ -663,79 +663,7 @@ class MugenForgeApp(tk.Tk):
 
 
     def _build_creator_suite_tab(self):
-        suite = ttk.Frame(self.notebook)
-        self.creator_suite_frame = suite
-        suite.columnconfigure(1, weight=1)
-        suite.rowconfigure(1, weight=1)
-        header = ttk.LabelFrame(suite, text=f'Creator Suite / No-Code Production Hub v{CREATOR_SUITE_VERSION}', padding=(8, 6))
-        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=6, pady=6)
-        ttk.Label(header, text=(
-            'Creator Suite is the beginner-facing production layer: choose a character DNA/profile, run AutoPilot, then use reports, tuning sheets, art task boards, snapshots, and handoff packs instead of manually touching code first.'
-        ), wraplength=1120, justify='left').grid(row=0, column=0, sticky='ew')
-
-        left = ttk.Frame(suite, padding=(6, 0))
-        left.grid(row=1, column=0, sticky='nsw')
-
-        profile = ttk.LabelFrame(left, text='Creative profile', padding=(6, 6))
-        profile.grid(row=0, column=0, sticky='ew')
-        self.creator_suite_archetype_var = tk.StringVar(value='Balanced Starter')
-        self.creator_suite_experience_var = tk.StringVar(value='Beginner')
-        self.creator_suite_buttons_var = tk.StringVar(value='Six button')
-        self.creator_suite_power_var = tk.StringVar(value='Standard meter')
-        rows = [
-            ('Archetype', self.creator_suite_archetype_var, ('Balanced Starter', 'Rushdown', 'Zoner', 'Grappler', 'Anime Movement', 'Boss Prototype', 'Full Creator')),
-            ('Experience', self.creator_suite_experience_var, ('Beginner', 'Intermediate', 'Advanced')),
-            ('Buttons', self.creator_suite_buttons_var, ('Six button', 'Four button', 'Simple / two button')),
-            ('Power', self.creator_suite_power_var, ('Standard meter', 'EX heavy', 'Super heavy', 'No meter')),
-        ]
-        for i, (label, var, values) in enumerate(rows):
-            ttk.Label(profile, text=label).grid(row=i, column=0, sticky='e', padx=2, pady=2)
-            ttk.Combobox(profile, textvariable=var, values=values, width=28, state='readonly').grid(row=i, column=1, sticky='w', padx=2, pady=2)
-
-        main = ttk.LabelFrame(left, text='One-click beginner workflow', padding=(6, 6))
-        main.grid(row=1, column=0, sticky='ew', pady=(6, 0))
-        ttk.Button(main, text='One-Click Creator AutoPilot', command=self.creator_suite_autopilot_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Button(main, text='Creator Suite Profile Report', command=self.creator_suite_profile_report_ui).grid(row=1, column=0, sticky='ew', pady=2)
-        ttk.Button(main, text='Character DNA Profile', command=self.creator_suite_dna_ui).grid(row=2, column=0, sticky='ew', pady=2)
-        ttk.Button(main, text='Creator Dashboard', command=self.creator_suite_dashboard_ui).grid(row=3, column=0, sticky='ew', pady=2)
-        ttk.Button(main, text='Time Machine Snapshot', command=self.creator_suite_snapshot_ui).grid(row=4, column=0, sticky='ew', pady=2)
-
-        reports = ttk.LabelFrame(left, text='Reports / task boards', padding=(6, 6))
-        reports.grid(row=2, column=0, sticky='ew', pady=(6, 0))
-        ttk.Button(reports, text='Asset Library / Organizer', command=self.creator_suite_asset_library_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Button(reports, text='Move Lab / Frame Sheet', command=self.creator_suite_move_lab_ui).grid(row=1, column=0, sticky='ew', pady=2)
-        ttk.Button(reports, text='Combo Tree', command=self.creator_suite_combo_tree_ui).grid(row=2, column=0, sticky='ew', pady=2)
-        ttk.Button(reports, text='Art Task Board', command=self.creator_suite_art_board_ui).grid(row=3, column=0, sticky='ew', pady=2)
-        ttk.Button(reports, text='Artist / Sound Handoff Pack', command=self.creator_suite_handoff_ui).grid(row=4, column=0, sticky='ew', pady=2)
-        ttk.Button(reports, text='Creator Indexes', command=self.creator_suite_indexes_ui).grid(row=5, column=0, sticky='ew', pady=2)
-
-        tuning = ttk.LabelFrame(left, text='No-code tuning', padding=(6, 6))
-        tuning.grid(row=3, column=0, sticky='ew', pady=(6, 0))
-        ttk.Button(tuning, text='Install Beginner Tuning Panel', command=self.creator_suite_tuning_panel_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Button(tuning, text='Export HitDef Tuning Sheet', command=self.creator_suite_export_hitdef_tuning_ui).grid(row=1, column=0, sticky='ew', pady=2)
-        ttk.Button(tuning, text='Apply HitDef Tuning Sheet', command=self.creator_suite_apply_hitdef_tuning_ui).grid(row=2, column=0, sticky='ew', pady=2)
-
-        release = ttk.LabelFrame(left, text='Teaching / release', padding=(6, 6))
-        release.grid(row=4, column=0, sticky='ew', pady=(6, 0))
-        ttk.Button(release, text='Training Pack', command=self.creator_suite_training_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Button(release, text='Final QA Release Plan', command=self.creator_suite_final_qa_ui).grid(row=1, column=0, sticky='ew', pady=2)
-
-        note = tk.Text(left, wrap='word', width=46, height=8, font=('Consolas', 9), state='disabled')
-        note.grid(row=5, column=0, sticky='ew', pady=(6, 0))
-        self.creator_suite_note = note
-        self.set_text(self.creator_suite_note, 'Best beginner route: One-Click Creator AutoPilot → Creator Dashboard → Art Task Board / Handoff Pack → Animation Player → CLSN Editor → HitDef Tuning Sheet → Final QA.')
-
-        right = ttk.Frame(suite)
-        right.grid(row=1, column=1, sticky='nsew', padx=(0, 6), pady=(0, 6))
-        right.rowconfigure(0, weight=1)
-        right.columnconfigure(0, weight=1)
-        self.creator_suite_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
-        y = ttk.Scrollbar(right, orient='vertical', command=self.creator_suite_output.yview)
-        self.creator_suite_output.configure(yscrollcommand=y.set)
-        self.creator_suite_output.grid(row=0, column=0, sticky='nsew')
-        y.grid(row=0, column=1, sticky='ns')
-        self.notebook.add(suite, text='Creator Suite')
-        self.set_text(self.creator_suite_output, 'Open/create a character folder. Choose a creative profile, then run One-Click Creator AutoPilot. Most outputs are docs, CSVs, and backups so non-coders can stay in the creative lane.')
+        self.creator_suite_tab = CreatorSuiteTab(self)
 
     def _creator_suite_root(self):
         if hasattr(self, '_max_root_or_choose'):
