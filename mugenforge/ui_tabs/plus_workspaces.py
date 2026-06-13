@@ -102,3 +102,73 @@ class StudioPlusTab(AppBackedTab):
             self.app.plus_output,
             'Open a character folder, then run Full Studio Doctor Report. The Auto Fix button repairs common beginner blockers and generates placeholder assets so you can get back to the creative parts.',
         )
+
+
+class FactoryPlusTab(AppBackedTab):
+    def __init__(self, app):
+        super().__init__(app)
+        self._build()
+
+    def _build(self):
+        factory_frame = ttk.Frame(self.notebook)
+        self.frame = factory_frame
+        self.app.factory_plus_frame = factory_frame
+        factory_frame.columnconfigure(1, weight=1)
+        factory_frame.rowconfigure(1, weight=1)
+
+        header = ttk.LabelFrame(factory_frame, text='Factory+ / Fighter-Factory-style automation', padding=(8, 6))
+        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=6, pady=6)
+        header.columnconfigure(0, weight=1)
+        intro = (
+            'Factory+ is the beginner-facing heavy-lifting layer: project repair, required animations, placeholder SFF/SND, '
+            'movelists, state maps, balance sheets, release packaging, and bulk sprite import. The creator chooses the fun direction; '
+            'the tool writes or organizes the boring project wiring.'
+        )
+        ttk.Label(header, text=intro, wraplength=1080, justify='left').grid(row=0, column=0, sticky='ew')
+
+        left = ttk.Frame(factory_frame, padding=(6, 0))
+        left.grid(row=1, column=0, sticky='nsw')
+
+        quick = ttk.LabelFrame(left, text='One-click beginner automation', padding=(6, 6))
+        quick.grid(row=0, column=0, sticky='ew', pady=(0, 6))
+        ttk.Button(quick, text='Smart Complete / Repair', command=self.app.factory_smart_complete_ui).grid(row=0, column=0, sticky='ew', pady=2)
+        ttk.Button(quick, text='Deep Doctor Report', command=self.app.factory_doctor_ui).grid(row=1, column=0, sticky='ew', pady=2)
+        ttk.Button(quick, text='Write Start Here Guide', command=self.app.factory_start_here_ui).grid(row=2, column=0, sticky='ew', pady=2)
+        ttk.Button(quick, text='Install Function Bank Docs', command=self.app.factory_function_bank_ui).grid(row=3, column=0, sticky='ew', pady=2)
+
+        assets = ttk.LabelFrame(left, text='Sprite / animation automation', padding=(6, 6))
+        assets.grid(row=1, column=0, sticky='ew', pady=(0, 6))
+        ttk.Button(assets, text='Complete Missing AIR Actions', command=self.app.factory_complete_air_ui).grid(row=0, column=0, sticky='ew', pady=2)
+        ttk.Button(assets, text='Rebuild Placeholder SFF From AIR', command=self.app.factory_placeholder_sff_ui).grid(row=1, column=0, sticky='ew', pady=2)
+        ttk.Button(assets, text='Bulk Import Sprite Folder -> SFF/AIR', command=self.app.factory_bulk_import_sprites_ui).grid(row=2, column=0, sticky='ew', pady=2)
+
+        publish = ttk.LabelFrame(left, text='Docs, maps, tuning, release', padding=(6, 6))
+        publish.grid(row=2, column=0, sticky='ew')
+        ttk.Button(publish, text='Export Move List', command=self.app.factory_movelist_ui).grid(row=0, column=0, sticky='ew', pady=2)
+        ttk.Button(publish, text='Export State Map', command=self.app.factory_state_map_ui).grid(row=1, column=0, sticky='ew', pady=2)
+        ttk.Button(publish, text='Export Balance Sheet', command=self.app.factory_balance_sheet_ui).grid(row=2, column=0, sticky='ew', pady=2)
+        ttk.Button(publish, text='Build Release ZIP', command=self.app.factory_release_zip_ui).grid(row=3, column=0, sticky='ew', pady=2)
+
+        self.app.factory_plus_tips = tk.Text(left, wrap='word', width=42, height=12, font=('Consolas', 9), state='disabled')
+        self.app.factory_plus_tips.grid(row=3, column=0, sticky='ew', pady=(6, 0))
+        self._set_text(
+            self.app.factory_plus_tips,
+            'Best beginner flow:\n\n1. Smart Complete / Repair\n2. Feature Bank for no-code moves\n3. Animation Player + CLSN Editor\n4. Bulk Import Sprite Folder when art is ready\n5. Deep Doctor Report\n6. Build Release ZIP\n\nSprite filenames like g200_i0.png let MugenForge auto-wire group/image IDs.',
+        )
+
+        right = ttk.Frame(factory_frame, padding=(0, 0))
+        right.grid(row=1, column=1, sticky='nsew', padx=(0, 6), pady=(0, 6))
+        right.rowconfigure(0, weight=1)
+        right.columnconfigure(0, weight=1)
+        self.app.factory_plus_output = tk.Text(right, wrap='none', font=('Consolas', 10), state='disabled')
+        f_y = ttk.Scrollbar(right, orient='vertical', command=self.app.factory_plus_output.yview)
+        f_x = ttk.Scrollbar(right, orient='horizontal', command=self.app.factory_plus_output.xview)
+        self.app.factory_plus_output.configure(yscrollcommand=f_y.set, xscrollcommand=f_x.set)
+        self.app.factory_plus_output.grid(row=0, column=0, sticky='nsew')
+        f_y.grid(row=0, column=1, sticky='ns')
+        f_x.grid(row=1, column=0, sticky='ew')
+        self.notebook.add(factory_frame, text='Factory+')
+        self._set_text(
+            self.app.factory_plus_output,
+            'Open or create a character folder, then use Smart Complete / Repair. Factory+ writes backups before modifying existing text/code files.',
+        )
