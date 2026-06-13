@@ -69,10 +69,28 @@ class MugenForgeSmokeTests(unittest.TestCase):
             'mugenforge.ui_tabs.rescue_lab',
             'mugenforge.ui_tabs.runtime_lab',
             'mugenforge.ui_tabs.sff2_bridge',
+            'mugenforge.ui_tabs.tab_registry',
             'mugenforge.ui_tabs.visual_forge_tabs',
         ]:
             with self.subTest(module=name):
                 importlib.import_module(name)
+
+    def test_feature_tab_registry_matches_builders(self):
+        from mugenforge.ui_tabs.app_builders import AppTabBuilders
+        from mugenforge.ui_tabs.tab_registry import FEATURE_TAB_BUILDERS, FEATURE_TABS, WORKSPACE_ROLES
+
+        builders = [tab.builder for tab in FEATURE_TABS]
+        labels = [tab.label for tab in FEATURE_TABS]
+        roles = {tab.role for tab in FEATURE_TABS}
+
+        self.assertEqual(tuple(builders), FEATURE_TAB_BUILDERS)
+        self.assertEqual(len(builders), len(set(builders)))
+        self.assertEqual(len(labels), len(set(labels)))
+        self.assertTrue(roles.issubset(set(WORKSPACE_ROLES)))
+
+        for builder in builders:
+            with self.subTest(builder=builder):
+                self.assertTrue(hasattr(AppTabBuilders, builder))
 
     def test_continuity_backends_write_expected_artifacts(self):
         from mugenforge.handoff_core import write_context_digest, write_package_inventory, write_regression_harness
