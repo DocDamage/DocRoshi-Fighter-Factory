@@ -32,6 +32,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             'mugenforge.runtime_lab',
             'mugenforge.binary_maturity',
             'mugenforge.forge_timeline',
+            'mugenforge.ui_actions.creator_os',
             'mugenforge.ui_actions.creator_suite',
             'mugenforge.ui_actions.factory_max',
             'mugenforge.ui_actions.factory_ultra',
