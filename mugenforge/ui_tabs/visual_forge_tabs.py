@@ -175,3 +175,59 @@ class VisualTimelineTab(AppBackedTab):
         self.app.vf_timeline_play_after = None
         self.app.vf_timeline_play_idx = 0
         self.notebook.add(tab, text='Visual Timeline')
+
+
+class SpriteOffsetAxisTab(AppBackedTab):
+    def __init__(self, app):
+        super().__init__(app)
+        self._build()
+
+    def _build(self):
+        tab = ttk.Frame(self.notebook)
+        self.frame = tab
+        self.app.vf_offset_frame = tab
+        tab.columnconfigure(1, weight=1)
+        tab.rowconfigure(1, weight=1)
+        header = ttk.LabelFrame(tab, text='Sprite Offset / Axis Editor', padding=(8, 6))
+        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=8, pady=8)
+        ttk.Label(header, text=(
+            'Drag the sprite preview to adjust AIR frame x/y offsets with coordinate display and snapping. Existing SFF axes are reference-only here; arbitrary SFF2 binary axis patching is not performed.'
+        ), wraplength=1120, justify='left').grid(row=0, column=0, sticky='ew')
+        left = ttk.Frame(tab, padding=(8, 0))
+        left.grid(row=1, column=0, sticky='nsw')
+        ttk.Button(left, text='Refresh Actions', command=self.app.vf_refresh_offset_ui).grid(row=0, column=0, sticky='ew', pady=2)
+        ttk.Label(left, text='Action').grid(row=1, column=0, sticky='w', pady=(8, 2))
+        self.app.vf_offset_action_var = tk.StringVar()
+        self.app.vf_offset_action_combo = ttk.Combobox(left, textvariable=self.app.vf_offset_action_var, state='readonly', width=34)
+        self.app.vf_offset_action_combo.grid(row=2, column=0, sticky='ew')
+        self.app.vf_offset_action_combo.bind('<<ComboboxSelected>>', self.app.vf_on_offset_action)
+        ttk.Label(left, text='Frames').grid(row=3, column=0, sticky='w', pady=(8, 2))
+        self.app.vf_offset_frame_list = tk.Listbox(left, width=38, height=10, font=('Consolas', 9), exportselection=False)
+        self.app.vf_offset_frame_list.grid(row=4, column=0, sticky='ew')
+        self.app.vf_offset_frame_list.bind('<<ListboxSelect>>', self.app.vf_on_offset_frame)
+        edit = ttk.LabelFrame(left, text='Coordinates', padding=(6, 6))
+        edit.grid(row=5, column=0, sticky='ew', pady=(8, 0))
+        self.app.vf_offset_x_var = tk.StringVar(value='0')
+        self.app.vf_offset_y_var = tk.StringVar(value='0')
+        self.app.vf_offset_snap_var = tk.StringVar(value='1')
+        ttk.Label(edit, text='AIR x').grid(row=0, column=0, sticky='w')
+        ttk.Entry(edit, textvariable=self.app.vf_offset_x_var, width=8).grid(row=0, column=1, sticky='w')
+        ttk.Label(edit, text='AIR y').grid(row=1, column=0, sticky='w')
+        ttk.Entry(edit, textvariable=self.app.vf_offset_y_var, width=8).grid(row=1, column=1, sticky='w')
+        ttk.Label(edit, text='Snap').grid(row=2, column=0, sticky='w')
+        ttk.Entry(edit, textvariable=self.app.vf_offset_snap_var, width=8).grid(row=2, column=1, sticky='w')
+        ttk.Button(edit, text='Save Offset to AIR (.bak)', command=self.app.vf_save_offset_ui).grid(row=3, column=0, columnspan=2, sticky='ew', pady=(6, 0))
+        self.app.vf_offset_info = tk.Text(left, wrap='word', width=38, height=9, font=('Consolas', 9), state='disabled')
+        self.app.vf_offset_info.grid(row=6, column=0, sticky='ew', pady=(8, 0))
+        right = ttk.Frame(tab, padding=(0, 0))
+        right.grid(row=1, column=1, sticky='nsew', padx=(0, 8), pady=(0, 8))
+        right.columnconfigure(0, weight=1)
+        right.rowconfigure(0, weight=1)
+        self.app.vf_offset_canvas = tk.Canvas(right, bg='white', width=800, height=580)
+        self.app.vf_offset_canvas.grid(row=0, column=0, sticky='nsew')
+        self.app.vf_offset_canvas.bind('<ButtonPress-1>', self.app.vf_offset_canvas_press)
+        self.app.vf_offset_canvas.bind('<B1-Motion>', self.app.vf_offset_canvas_drag)
+        self.app.vf_offset_drag_data = None
+        self.app.vf_offset_model = {}
+        self.app.vf_offset_selected_frame = None
+        self.notebook.add(tab, text='Offset / Axis')

@@ -117,7 +117,7 @@ from .ui_tabs.plus_workspaces import FactoryPlusTab, ForgePlusTab, StudioPlusTab
 from .ui_tabs.rescue_lab import RescueLabTab
 from .ui_tabs.runtime_lab import RuntimeLabTab
 from .ui_tabs.sff2_bridge import Sff2BridgeTab
-from .ui_tabs.visual_forge_tabs import VisualForgeHomeTab, VisualTimelineTab
+from .ui_tabs.visual_forge_tabs import SpriteOffsetAxisTab, VisualForgeHomeTab, VisualTimelineTab
 from .creator_os import (
     CREATOR_OS_VERSION, creator_os_one_click, write_character_blueprint,
     export_frame_data_sheet, export_input_cheatsheet, write_combo_routes,
@@ -1570,53 +1570,7 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
             log_error(self.project_root, 'Timeline export', exc)
 
     def _build_sprite_offset_axis_tab(self):
-        tab = ttk.Frame(self.notebook)
-        self.vf_offset_frame = tab
-        tab.columnconfigure(1, weight=1)
-        tab.rowconfigure(1, weight=1)
-        header = ttk.LabelFrame(tab, text='Sprite Offset / Axis Editor', padding=(8, 6))
-        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=8, pady=8)
-        ttk.Label(header, text=(
-            'Drag the sprite preview to adjust AIR frame x/y offsets with coordinate display and snapping. Existing SFF axes are reference-only here; arbitrary SFF2 binary axis patching is not performed.'
-        ), wraplength=1120, justify='left').grid(row=0, column=0, sticky='ew')
-        left = ttk.Frame(tab, padding=(8, 0))
-        left.grid(row=1, column=0, sticky='nsw')
-        ttk.Button(left, text='Refresh Actions', command=self.vf_refresh_offset_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Label(left, text='Action').grid(row=1, column=0, sticky='w', pady=(8, 2))
-        self.vf_offset_action_var = tk.StringVar()
-        self.vf_offset_action_combo = ttk.Combobox(left, textvariable=self.vf_offset_action_var, state='readonly', width=34)
-        self.vf_offset_action_combo.grid(row=2, column=0, sticky='ew')
-        self.vf_offset_action_combo.bind('<<ComboboxSelected>>', self.vf_on_offset_action)
-        ttk.Label(left, text='Frames').grid(row=3, column=0, sticky='w', pady=(8, 2))
-        self.vf_offset_frame_list = tk.Listbox(left, width=38, height=10, font=('Consolas', 9), exportselection=False)
-        self.vf_offset_frame_list.grid(row=4, column=0, sticky='ew')
-        self.vf_offset_frame_list.bind('<<ListboxSelect>>', self.vf_on_offset_frame)
-        edit = ttk.LabelFrame(left, text='Coordinates', padding=(6, 6))
-        edit.grid(row=5, column=0, sticky='ew', pady=(8, 0))
-        self.vf_offset_x_var = tk.StringVar(value='0')
-        self.vf_offset_y_var = tk.StringVar(value='0')
-        self.vf_offset_snap_var = tk.StringVar(value='1')
-        ttk.Label(edit, text='AIR x').grid(row=0, column=0, sticky='w')
-        ttk.Entry(edit, textvariable=self.vf_offset_x_var, width=8).grid(row=0, column=1, sticky='w')
-        ttk.Label(edit, text='AIR y').grid(row=1, column=0, sticky='w')
-        ttk.Entry(edit, textvariable=self.vf_offset_y_var, width=8).grid(row=1, column=1, sticky='w')
-        ttk.Label(edit, text='Snap').grid(row=2, column=0, sticky='w')
-        ttk.Entry(edit, textvariable=self.vf_offset_snap_var, width=8).grid(row=2, column=1, sticky='w')
-        ttk.Button(edit, text='Save Offset to AIR (.bak)', command=self.vf_save_offset_ui).grid(row=3, column=0, columnspan=2, sticky='ew', pady=(6, 0))
-        self.vf_offset_info = tk.Text(left, wrap='word', width=38, height=9, font=('Consolas', 9), state='disabled')
-        self.vf_offset_info.grid(row=6, column=0, sticky='ew', pady=(8, 0))
-        right = ttk.Frame(tab, padding=(0, 0))
-        right.grid(row=1, column=1, sticky='nsew', padx=(0, 8), pady=(0, 8))
-        right.columnconfigure(0, weight=1)
-        right.rowconfigure(0, weight=1)
-        self.vf_offset_canvas = tk.Canvas(right, bg='white', width=800, height=580)
-        self.vf_offset_canvas.grid(row=0, column=0, sticky='nsew')
-        self.vf_offset_canvas.bind('<ButtonPress-1>', self.vf_offset_canvas_press)
-        self.vf_offset_canvas.bind('<B1-Motion>', self.vf_offset_canvas_drag)
-        self.vf_offset_drag_data = None
-        self.vf_offset_model = {}
-        self.vf_offset_selected_frame = None
-        self.notebook.add(tab, text='Offset / Axis')
+        self.sprite_offset_axis_tab = SpriteOffsetAxisTab(self)
 
     def vf_refresh_offset_ui(self):
         if not self._vf_require_project():

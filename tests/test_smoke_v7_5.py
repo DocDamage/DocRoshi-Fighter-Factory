@@ -113,6 +113,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertIn('Run / Test', tabs)
             self.assertIn('Project Home', tabs)
             self.assertIn('Visual Timeline', tabs)
+            self.assertIn('Offset / Axis', tabs)
             self.assertIn('Forge Beyond', tabs)
             self.assertIn('Forge Polish', tabs)
             self.assertIn('Forge Timeline', tabs)
