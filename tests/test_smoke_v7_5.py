@@ -40,6 +40,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             'mugenforge.ui_tabs.creator_hub',
             'mugenforge.ui_tabs.forge_workspaces',
             'mugenforge.ui_tabs.gap_closer',
+            'mugenforge.ui_tabs.rescue_lab',
             'mugenforge.ui_tabs.runtime_lab',
             'mugenforge.ui_tabs.sff2_bridge',
         ]:
@@ -96,6 +97,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertIn('Evidence Core', tabs)
             self.assertIn('Creator Hub', tabs)
             self.assertIn('SFF2 Bridge', tabs)
+            self.assertIn('Rescue Lab', tabs)
             self.assertIn('Forge Beyond', tabs)
             self.assertIn('Forge Polish', tabs)
             self.assertIn('Forge Timeline', tabs)
@@ -114,6 +116,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertTrue(callable(getattr(app, 'evidence_core_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'creator_hub_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'sff2_bridge_write_project_ui', None)))
+            self.assertTrue(callable(getattr(app, 'rescue_lab_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'forge_beyond_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'forge_polish_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'forge_timeline_one_click_ui', None)))
