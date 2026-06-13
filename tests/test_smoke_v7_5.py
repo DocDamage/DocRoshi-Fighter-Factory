@@ -35,6 +35,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             'mugenforge.ui_tabs.authority',
             'mugenforge.ui_tabs.base',
             'mugenforge.ui_tabs.binary',
+            'mugenforge.ui_tabs.closure_evidence',
             'mugenforge.ui_tabs.continuity',
             'mugenforge.ui_tabs.gap_closer',
             'mugenforge.ui_tabs.runtime_lab',
@@ -88,6 +89,8 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertIn('Gap Closer', tabs)
             self.assertIn('Authority Core', tabs)
             self.assertIn('Authority Lab', tabs)
+            self.assertIn('Closure Lab', tabs)
+            self.assertIn('Evidence Core', tabs)
             self.assertEqual(selected, 'Operator Console')
             self.assertTrue(callable(getattr(app, 'operator_console_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'maintenance_core_one_click_ui', None)))
@@ -99,6 +102,8 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertTrue(callable(getattr(app, 'gap_closer_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'authority_core_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'authority_lab_one_click_ui', None)))
+            self.assertTrue(callable(getattr(app, 'closure_lab_one_click_ui', None)))
+            self.assertTrue(callable(getattr(app, 'evidence_core_one_click_ui', None)))
         finally:
             app.destroy()
 
