@@ -2,10 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
-from datetime import datetime
 from io import BytesIO
 import csv
-import hashlib
 import json
 import math
 import re
@@ -16,6 +14,15 @@ import zipfile
 import zlib
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
+from .artifact_io import (
+    backup_file,
+    rel_path as _rel,
+    sha256_file as _sha256,
+    timestamp as _now,
+    write_csv_artifact as _write_csv,
+    write_json_artifact as _write_json,
+    write_text_artifact,
+)
 from .move_wizard import find_character_file
 from .parsers import read_text_safely, write_text_safely, parse_code, parse_air
 from .sff_codec import SFF_SIGNATURE, read_sff, summarize_sff_detailed
@@ -144,17 +151,6 @@ class DeepSff2Table:
 # Generic helpers
 
 
-def _now() -> str:
-    return datetime.now().strftime('%Y%m%d_%H%M%S')
-
-
-def _rel(root: Path, path: Path | str) -> str:
-    try:
-        return str(Path(path).resolve().relative_to(Path(root).resolve())).replace('\\', '/')
-    except Exception:
-        return str(path).replace('\\', '/')
-
-
 def _bd(root: Path) -> Path:
     out = Path(root) / 'binary_deep'
     out.mkdir(parents=True, exist_ok=True)
@@ -168,42 +164,7 @@ def _bc(root: Path) -> Path:
 
 
 def _write_text(path: Path, text: str, result: Optional[BinaryCoreResult] = None, root: Optional[Path] = None, changed: bool = False) -> Path:
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    write_text_safely(path, text.rstrip() + '\n')
-    if result is not None:
-        (result.changed_files if changed else result.created_files).append(_rel(root or path.parent, path))
-    return path
-
-
-def _write_json(path: Path, payload: object, result: Optional[BinaryCoreResult] = None, root: Optional[Path] = None) -> Path:
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-    if result is not None:
-        result.created_files.append(_rel(root or path.parent, path))
-    return path
-
-
-def _write_csv(path: Path, rows: Sequence[Dict[str, object]], fields: Sequence[str], result: Optional[BinaryCoreResult] = None, root: Optional[Path] = None) -> Path:
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open('w', encoding='utf-8', newline='') as f:
-        w = csv.DictWriter(f, fieldnames=list(fields))
-        w.writeheader()
-        for row in rows:
-            w.writerow({k: row.get(k, '') for k in fields})
-    if result is not None:
-        result.created_files.append(_rel(root or path.parent, path))
-    return path
-
-
-def _sha256(path: Path) -> str:
-    h = hashlib.sha256()
-    with Path(path).open('rb') as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b''):
-            h.update(chunk)
-    return h.hexdigest()
+    return write_text_artifact(path, text, result, root, changed, writer=write_text_safely)
 
 
 def _safe_int(value: object, default: int = 0) -> int:
@@ -238,12 +199,7 @@ def _file(root: Path, ext: str) -> Optional[Path]:
 
 
 def _backup(path: Path, tag: str = 'binary_deep') -> Optional[Path]:
-    path = Path(path)
-    if not path.exists():
-        return None
-    dst = path.with_name(f'{path.name}.bak_{tag}_{_now()}')
-    shutil.copy2(path, dst)
-    return dst
+    return backup_file(path, tag)
 
 
 def _u16(data: bytes, off: int) -> int:

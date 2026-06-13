@@ -26,6 +26,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
         for name in [
             'mugenforge.app_mixins',
             'mugenforge.app_state',
+            'mugenforge.artifact_io',
             'mugenforge.binary_results',
             'mugenforge.handoff_core',
             'mugenforge.operator_console',
@@ -118,6 +119,36 @@ class MugenForgeSmokeTests(unittest.TestCase):
         self.assertIn('Binary smoke', text)
         self.assertEqual(text.count('- ready'), 1)
         self.assertIn('- check corpus', text)
+
+    def test_artifact_io_records_outputs(self):
+        from mugenforge.artifact_io import (
+            backup_file,
+            rel_path,
+            sha256_file,
+            write_csv_artifact,
+            write_json_artifact,
+            write_text_artifact,
+        )
+        from mugenforge.binary_results import BinaryCoreResult
+
+        with tempfile.TemporaryDirectory(prefix='mf_artifact_io_') as tmp:
+            root = Path(tmp)
+            result = BinaryCoreResult('Artifact smoke')
+
+            note = write_text_artifact(root / 'out' / 'note.txt', 'hello', result, root, changed=True)
+            data = write_json_artifact(root / 'out' / 'data.json', {'ok': True}, result, root)
+            sheet = write_csv_artifact(root / 'out' / 'rows.csv', [{'name': 'alpha'}], ['name'], result, root)
+            backup = backup_file(note, 'test')
+
+            self.assertEqual(note.read_text(encoding='utf-8'), 'hello\n')
+            self.assertIn('out/note.txt', result.changed_files)
+            self.assertIn('out/data.json', result.created_files)
+            self.assertIn('out/rows.csv', result.created_files)
+            self.assertEqual(rel_path(root, sheet), 'out/rows.csv')
+            self.assertEqual(sha256_file(note), 'cd2eca3535741f27a8ae40c31b0c41d4057a7a7b912b33b9aed86485d1c84676')
+            self.assertIsNotNone(backup)
+            self.assertTrue(backup.exists())
+            self.assertIn('.bak_test_', backup.name)
 
     def test_continuity_backends_write_expected_artifacts(self):
         from mugenforge.handoff_core import write_context_digest, write_package_inventory, write_regression_harness

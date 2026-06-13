@@ -5,7 +5,6 @@ from pathlib import Path
 from datetime import datetime
 from io import BytesIO
 import csv
-import hashlib
 import json
 import re
 import shutil
@@ -14,6 +13,15 @@ import wave
 import zipfile
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
+from .artifact_io import (
+    backup_file,
+    rel_path as _rel,
+    sha256_file as _sha256,
+    timestamp as _now,
+    write_csv_artifact as _write_csv,
+    write_json_artifact as _write_json,
+    write_text_artifact as _write_text,
+)
 from .binary_results import BinaryCoreResult
 from .move_wizard import find_character_file
 from .sff_codec import (
@@ -90,69 +98,14 @@ def _uniq(items: Iterable[object]) -> List[str]:
     return out
 
 
-def _rel(root: Path, path: Path | str) -> str:
-    try:
-        return str(Path(path).resolve().relative_to(Path(root).resolve())).replace('\\', '/')
-    except Exception:
-        return str(path).replace('\\', '/')
-
-
-def _now() -> str:
-    return datetime.now().strftime('%Y%m%d_%H%M%S')
-
-
 def _bc(root: Path) -> Path:
     out = Path(root) / 'binary_core'
     out.mkdir(parents=True, exist_ok=True)
     return out
 
 
-def _write_text(path: Path, text: str, result: Optional[BinaryCoreResult] = None, root: Optional[Path] = None, changed: bool = False) -> Path:
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text.rstrip() + '\n', encoding='utf-8')
-    if result is not None:
-        (result.changed_files if changed else result.created_files).append(_rel(root or path.parent, path))
-    return path
-
-
-def _write_json(path: Path, payload: object, result: Optional[BinaryCoreResult] = None, root: Optional[Path] = None) -> Path:
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-    if result is not None:
-        result.created_files.append(_rel(root or path.parent, path))
-    return path
-
-
-def _write_csv(path: Path, rows: Sequence[Dict[str, object]], fields: Sequence[str], result: Optional[BinaryCoreResult] = None, root: Optional[Path] = None) -> Path:
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open('w', encoding='utf-8', newline='') as f:
-        w = csv.DictWriter(f, fieldnames=list(fields))
-        w.writeheader()
-        for row in rows:
-            w.writerow({k: row.get(k, '') for k in fields})
-    if result is not None:
-        result.created_files.append(_rel(root or path.parent, path))
-    return path
-
-
-def _sha256(path: Path) -> str:
-    h = hashlib.sha256()
-    with Path(path).open('rb') as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b''):
-            h.update(chunk)
-    return h.hexdigest()
-
-
 def _backup(path: Path) -> Optional[Path]:
-    path = Path(path)
-    if not path.exists():
-        return None
-    dst = path.with_name(path.name + f'.bak_binary_core_{_now()}')
-    shutil.copy2(path, dst)
-    return dst
+    return backup_file(path, 'binary_core')
 
 
 def _file(root: Path, ext: str) -> Optional[Path]:
