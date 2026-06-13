@@ -102,6 +102,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertIn('Closure Lab', tabs)
             self.assertIn('Evidence Core', tabs)
             self.assertIn('Feature Bank', tabs)
+            self.assertIn('Factory Max', tabs)
             self.assertIn('Creator Hub', tabs)
             self.assertIn('SFF2 Bridge', tabs)
             self.assertIn('Rescue Lab', tabs)

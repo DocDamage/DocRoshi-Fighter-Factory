@@ -62,7 +62,7 @@ from .studio_plus import (
 )
 
 from .factory_max import (
-    FACTORY_MAX_VERSION, factory_max_profile_report, one_click_factory_max_upgrade,
+    factory_max_profile_report, one_click_factory_max_upgrade,
     write_codesense_bank, write_state_graph, write_organizer_manifest,
     suggest_clsn_from_sff, retime_air, renumber_air_actions,
     create_storyboard_template, create_screenpack_template, create_sound_autobank,
@@ -108,7 +108,7 @@ from .ui_tabs.authority import AuthorityCoreTab, AuthorityLabTab
 from .ui_tabs.binary import BinaryWorkspaceTabs
 from .ui_tabs.closure_evidence import ClosureLabTab, EvidenceCoreTab
 from .ui_tabs.continuity import HandoffCoreTab, MaintenanceCoreTab, OperatorConsoleTab
-from .ui_tabs.creator_factory_tabs import AutoBuilderTab
+from .ui_tabs.creator_factory_tabs import AutoBuilderTab, FactoryMaxTab
 from .ui_tabs.creator_hub import CreatorHubTab
 from .ui_tabs.forge_workspaces import ForgeBeyondTab, ForgePolishTab, ForgeTimelineTab
 from .ui_tabs.gap_closer import GapCloserTab
@@ -593,72 +593,7 @@ class MugenForgeApp(tk.Tk):
 
 
     def _build_factory_max_tab(self):
-        max_frame = ttk.Frame(self.notebook)
-        self.factory_max_frame = max_frame
-        max_frame.columnconfigure(1, weight=1)
-        max_frame.rowconfigure(1, weight=1)
-
-        header = ttk.LabelFrame(max_frame, text=f'Factory Max / Better-than-FF Automation v{FACTORY_MAX_VERSION}', padding=(8, 6))
-        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=6, pady=6)
-        header.columnconfigure(0, weight=1)
-        ttk.Label(header, text=(
-            'This tab targets Fighter Factory-style production workflows plus heavier beginner automation: code-sense banks, state graphs, safe imports, auto CLSN, storyboards, screenpack starters, sound cue banks, release QA, and one-click project upgrades.'
-        ), wraplength=1120, justify='left').grid(row=0, column=0, sticky='ew')
-
-        left = ttk.Frame(max_frame, padding=(6, 0))
-        left.grid(row=1, column=0, sticky='nsw')
-
-        main = ttk.LabelFrame(left, text='One-click heavy lifting', padding=(6, 6))
-        main.grid(row=0, column=0, sticky='ew')
-        ttk.Button(main, text='One-Click Factory Max Upgrade', command=self.max_one_click_upgrade_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Button(main, text='Factory Max Profile Report', command=self.max_profile_report_ui).grid(row=1, column=0, sticky='ew', pady=2)
-        ttk.Button(main, text='Build Factory Max Release ZIP', command=self.max_release_zip_ui).grid(row=2, column=0, sticky='ew', pady=2)
-
-        code = ttk.LabelFrame(left, text='Code / structure tools', padding=(6, 6))
-        code.grid(row=1, column=0, sticky='ew', pady=(6, 0))
-        ttk.Button(code, text='Write CodeSense Bank', command=self.max_codesense_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Button(code, text='Write State Graph', command=self.max_state_graph_ui).grid(row=1, column=0, sticky='ew', pady=2)
-        ttk.Button(code, text='Write Organizer Manifest', command=self.max_organizer_ui).grid(row=2, column=0, sticky='ew', pady=2)
-        ttk.Button(code, text='Safe Import From Project', command=self.max_safe_import_ui).grid(row=3, column=0, sticky='ew', pady=2)
-
-        anim = ttk.LabelFrame(left, text='Animation / CLSN automation', padding=(6, 6))
-        anim.grid(row=2, column=0, sticky='ew', pady=(6, 0))
-        self.max_clsn_padding_var = tk.StringVar(value='2')
-        self.max_retime_scale_var = tk.StringVar(value='1.0')
-        self.max_renumber_offset_var = tk.StringVar(value='10000')
-        row_items = [('CLSN padding', self.max_clsn_padding_var), ('retime scale', self.max_retime_scale_var), ('clone offset', self.max_renumber_offset_var)]
-        for i, (label, var) in enumerate(row_items):
-            ttk.Label(anim, text=label).grid(row=i, column=0, sticky='e', padx=2, pady=1)
-            ttk.Entry(anim, textvariable=var, width=10).grid(row=i, column=1, sticky='w', padx=2, pady=1)
-        ttk.Button(anim, text='Auto Body CLSN From SFF', command=self.max_auto_clsn_ui).grid(row=3, column=0, columnspan=2, sticky='ew', pady=(6, 2))
-        ttk.Button(anim, text='Retime AIR Ticks', command=self.max_retime_air_ui).grid(row=4, column=0, columnspan=2, sticky='ew', pady=2)
-        ttk.Button(anim, text='Clone/Renumber AIR Actions', command=self.max_renumber_air_ui).grid(row=5, column=0, columnspan=2, sticky='ew', pady=2)
-
-        extras = ttk.LabelFrame(left, text='Full-project extras', padding=(6, 6))
-        extras.grid(row=3, column=0, sticky='ew', pady=(6, 0))
-        ttk.Button(extras, text='Create Storyboard Template', command=self.max_storyboard_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Button(extras, text='Create Screenpack Starter', command=self.max_screenpack_ui).grid(row=1, column=0, sticky='ew', pady=2)
-        ttk.Button(extras, text='Create Sound AutoBank', command=self.max_sound_autobank_ui).grid(row=2, column=0, sticky='ew', pady=2)
-        ttk.Button(extras, text='Write Quick Test Suite', command=self.max_quick_test_ui).grid(row=3, column=0, sticky='ew', pady=2)
-
-        note = tk.Text(left, wrap='word', width=44, height=7, font=('Consolas', 9), state='disabled')
-        note.grid(row=4, column=0, sticky='ew', pady=(6, 0))
-        self.max_note = note
-        self.set_text(self.max_note, 'Best beginner route: One-Click Factory Max Upgrade → Animation Player → CLSN Editor → Image Factory/Sprite Lab → Profile Report → Release ZIP. CodeSense/state graph are there when you need to understand what happened.')
-
-        right = ttk.Frame(max_frame, padding=(0, 0))
-        right.grid(row=1, column=1, sticky='nsew', padx=(0, 6), pady=(0, 6))
-        right.rowconfigure(0, weight=1)
-        right.columnconfigure(0, weight=1)
-        self.factory_max_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
-        sy = ttk.Scrollbar(right, orient='vertical', command=self.factory_max_output.yview)
-        sx = ttk.Scrollbar(right, orient='horizontal', command=self.factory_max_output.xview)
-        self.factory_max_output.configure(yscrollcommand=sy.set, xscrollcommand=sx.set)
-        self.factory_max_output.grid(row=0, column=0, sticky='nsew')
-        sy.grid(row=0, column=1, sticky='ns')
-        sx.grid(row=1, column=0, sticky='ew')
-        self.notebook.add(max_frame, text='Factory Max')
-        self.set_text(self.factory_max_output, 'Open/create a character folder, then run One-Click Factory Max Upgrade. It writes backups before changing active code files and keeps risky imports in an imports/ folder.')
+        self.factory_max_tab = FactoryMaxTab(self)
 
 
     def _build_factory_ultra_tab(self):
