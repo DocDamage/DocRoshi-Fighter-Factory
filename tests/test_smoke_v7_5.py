@@ -38,6 +38,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             'mugenforge.ui_tabs.binary',
             'mugenforge.ui_tabs.closure_evidence',
             'mugenforge.ui_tabs.continuity',
+            'mugenforge.ui_tabs.creator_factory_tabs',
             'mugenforge.ui_tabs.creator_hub',
             'mugenforge.ui_tabs.forge_workspaces',
             'mugenforge.ui_tabs.gap_closer',
@@ -100,6 +101,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertIn('Authority Lab', tabs)
             self.assertIn('Closure Lab', tabs)
             self.assertIn('Evidence Core', tabs)
+            self.assertIn('Feature Bank', tabs)
             self.assertIn('Creator Hub', tabs)
             self.assertIn('SFF2 Bridge', tabs)
             self.assertIn('Rescue Lab', tabs)
