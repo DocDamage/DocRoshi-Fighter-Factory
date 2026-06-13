@@ -22,8 +22,8 @@ Please continue from the uploaded package `mugenforge_studio_v7_5.zip`. Unzip it
 
 ## Critical next work
 
-- Split `mugenforge/app.py` into tab/controller modules.
-- Move generated smoke checks into a real tests folder.
+- Continue consolidating module-backed tabs into role-based workspaces.
+- Extend the real tests folder beyond smoke checks with focused SFF/SND fixtures.
 - Run binary corpus validation on diverse real SFF/SND files.
 - Consolidate the UI into role-based workspaces.
 - Keep all feature claims honest and clean-room.

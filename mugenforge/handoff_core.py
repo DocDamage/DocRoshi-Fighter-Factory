@@ -328,13 +328,13 @@ def write_context_digest(root: Path) -> HandoffResult:
 
 def _roadmap_rows() -> List[Dict[str, object]]:
     return [
-        {'priority': 'P0', 'area': 'Architecture', 'item': 'Split app.py into tab/controller modules', 'status': 'next', 'notes': 'Largest stability/maintainability gap after feature expansion.'},
-        {'priority': 'P0', 'area': 'Tests', 'item': 'Turn smoke harness into real pytest-style suite', 'status': 'next', 'notes': 'Keep compile/import/UI/backend smoke coverage before refactors.'},
+        {'priority': 'P0', 'area': 'Architecture', 'item': 'Consolidate module-backed tabs into role-based workspaces', 'status': 'in progress', 'notes': 'app.py is split into state, shell, tab-builder, and action modules; next reduce tab sprawl.'},
+        {'priority': 'P0', 'area': 'Tests', 'item': 'Extend real tests beyond smoke coverage', 'status': 'in progress', 'notes': 'Keep compile/import/UI/backend smoke coverage before refactors and add focused fixtures around risky backends.'},
         {'priority': 'P1', 'area': 'Binary', 'item': 'Run SFF2/SND corpus validation on broad real-world samples', 'status': 'framework ready', 'notes': 'Document exact supported variants; preserve unknown layouts.'},
         {'priority': 'P1', 'area': 'UX', 'item': 'Collapse 40+ tabs into role-based workspaces', 'status': 'design needed', 'notes': 'Beginner, Animator, Binary, Runtime, Release, Maintainer.'},
         {'priority': 'P1', 'area': 'Timeline', 'item': 'Convert sheet-backed edits to direct visual timeline/canvas editing', 'status': 'partial', 'notes': 'Forge Timeline is the target center of move editing.'},
         {'priority': 'P2', 'area': 'Docs', 'item': 'Create tutorial sample projects and guided lessons', 'status': 'not started', 'notes': 'Needed for non-coder onboarding.'},
-        {'priority': 'P2', 'area': 'Packaging', 'item': 'Windows app bundle/installer', 'status': 'not started', 'notes': 'Do after tests and architecture split.'},
+        {'priority': 'P2', 'area': 'Packaging', 'item': 'Windows app bundle/installer', 'status': 'not started', 'notes': 'Do after tests and workspace consolidation.'},
     ]
 
 
@@ -446,7 +446,7 @@ v7.5 is a stabilization/continuity pass. It adds **Operator Console** and **Hand
 
 ## Next maintainer priorities
 
-1. Refactor `mugenforge/app.py` into module-backed tab classes.
+1. Continue role-based workspace consolidation now that `mugenforge/app.py` is module-backed.
 2. Preserve compile/import/UI smoke tests before each refactor.
 3. Expand binary corpus validation and document unsupported variants.
 4. Turn Forge Timeline sheet workflows into direct visual editing surfaces.

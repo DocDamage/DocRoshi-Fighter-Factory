@@ -52,7 +52,7 @@ v7.5 is a stabilization/continuity pass. It adds **Operator Console** and **Hand
 
 ## Next maintainer priorities
 
-1. Refactor `mugenforge/app.py` into module-backed tab classes.
+1. Continue role-based workspace consolidation now that `mugenforge/app.py` is module-backed.
 2. Preserve compile/import/UI smoke tests before each refactor.
 3. Expand binary corpus validation and document unsupported variants.
 4. Turn Forge Timeline sheet workflows into direct visual editing surfaces.

@@ -2,17 +2,17 @@
 
 Recommended continuation order after this handoff.
 
-## P0 — Architecture: Split app.py into tab/controller modules
+## P0 — Architecture: Consolidate module-backed tabs into role-based workspaces
 
-Status: **next**
+Status: **in progress**
 
-Largest stability/maintainability gap after feature expansion.
+app.py is split into state, shell, tab-builder, and action modules; next reduce tab sprawl.
 
-## P0 — Tests: Turn smoke harness into real pytest-style suite
+## P0 — Tests: Extend real tests beyond smoke coverage
 
-Status: **next**
+Status: **in progress**
 
-Keep compile/import/UI/backend smoke coverage before refactors.
+Keep compile/import/UI/backend smoke coverage before refactors and add focused fixtures around risky backends.
 
 ## P1 — Binary: Run SFF2/SND corpus validation on broad real-world samples
 
@@ -42,4 +42,4 @@ Needed for non-coder onboarding.
 
 Status: **not started**
 
-Do after tests and architecture split.
+Do after tests and workspace consolidation.
