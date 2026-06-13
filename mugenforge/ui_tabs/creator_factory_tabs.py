@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from ..automation_bank import kit_names, preset_display_list
+from ..creator_os import CREATOR_OS_VERSION
 from ..factory_max import FACTORY_MAX_VERSION
 from ..factory_ultra import FACTORY_ULTRA_VERSION
 from ..no_code_director import archetype_names
@@ -176,6 +177,88 @@ class FactoryMaxTab(AppBackedTab):
         self._set_text(
             self.app.factory_max_output,
             'Open/create a character folder, then run One-Click Factory Max Upgrade. It writes backups before changing active code files and keeps risky imports in an imports/ folder.',
+        )
+
+
+class CreatorOSTab(AppBackedTab):
+    def __init__(self, app):
+        super().__init__(app)
+        self._build()
+
+    def _build(self):
+        os_frame = ttk.Frame(self.notebook)
+        self.frame = os_frame
+        self.app.creator_os_frame = os_frame
+        os_frame.columnconfigure(1, weight=1)
+        os_frame.rowconfigure(1, weight=1)
+
+        header = ttk.LabelFrame(os_frame, text=f'Creator OS / Beginner Autopilot v{CREATOR_OS_VERSION}', padding=(8, 6))
+        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=6, pady=6)
+        header.columnconfigure(0, weight=1)
+        ttk.Label(header, text=(
+            'Creator OS is the no-code layer: choose an archetype/style, then it writes plans, reports, checklists, code-bank docs, frame data, combo routes, balance notes, asset shopping lists, and release gates so the user can focus on sprites, sounds, timing, hitboxes, and feel.'
+        ), wraplength=1120, justify='left').grid(row=0, column=0, sticky='ew')
+
+        left = ttk.Frame(os_frame, padding=(6, 0))
+        left.grid(row=1, column=0, sticky='nsw')
+
+        profile = ttk.LabelFrame(left, text='Creative profile', padding=(6, 6))
+        profile.grid(row=0, column=0, sticky='ew')
+        self.app.creator_os_archetype_var = tk.StringVar(value='Balanced Starter')
+        self.app.creator_os_complexity_var = tk.StringVar(value='Beginner')
+        self.app.creator_os_style_var = tk.StringVar(value='Arcade')
+        rows = [
+            ('archetype', self.app.creator_os_archetype_var, ('Balanced Starter', 'Rushdown', 'Zoner', 'Grappler', 'Anime Air-Dasher', 'Boss Prototype', 'Custom')),
+            ('complexity', self.app.creator_os_complexity_var, ('Beginner', 'Intermediate', 'Advanced', 'Boss/Experimental')),
+            ('visual style', self.app.creator_os_style_var, ('Arcade', 'Anime', 'Street', 'Retro', 'Dark Fantasy', 'Sci-Fi', 'Cartoon', 'Custom')),
+        ]
+        for row, (label, var, values) in enumerate(rows):
+            ttk.Label(profile, text=label).grid(row=row, column=0, sticky='e', padx=2, pady=2)
+            ttk.Combobox(profile, textvariable=var, values=values, width=24, state='readonly').grid(row=row, column=1, sticky='w', padx=2, pady=2)
+
+        autopilot = ttk.LabelFrame(left, text='One-click heavy lifting', padding=(6, 6))
+        autopilot.grid(row=1, column=0, sticky='ew', pady=(6, 0))
+        ttk.Button(autopilot, text='One-Click Creator OS Autopilot', command=self.app.creator_os_one_click_ui).grid(row=0, column=0, sticky='ew', pady=2)
+        ttk.Button(autopilot, text='Build Creator OS Release ZIP', command=self.app.creator_os_release_zip_ui).grid(row=1, column=0, sticky='ew', pady=2)
+        ttk.Button(autopilot, text='Write Character Blueprint', command=self.app.creator_os_blueprint_ui).grid(row=2, column=0, sticky='ew', pady=2)
+
+        reports = ttk.LabelFrame(left, text='No-code reports', padding=(6, 6))
+        reports.grid(row=2, column=0, sticky='ew', pady=(6, 0))
+        ttk.Button(reports, text='Export Frame Data Sheet', command=self.app.creator_os_frame_data_ui).grid(row=0, column=0, sticky='ew', pady=2)
+        ttk.Button(reports, text='Export Input Cheatsheet', command=self.app.creator_os_inputs_ui).grid(row=1, column=0, sticky='ew', pady=2)
+        ttk.Button(reports, text='Build Combo Routes', command=self.app.creator_os_combo_routes_ui).grid(row=2, column=0, sticky='ew', pady=2)
+        ttk.Button(reports, text='Write Balance Report', command=self.app.creator_os_balance_ui).grid(row=3, column=0, sticky='ew', pady=2)
+        ttk.Button(reports, text='Write Asset Shopping List', command=self.app.creator_os_asset_list_ui).grid(row=4, column=0, sticky='ew', pady=2)
+        ttk.Button(reports, text='Run Release Quality Gate', command=self.app.creator_os_quality_gate_ui).grid(row=5, column=0, sticky='ew', pady=2)
+
+        docs = ttk.LabelFrame(left, text='Beginner docs', padding=(6, 6))
+        docs.grid(row=3, column=0, sticky='ew', pady=(6, 0))
+        ttk.Button(docs, text='Write Beginner Lessons', command=self.app.creator_os_lessons_ui).grid(row=0, column=0, sticky='ew', pady=2)
+        ttk.Button(docs, text='Write Project Wiki', command=self.app.creator_os_wiki_ui).grid(row=1, column=0, sticky='ew', pady=2)
+        ttk.Button(docs, text='Write Auto-Code Cookbook', command=self.app.creator_os_codebook_ui).grid(row=2, column=0, sticky='ew', pady=2)
+
+        self.app.creator_os_note = tk.Text(left, wrap='word', width=44, height=8, font=('Consolas', 9), state='disabled')
+        self.app.creator_os_note.grid(row=4, column=0, sticky='ew', pady=(6, 0))
+        self._set_text(
+            self.app.creator_os_note,
+            'Best beginner route: One-Click Creator OS Autopilot -> Project Wiki -> replace art/sounds -> Animation Player -> CLSN Editor -> Frame Data/Balance -> Quality Gate -> Release ZIP.',
+        )
+
+        right = ttk.Frame(os_frame, padding=(0, 0))
+        right.grid(row=1, column=1, sticky='nsew', padx=(0, 6), pady=(0, 6))
+        right.rowconfigure(0, weight=1)
+        right.columnconfigure(0, weight=1)
+        self.app.creator_os_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
+        sy = ttk.Scrollbar(right, orient='vertical', command=self.app.creator_os_output.yview)
+        sx = ttk.Scrollbar(right, orient='horizontal', command=self.app.creator_os_output.xview)
+        self.app.creator_os_output.configure(yscrollcommand=sy.set, xscrollcommand=sx.set)
+        self.app.creator_os_output.grid(row=0, column=0, sticky='nsew')
+        sy.grid(row=0, column=1, sticky='ns')
+        sx.grid(row=1, column=0, sticky='ew')
+        self.notebook.add(os_frame, text='Creator OS')
+        self._set_text(
+            self.app.creator_os_output,
+            'Open/create a character folder, choose a creative profile, then run One-Click Creator OS Autopilot. It builds the docs/reports/checklists around the project so non-coders can focus on the fun parts.',
         )
 
 
