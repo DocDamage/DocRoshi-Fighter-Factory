@@ -4,6 +4,51 @@ import tkinter as tk
 from tkinter import ttk
 
 
+FEATURE_TAB_BUILDERS = (
+    '_build_auto_builder_tab',
+    '_build_factory_plus_tab',
+    '_build_factory_max_tab',
+    '_build_factory_ultra_tab',
+    '_build_creator_os_tab',
+    '_build_quality_lab_tab',
+    '_build_creator_suite_tab',
+    '_build_creator_hub_tab',
+    '_build_rescue_lab_tab',
+    '_build_sff2_bridge_tab',
+    '_build_image_factory_tab',
+    '_build_palette_tab',
+    '_build_studio_plus_tab',
+    '_build_forge_plus_tab',
+    '_build_sprite_lab_tab',
+    '_build_stage_builder_tab',
+    '_build_run_test_tab',
+    '_build_visual_forge_home_tab',
+    '_build_visual_timeline_editor_tab',
+    '_build_sprite_offset_axis_tab',
+    '_build_sound_cue_editor_tab',
+    '_build_move_composer2_tab',
+    '_build_migration_wizard_tab',
+    '_build_training_debug_tab',
+    '_build_plugin_template_tab',
+    '_build_backup_log_tab',
+    '_build_forge_beyond_tab',
+    '_build_forge_polish_tab',
+    '_build_forge_timeline_tab',
+    '_build_binary_core_tab',
+    '_build_binary_deep_tab',
+    '_build_binary_maturity_tab',
+    '_build_closure_lab_tab',
+    '_build_gap_closer_tab',
+    '_build_authority_core_tab',
+    '_build_runtime_lab_tab',
+    '_build_authority_lab_tab',
+    '_build_evidence_core_tab',
+    '_build_maintenance_core_tab',
+    '_build_operator_console_tab',
+    '_build_handoff_core_tab',
+)
+
+
 class AppCoreTabBuilders:
     def _build_text_and_air_tabs(self):
         editor_frame = ttk.Frame(self.notebook)
@@ -319,44 +364,5 @@ class AppCoreTabBuilders:
         self.notebook.add(wizard_frame, text='Move Wizard')
 
     def _build_feature_tabs(self):
-        self._build_auto_builder_tab()
-        self._build_factory_plus_tab()
-        self._build_factory_max_tab()
-        self._build_factory_ultra_tab()
-        self._build_creator_os_tab()
-        self._build_quality_lab_tab()
-        self._build_creator_suite_tab()
-        self._build_creator_hub_tab()
-        self._build_rescue_lab_tab()
-        self._build_sff2_bridge_tab()
-        self._build_image_factory_tab()
-        self._build_palette_tab()
-        self._build_studio_plus_tab()
-        self._build_forge_plus_tab()
-        self._build_sprite_lab_tab()
-        self._build_stage_builder_tab()
-        self._build_run_test_tab()
-        self._build_visual_forge_home_tab()
-        self._build_visual_timeline_editor_tab()
-        self._build_sprite_offset_axis_tab()
-        self._build_sound_cue_editor_tab()
-        self._build_move_composer2_tab()
-        self._build_migration_wizard_tab()
-        self._build_training_debug_tab()
-        self._build_plugin_template_tab()
-        self._build_backup_log_tab()
-        self._build_forge_beyond_tab()
-        self._build_forge_polish_tab()
-        self._build_forge_timeline_tab()
-        self._build_binary_core_tab()
-        self._build_binary_deep_tab()
-        self._build_binary_maturity_tab()
-        self._build_closure_lab_tab()
-        self._build_gap_closer_tab()
-        self._build_authority_core_tab()
-        self._build_runtime_lab_tab()
-        self._build_authority_lab_tab()
-        self._build_evidence_core_tab()
-        self._build_maintenance_core_tab()
-        self._build_operator_console_tab()
-        self._build_handoff_core_tab()
+        for builder_name in FEATURE_TAB_BUILDERS:
+            getattr(self, builder_name)()
