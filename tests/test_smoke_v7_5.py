@@ -35,6 +35,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             'mugenforge.ui_tabs.base',
             'mugenforge.ui_tabs.binary',
             'mugenforge.ui_tabs.continuity',
+            'mugenforge.ui_tabs.gap_closer',
             'mugenforge.ui_tabs.runtime_lab',
         ]:
             with self.subTest(module=name):
@@ -83,6 +84,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertIn('Binary Deep', tabs)
             self.assertIn('Binary Maturity', tabs)
             self.assertIn('Runtime Lab', tabs)
+            self.assertIn('Gap Closer', tabs)
             self.assertEqual(selected, 'Operator Console')
             self.assertTrue(callable(getattr(app, 'operator_console_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'maintenance_core_one_click_ui', None)))
@@ -91,6 +93,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertTrue(callable(getattr(app, 'binary_deep_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'binary_maturity_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'runtime_lab_one_click_ui', None)))
+            self.assertTrue(callable(getattr(app, 'gap_closer_one_click_ui', None)))
         finally:
             app.destroy()
 
