@@ -95,6 +95,15 @@ class MugenForgeApp(FeatureBankActions, CreatorOSActions, CreatorSuiteActions, A
         self.columnconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
 
+        paned, center = self._build_shell_layout()
+        self._build_text_and_air_tabs()
+        self._build_binary_and_animation_tabs()
+        self._build_authoring_tabs()
+        self._build_feature_tabs()
+        self._select_initial_workspace()
+        paned.add(center, weight=4)
+
+    def _build_shell_layout(self):
         toolbar = ttk.Frame(self, padding=(6, 4))
         toolbar.grid(row=0, column=0, sticky='ew')
         ttk.Button(toolbar, text='Open Character Folder', command=self.open_folder).grid(row=0, column=0, padx=2)
@@ -131,7 +140,9 @@ class MugenForgeApp(FeatureBankActions, CreatorOSActions, CreatorSuiteActions, A
         center.rowconfigure(0, weight=1)
         self.notebook = ttk.Notebook(center)
         self.notebook.grid(row=0, column=0, sticky='nsew')
+        return paned, center
 
+    def _build_text_and_air_tabs(self):
         editor_frame = ttk.Frame(self.notebook)
         editor_frame.rowconfigure(0, weight=1)
         editor_frame.columnconfigure(0, weight=1)
@@ -223,6 +234,7 @@ class MugenForgeApp(FeatureBankActions, CreatorOSActions, CreatorSuiteActions, A
         self.clsn_help.grid(row=3, column=0, sticky='ew', pady=(4,0))
         self.notebook.add(clsn_frame, text='CLSN Editor')
 
+    def _build_binary_and_animation_tabs(self):
         sprite_frame = ttk.Frame(self.notebook)
         sprite_frame.columnconfigure(0, weight=1)
         sprite_frame.rowconfigure(0, weight=1)
@@ -375,6 +387,7 @@ class MugenForgeApp(FeatureBankActions, CreatorOSActions, CreatorSuiteActions, A
         self.anim_info.grid(row=3, column=0, sticky='ew', padx=6, pady=(0,6))
         self.notebook.add(anim_frame, text='Animation Player')
 
+    def _build_authoring_tabs(self):
         author_frame = ttk.Frame(self.notebook)
         self.author_frame = author_frame
         author_frame.columnconfigure(0, weight=1)
@@ -442,6 +455,7 @@ class MugenForgeApp(FeatureBankActions, CreatorOSActions, CreatorSuiteActions, A
         self.wizard_output.grid(row=3, column=0, sticky='nsew', padx=6, pady=6)
         self.notebook.add(wizard_frame, text='Move Wizard')
 
+    def _build_feature_tabs(self):
         self._build_auto_builder_tab()
         self._build_factory_plus_tab()
         self._build_factory_max_tab()
@@ -483,6 +497,8 @@ class MugenForgeApp(FeatureBankActions, CreatorOSActions, CreatorSuiteActions, A
         self._build_maintenance_core_tab()
         self._build_operator_console_tab()
         self._build_handoff_core_tab()
+
+    def _select_initial_workspace(self):
         try:
             self.notebook.select(self.operator_console_frame)
         except Exception:
@@ -490,7 +506,6 @@ class MugenForgeApp(FeatureBankActions, CreatorOSActions, CreatorSuiteActions, A
                 self.notebook.select(self.vf_home_frame)
             except Exception:
                 pass
-        paned.add(center, weight=4)
 
     def _build_auto_builder_tab(self):
         self.auto_builder_tab = AutoBuilderTab(self)
