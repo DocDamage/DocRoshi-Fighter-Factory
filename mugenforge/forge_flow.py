@@ -13,6 +13,13 @@ import wave
 import zipfile
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
+from .artifact_io import (
+    rel_path,
+    timestamp as _timestamp,
+    write_csv_artifact,
+    write_json_artifact,
+    write_text_artifact,
+)
 from .parsers import COMMON_ANIMS, parse_air, parse_code, parse_def, read_text_safely, scan_project, write_text_safely
 from .move_wizard import find_character_file
 from .air_tools import parse_air_with_lines
@@ -68,10 +75,6 @@ class ForgeFlowResult:
         return "\n".join(lines).rstrip() + "\n"
 
 
-def _timestamp() -> str:
-    return datetime.now().strftime("%Y%m%d_%H%M%S")
-
-
 def _uniq(values: Iterable[str]) -> List[str]:
     out: List[str] = []
     seen = set()
@@ -90,10 +93,7 @@ def _safe_name(value: object) -> str:
 def _rel(root: Path, path: Path | str | None) -> str:
     if path is None:
         return ""
-    try:
-        return str(Path(path).resolve().relative_to(Path(root).resolve())).replace("\\", "/")
-    except Exception:
-        return str(path).replace("\\", "/")
+    return rel_path(root, path)
 
 
 def _out(root: Path, *parts: str) -> Path:
@@ -105,34 +105,15 @@ def _out(root: Path, *parts: str) -> Path:
 
 
 def _write_text(root: Path, path: Path, text: str, res: Optional[ForgeFlowResult] = None) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    existed = path.exists()
-    path.write_text(text.rstrip() + "\n", encoding="utf-8")
-    if res is not None:
-        (res.changed_files if existed else res.created_files).append(_rel(root, path))
-    return path
+    return write_text_artifact(path, text, res, root, track_existing=True)
 
 
 def _write_json(root: Path, path: Path, payload: object, res: Optional[ForgeFlowResult] = None) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    existed = path.exists()
-    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    if res is not None:
-        (res.changed_files if existed else res.created_files).append(_rel(root, path))
-    return path
+    return write_json_artifact(path, payload, res, root, track_existing=True)
 
 
 def _write_csv(root: Path, path: Path, rows: Sequence[Dict[str, object]], fields: Sequence[str], res: Optional[ForgeFlowResult] = None) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    existed = path.exists()
-    with path.open("w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=list(fields))
-        writer.writeheader()
-        for row in rows:
-            writer.writerow({field: row.get(field, "") for field in fields})
-    if res is not None:
-        (res.changed_files if existed else res.created_files).append(_rel(root, path))
-    return path
+    return write_csv_artifact(path, rows, fields, res, root, track_existing=True)
 
 
 def _read_csv(path: Path) -> List[Dict[str, str]]:
