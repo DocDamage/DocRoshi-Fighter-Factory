@@ -152,6 +152,10 @@ class MugenForgeSmokeTests(unittest.TestCase):
 
             write_text_artifact(data, 'rewritten json path as text', result, root, track_existing=True)
             self.assertIn('out/data.json', result.changed_files)
+            write_json_artifact(root / 'out' / 'forced.json', {'forced': True}, result, root, changed=True)
+            write_csv_artifact(root / 'out' / 'forced.csv', [{'name': 'beta'}], ['name'], result, root, changed=True)
+            self.assertIn('out/forced.json', result.changed_files)
+            self.assertIn('out/forced.csv', result.changed_files)
 
     def test_continuity_backends_write_expected_artifacts(self):
         from mugenforge.handoff_core import write_context_digest, write_package_inventory, write_regression_harness

@@ -53,6 +53,7 @@ def write_json_artifact(
     payload: object,
     result: Optional[object] = None,
     root: Optional[Path] = None,
+    changed: bool = False,
     *,
     track_existing: bool = False,
 ) -> Path:
@@ -61,7 +62,7 @@ def write_json_artifact(
     existed = path.exists()
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     if result is not None:
-        record_artifact(result, path, root, changed=track_existing and existed)
+        record_artifact(result, path, root, changed=changed or (track_existing and existed))
     return path
 
 
@@ -71,6 +72,7 @@ def write_csv_artifact(
     fields: Sequence[str],
     result: Optional[object] = None,
     root: Optional[Path] = None,
+    changed: bool = False,
     *,
     track_existing: bool = False,
 ) -> Path:
@@ -83,7 +85,7 @@ def write_csv_artifact(
         for row in rows:
             writer.writerow({field: row.get(field, '') for field in fields})
     if result is not None:
-        record_artifact(result, path, root, changed=track_existing and existed)
+        record_artifact(result, path, root, changed=changed or (track_existing and existed))
     return path
 
 

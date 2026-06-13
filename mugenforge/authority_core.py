@@ -4,7 +4,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from datetime import datetime
 import csv
-import hashlib
 import json
 import os
 import re
@@ -13,6 +12,14 @@ import subprocess
 import zipfile
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
+from .artifact_io import (
+    backup_file,
+    rel_path as _rel,
+    sha256_file as _sha256,
+    timestamp as _timestamp,
+    write_csv_artifact,
+    write_text_artifact,
+)
 from .parsers import COMMON_ANIMS, parse_air, parse_code, read_text_safely, write_text_safely
 from .move_wizard import find_character_file
 from .sff_codec import read_sff
@@ -89,17 +96,6 @@ def _uniq(items: Iterable[str]) -> List[str]:
     return out
 
 
-def _rel(root: Path, path: Path | str) -> str:
-    try:
-        return str(Path(path).resolve().relative_to(Path(root).resolve())).replace('\\', '/')
-    except Exception:
-        return str(path).replace('\\', '/')
-
-
-def _timestamp() -> str:
-    return datetime.now().strftime('%Y%m%d_%H%M%S')
-
-
 def _authority_dir(root: Path) -> Path:
     out = Path(root) / 'authority_core'
     out.mkdir(parents=True, exist_ok=True)
@@ -107,14 +103,10 @@ def _authority_dir(root: Path) -> Path:
 
 
 def _write(root: Path, path: Path, text: str, result: Optional[AuthorityCoreResult] = None, changed: bool = False) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
     existed = path.exists()
     if existed and changed:
         _backup_file(path)
-    write_text_safely(path, text.rstrip() + '\n')
-    if result is not None:
-        (result.changed_files if existed or changed else result.created_files).append(_rel(root, path))
-    return path
+    return write_text_artifact(path, text, result, root, changed, track_existing=True, writer=write_text_safely)
 
 
 def _write_json(root: Path, path: Path, payload: object, result: Optional[AuthorityCoreResult] = None, changed: bool = False) -> Path:
@@ -129,12 +121,7 @@ def _read_json(path: Path, default: object) -> object:
 
 
 def _csv_write(path: Path, rows: Sequence[Dict[str, object]], fields: Sequence[str]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open('w', encoding='utf-8', newline='') as f:
-        w = csv.DictWriter(f, fieldnames=list(fields))
-        w.writeheader()
-        for row in rows:
-            w.writerow({k: row.get(k, '') for k in fields})
+    write_csv_artifact(path, rows, fields)
 
 
 def _csv_read(path: Path) -> List[Dict[str, str]]:
@@ -144,21 +131,8 @@ def _csv_read(path: Path) -> List[Dict[str, str]]:
         return [dict(row) for row in csv.DictReader(f)]
 
 
-def _sha256(path: Path) -> str:
-    h = hashlib.sha256()
-    with Path(path).open('rb') as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b''):
-            h.update(chunk)
-    return h.hexdigest()
-
-
 def _backup_file(path: Path) -> Optional[Path]:
-    path = Path(path)
-    if not path.exists():
-        return None
-    backup = path.with_name(path.name + f'.bak_authority_{_timestamp()}')
-    shutil.copy2(path, backup)
-    return backup
+    return backup_file(path, 'authority')
 
 
 def _discover_files(root: Path) -> Dict[str, Optional[Path]]:
