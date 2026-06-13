@@ -35,6 +35,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             'mugenforge.ui_actions.creator_os',
             'mugenforge.ui_actions.creator_suite',
             'mugenforge.ui_actions.factory_max',
+            'mugenforge.ui_actions.factory_plus',
             'mugenforge.ui_actions.factory_ultra',
             'mugenforge.ui_actions.feature_bank',
             'mugenforge.ui_actions.image_factory',
