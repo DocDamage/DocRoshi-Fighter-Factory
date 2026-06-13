@@ -54,7 +54,8 @@ class MugenForgeApp(AppCoreTabBuilders, AppBehaviorMixins, tk.Tk):
         )
         workspace_combo.grid(row=0, column=9, padx=2)
         workspace_combo.bind('<<ComboboxSelected>>', self.apply_workspace_role)
-        ttk.Label(toolbar, textvariable=self.status_var).grid(row=0, column=10, padx=10, sticky='w')
+        ttk.Label(toolbar, textvariable=self.workspace_summary_var).grid(row=0, column=10, padx=(2, 10), sticky='w')
+        ttk.Label(toolbar, textvariable=self.status_var).grid(row=0, column=11, padx=10, sticky='w')
 
         paned = ttk.Panedwindow(self, orient=tk.HORIZONTAL)
         paned.grid(row=1, column=0, sticky='nsew')

@@ -39,3 +39,4 @@ def initialize_app_state(app: Any) -> None:
     app.auto_last_package = None
     app.palette_info = None
     app.workspace_role_var = tk.StringVar(value='All')
+    app.workspace_summary_var = tk.StringVar(value='All feature tabs')

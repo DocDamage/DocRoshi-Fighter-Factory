@@ -246,14 +246,17 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertTrue(callable(getattr(app, 'forge_beyond_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'forge_polish_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'forge_timeline_one_click_ui', None)))
+            self.assertEqual(app.workspace_summary_var.get(), '41 feature tabs')
             app.workspace_role_var.set('Visual')
             app.apply_workspace_role()
             self.assertEqual(app.notebook.tab(app.feature_tab_ids_by_label['Visual Timeline'], 'state'), 'normal')
             self.assertEqual(app.notebook.tab(app.feature_tab_ids_by_label['Operator Console'], 'state'), 'hidden')
+            self.assertEqual(app.workspace_summary_var.get(), '11 Visual tabs')
             app.workspace_role_var.set('All')
             app.apply_workspace_role()
             self.assertEqual(app.notebook.tab(app.feature_tab_ids_by_label['Operator Console'], 'state'), 'normal')
             self.assertEqual(app.notebook.tab(app.feature_tab_ids_by_label['Handoff Core'], 'state'), 'normal')
+            self.assertEqual(app.workspace_summary_var.get(), '41 feature tabs')
         finally:
             app.destroy()
 

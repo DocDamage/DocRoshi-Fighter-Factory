@@ -324,6 +324,7 @@ class AppCoreTabBuilders:
         for builder_name in FEATURE_TAB_BUILDERS:
             getattr(self, builder_name)()
         self._index_feature_tabs()
+        self._set_workspace_summary('All', len(FEATURE_TAB_LABELS))
 
     def _index_feature_tabs(self):
         self.feature_tab_ids_by_label = {}
@@ -349,3 +350,8 @@ class AppCoreTabBuilders:
                 self.notebook.tab(tab_id, state='normal')
             elif tab_id in current_tabs:
                 self.notebook.hide(tab_id)
+        self._set_workspace_summary(role, len(visible_tabs))
+
+    def _set_workspace_summary(self, role: str, count: int):
+        label = 'feature tabs' if role == 'All' else f'{role} tabs'
+        self.workspace_summary_var.set(f'{count} {label}')
