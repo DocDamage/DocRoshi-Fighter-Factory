@@ -65,20 +65,10 @@ from .factory_max import (
     image_factory_process_folder, make_palette_variants,
 )
 from .factory_ultra import (
-    one_click_ultra_production_pass, ultra_project_dashboard,
-    generate_frame_data_lab, generate_balance_lab, generate_cancel_lab,
-    generate_asset_usage_lab, generate_sprite_axis_lab, generate_beginner_task_board,
-    generate_move_cards, generate_input_map_assistant, write_no_code_feature_switchboard,
-    write_production_bible, create_autosave_snapshot, generate_ai_tuning_lab,
-    generate_release_readiness_report, build_ultra_release_zip,
-    one_click_factory_ultra_upgrade, build_factory_ultra_release_zip,
     write_beginner_command_center, write_no_code_recipe_bank, write_generated_code_map,
-    build_asset_dependency_map, write_balance_lab, write_combo_trial_builder,
+    build_asset_dependency_map, write_combo_trial_builder,
     write_clsn_audit, create_sff_sprite_atlas, create_action_strip_previews,
     create_snd_waveform_sheet, write_controller_snippet_library, write_ultra_task_board,
-    write_ultra_audit, write_smart_next_steps, write_creator_home_dashboard,
-    write_no_code_function_map, write_input_conflict_report, write_frame_data_report,
-    write_combo_lab, write_compatibility_matrix, auto_tune_damage, create_character_variant,
 )
 
 
@@ -132,10 +122,11 @@ from .creator_os import (
 )
 from .ui_actions.creator_suite import CreatorSuiteActions
 from .ui_actions.factory_max import FactoryMaxActions
+from .ui_actions.factory_ultra import FactoryUltraActions
 
 APP_TITLE = 'MugenForge Studio 7.5 Continuity Core'
 
-class MugenForgeApp(CreatorSuiteActions, FactoryMaxActions, tk.Tk):
+class MugenForgeApp(CreatorSuiteActions, FactoryMaxActions, FactoryUltraActions, tk.Tk):
     def __init__(self):
         super().__init__()
         self.title(APP_TITLE)
@@ -1607,167 +1598,6 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
         self.set_text(self.run_output, snippet)
 
 
-    def _ultra_root_or_choose(self):
-        return self._max_root_or_choose()
-
-    def _ultra_show_result(self, result, title='Factory Ultra'):
-        text = result.to_text() if hasattr(result, 'to_text') else str(result)
-        self.set_text(self.factory_ultra_output, text)
-        if hasattr(self, 'factory_ultra_frame'):
-            self.notebook.select(self.factory_ultra_frame)
-        self.status_var.set(title)
-
-    def ultra_one_click_ui(self):
-        root = self._ultra_root_or_choose()
-        if not root:
-            return
-        try:
-            result = one_click_factory_ultra_upgrade(root)
-            self.reload_project()
-            self._ultra_show_result(result, 'Factory Ultra upgrade finished')
-            messagebox.showinfo('Factory Ultra Upgrade', 'Factory Ultra upgrade finished. Open START_HERE_MUGENFORGE.md or review the output panel.')
-        except Exception as exc:
-            messagebox.showerror('Factory Ultra upgrade failed', str(exc))
-
-    def ultra_audit_ui(self):
-        root = self._ultra_root_or_choose()
-        if not root:
-            return
-        try:
-            result = write_ultra_audit(root)
-            self.reload_project()
-            self._ultra_show_result(result, 'Factory Ultra audit written')
-        except Exception as exc:
-            messagebox.showerror('Ultra audit failed', str(exc))
-
-    def ultra_next_steps_ui(self):
-        root = self._ultra_root_or_choose()
-        if not root:
-            return
-        try:
-            result = write_smart_next_steps(root)
-            self.reload_project()
-            self._ultra_show_result(result, 'Smart next-step queue written')
-        except Exception as exc:
-            messagebox.showerror('Next-step queue failed', str(exc))
-
-    def ultra_dashboard_ui(self):
-        root = self._ultra_root_or_choose()
-        if not root:
-            return
-        try:
-            result = write_creator_home_dashboard(root)
-            self.reload_project()
-            self._ultra_show_result(result, 'Creator home dashboard written')
-        except Exception as exc:
-            messagebox.showerror('Creator dashboard failed', str(exc))
-
-    def ultra_function_map_ui(self):
-        root = self._ultra_root_or_choose()
-        if not root:
-            return
-        try:
-            result = write_no_code_function_map(root)
-            self.reload_project()
-            self._ultra_show_result(result, 'No-code function map written')
-        except Exception as exc:
-            messagebox.showerror('Function map failed', str(exc))
-
-    def ultra_input_report_ui(self):
-        root = self._ultra_root_or_choose()
-        if not root:
-            return
-        try:
-            result = write_input_conflict_report(root)
-            self.reload_project()
-            self._ultra_show_result(result, 'Input conflict report written')
-        except Exception as exc:
-            messagebox.showerror('Input report failed', str(exc))
-
-    def ultra_balance_lab_ui(self):
-        root = self._ultra_root_or_choose()
-        if not root:
-            return
-        try:
-            result = write_balance_lab(root)
-            self.reload_project()
-            self._ultra_show_result(result, 'Balance Lab written')
-        except Exception as exc:
-            messagebox.showerror('Balance Lab failed', str(exc))
-
-    def ultra_frame_data_ui(self):
-        root = self._ultra_root_or_choose()
-        if not root:
-            return
-        try:
-            result = write_frame_data_report(root)
-            self.reload_project()
-            self._ultra_show_result(result, 'Frame data exported')
-        except Exception as exc:
-            messagebox.showerror('Frame data export failed', str(exc))
-
-    def ultra_combo_lab_ui(self):
-        root = self._ultra_root_or_choose()
-        if not root:
-            return
-        try:
-            result = write_combo_lab(root)
-            self.reload_project()
-            self._ultra_show_result(result, 'Combo Lab written')
-        except Exception as exc:
-            messagebox.showerror('Combo Lab failed', str(exc))
-
-    def ultra_compatibility_ui(self):
-        root = self._ultra_root_or_choose()
-        if not root:
-            return
-        try:
-            result = write_compatibility_matrix(root)
-            self.reload_project()
-            self._ultra_show_result(result, 'Compatibility matrix written')
-        except Exception as exc:
-            messagebox.showerror('Compatibility matrix failed', str(exc))
-
-    def ultra_auto_tune_damage_ui(self):
-        root = self._ultra_root_or_choose()
-        if not root:
-            return
-        try:
-            scale = self._plus_float(self.ultra_damage_scale_var, 1.0) if hasattr(self, '_plus_float') else float(self.ultra_damage_scale_var.get() or 1.0)
-            max_damage = self._plus_int(self.ultra_damage_max_var, 180) if hasattr(self, '_plus_int') else int(self.ultra_damage_max_var.get() or 180)
-            result = auto_tune_damage(root, damage_scale=scale, max_damage=max_damage)
-            self.reload_project()
-            self._ultra_show_result(result, 'Damage auto-tune finished')
-        except Exception as exc:
-            messagebox.showerror('Damage auto-tune failed', str(exc))
-
-    def ultra_clone_variant_ui(self):
-        root = self._ultra_root_or_choose()
-        if not root:
-            return
-        name = simpledialog.askstring('Clone Character Variant', 'Variant name:', initialvalue=f'{root.name}_variant')
-        if not name:
-            return
-        try:
-            result = create_character_variant(root, name)
-            self._ultra_show_result(result, 'Character variant cloned')
-            messagebox.showinfo('Variant cloned', result.to_text())
-        except Exception as exc:
-            messagebox.showerror('Variant clone failed', str(exc))
-
-    def ultra_release_zip_ui(self):
-        root = self._ultra_root_or_choose()
-        if not root:
-            return
-        try:
-            result = build_ultra_release_zip(root)
-            self.reload_project()
-            self._ultra_show_result(result, 'Ultra release ZIP built')
-            messagebox.showinfo('Ultra Release ZIP', result.to_text())
-        except Exception as exc:
-            messagebox.showerror('Ultra release ZIP failed', str(exc))
-
-
     def _creator_os_root_or_choose(self):
         if self.project_root:
             return self.project_root
@@ -1926,84 +1756,6 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
             messagebox.showinfo('Creator OS Release ZIP', result.to_text())
         except Exception as exc:
             messagebox.showerror('Creator OS Release ZIP failed', str(exc))
-
-    def _ultra_root_or_choose(self):
-        if hasattr(self, '_max_root_or_choose'):
-            return self._max_root_or_choose()
-        if self.project_root:
-            return self.project_root
-        chosen = filedialog.askdirectory(title='Choose or create a M.U.G.E.N character folder')
-        if not chosen:
-            return None
-        root = Path(chosen)
-        self.load_project(root)
-        return root
-
-    def _ultra_show_result(self, result, title='Factory Ultra'):
-        text = result.to_text() if hasattr(result, 'to_text') else str(result)
-        self.set_text(self.factory_ultra_output, text)
-        if hasattr(self, 'factory_ultra_frame'):
-            self.notebook.select(self.factory_ultra_frame)
-        self.status_var.set(title)
-
-    def _ultra_run(self, fn, title):
-        root = self._ultra_root_or_choose()
-        if not root:
-            return
-        try:
-            result = fn(root)
-            self.reload_project()
-            self._ultra_show_result(result, title)
-        except Exception as exc:
-            messagebox.showerror(title + ' failed', str(exc))
-
-    def ultra_one_click_ui(self):
-        self._ultra_run(one_click_ultra_production_pass, 'Ultra production pass finished')
-
-    def ultra_snapshot_ui(self):
-        self._ultra_run(create_autosave_snapshot, 'Ultra snapshot created')
-
-    def ultra_release_zip_ui(self):
-        self._ultra_run(build_ultra_release_zip, 'Ultra release ZIP built')
-
-    def ultra_dashboard_ui(self):
-        self._ultra_run(ultra_project_dashboard, 'Ultra dashboard written')
-
-    def ultra_task_board_ui(self):
-        self._ultra_run(generate_beginner_task_board, 'Ultra task board written')
-
-    def ultra_bible_ui(self):
-        self._ultra_run(write_production_bible, 'Ultra production bible written')
-
-    def ultra_switchboard_ui(self):
-        self._ultra_run(write_no_code_feature_switchboard, 'Ultra feature switchboard written')
-
-    def ultra_readiness_ui(self):
-        self._ultra_run(generate_release_readiness_report, 'Ultra release readiness written')
-
-    def ultra_frame_data_ui(self):
-        self._ultra_run(generate_frame_data_lab, 'Ultra frame data lab written')
-
-    def ultra_balance_ui(self):
-        self._ultra_run(generate_balance_lab, 'Ultra balance lab written')
-
-    def ultra_cancel_ui(self):
-        self._ultra_run(generate_cancel_lab, 'Ultra cancel/state flow lab written')
-
-    def ultra_assets_ui(self):
-        self._ultra_run(generate_asset_usage_lab, 'Ultra asset usage lab written')
-
-    def ultra_axis_ui(self):
-        self._ultra_run(generate_sprite_axis_lab, 'Ultra sprite axis lab written')
-
-    def ultra_ai_ui(self):
-        self._ultra_run(generate_ai_tuning_lab, 'Ultra AI tuning lab written')
-
-    def ultra_move_cards_ui(self):
-        self._ultra_run(generate_move_cards, 'Ultra move cards written')
-
-    def ultra_input_map_ui(self):
-        self._ultra_run(generate_input_map_assistant, 'Ultra input map assistant written')
 
     def image_factory_choose_input_ui(self):
         folder = filedialog.askdirectory(title='Choose image input folder')

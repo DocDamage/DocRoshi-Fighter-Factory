@@ -34,6 +34,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             'mugenforge.forge_timeline',
             'mugenforge.ui_actions.creator_suite',
             'mugenforge.ui_actions.factory_max',
+            'mugenforge.ui_actions.factory_ultra',
             'mugenforge.ui_tabs.asset_workspaces',
             'mugenforge.ui_tabs.authority',
             'mugenforge.ui_tabs.base',
