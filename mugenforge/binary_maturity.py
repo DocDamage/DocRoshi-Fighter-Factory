@@ -4,7 +4,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from datetime import datetime
 import csv
-import hashlib
 import json
 import os
 import shutil
@@ -13,6 +12,14 @@ import subprocess
 import zipfile
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
+from .artifact_io import (
+    rel_path,
+    sha256_file as _sha256,
+    timestamp as _now,
+    write_csv_artifact as _write_csv,
+    write_json_artifact as _write_json,
+    write_text_artifact as _write_text,
+)
 from .move_wizard import find_character_file
 from .sff_codec import (
     SFF_SIGNATURE,
@@ -105,56 +112,13 @@ def _uniq(items: Iterable[object]) -> List[str]:
 def _rel(root: Path, path: Path | str | None) -> str:
     if path is None:
         return str(root)
-    try:
-        return str(Path(path).resolve().relative_to(Path(root).resolve())).replace('\\', '/')
-    except Exception:
-        return str(path).replace('\\', '/')
-
-
-def _now() -> str:
-    return datetime.now().strftime('%Y%m%d_%H%M%S')
+    return rel_path(root, path)
 
 
 def _bm(root: Path) -> Path:
     out = Path(root) / 'binary_maturity'
     out.mkdir(parents=True, exist_ok=True)
     return out
-
-
-def _write_text(path: Path, text: str, result: Optional[BinaryMaturityResult] = None, root: Optional[Path] = None) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text.rstrip() + '\n', encoding='utf-8')
-    if result is not None:
-        result.created_files.append(_rel(root or path.parent, path))
-    return path
-
-
-def _write_json(path: Path, data: object, result: Optional[BinaryMaturityResult] = None, root: Optional[Path] = None) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-    if result is not None:
-        result.created_files.append(_rel(root or path.parent, path))
-    return path
-
-
-def _write_csv(path: Path, rows: Sequence[Dict[str, object]], fields: Sequence[str], result: Optional[BinaryMaturityResult] = None, root: Optional[Path] = None) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open('w', encoding='utf-8', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=list(fields))
-        writer.writeheader()
-        for row in rows:
-            writer.writerow({k: row.get(k, '') for k in fields})
-    if result is not None:
-        result.created_files.append(_rel(root or path.parent, path))
-    return path
-
-
-def _sha256(path: Path) -> str:
-    h = hashlib.sha256()
-    with Path(path).open('rb') as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b''):
-            h.update(chunk)
-    return h.hexdigest()
 
 
 def _find_file(root: Path, ext: str) -> Optional[Path]:
