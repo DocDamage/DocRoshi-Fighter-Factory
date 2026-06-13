@@ -49,6 +49,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             'mugenforge.ui_actions.sound_pipeline',
             'mugenforge.ui_actions.sprite_pipeline',
             'mugenforge.ui_actions.visual_forge',
+            'mugenforge.ui_tabs.app_builders',
             'mugenforge.ui_tabs.asset_workspaces',
             'mugenforge.ui_tabs.authority',
             'mugenforge.ui_tabs.base',
