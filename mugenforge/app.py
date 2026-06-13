@@ -117,7 +117,17 @@ from .ui_tabs.plus_workspaces import FactoryPlusTab, ForgePlusTab, StudioPlusTab
 from .ui_tabs.rescue_lab import RescueLabTab
 from .ui_tabs.runtime_lab import RuntimeLabTab
 from .ui_tabs.sff2_bridge import Sff2BridgeTab
-from .ui_tabs.visual_forge_tabs import MoveComposer2Tab, SoundCueEditorTab, SpriteOffsetAxisTab, VisualForgeHomeTab, VisualTimelineTab
+from .ui_tabs.visual_forge_tabs import (
+    BackupLogTab,
+    MigrationWizardTab,
+    MoveComposer2Tab,
+    PluginTemplateTab,
+    SoundCueEditorTab,
+    SpriteOffsetAxisTab,
+    TrainingDebugTab,
+    VisualForgeHomeTab,
+    VisualTimelineTab,
+)
 from .creator_os import (
     CREATOR_OS_VERSION, creator_os_one_click, write_character_blueprint,
     export_frame_data_sheet, export_input_cheatsheet, write_combo_routes,
@@ -1777,34 +1787,7 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
             log_error(self.project_root, 'Move Composer append', exc)
 
     def _build_migration_wizard_tab(self):
-        tab = ttk.Frame(self.notebook)
-        self.vf_migration_frame = tab
-        tab.columnconfigure(1, weight=1)
-        tab.rowconfigure(1, weight=1)
-        header = ttk.LabelFrame(tab, text='Existing Character Import / Migration Wizard', padding=(8, 6))
-        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=8, pady=8)
-        ttk.Label(header, text='Copy a legacy character into a MugenForge project folder, write a migration report, and guide repair steps. The original source folder is not modified.', wraplength=1120, justify='left').grid(row=0, column=0, sticky='ew')
-        left = ttk.Frame(tab, padding=(8, 0))
-        left.grid(row=1, column=0, sticky='nsw')
-        self.vf_migration_source_var = tk.StringVar()
-        self.vf_migration_dest_var = tk.StringVar(value=str(Path.cwd()))
-        self.vf_migration_name_var = tk.StringVar(value='imported_character')
-        for r, (label, var, cmd) in enumerate((('Source character folder', self.vf_migration_source_var, self.vf_choose_import_source), ('Destination parent', self.vf_migration_dest_var, self.vf_choose_import_dest), ('New project folder name', self.vf_migration_name_var, None))):
-            ttk.Label(left, text=label).grid(row=r*2, column=0, sticky='w', pady=(4, 1))
-            ttk.Entry(left, textvariable=var, width=46).grid(row=r*2+1, column=0, sticky='ew')
-            if cmd:
-                ttk.Button(left, text='Choose', command=cmd).grid(row=r*2+1, column=1, padx=(4, 0))
-        ttk.Button(left, text='Run Migration Wizard', command=self.vf_run_migration_ui).grid(row=7, column=0, sticky='ew', pady=(10, 2))
-        right = ttk.Frame(tab, padding=(0, 0))
-        right.grid(row=1, column=1, sticky='nsew', padx=(0, 8), pady=(0, 8))
-        right.columnconfigure(0, weight=1)
-        right.rowconfigure(0, weight=1)
-        self.vf_migration_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
-        y = ttk.Scrollbar(right, orient='vertical', command=self.vf_migration_output.yview)
-        self.vf_migration_output.configure(yscrollcommand=y.set)
-        self.vf_migration_output.grid(row=0, column=0, sticky='nsew')
-        y.grid(row=0, column=1, sticky='ns')
-        self.notebook.add(tab, text='Migration Wizard')
+        self.migration_wizard_tab = MigrationWizardTab(self)
 
     def vf_choose_import_source(self):
         folder = filedialog.askdirectory(title='Choose existing character folder to import')
@@ -1831,26 +1814,7 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
                 log_error(self.project_root, 'Migration wizard', exc)
 
     def _build_training_debug_tab(self):
-        tab = ttk.Frame(self.notebook)
-        self.vf_training_frame = tab
-        tab.columnconfigure(1, weight=1)
-        tab.rowconfigure(1, weight=1)
-        header = ttk.LabelFrame(tab, text='Training / Debug Overlay Pack', padding=(8, 6))
-        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=8, pady=8)
-        ttk.Label(header, text='Install beginner testing helpers and write docs/config for state, frame, velocity, and control debugging. Use engine playtesting for authoritative results.', wraplength=1120, justify='left').grid(row=0, column=0, sticky='ew')
-        left = ttk.Frame(tab, padding=(8, 0))
-        left.grid(row=1, column=0, sticky='nsw')
-        ttk.Button(left, text='Install Training Debug Pack', command=self.vf_install_training_debug_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        right = ttk.Frame(tab, padding=(0, 0))
-        right.grid(row=1, column=1, sticky='nsew', padx=(0, 8), pady=(0, 8))
-        right.columnconfigure(0, weight=1)
-        right.rowconfigure(0, weight=1)
-        self.vf_training_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
-        y = ttk.Scrollbar(right, orient='vertical', command=self.vf_training_output.yview)
-        self.vf_training_output.configure(yscrollcommand=y.set)
-        self.vf_training_output.grid(row=0, column=0, sticky='nsew')
-        y.grid(row=0, column=1, sticky='ns')
-        self.notebook.add(tab, text='Training Debug')
+        self.training_debug_tab = TrainingDebugTab(self)
 
     def vf_install_training_debug_ui(self):
         if not self._vf_require_project():
@@ -1864,27 +1828,7 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
             log_error(self.project_root, 'Training debug install', exc)
 
     def _build_plugin_template_tab(self):
-        tab = ttk.Frame(self.notebook)
-        self.vf_plugin_frame = tab
-        tab.columnconfigure(1, weight=1)
-        tab.rowconfigure(1, weight=1)
-        header = ttk.LabelFrame(tab, text='Plugin / Template Architecture', padding=(8, 6))
-        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=8, pady=8)
-        ttk.Label(header, text='Foundation for no-code presets, data-only community templates, and future plugins. Arbitrary third-party code execution is not enabled by default.', wraplength=1120, justify='left').grid(row=0, column=0, sticky='ew')
-        left = ttk.Frame(tab, padding=(8, 0))
-        left.grid(row=1, column=0, sticky='nsw')
-        ttk.Button(left, text='Install Template / Plugin Foundation', command=self.vf_install_templates_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Button(left, text='Write Honest SFF2 Bridge Pack', command=self.vf_sff2_pack_ui).grid(row=1, column=0, sticky='ew', pady=2)
-        right = ttk.Frame(tab, padding=(0, 0))
-        right.grid(row=1, column=1, sticky='nsew', padx=(0, 8), pady=(0, 8))
-        right.columnconfigure(0, weight=1)
-        right.rowconfigure(0, weight=1)
-        self.vf_plugin_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
-        y = ttk.Scrollbar(right, orient='vertical', command=self.vf_plugin_output.yview)
-        self.vf_plugin_output.configure(yscrollcommand=y.set)
-        self.vf_plugin_output.grid(row=0, column=0, sticky='nsew')
-        y.grid(row=0, column=1, sticky='ns')
-        self.notebook.add(tab, text='Templates / Plugins')
+        self.plugin_template_tab = PluginTemplateTab(self)
 
     def vf_install_templates_ui(self):
         if not self._vf_require_project():
@@ -1912,31 +1856,7 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
             log_error(self.project_root, 'SFF2 Bridge Pack', exc)
 
     def _build_backup_log_tab(self):
-        tab = ttk.Frame(self.notebook)
-        self.vf_backup_frame = tab
-        tab.columnconfigure(1, weight=1)
-        tab.rowconfigure(1, weight=1)
-        header = ttk.LabelFrame(tab, text='Central Backup / Undo / Error Log', padding=(8, 6))
-        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=8, pady=8)
-        ttk.Label(header, text='Create whole-project snapshots, restore the latest Visual Forge snapshot with a pre-restore guard backup, and inspect error logs.', wraplength=1120, justify='left').grid(row=0, column=0, sticky='ew')
-        left = ttk.Frame(tab, padding=(8, 0))
-        left.grid(row=1, column=0, sticky='nsw')
-        self.vf_backup_label_var = tk.StringVar(value='manual')
-        ttk.Label(left, text='Snapshot label').grid(row=0, column=0, sticky='w')
-        ttk.Entry(left, textvariable=self.vf_backup_label_var, width=30).grid(row=1, column=0, sticky='ew')
-        ttk.Button(left, text='Create Snapshot ZIP', command=self.vf_backup_snapshot_ui).grid(row=2, column=0, sticky='ew', pady=(8, 2))
-        ttk.Button(left, text='Restore Latest Snapshot', command=self.vf_restore_snapshot_ui).grid(row=3, column=0, sticky='ew', pady=2)
-        ttk.Button(left, text='View Error Log', command=self.vf_view_error_log_ui).grid(row=4, column=0, sticky='ew', pady=2)
-        right = ttk.Frame(tab, padding=(0, 0))
-        right.grid(row=1, column=1, sticky='nsew', padx=(0, 8), pady=(0, 8))
-        right.columnconfigure(0, weight=1)
-        right.rowconfigure(0, weight=1)
-        self.vf_backup_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
-        y = ttk.Scrollbar(right, orient='vertical', command=self.vf_backup_output.yview)
-        self.vf_backup_output.configure(yscrollcommand=y.set)
-        self.vf_backup_output.grid(row=0, column=0, sticky='nsew')
-        y.grid(row=0, column=1, sticky='ns')
-        self.notebook.add(tab, text='Backups / Logs')
+        self.backup_log_tab = BackupLogTab(self)
 
     def vf_backup_snapshot_ui(self):
         if not self._vf_require_project():
