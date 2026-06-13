@@ -70,7 +70,6 @@ from .factory_max import (
     image_factory_process_folder, make_palette_variants,
 )
 from .factory_ultra import (
-    FACTORY_ULTRA_VERSION,
     one_click_ultra_production_pass, ultra_project_dashboard,
     generate_frame_data_lab, generate_balance_lab, generate_cancel_lab,
     generate_asset_usage_lab, generate_sprite_axis_lab, generate_beginner_task_board,
@@ -108,7 +107,7 @@ from .ui_tabs.authority import AuthorityCoreTab, AuthorityLabTab
 from .ui_tabs.binary import BinaryWorkspaceTabs
 from .ui_tabs.closure_evidence import ClosureLabTab, EvidenceCoreTab
 from .ui_tabs.continuity import HandoffCoreTab, MaintenanceCoreTab, OperatorConsoleTab
-from .ui_tabs.creator_factory_tabs import AutoBuilderTab, FactoryMaxTab
+from .ui_tabs.creator_factory_tabs import AutoBuilderTab, FactoryMaxTab, FactoryUltraTab
 from .ui_tabs.creator_hub import CreatorHubTab
 from .ui_tabs.forge_workspaces import ForgeBeyondTab, ForgePolishTab, ForgeTimelineTab
 from .ui_tabs.gap_closer import GapCloserTab
@@ -667,61 +666,7 @@ class MugenForgeApp(tk.Tk):
         self.set_text(self.creator_os_output, 'Open/create a character folder, choose a creative profile, then run One-Click Creator OS Autopilot. It builds the docs/reports/checklists around the project so non-coders can focus on the fun parts.')
 
     def _build_factory_ultra_tab(self):
-        ultra = ttk.Frame(self.notebook)
-        self.factory_ultra_frame = ultra
-        ultra.columnconfigure(1, weight=1)
-        ultra.rowconfigure(1, weight=1)
-
-        header = ttk.LabelFrame(ultra, text=f'Factory Ultra / No-Code Production HQ v{FACTORY_ULTRA_VERSION}', padding=(8, 6))
-        header.grid(row=0, column=0, columnspan=2, sticky='ew', padx=6, pady=6)
-        ttk.Label(header, text=(
-            'A higher-level production hub for non-coders: snapshots, dashboards, frame data, balance review, asset usage, cancel/state flow, input maps, move cards, task boards, AI tuning, and release readiness.'
-        ), wraplength=1120, justify='left').grid(row=0, column=0, sticky='ew')
-
-        left = ttk.Frame(ultra, padding=(6, 0))
-        left.grid(row=1, column=0, sticky='nsw')
-
-        main = ttk.LabelFrame(left, text='One-click production', padding=(6, 6))
-        main.grid(row=0, column=0, sticky='ew')
-        ttk.Button(main, text='One-Click Ultra Production Pass', command=self.ultra_one_click_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Button(main, text='Create Safety Snapshot', command=self.ultra_snapshot_ui).grid(row=1, column=0, sticky='ew', pady=2)
-        ttk.Button(main, text='Build Ultra Release ZIP', command=self.ultra_release_zip_ui).grid(row=2, column=0, sticky='ew', pady=2)
-
-        reports = ttk.LabelFrame(left, text='Beginner reports', padding=(6, 6))
-        reports.grid(row=1, column=0, sticky='ew', pady=(8,0))
-        ttk.Button(reports, text='Ultra Dashboard', command=self.ultra_dashboard_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Button(reports, text='Beginner Task Board', command=self.ultra_task_board_ui).grid(row=1, column=0, sticky='ew', pady=2)
-        ttk.Button(reports, text='Production Bible', command=self.ultra_bible_ui).grid(row=2, column=0, sticky='ew', pady=2)
-        ttk.Button(reports, text='Feature Switchboard', command=self.ultra_switchboard_ui).grid(row=3, column=0, sticky='ew', pady=2)
-        ttk.Button(reports, text='Release Readiness', command=self.ultra_readiness_ui).grid(row=4, column=0, sticky='ew', pady=2)
-
-        labs = ttk.LabelFrame(left, text='No-code tuning labs', padding=(6, 6))
-        labs.grid(row=2, column=0, sticky='ew', pady=(8,0))
-        ttk.Button(labs, text='Frame Data Lab', command=self.ultra_frame_data_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Button(labs, text='Balance Lab', command=self.ultra_balance_ui).grid(row=1, column=0, sticky='ew', pady=2)
-        ttk.Button(labs, text='Cancel / State Flow Lab', command=self.ultra_cancel_ui).grid(row=2, column=0, sticky='ew', pady=2)
-        ttk.Button(labs, text='Asset Usage Lab', command=self.ultra_assets_ui).grid(row=3, column=0, sticky='ew', pady=2)
-        ttk.Button(labs, text='Sprite Axis Lab', command=self.ultra_axis_ui).grid(row=4, column=0, sticky='ew', pady=2)
-        ttk.Button(labs, text='AI Tuning Lab', command=self.ultra_ai_ui).grid(row=5, column=0, sticky='ew', pady=2)
-
-        creator = ttk.LabelFrame(left, text='Creator-facing helpers', padding=(6, 6))
-        creator.grid(row=3, column=0, sticky='ew', pady=(8,0))
-        ttk.Button(creator, text='Move Cards HTML', command=self.ultra_move_cards_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Button(creator, text='Input Map Assistant', command=self.ultra_input_map_ui).grid(row=1, column=0, sticky='ew', pady=2)
-
-        right = ttk.Frame(ultra, padding=(0, 0, 6, 6))
-        right.grid(row=1, column=1, sticky='nsew')
-        right.rowconfigure(0, weight=1)
-        right.columnconfigure(0, weight=1)
-        self.factory_ultra_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
-        sy = ttk.Scrollbar(right, orient='vertical', command=self.factory_ultra_output.yview)
-        sx = ttk.Scrollbar(right, orient='horizontal', command=self.factory_ultra_output.xview)
-        self.factory_ultra_output.configure(yscrollcommand=sy.set, xscrollcommand=sx.set)
-        self.factory_ultra_output.grid(row=0, column=0, sticky='nsew')
-        sy.grid(row=0, column=1, sticky='ns')
-        sx.grid(row=1, column=0, sticky='ew')
-        self.notebook.add(ultra, text='Factory Ultra')
-        self.set_text(self.factory_ultra_output, 'Best route for beginners: Create/New Character → One-Click Ultra Production Pass → replace art/sound → Animation Player + CLSN Editor → Frame Data/Balance/Asset labs → Build Ultra Release ZIP.')
+        self.factory_ultra_tab = FactoryUltraTab(self)
 
     def _build_quality_lab_tab(self):
         ql = ttk.Frame(self.notebook)
