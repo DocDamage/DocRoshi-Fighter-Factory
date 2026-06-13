@@ -7,40 +7,10 @@ from tkinter import messagebox, ttk
 from .. import handoff_core as ho_core
 from .. import maintenance_core as maint_core
 from .. import operator_console as op_console
+from .base import AppBackedTab
 
 
-class _AppBackedTab:
-    """Small adapter for tab controllers that still depend on app services."""
-
-    def __init__(self, app):
-        self.app = app
-        self.notebook = app.notebook
-        self.frame = None
-
-    def _set_text(self, widget, text: str):
-        self.app.set_text(widget, text)
-
-    def _set_status(self, text: str):
-        self.app.status_var.set(text)
-
-    def _reload_project(self):
-        try:
-            self.app.reload_project()
-        except Exception:
-            pass
-
-    def _select_frame(self):
-        try:
-            self.notebook.select(self.frame)
-        except Exception:
-            pass
-
-    def _publish(self, *names: str):
-        for name in names:
-            setattr(self.app, name, getattr(self, name))
-
-
-class HandoffCoreTab(_AppBackedTab):
+class HandoffCoreTab(AppBackedTab):
     def __init__(self, app):
         super().__init__(app)
         self.root_var = None
@@ -173,7 +143,7 @@ class HandoffCoreTab(_AppBackedTab):
             messagebox.showerror('Handoff bundle failed', str(exc))
 
 
-class OperatorConsoleTab(_AppBackedTab):
+class OperatorConsoleTab(AppBackedTab):
     def __init__(self, app):
         super().__init__(app)
         self.output = None
@@ -243,7 +213,7 @@ class OperatorConsoleTab(_AppBackedTab):
     def _operator_console_show_result(self, result, status: str):
         self._set_text(self.output, result.to_text() if hasattr(result, 'to_text') else str(result))
         self._set_status(status)
-        self._select_frame()
+        self._select()
         self._reload_project()
 
     def operator_console_one_click_ui(self):
@@ -311,7 +281,7 @@ class OperatorConsoleTab(_AppBackedTab):
             messagebox.showerror('Operator context bundle failed', str(exc))
 
 
-class MaintenanceCoreTab(_AppBackedTab):
+class MaintenanceCoreTab(AppBackedTab):
     def __init__(self, app):
         super().__init__(app)
         self.output = None
@@ -387,7 +357,7 @@ class MaintenanceCoreTab(_AppBackedTab):
     def _maintenance_core_show_result(self, result, status: str):
         self._set_text(self.output, result.to_text() if hasattr(result, 'to_text') else str(result))
         self._set_status(status)
-        self._select_frame()
+        self._select()
         self._reload_project()
 
     def maintenance_core_one_click_ui(self):

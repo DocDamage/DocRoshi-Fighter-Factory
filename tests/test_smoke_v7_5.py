@@ -32,6 +32,8 @@ class MugenForgeSmokeTests(unittest.TestCase):
             'mugenforge.runtime_lab',
             'mugenforge.binary_maturity',
             'mugenforge.forge_timeline',
+            'mugenforge.ui_tabs.base',
+            'mugenforge.ui_tabs.binary',
             'mugenforge.ui_tabs.continuity',
         ]:
             with self.subTest(module=name):
@@ -76,10 +78,16 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertIn('Operator Console', tabs)
             self.assertIn('Maintenance Core', tabs)
             self.assertIn('Handoff Core', tabs)
+            self.assertIn('Binary Core', tabs)
+            self.assertIn('Binary Deep', tabs)
+            self.assertIn('Binary Maturity', tabs)
             self.assertEqual(selected, 'Operator Console')
             self.assertTrue(callable(getattr(app, 'operator_console_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'maintenance_core_one_click_ui', None)))
             self.assertTrue(callable(getattr(app, 'handoff_core_one_click_ui', None)))
+            self.assertTrue(callable(getattr(app, 'binary_core_one_click_ui', None)))
+            self.assertTrue(callable(getattr(app, 'binary_deep_one_click_ui', None)))
+            self.assertTrue(callable(getattr(app, 'binary_maturity_one_click_ui', None)))
         finally:
             app.destroy()
 
