@@ -3,13 +3,12 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 from datetime import datetime
-import csv
 import html
-import json
 import re
-from typing import Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Dict, Iterable, List, Optional, Sequence
 
-from .parsers import parse_air, parse_code, parse_def, read_text_safely, write_text_safely, COMMON_ANIMS
+from .artifact_io import write_csv_artifact, write_json_artifact, write_text_artifact
+from .parsers import parse_air, parse_code, read_text_safely, COMMON_ANIMS
 from .move_wizard import find_character_file
 from .quality_lab import build_reference_matrix, _matrix_score
 from .automation_bank import available_presets, kit_names, kit_preview_text, feature_bank_stats_text
@@ -81,15 +80,15 @@ def _hub_dir(root: Path) -> Path:
 
 
 def _write(path: Path, text: str) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text.rstrip() + '\n', encoding='utf-8')
-    return path
+    return write_text_artifact(path, text)
 
 
 def _write_json(path: Path, data: object) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-    return path
+    return write_json_artifact(path, data)
+
+
+def _write_csv(path: Path, rows: Sequence[Dict[str, object]], fields: Sequence[str]) -> Path:
+    return write_csv_artifact(path, rows, fields)
 
 
 def _code_files(root: Path) -> List[Path]:
@@ -354,9 +353,7 @@ def write_project_task_board(root: Path) -> CreatorHubResult:
         add('Low', 'Polish', 'No critical structural tasks found', 'The project looks structurally healthy.', 'Focus on sprites, animation timing, sounds, palettes, testing, and release notes.')
 
     csv_path = out / 'CREATOR_TASK_BOARD.csv'
-    with csv_path.open('w', encoding='utf-8', newline='') as f:
-        w = csv.DictWriter(f, fieldnames=['priority', 'lane', 'title', 'why', 'action'])
-        w.writeheader(); w.writerows(tasks)
+    _write_csv(csv_path, tasks, ['priority', 'lane', 'title', 'why', 'action'])
     md = ['# Creator Task Board', '', f'Generated: {datetime.now().isoformat(timespec="seconds")}', '', '| Priority | Lane | Task | Why it matters | Suggested action |', '|---|---|---|---|---|']
     md += [f"| {t['priority']} | {t['lane']} | {t['title']} | {t['why']} | {t['action']} |" for t in tasks]
     md_path = _write(out / 'CREATOR_TASK_BOARD.md', '\n'.join(md))
@@ -397,12 +394,12 @@ def write_input_conflict_lab(root: Path) -> CreatorHubResult:
         if _difficulty_for_input(str(r['command']), r.get('time')) == 'hard':
             issues.append({'severity': 'Medium', 'type': 'Hard input', 'input': str(r['command']), 'commands': str(r['name']), 'fix': 'Consider a beginner-friendly alternate input or add buffering.'})
     csv_path = out / 'INPUT_CONFLICT_LAB.csv'
-    with csv_path.open('w', encoding='utf-8', newline='') as f:
-        w = csv.DictWriter(f, fieldnames=['file', 'line', 'name', 'command', 'time', 'buffer_time', 'normalized', 'difficulty'])
-        w.writeheader()
-        for r in rows:
-            rr = dict(r); rr['difficulty'] = _difficulty_for_input(str(r['command']), r.get('time'))
-            w.writerow(rr)
+    command_rows: List[Dict[str, object]] = []
+    for r in rows:
+        rr = dict(r)
+        rr['difficulty'] = _difficulty_for_input(str(r['command']), r.get('time'))
+        command_rows.append(rr)
+    _write_csv(csv_path, command_rows, ['file', 'line', 'name', 'command', 'time', 'buffer_time', 'normalized', 'difficulty'])
     issue_path = out / 'INPUT_CONFLICT_ISSUES.json'
     _write_json(issue_path, issues)
     md = ['# Input Conflict Lab', '', f'Generated: {datetime.now().isoformat(timespec="seconds")}', '', f'Commands scanned: **{len(rows)}**', f'Issues found: **{len(issues)}**', '', '## Issues', '']
@@ -429,11 +426,7 @@ def write_balance_autotune_plan(root: Path) -> CreatorHubResult:
     rows = _parse_hitdefs(root)
     csv_path = out / 'BALANCE_AUTOTUNE_PLAN.csv'
     fields = ['file', 'state', 'damage', 'attr', 'hitflag', 'guardflag', 'pausetime', 'ground_velocity', 'air_velocity', 'guard_velocity', 'sparkno', 'hitsound', 'guardsound', 'recommendation']
-    with csv_path.open('w', encoding='utf-8', newline='') as f:
-        w = csv.DictWriter(f, fieldnames=fields)
-        w.writeheader()
-        for r in rows:
-            w.writerow({k: r.get(k, '') for k in fields})
+    _write_csv(csv_path, rows, fields)
     dmg_values = [int(r.get('damage') or 0) for r in rows]
     md = ['# Balance Autotune Plan', '', f'Generated: {datetime.now().isoformat(timespec="seconds")}', '',
           'This is a safe plan, not a destructive auto-patch. It tells a non-coder which values to inspect first.', '']
@@ -498,11 +491,11 @@ def write_combo_trial_pack(root: Path) -> CreatorHubResult:
     md_path = _write(out / 'COMBO_TRIALS.md', '\n'.join(md))
     js_path = _write_json(out / 'COMBO_TRIALS.json', trials)
     csv_path = out / 'COMBO_TRIALS.csv'
-    with csv_path.open('w', encoding='utf-8', newline='') as f:
-        w = csv.DictWriter(f, fieldnames=['name', 'difficulty', 'goal', 'sequence'])
-        w.writeheader()
-        for t in trials:
-            w.writerow({'name': t['name'], 'difficulty': t['difficulty'], 'goal': t['goal'], 'sequence': ' > '.join(t['sequence'])})
+    trial_rows = [
+        {'name': t['name'], 'difficulty': t['difficulty'], 'goal': t['goal'], 'sequence': ' > '.join(t['sequence'])}
+        for t in trials
+    ]
+    _write_csv(csv_path, trial_rows, ['name', 'difficulty', 'goal', 'sequence'])
     result = CreatorHubResult('Combo Trial Pack written')
     for p in (md_path, js_path, csv_path): result.add_created(_rel(root, p))
     result.notes.append(f'Generated {len(trials)} draft combo/training trials.')
@@ -527,19 +520,15 @@ def write_asset_request_pack(root: Path) -> CreatorHubResult:
         for m in re.finditer(r'PlaySnd\b.*?(?:\n.*?value\s*=\s*([^\n;]+))', text, re.I | re.S):
             sound_refs.append({'file': rel, 'value': m.group(1).strip()})
     sprite_csv = out / 'SPRITE_REQUESTS.csv'
-    with sprite_csv.open('w', encoding='utf-8', newline='') as f:
-        w = csv.DictWriter(f, fieldnames=['action', 'label', 'frames', 'ticks', 'sprite_refs'])
-        w.writeheader()
-        for r in sprite_requests:
-            w.writerow({**r, 'sprite_refs': '; '.join(r['sprite_refs'])})
+    sprite_rows = [{**r, 'sprite_refs': '; '.join(r['sprite_refs'])} for r in sprite_requests]
+    _write_csv(sprite_csv, sprite_rows, ['action', 'label', 'frames', 'ticks', 'sprite_refs'])
     sound_csv = out / 'SOUND_REQUESTS.csv'
-    with sound_csv.open('w', encoding='utf-8', newline='') as f:
-        w = csv.DictWriter(f, fieldnames=['file', 'value', 'suggested_filename'])
-        w.writeheader()
-        for r in sound_refs:
-            nums = re.findall(r'-?\d+', r['value'])
-            suggested = f"sound_{nums[0]}_{nums[1]}.wav" if len(nums) >= 2 else 'sound_group_index.wav'
-            w.writerow({'file': r['file'], 'value': r['value'], 'suggested_filename': suggested})
+    sound_rows = []
+    for r in sound_refs:
+        nums = re.findall(r'-?\d+', r['value'])
+        suggested = f"sound_{nums[0]}_{nums[1]}.wav" if len(nums) >= 2 else 'sound_group_index.wav'
+        sound_rows.append({'file': r['file'], 'value': r['value'], 'suggested_filename': suggested})
+    _write_csv(sound_csv, sound_rows, ['file', 'value', 'suggested_filename'])
     md = ['# Asset Request Pack', '', f'Generated: {datetime.now().isoformat(timespec="seconds")}', '',
           'Give this to an artist/sound designer or use it yourself as the replacement checklist.', '',
           '## Sprite/animation requests', '', '| AIR action | Label | Frames | Ticks | Sprite refs |', '|---:|---|---:|---:|---|']
@@ -638,12 +627,11 @@ def write_controller_mapping_sheet(root: Path) -> CreatorHubResult:
         md.append('')
     md_path = _write(out / 'CONTROLLER_MAPPING_SHEET.md', '\n'.join(md))
     csv_path = out / 'CONTROLLER_MAPPING_SHEET.csv'
-    with csv_path.open('w', encoding='utf-8', newline='') as f:
-        w = csv.DictWriter(f, fieldnames=['bucket', 'name', 'input', 'difficulty', 'time', 'buffer_time', 'file'])
-        w.writeheader()
-        for bucket, rows in groups.items():
-            for r in rows:
-                w.writerow({'bucket': bucket, 'name': r['name'], 'input': r['command'], 'difficulty': _difficulty_for_input(str(r['command']), r.get('time')), 'time': r.get('time',''), 'buffer_time': r.get('buffer_time',''), 'file': r.get('file','')})
+    mapping_rows = []
+    for bucket, rows in groups.items():
+        for r in rows:
+            mapping_rows.append({'bucket': bucket, 'name': r['name'], 'input': r['command'], 'difficulty': _difficulty_for_input(str(r['command']), r.get('time')), 'time': r.get('time',''), 'buffer_time': r.get('buffer_time',''), 'file': r.get('file','')})
+    _write_csv(csv_path, mapping_rows, ['bucket', 'name', 'input', 'difficulty', 'time', 'buffer_time', 'file'])
     result = CreatorHubResult('Controller Mapping Sheet written')
     for p in (md_path, csv_path): result.add_created(_rel(root, p))
     result.notes.append(f'Mapped {len(commands)} commands into beginner-friendly buckets.')
