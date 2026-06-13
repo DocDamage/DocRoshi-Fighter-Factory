@@ -146,12 +146,12 @@ from .forge_timeline import (
     write_stage_live_preview, build_forge_timeline_bundle,
 )
 
-from . import runtime_lab as rt_lab
 from . import evidence_core as ev_core
 from . import authority_lab as auth_lab
 from . import authority_core as ac
 from .ui_tabs.binary import BinaryWorkspaceTabs
 from .ui_tabs.continuity import HandoffCoreTab, MaintenanceCoreTab, OperatorConsoleTab
+from .ui_tabs.runtime_lab import RuntimeLabTab
 from .closure_lab import (
     CLOSURE_LAB_VERSION, run_closure_lab_pass, write_closure_dashboard,
     build_offline_runtime_simulation, write_engine_adapter_suite, validate_engine_adapter_suite, run_engine_adapter_suite,
@@ -7167,189 +7167,8 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
             self.binary_workspace_tab = BinaryWorkspaceTabs(self)
 
 
-    # Runtime Lab v6.1: external engine harnesses, runtime evidence, log parsing, and release readiness.
     def _build_runtime_lab_tab(self):
-        frame = ttk.Frame(self.notebook)
-        self.runtime_lab_frame = frame
-        frame.columnconfigure(0, weight=1)
-        frame.rowconfigure(2, weight=1)
-
-        header = ttk.LabelFrame(frame, text=f'Runtime Lab v{rt_lab.RUNTIME_LAB_VERSION} — launch harnesses, playtest evidence, log parsing, and release readiness', padding=(8, 6))
-        header.grid(row=0, column=0, sticky='ew', padx=6, pady=6)
-        intro = (
-            'Runtime Lab closes the external-playtest gap. It does not simulate M.U.G.E.N/IKEMEN; it writes editable launchers, '
-            'installs an optional DisplayToClipboard overlay, generates runtime test scenarios, parses logs, indexes evidence, '
-            'and creates a release-readiness report from real engine-test artifacts.'
-        )
-        ttk.Label(header, text=intro, wraplength=1180, justify='left').grid(row=0, column=0, columnspan=5, sticky='ew', pady=(0, 6))
-        buttons = [
-            ('One-Click Runtime Lab Pass', self.runtime_lab_one_click_ui),
-            ('Runtime Config Template', self.runtime_lab_config_ui),
-            ('Export Launch Profiles', self.runtime_lab_profiles_ui),
-            ('Build Launch Scripts', self.runtime_lab_launchers_ui),
-            ('Install Debug Overlay', self.runtime_lab_debug_overlay_ui),
-            ('Runtime Test Plan', self.runtime_lab_test_plan_ui),
-            ('Parse Runtime Logs', self.runtime_lab_parse_logs_ui),
-            ('Evidence Index', self.runtime_lab_evidence_ui),
-            ('Regression Checklist', self.runtime_lab_regression_ui),
-            ('Readiness Report', self.runtime_lab_readiness_ui),
-            ('Bundle Runtime Lab', self.runtime_lab_bundle_ui),
-        ]
-        for idx, (label, cmd) in enumerate(buttons):
-            ttk.Button(header, text=label, command=cmd).grid(row=1 + idx // 5, column=idx % 5, sticky='ew', padx=3, pady=2)
-            header.columnconfigure(idx % 5, weight=1)
-
-        body = ttk.LabelFrame(frame, text='Recommended runtime loop', padding=(8, 6))
-        body.grid(row=1, column=0, sticky='ew', padx=6, pady=(0, 6))
-        workflow = (
-            'One-Click Runtime Lab Pass → edit runtime_config.json → review launcher scripts → run the external engine → '
-            'save logs/screenshots/video notes → Parse Runtime Logs → Evidence Index → Readiness Report. '
-            'Readiness is a release aid, not engine-authoritative proof.'
-        )
-        ttk.Label(body, text=workflow, wraplength=1180, justify='left').grid(row=0, column=0, sticky='ew')
-
-        self.runtime_lab_output = tk.Text(frame, wrap='word', font=('Consolas', 10), state='disabled')
-        self.runtime_lab_output.grid(row=2, column=0, sticky='nsew', padx=6, pady=(0, 6))
-        self.notebook.add(frame, text='Runtime Lab')
-        self.set_text(self.runtime_lab_output, f'Runtime Lab v{rt_lab.RUNTIME_LAB_VERSION} is ready. Generate configs and launchers, run the external engine, then feed logs/evidence back into MugenForge.')
-
-    def _runtime_lab_root(self):
-        if not self.project_root:
-            messagebox.showinfo('Runtime Lab', 'Open or create a project folder first.')
-            return None
-        return Path(self.project_root)
-
-    def _runtime_lab_show_result(self, result, status: str):
-        self.set_text(self.runtime_lab_output, result.to_text() if hasattr(result, 'to_text') else str(result))
-        self.status_var.set(status)
-        try:
-            self.notebook.select(self.runtime_lab_frame)
-        except Exception:
-            pass
-
-    def runtime_lab_one_click_ui(self):
-        root = self._runtime_lab_root()
-        if not root:
-            return
-        try:
-            result = rt_lab.run_runtime_lab_pass(root)
-            self.reload_project()
-            self._runtime_lab_show_result(result, 'Runtime Lab pass complete')
-            messagebox.showinfo('Runtime Lab complete', 'Runtime Lab pass completed. Review runtime_lab/RUNTIME_LAB_START_HERE.md, configure your engine path, then run external playtests.')
-        except Exception as exc:
-            messagebox.showerror('Runtime Lab failed', str(exc))
-
-    def runtime_lab_config_ui(self):
-        root = self._runtime_lab_root()
-        if not root:
-            return
-        try:
-            result = rt_lab.write_runtime_config_template(root)
-            self.reload_project()
-            self._runtime_lab_show_result(result, 'Runtime config template written')
-        except Exception as exc:
-            messagebox.showerror('Runtime config failed', str(exc))
-
-    def runtime_lab_profiles_ui(self):
-        root = self._runtime_lab_root()
-        if not root:
-            return
-        try:
-            result = rt_lab.export_runtime_launch_profiles(root)
-            self.reload_project()
-            self._runtime_lab_show_result(result, 'Runtime launch profiles exported')
-        except Exception as exc:
-            messagebox.showerror('Runtime profiles failed', str(exc))
-
-    def runtime_lab_launchers_ui(self):
-        root = self._runtime_lab_root()
-        if not root:
-            return
-        try:
-            result = rt_lab.build_runtime_launch_scripts(root)
-            self.reload_project()
-            self._runtime_lab_show_result(result, 'Runtime launch scripts built')
-        except Exception as exc:
-            messagebox.showerror('Runtime launchers failed', str(exc))
-
-    def runtime_lab_debug_overlay_ui(self):
-        root = self._runtime_lab_root()
-        if not root:
-            return
-        if not messagebox.askyesno('Install Runtime Debug Overlay', 'Append a State -2 DisplayToClipboard helper to the project CNS/ST file? A backup is written first.'):
-            return
-        try:
-            result = rt_lab.install_runtime_debug_overlay(root)
-            self.reload_project()
-            self._runtime_lab_show_result(result, 'Runtime debug overlay installed')
-        except Exception as exc:
-            messagebox.showerror('Runtime debug overlay failed', str(exc))
-
-    def runtime_lab_test_plan_ui(self):
-        root = self._runtime_lab_root()
-        if not root:
-            return
-        try:
-            result = rt_lab.write_runtime_test_plan(root)
-            self.reload_project()
-            self._runtime_lab_show_result(result, 'Runtime test plan written')
-        except Exception as exc:
-            messagebox.showerror('Runtime test plan failed', str(exc))
-
-    def runtime_lab_parse_logs_ui(self):
-        root = self._runtime_lab_root()
-        if not root:
-            return
-        try:
-            result = rt_lab.parse_runtime_logs(root)
-            self.reload_project()
-            self._runtime_lab_show_result(result, 'Runtime logs parsed')
-        except Exception as exc:
-            messagebox.showerror('Runtime log parse failed', str(exc))
-
-    def runtime_lab_evidence_ui(self):
-        root = self._runtime_lab_root()
-        if not root:
-            return
-        try:
-            result = rt_lab.build_runtime_evidence_index(root)
-            self.reload_project()
-            self._runtime_lab_show_result(result, 'Runtime evidence indexed')
-        except Exception as exc:
-            messagebox.showerror('Runtime evidence index failed', str(exc))
-
-    def runtime_lab_regression_ui(self):
-        root = self._runtime_lab_root()
-        if not root:
-            return
-        try:
-            result = rt_lab.write_runtime_regression_checklist(root)
-            self.reload_project()
-            self._runtime_lab_show_result(result, 'Runtime regression checklist written')
-        except Exception as exc:
-            messagebox.showerror('Runtime regression checklist failed', str(exc))
-
-    def runtime_lab_readiness_ui(self):
-        root = self._runtime_lab_root()
-        if not root:
-            return
-        try:
-            result = rt_lab.write_runtime_readiness_report(root)
-            self.reload_project()
-            self._runtime_lab_show_result(result, 'Runtime readiness report written')
-        except Exception as exc:
-            messagebox.showerror('Runtime readiness failed', str(exc))
-
-    def runtime_lab_bundle_ui(self):
-        root = self._runtime_lab_root()
-        if not root:
-            return
-        try:
-            result = rt_lab.build_runtime_lab_bundle(root)
-            self.reload_project()
-            self._runtime_lab_show_result(result, 'Runtime Lab bundle written')
-        except Exception as exc:
-            messagebox.showerror('Runtime Lab bundle failed', str(exc))
+        self.runtime_lab_tab = RuntimeLabTab(self)
 
 
     # Gap Closer v7.0 — engine profiles, source runtime model, corpus validation, guarded binary commits, and tuning loop.
