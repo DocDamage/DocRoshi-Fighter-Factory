@@ -47,6 +47,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             'mugenforge.ui_tabs.rescue_lab',
             'mugenforge.ui_tabs.runtime_lab',
             'mugenforge.ui_tabs.sff2_bridge',
+            'mugenforge.ui_tabs.visual_forge_tabs',
         ]:
             with self.subTest(module=name):
                 importlib.import_module(name)
@@ -110,6 +111,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             self.assertIn('Sprite Lab', tabs)
             self.assertIn('Stage Builder', tabs)
             self.assertIn('Run / Test', tabs)
+            self.assertIn('Project Home', tabs)
             self.assertIn('Forge Beyond', tabs)
             self.assertIn('Forge Polish', tabs)
             self.assertIn('Forge Timeline', tabs)
