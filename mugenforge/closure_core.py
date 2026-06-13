@@ -4,7 +4,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from datetime import datetime
 import csv
-import hashlib
 import html
 import json
 import os
@@ -16,6 +15,14 @@ import sys
 import zipfile
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple, Any
 
+from .artifact_io import (
+    rel_path as _rel,
+    sha256_file as _sha256,
+    timestamp as _now,
+    write_csv_artifact,
+    write_json_artifact,
+    write_text_artifact,
+)
 from .parsers import parse_air, parse_code, parse_def, read_text_safely, write_text_safely, scan_project
 from .move_wizard import find_character_file
 from .sff_codec import read_sff
@@ -114,10 +121,6 @@ class MicroScenario:
 # Shared helpers
 
 
-def _now() -> str:
-    return datetime.now().strftime('%Y%m%d_%H%M%S')
-
-
 def _uniq(items: Iterable[str]) -> List[str]:
     out: List[str] = []
     seen = set()
@@ -129,13 +132,6 @@ def _uniq(items: Iterable[str]) -> List[str]:
     return out
 
 
-def _rel(root: Path, path: Path | str) -> str:
-    try:
-        return str(Path(path).resolve().relative_to(Path(root).resolve())).replace('\\', '/')
-    except Exception:
-        return str(path).replace('\\', '/')
-
-
 def _closure_dir(root: Path) -> Path:
     out = Path(root) / 'closure_core'
     out.mkdir(parents=True, exist_ok=True)
@@ -143,31 +139,15 @@ def _closure_dir(root: Path) -> Path:
 
 
 def _write_text(root: Path, path: Path, text: str, result: Optional[ClosureResult] = None, changed: bool = False) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    existed = path.exists()
-    path.write_text(text.rstrip() + '\n', encoding='utf-8')
-    if result is not None:
-        (result.changed_files if existed or changed else result.created_files).append(_rel(root, path))
-    return path
+    return write_text_artifact(path, text, result, root, changed, track_existing=True)
 
 
 def _write_json(root: Path, path: Path, data: object, result: Optional[ClosureResult] = None, changed: bool = False) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    existed = path.exists()
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-    if result is not None:
-        (result.changed_files if existed or changed else result.created_files).append(_rel(root, path))
-    return path
+    return write_json_artifact(path, data, result, root, changed, track_existing=True)
 
 
 def _csv_write(path: Path, rows: Sequence[Dict[str, object]], fields: Sequence[str]) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open('w', encoding='utf-8', newline='') as f:
-        w = csv.DictWriter(f, fieldnames=list(fields))
-        w.writeheader()
-        for row in rows:
-            w.writerow({k: row.get(k, '') for k in fields})
-    return path
+    return write_csv_artifact(path, rows, fields)
 
 
 def _csv_read(path: Path) -> List[Dict[str, str]]:
@@ -175,14 +155,6 @@ def _csv_read(path: Path) -> List[Dict[str, str]]:
         return []
     with Path(path).open('r', encoding='utf-8-sig', newline='') as f:
         return [dict(row) for row in csv.DictReader(f)]
-
-
-def _sha256(path: Path) -> str:
-    h = hashlib.sha256()
-    with Path(path).open('rb') as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b''):
-            h.update(chunk)
-    return h.hexdigest()
 
 
 def _first_int(value: object, default: int = 0) -> int:
