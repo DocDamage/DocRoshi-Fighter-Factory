@@ -17,6 +17,19 @@ Windows helper:
 run_windows.bat
 ```
 
+## Playable assets
+
+The public repo does not include the large third-party IKEMEN/MUGEN runtime
+assets needed to play the assembled build. Those assets are published separately
+as a private release:
+
+- Private assets repo: https://github.com/DocDamage/DocRoshi-Fighter-Factory-Assets
+- Current playable bundle: https://github.com/DocDamage/DocRoshi-Fighter-Factory-Assets/releases/tag/playable-assets-20260614-mbevo-swr
+- Local bundle note: see `ASSETS.md`
+
+Download both split `.7z` parts from the private release into one folder, then
+extract the `.001` file with 7-Zip.
+
 Smoke test:
 
 ```bash

@@ -12,6 +12,17 @@ Run the app with:
 python -m mugenforge.app
 ```
 
+Playable runtime assets are not stored in this public source repo. They are in
+the private repo `DocDamage/DocRoshi-Fighter-Factory-Assets`, release
+`playable-assets-20260614-mbevo-swr`:
+
+```text
+https://github.com/DocDamage/DocRoshi-Fighter-Factory-Assets/releases/tag/playable-assets-20260614-mbevo-swr
+```
+
+Download both split `.7z` files and extract the `.001` file with 7-Zip to restore
+the playable IKEMEN GO MBEVO + Scarlet Weather Rhapsody lifebar runtime.
+
 Start in **Operator Console**. First open `operator_console/OPERATOR_DASHBOARD.md`, then refresh **One-Click Operator Pass**. Use the phase table below to decide whether to work in Forge Timeline, Binary Maturity, Runtime Lab, Authority Lab, or Evidence Core.
 
 Current state summary:

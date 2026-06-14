@@ -18,4 +18,11 @@ Recommended app order:
 4. Runtime Lab / Authority Lab
 5. Release packaging
 
+Playable runtime assets:
+
+- The public source repo does not bundle the large IKEMEN/MUGEN playable assets.
+- Private assets repo: https://github.com/DocDamage/DocRoshi-Fighter-Factory-Assets
+- Current playable bundle: https://github.com/DocDamage/DocRoshi-Fighter-Factory-Assets/releases/tag/playable-assets-20260614-mbevo-swr
+- Download both split `.7z` parts and extract the `.001` file with 7-Zip.
+
 Honest scope: Operator Console makes project state easier to resume and audit. It does not make static analysis engine-authoritative.

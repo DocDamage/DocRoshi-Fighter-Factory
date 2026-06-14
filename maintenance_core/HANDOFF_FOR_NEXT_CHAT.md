@@ -9,6 +9,17 @@ Latest app title should be: **MugenForge Studio 7.5 Continuity Core**
 Run command: `python -m mugenforge.app`
 Install: `pip install -r requirements.txt`
 
+Playable runtime assets:
+
+- Public source repo: `DocDamage/DocRoshi-Fighter-Factory`
+- Private asset repo: `DocDamage/DocRoshi-Fighter-Factory-Assets`
+- Current private release: `playable-assets-20260614-mbevo-swr`
+- Release URL: https://github.com/DocDamage/DocRoshi-Fighter-Factory-Assets/releases/tag/playable-assets-20260614-mbevo-swr
+
+Download both split `.7z` parts and extract the `.001` file with 7-Zip to restore
+the playable IKEMEN GO MBEVO + Scarlet Weather Rhapsody lifebar runtime. Keep
+the bundle private unless third-party redistribution rights are verified.
+
 ## Non-negotiable project rules
 
 - Clean-room only. Do not use or claim Fighter Factory / VirtuallTek source, assets, or proprietary logic.
