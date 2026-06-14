@@ -32,10 +32,14 @@ from .builders_v22 import build_v22_feature
 from .builders_v23_v25 import build_v23_v25_feature
 from .builders_v26 import build_v26_feature
 from .builders_labs import build_labs_feature
+from .builders_moves import build_move_automation_feature
 
 
 def build_feature_package(feature_id: str) -> FeaturePackage:
     # Mirror the original chain of overrides (from latest to oldest)
+    pkg = build_move_automation_feature(feature_id)
+    if pkg is not None:
+        return pkg
     pkg = build_labs_feature(feature_id)
     if pkg is not None:
         return pkg

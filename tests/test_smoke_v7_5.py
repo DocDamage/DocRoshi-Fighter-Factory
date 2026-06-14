@@ -28,6 +28,7 @@ class MugenForgeSmokeTests(unittest.TestCase):
             'mugenforge.app_state',
             'mugenforge.artifact_io',
             'mugenforge.binary_results',
+            'mugenforge.automation_bank.builders_moves',
             'mugenforge.handoff_core',
             'mugenforge.operator_console',
             'mugenforge.maintenance_core',
@@ -156,6 +157,48 @@ class MugenForgeSmokeTests(unittest.TestCase):
             write_csv_artifact(root / 'out' / 'forced.csv', [{'name': 'beta'}], ['name'], result, root, changed=True)
             self.assertIn('out/forced.json', result.changed_files)
             self.assertIn('out/forced.csv', result.changed_files)
+
+    def test_move_automation_feature_packs_build_and_apply(self):
+        from mugenforge.automation_bank import apply_feature_package, build_feature_package, kit_names
+        from mugenforge.parsers import make_new_character
+
+        feature_ids = [
+            'auto_starter_normals_route',
+            'auto_beginner_cancel_route',
+            'auto_rushdown_move_suite',
+            'auto_zoner_move_suite',
+            'auto_grappler_move_suite',
+            'auto_anti_air_reversal_pack',
+            'auto_training_macro_routes',
+        ]
+
+        for feature_id in feature_ids:
+            with self.subTest(feature_id=feature_id):
+                package = build_feature_package(feature_id)
+                self.assertEqual(package.feature_id, feature_id)
+                self.assertTrue(package.summary)
+                self.assertTrue(package.cmd_block.strip())
+                self.assertTrue(package.cns_block.strip())
+                self.assertIn('docs/move_automation/', '\n'.join(package.extra_files))
+                if feature_id != 'auto_training_macro_routes':
+                    self.assertTrue(package.air_block.strip())
+
+        self.assertIn('Move Automation Starter Routes', kit_names())
+        self.assertIn('Move Automation Archetype Suite', kit_names())
+
+        with tempfile.TemporaryDirectory(prefix='mf_move_auto_') as tmp:
+            root = make_new_character(Path(tmp), 'MoveAutoHero')
+            package = build_feature_package('auto_beginner_cancel_route')
+            result = apply_feature_package(root, package)
+
+            self.assertFalse(result.warnings)
+            self.assertTrue((root / 'docs' / 'move_automation' / 'auto_beginner_cancel_route.md').exists())
+            cmd_text = next(root.glob('*.cmd')).read_text(encoding='utf-8')
+            cns_text = next(root.glob('*.cns')).read_text(encoding='utf-8')
+            air_text = next(root.glob('*.air')).read_text(encoding='utf-8')
+            self.assertIn('route_jab', cmd_text)
+            self.assertIn('MugenForge cancel to 370', cns_text)
+            self.assertIn('[Begin Action 1390]', air_text)
 
     def test_continuity_backends_write_expected_artifacts(self):
         from mugenforge.handoff_core import write_context_digest, write_package_inventory, write_regression_harness
