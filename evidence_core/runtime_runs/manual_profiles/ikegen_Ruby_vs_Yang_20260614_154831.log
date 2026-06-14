@@ -1,0 +1,75 @@
+table: 0xc02b5ee480 {
+  ["MatchTime"] => 60
+  ["RoundTime"] => 60
+  ["WinSide"] => 1
+  ["LastRound"] => 1
+  ["Draws"] => 0
+  ["Wins"] => table: 0xc02b5ee4e0 {
+                [1] => 0
+                [2] => 1
+              }
+  ["TeamModes"] => table: 0xc02b5ee540 {
+                     [1] => 0
+                     [2] => 0
+                   }
+  ["TotalScore"] => table: 0xc02b5ee5a0 {
+                      [1] => 0
+                      [2] => 29000
+                    }
+  ["Rounds"] => table: 0xc02b5ee600 {
+                  [1] => table: 0xc02b5ee660 {
+                           ["Index"] => 1
+                           ["Timer"] => 60
+                           ["Score"] => table: 0xc02b5ee6c0 {
+                                          [1] => 0
+                                          [2] => 29000
+                                        }
+                           ["Fighters"] => table: 0xc02b5ee720 {
+                                             [1] => table: 0xc02b5ee780 {
+                                                      [1] => table: 0xc02b5ee7e0 {
+                                                               ["Name"] => "Ruby Rose"
+                                                               ["ID"] => 56
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 0
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 888
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => false
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                             [2] => table: 0xc02b5ee840 {
+                                                      [1] => table: 0xc02b5ee8a0 {
+                                                               ["Name"] => "Yang Xiao Long"
+                                                               ["ID"] => 57
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 1
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1100
+                                                               ["LifeMax"] => 1100
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => true
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => true
+                                                               ["WinPerfect"] => true
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => false
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                           }
+                         }
+                }
+}

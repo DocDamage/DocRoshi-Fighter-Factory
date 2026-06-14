@@ -1,24 +1,30 @@
 {
-  "generated_at": "2026-06-13T19:25:51",
+  "generated_at": "2026-06-14T00:22:52",
   "package_version": "7.5.0",
   "handoff_core_version": "7.5.0",
   "app_title": "MugenForge Studio 7.5 Continuity Core",
-  "module_count": 56,
-  "tab_count": 54,
-  "total_python_lines": 53409,
+  "module_count": 114,
+  "tab_count": 0,
+  "total_python_lines": 55146,
   "handoff_target_summary": {
-    "root": ".",
+    "root": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory",
     "exists": true,
     "extension_counts": {
       ".bat": 1,
-      ".csv": 5,
+      ".csv": 12,
       ".html": 1,
-      ".json": 7,
-      ".md": 36,
-      ".py": 56,
-      ".pyc": 49,
-      ".txt": 10,
-      ".zip": 2
+      ".idx": 1,
+      ".json": 23,
+      ".log": 3,
+      ".md": 48,
+      ".pack": 1,
+      ".py": 114,
+      ".pyc": 106,
+      ".rev": 1,
+      ".sample": 14,
+      ".txt": 19,
+      ".zip": 6,
+      "[none]": 194
     },
     "core_files": {
       ".def": [],
@@ -32,7 +38,7 @@
   },
   "resume_order": [
     "Read handoff_core/HANDOFF_CORE_START_HERE.md",
-    "Read MUGENFORGE_HANDOFF_v7_5.md and RELEASE_SUMMARY_v7_5.md",
+    "Read docs/MUGENFORGE_HANDOFF_v7_5.md and docs/RELEASE_SUMMARY_v7_5.md",
     "Run python -m compileall -q mugenforge",
     "Run python handoff_core/regression_harness/smoke_v7_5.py",
     "Open the UI and start in Operator Console, then Handoff Core"

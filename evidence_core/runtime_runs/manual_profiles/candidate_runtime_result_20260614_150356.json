@@ -1,0 +1,31 @@
+{
+  "profile": "candidate",
+  "command": [
+    "C:\\Users\\dferr\\tools\\Ikemen-GO-live-vpfg-merge-candidate\\Ikemen_GO.exe",
+    "-windowed",
+    "-nosound",
+    "-nojoy",
+    "-log",
+    "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\candidate_kfm_zss_vs_kfm_zss_20260614_150356.log",
+    "-p1",
+    "kfm_zss",
+    "-p1.ai",
+    "8",
+    "-p2",
+    "kfm_zss",
+    "-p2.ai",
+    "8",
+    "-s",
+    "stages/TrainingGrid.def",
+    "-rounds",
+    "1",
+    "-time",
+    "1"
+  ],
+  "cwd": "C:\\Users\\dferr\\tools\\Ikemen-GO-live-vpfg-merge-candidate",
+  "returncode": 1,
+  "status": "fail",
+  "log": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\candidate_kfm_zss_vs_kfm_zss_20260614_150356.log",
+  "stdout_tail": "Check A: Selecting Renderer\nCheck B: Initializing GFX\nCheck C: Initializing GFX Font\nCheck D: We are GOOD\n",
+  "stderr_tail": "Ikemen, GO!\nVersion: nightly Build Time: 2026.06.13\nUsing OpenGL 3.3.0 NVIDIA 596.49 (NVIDIA GeForce RTX 3060/PCIe/SSE2)\nWARNING: Duplicate action key in data/fight.def: 510 (ignored)\nWARNING: Duplicate action key in data/VPFG_2.0/VP_FX.air: 20107 (ignored)\nPanic: external/script/main.lua:1139: data/dizzy.zss:60:\nGO const(FxDizzyEffect) + map(birdType)\nanim: Invalid data: go\nstack traceback:\n\t[G]: in function 'game'\n\texternal/script/main.lua:1139: in function 'f_commandLine'\n\texternal/script/main.lua:1148: in main chunk\n\t[G]: ?\n\nGo stack traceback:\ngoroutine 1 [running, locked to thread]:\nruntime/debug.Stack()\n\truntime/debug/stack.go:24 +0x65\nmain.handlePanic({0x7ff775f3ab40?, 0xc0362a0000})\n\tgithub.com/ikemen-engine/Ikemen-GO/src/main.go:369 +0x3e5\nmain.realMain.func1()\n\tgithub.com/ikemen-engine/Ikemen-GO/src/main.go:66 +0x2a\npanic({0x7ff775f3ab40, 0xc0362a0000})\n\truntime/panic.go:884 +0x213\nmain.realMain()\n\tgithub.com/ikemen-engine/Ikemen-GO/src/main.go:206 +0x58d\nmain.main()\n\tgithub.com/ikemen-engine/Ikemen-GO/src/main.go:59 +0x17\n\n"
+}

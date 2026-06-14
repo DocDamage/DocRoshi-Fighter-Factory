@@ -1,8 +1,8 @@
 # MugenForge Operator Dashboard
 
-Project: ``
-Generated: `2026-06-13T19:25:53`
-Operator score: **44/100**
+Project: `DocRoshi-Fighter-Factory`
+Generated: `2026-06-14T00:22:49`
+Operator score: **52/100**
 Blocker count: **6**
 
 ## Current project files
@@ -24,7 +24,7 @@ Blocker count: **6**
 | State routing | pass | No missing numeric ChangeState/SelfState targets found. | Use State Graph / Authority Lab to inspect and retarget broken transitions. |
 | Sprites / SFF | needs work | No SFF file detected. | Use Binary Maturity for existing SFF2, or Sheet Import / SFF2 Bridge for source images. |
 | Sounds / SND | needs work | No SND file detected. | Use Sound Cue Editor, Binary Core SND sheets, or source WAV rebuild workflow. |
-| Runtime evidence | not started | No runtime/evidence artifacts found yet. | Run Runtime Lab or Evidence Core with your local M.U.G.E.N/IKEMEN executable. |
+| Runtime evidence | pass | Runtime/evidence artifacts exist. | Run Runtime Lab or Evidence Core with your local M.U.G.E.N/IKEMEN executable. |
 | Release packaging | not started | No release/export artifacts found yet. | Run Release ZIP / Evidence Bundle / Operator Context Bundle near ship time. |
 
 ## Counts
@@ -46,7 +46,9 @@ Blocker count: **6**
 
 | name | file_count | latest_mtime |
 | --- | --- | --- |
-| operator_console | 10 | 2026-06-13T19:25:53 |
+| operator_console | 13 | 2026-06-14T00:22:49 |
+| evidence_core | 30 | 2026-06-14T00:22:39 |
+| docs | 30 | 2026-06-14T00:16:32 |
 
 ## Honest scope
 

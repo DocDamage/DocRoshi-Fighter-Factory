@@ -1,0 +1,129 @@
+table: 0xc02db98480 {
+  ["MatchTime"] => 12
+  ["RoundTime"] => 6
+  ["WinSide"] => -1
+  ["LastRound"] => 2
+  ["Draws"] => 1
+  ["Wins"] => table: 0xc02db984e0 {
+                [1] => 1
+                [2] => 1
+              }
+  ["TeamModes"] => table: 0xc02db98540 {
+                     [1] => 0
+                     [2] => 0
+                   }
+  ["TotalScore"] => table: 0xc02db985a0 {
+                      [1] => 0
+                      [2] => 0
+                    }
+  ["Rounds"] => table: 0xc02db98600 {
+                  [1] => table: 0xc02db98660 {
+                           ["Index"] => 1
+                           ["Timer"] => 6
+                           ["Score"] => table: 0xc02db986c0 {
+                                          [1] => 0
+                                          [2] => 0
+                                        }
+                           ["Fighters"] => table: 0xc02db98720 {
+                                             [1] => table: 0xc02db98780 {
+                                                      [1] => table: 0xc02db987e0 {
+                                                               ["Name"] => "Tohru Adachi"
+                                                               ["ID"] => 56
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 0
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1000
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                             [2] => table: 0xc02db98840 {
+                                                      [1] => table: 0xc02db988a0 {
+                                                               ["Name"] => "Ruby Rose"
+                                                               ["ID"] => 57
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 1
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1000
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                           }
+                         }
+                  [2] => table: 0xc02db98900 {
+                           ["Index"] => 2
+                           ["Timer"] => 6
+                           ["Score"] => table: 0xc02db98960 {
+                                          [1] => 0
+                                          [2] => 0
+                                        }
+                           ["Fighters"] => table: 0xc02db989c0 {
+                                             [1] => table: 0xc02db98a20 {
+                                                      [1] => table: 0xc02db98a80 {
+                                                               ["Name"] => "Tohru Adachi"
+                                                               ["ID"] => 56
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 0
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1000
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                             [2] => table: 0xc02db98ae0 {
+                                                      [1] => table: 0xc02db98b40 {
+                                                               ["Name"] => "Ruby Rose"
+                                                               ["ID"] => 57
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 1
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1000
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                           }
+                         }
+                }
+}

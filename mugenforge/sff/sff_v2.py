@@ -605,6 +605,8 @@ def decode_sff2_image(path: Path, record: Sff2ImageRecord, *, info: Optional[Sff
                 payload = maybe
         except Exception:
             pass
+    if payload[4:12] == b'\x89PNG\r\n\x1a\n':
+        payload = payload[4:]
     if record.image_format in {10, 11, 12} or payload.startswith(b'\x89PNG\r\n\x1a\n'):
         im = Image.open(BytesIO(payload))
         if record.image_format == 10 and im.mode == 'P':
@@ -689,7 +691,8 @@ def _image_to_sff2_payload(image_path: Path, strategy: str = 'png') -> Tuple[byt
     buf = BytesIO()
     rgba = im.convert('RGBA')
     rgba.save(buf, format='PNG')
-    return buf.getvalue(), 12, 32, width, height
+    payload = struct.pack('<I', width * height * 4) + buf.getvalue()
+    return payload, 12, 32, width, height
 
 
 def _palette_from_image_or_default(image_paths: Sequence[Path]) -> bytes:

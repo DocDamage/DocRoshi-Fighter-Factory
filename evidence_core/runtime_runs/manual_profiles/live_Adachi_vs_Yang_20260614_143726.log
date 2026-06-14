@@ -1,0 +1,129 @@
+table: 0xc027d3c540 {
+  ["MatchTime"] => 120
+  ["RoundTime"] => 60
+  ["WinSide"] => -1
+  ["LastRound"] => 2
+  ["Draws"] => 1
+  ["Wins"] => table: 0xc027d3c5a0 {
+                [1] => 1
+                [2] => 1
+              }
+  ["TeamModes"] => table: 0xc027d3c600 {
+                     [1] => 0
+                     [2] => 0
+                   }
+  ["TotalScore"] => table: 0xc027d3c660 {
+                      [1] => 0
+                      [2] => 0
+                    }
+  ["Rounds"] => table: 0xc027d3c6c0 {
+                  [1] => table: 0xc027d3c720 {
+                           ["Index"] => 1
+                           ["Timer"] => 60
+                           ["Score"] => table: 0xc027d3c780 {
+                                          [1] => 0
+                                          [2] => 0
+                                        }
+                           ["Fighters"] => table: 0xc027d3c7e0 {
+                                             [1] => table: 0xc027d3c840 {
+                                                      [1] => table: 0xc027d3c8a0 {
+                                                               ["Name"] => "Tohru Adachi"
+                                                               ["ID"] => 56
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 0
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1000
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                             [2] => table: 0xc027d3c900 {
+                                                      [1] => table: 0xc027d3c960 {
+                                                               ["Name"] => "Yang Xiao Long"
+                                                               ["ID"] => 57
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 1
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1100
+                                                               ["LifeMax"] => 1100
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                           }
+                         }
+                  [2] => table: 0xc027d3c9c0 {
+                           ["Index"] => 2
+                           ["Timer"] => 60
+                           ["Score"] => table: 0xc027d3ca20 {
+                                          [1] => 0
+                                          [2] => 0
+                                        }
+                           ["Fighters"] => table: 0xc027d3ca80 {
+                                             [1] => table: 0xc027d3cae0 {
+                                                      [1] => table: 0xc027d3cb40 {
+                                                               ["Name"] => "Tohru Adachi"
+                                                               ["ID"] => 56
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 0
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1000
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                             [2] => table: 0xc027d3cba0 {
+                                                      [1] => table: 0xc027d3cc00 {
+                                                               ["Name"] => "Yang Xiao Long"
+                                                               ["ID"] => 57
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 1
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1100
+                                                               ["LifeMax"] => 1100
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                           }
+                         }
+                }
+}

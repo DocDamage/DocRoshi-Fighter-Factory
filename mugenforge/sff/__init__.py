@@ -301,6 +301,17 @@ from .rle_lz5 import (
 )
 
 
+def _uniq_list(values: Iterable[str]) -> List[str]:
+    seen = set()
+    out: List[str] = []
+    for value in values:
+        if value in seen:
+            continue
+        seen.add(value)
+        out.append(value)
+    return out
+
+
 def read_sff(path: Path, max_sprites: int = 20000) -> SffInfo:
     path = Path(path)
     data = path.read_bytes()
@@ -325,7 +336,7 @@ def read_sff(path: Path, max_sprites: int = 20000) -> SffInfo:
                     'unsupported_decode_formats': ['rle5', 'lz5'],
                 },
             )
-            from .sff_v2 import _mf_parse_sff2_standard, _uniq_list
+            from .sff_v2 import _mf_parse_sff2_standard
             meta, records, palettes, warnings = _mf_parse_sff2_standard(data)
             info.v2_metadata.update({
                 'sff2_records': [r.to_dict() for r in records[:max_sprites]],

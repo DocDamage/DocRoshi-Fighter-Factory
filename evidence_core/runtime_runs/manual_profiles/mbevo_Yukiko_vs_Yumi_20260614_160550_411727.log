@@ -1,0 +1,129 @@
+table: 0xc026174f60 {
+  ["MatchTime"] => 12
+  ["RoundTime"] => 6
+  ["WinSide"] => -1
+  ["LastRound"] => 2
+  ["Draws"] => 1
+  ["Wins"] => table: 0xc026174fc0 {
+                [1] => 1
+                [2] => 1
+              }
+  ["TeamModes"] => table: 0xc026175020 {
+                     [1] => 0
+                     [2] => 0
+                   }
+  ["TotalScore"] => table: 0xc026175080 {
+                      [1] => 1500
+                      [2] => 300
+                    }
+  ["Rounds"] => table: 0xc0261750e0 {
+                  [1] => table: 0xc026175140 {
+                           ["Index"] => 1
+                           ["Timer"] => 6
+                           ["Score"] => table: 0xc0261751a0 {
+                                          [1] => 1500
+                                          [2] => 300
+                                        }
+                           ["Fighters"] => table: 0xc026175200 {
+                                             [1] => table: 0xc026175260 {
+                                                      [1] => table: 0xc0261752c0 {
+                                                               ["Name"] => "Yukiko Amagi"
+                                                               ["ID"] => 56
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 0
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 975
+                                                               ["LifeMax"] => 975
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                             [2] => table: 0xc026175320 {
+                                                      [1] => table: 0xc026175380 {
+                                                               ["Name"] => "Yumi"
+                                                               ["ID"] => 57
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 1
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1000
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                           }
+                         }
+                  [2] => table: 0xc0261753e0 {
+                           ["Index"] => 2
+                           ["Timer"] => 6
+                           ["Score"] => table: 0xc026175440 {
+                                          [1] => 0
+                                          [2] => 0
+                                        }
+                           ["Fighters"] => table: 0xc0261754a0 {
+                                             [1] => table: 0xc026175500 {
+                                                      [1] => table: 0xc026175560 {
+                                                               ["Name"] => "Yukiko Amagi"
+                                                               ["ID"] => 56
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 0
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 975
+                                                               ["LifeMax"] => 975
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                             [2] => table: 0xc0261755c0 {
+                                                      [1] => table: 0xc026175620 {
+                                                               ["Name"] => "Yumi"
+                                                               ["ID"] => 57
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 1
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1000
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                           }
+                         }
+                }
+}

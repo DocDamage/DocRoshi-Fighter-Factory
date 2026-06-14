@@ -1,0 +1,7 @@
+Ikemen, GO!
+Version: nightly Build Time: 2026.06.13
+Using OpenGL 3.3.0 NVIDIA 596.49 (NVIDIA GeForce RTX 3060/PCIe/SSE2)
+WARNING: Duplicate action key in data/fight.def: 510 (ignored)
+WARNING: Kung Fu Man's state 1027 in kfm.cns, line 1476: Unknown state controller parameter(s): x, y
+WARNING: Kung Fu Man's state 1027 in kfm.cns, line 1476: Unknown state controller parameter(s): x, y
+Failed to open BGM: open sound/kfm.mid: The system cannot find the file specified.

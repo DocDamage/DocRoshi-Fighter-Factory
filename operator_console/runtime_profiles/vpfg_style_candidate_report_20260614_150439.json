@@ -1,0 +1,10 @@
+{
+  "candidate": "C:\\Users\\dferr\\tools\\Ikemen-GO-live-vpfg-merge-candidate",
+  "configBackup": "C:\\Users\\dferr\\tools\\Ikemen-GO-live-vpfg-merge-candidate\\save\\config.ini.bak-vpfgstyle-test-20260614_150432",
+  "restoredOriginalConfig": true,
+  "status": "fail",
+  "exitCode": 1,
+  "result": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\candidate_runtime_result_20260614_150432.json",
+  "states": "data/VPFG_2.0/module/VP_Functions.zss, data/guardbreak.zss, data/score.zss, data/training.zss, data/VPFG_2.0/attackdata.zss, data/VPFG_2.0/autostagecamera.zss, data/VPFG_2.0/module/VP_Roman.zss, data/VPFG_2.0/module/VP_Parry.zss, data/VPFG_2.0/module/VP_Clash.zss, data/VPFG_2.0/module/VP_RushCancel.zss, data/VPFG_2.0/module/VP_ComboBreaker.zss, data/VPFG_2.0/module/VP_Support.zss",
+  "output": "{\n  \"status\": \"fail\",\n  \"result\": \"C:\\\\Users\\\\dferr\\\\OneDrive\\\\Desktop\\\\DocRoshi-Fighter-Factory\\\\evidence_core\\\\runtime_runs\\\\manual_profiles\\\\candidate_runtime_result_20260614_150432.json\"\n}"
+}

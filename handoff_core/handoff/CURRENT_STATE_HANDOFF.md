@@ -25,18 +25,24 @@ v7.5 is a stabilization/continuity pass. It adds **Operator Console** and **Hand
 
 ```json
 {
-  "root": ".",
+  "root": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory",
   "exists": true,
   "extension_counts": {
     ".bat": 1,
-    ".csv": 5,
+    ".csv": 12,
     ".html": 1,
-    ".json": 7,
-    ".md": 36,
-    ".py": 56,
-    ".pyc": 49,
-    ".txt": 10,
-    ".zip": 2
+    ".idx": 1,
+    ".json": 23,
+    ".log": 3,
+    ".md": 48,
+    ".pack": 1,
+    ".py": 114,
+    ".pyc": 106,
+    ".rev": 1,
+    ".sample": 14,
+    ".txt": 19,
+    ".zip": 6,
+    "[none]": 194
   },
   "core_files": {
     ".def": [],

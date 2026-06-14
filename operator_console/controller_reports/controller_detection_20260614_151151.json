@@ -1,0 +1,177 @@
+﻿{
+    "checkedAt":  "2026-06-14T15:11:51",
+    "xboxControllerDetected":  false,
+    "ps5ControllerDetected":  false,
+    "detectedControllerLikeDevices":  [
+                                          {
+                                              "Name":  "Intel(R) LPC Controller/eSPI Controller (Z690) - 7A84",
+                                              "Status":  "OK",
+                                              "PNPClass":  "System",
+                                              "DeviceID":  "PCI\\VEN_8086\u0026DEV_7A84\u0026SUBSYS_B0A11458\u0026REV_11\\3\u002611583659\u00260\u0026F8"
+                                          },
+                                          {
+                                              "Name":  "Standard SATA AHCI Controller",
+                                              "Status":  "OK",
+                                              "PNPClass":  "HDC",
+                                              "DeviceID":  "PCI\\VEN_8086\u0026DEV_7AE2\u0026SUBSYS_B0051458\u0026REV_11\\3\u002611583659\u00260\u0026B8"
+                                          },
+                                          {
+                                              "Name":  "HID-compliant system controller",
+                                              "Status":  "OK",
+                                              "PNPClass":  "HIDClass",
+                                              "DeviceID":  "HID\\INTC816\u0026COL05\\3\u00261535A34C\u00260\u00260004"
+                                          },
+                                          {
+                                              "Name":  "Programmable interrupt controller",
+                                              "Status":  "OK",
+                                              "PNPClass":  "System",
+                                              "DeviceID":  "ACPI\\PNP0000\\4\u00261CE8899E\u00260"
+                                          },
+                                          {
+                                              "Name":  "Intel(R) Serial IO I2C Host Controller - 7ACD",
+                                              "Status":  "OK",
+                                              "PNPClass":  "System",
+                                              "DeviceID":  "PCI\\VEN_8086\u0026DEV_7ACD\u0026SUBSYS_00000000\u0026REV_11\\3\u002611583659\u00260\u0026A9"
+                                          },
+                                          {
+                                              "Name":  "Microsoft Storage Spaces Controller",
+                                              "Status":  "OK",
+                                              "PNPClass":  "SCSIAdapter",
+                                              "DeviceID":  "ROOT\\SPACEPORT\\0000"
+                                          },
+                                          {
+                                              "Name":  "Intel(R) SPI (flash) Controller - 7AA4",
+                                              "Status":  "OK",
+                                              "PNPClass":  "System",
+                                              "DeviceID":  "PCI\\VEN_8086\u0026DEV_7AA4\u0026SUBSYS_00000000\u0026REV_11\\3\u002611583659\u00260\u0026FD"
+                                          },
+                                          {
+                                              "Name":  "Renesas USB 3.0 eXtensible Host Controller - 1.0 (Microsoft)",
+                                              "Status":  "OK",
+                                              "PNPClass":  "USB",
+                                              "DeviceID":  "PCI\\VEN_1912\u0026DEV_0015\u0026SUBSYS_00000000\u0026REV_02\\4\u00261AA74847\u00260\u002600E5"
+                                          },
+                                          {
+                                              "Name":  "HID-compliant system controller",
+                                              "Status":  "OK",
+                                              "PNPClass":  "HIDClass",
+                                              "DeviceID":  "HID\\VID_3938\u0026PID_1205\u0026MI_01\u0026COL02\\7\u002615353037\u00260\u00260001"
+                                          },
+                                          {
+                                              "Name":  "Standard NVM Express Controller",
+                                              "Status":  "OK",
+                                              "PNPClass":  "SCSIAdapter",
+                                              "DeviceID":  "PCI\\VEN_1E4B\u0026DEV_1202\u0026SUBSYS_12021E4B\u0026REV_01\\4\u002631B1139F\u00260\u00260030"
+                                          },
+                                          {
+                                              "Name":  "Intel(R) Serial IO I2C Host Controller - 7AFD",
+                                              "Status":  "OK",
+                                              "PNPClass":  "System",
+                                              "DeviceID":  "PCI\\VEN_8086\u0026DEV_7AFD\u0026SUBSYS_00000000\u0026REV_11\\3\u002611583659\u00260\u0026C9"
+                                          },
+                                          {
+                                              "Name":  "Intel(R) Serial IO I2C Host Controller - 7ACF",
+                                              "Status":  "OK",
+                                              "PNPClass":  "System",
+                                              "DeviceID":  "PCI\\VEN_8086\u0026DEV_7ACF\u0026SUBSYS_00000000\u0026REV_11\\3\u002611583659\u00260\u0026AB"
+                                          },
+                                          {
+                                              "Name":  "Realtek Gaming 2.5GbE Family Controller",
+                                              "Status":  "OK",
+                                              "PNPClass":  "Net",
+                                              "DeviceID":  "PCI\\VEN_10EC\u0026DEV_8125\u0026SUBSYS_E0001458\u0026REV_05\\01000000684CE00000"
+                                          },
+                                          {
+                                              "Name":  "Standard NVM Express Controller",
+                                              "Status":  "OK",
+                                              "PNPClass":  "SCSIAdapter",
+                                              "DeviceID":  "PCI\\VEN_C0A9\u0026DEV_540A\u0026SUBSYS_5021C0A9\u0026REV_01\\4\u00262A67E986\u00260\u002600D0"
+                                          },
+                                          {
+                                              "Name":  "High Definition Audio Controller",
+                                              "Status":  "OK",
+                                              "PNPClass":  "System",
+                                              "DeviceID":  "PCI\\VEN_8086\u0026DEV_7AD0\u0026SUBSYS_A1941458\u0026REV_11\\3\u002611583659\u00260\u0026FB"
+                                          },
+                                          {
+                                              "Name":  "Intel(R) Serial IO I2C Host Controller - 7ACC",
+                                              "Status":  "OK",
+                                              "PNPClass":  "System",
+                                              "DeviceID":  "PCI\\VEN_8086\u0026DEV_7ACC\u0026SUBSYS_00000000\u0026REV_11\\3\u002611583659\u00260\u0026A8"
+                                          },
+                                          {
+                                              "Name":  "HID-compliant system controller",
+                                              "Status":  "OK",
+                                              "PNPClass":  "HIDClass",
+                                              "DeviceID":  "HID\\INTC816\u0026COL03\\3\u00261535A34C\u00260\u00260002"
+                                          },
+                                          {
+                                              "Name":  "High Definition Audio Controller",
+                                              "Status":  "OK",
+                                              "PNPClass":  "System",
+                                              "DeviceID":  "PCI\\VEN_10DE\u0026DEV_228E\u0026SUBSYS_40741458\u0026REV_A1\\4\u00268BD6E8D\u00260\u00260108"
+                                          },
+                                          {
+                                              "Name":  "Intel(R) Serial IO I2C Host Controller - 7AFC",
+                                              "Status":  "OK",
+                                              "PNPClass":  "System",
+                                              "DeviceID":  "PCI\\VEN_8086\u0026DEV_7AFC\u0026SUBSYS_00000000\u0026REV_11\\3\u002611583659\u00260\u0026C8"
+                                          },
+                                          {
+                                              "Name":  "Intel(R) USB 3.20 eXtensible Host Controller - 1.20 (Microsoft)",
+                                              "Status":  "OK",
+                                              "PNPClass":  "USB",
+                                              "DeviceID":  "PCI\\VEN_8086\u0026DEV_7AE0\u0026SUBSYS_50071458\u0026REV_11\\3\u002611583659\u00260\u0026A0"
+                                          },
+                                          {
+                                              "Name":  "Intel(R) Serial IO I2C Host Controller - 7ACE",
+                                              "Status":  "OK",
+                                              "PNPClass":  "System",
+                                              "DeviceID":  "PCI\\VEN_8086\u0026DEV_7ACE\u0026SUBSYS_00000000\u0026REV_11\\3\u002611583659\u00260\u0026AA"
+                                          },
+                                          {
+                                              "Name":  "Microsoft VHD Loopback Controller",
+                                              "Status":  "OK",
+                                              "PNPClass":  "SCSIAdapter",
+                                              "DeviceID":  "{8E7BD593-6E6C-4C52-86A6-77175494DD8E}\\MSVHDHBA\\1\u00263030E83\u00260\u002601"
+                                          },
+                                          {
+                                              "Name":  "HID-compliant system controller",
+                                              "Status":  "OK",
+                                              "PNPClass":  "HIDClass",
+                                              "DeviceID":  "HID\\CONVERTEDDEVICE\u0026COL03\\5\u002627CFA2AF\u00260\u00260002"
+                                          },
+                                          {
+                                              "Name":  "Intel(R) Serial IO GPIO Host Controller - INTC1056",
+                                              "Status":  "OK",
+                                              "PNPClass":  "System",
+                                              "DeviceID":  "ACPI\\INTC1056\\2\u0026DABA3FF\u00260"
+                                          },
+                                          {
+                                              "Name":  "HID-compliant system controller",
+                                              "Status":  "OK",
+                                              "PNPClass":  "HIDClass",
+                                              "DeviceID":  "HID\\INTC816\u0026COL04\\3\u00261535A34C\u00260\u00260003"
+                                          }
+                                      ],
+    "ikemenJoystickSlots":  {
+                                "p1":  0,
+                                "p2":  1,
+                                "p3":  2,
+                                "p4":  3
+                            },
+    "expectedMapping":  {
+                            "movement":  "D-pad",
+                            "mugenA":  "A / Cross",
+                            "mugenB":  "B / Circle",
+                            "mugenC":  "Right Trigger / R2",
+                            "mugenX":  "X / Square",
+                            "mugenY":  "Y / Triangle",
+                            "mugenZ":  "Right Bumper / R1",
+                            "assistD":  "Left Bumper / L1",
+                            "assistW":  "Left Trigger / L2",
+                            "start":  "Start / Options",
+                            "menu":  "Back / Share"
+                        },
+    "note":  "Plug controllers in before launching IKEMEN. If the PS5 pad is not detected as a game controller over Bluetooth, use USB, Steam Input, or DS4Windows Xbox emulation."
+}

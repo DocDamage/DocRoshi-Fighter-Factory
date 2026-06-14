@@ -31,7 +31,7 @@ def main() -> int:
     print('VERSION', mugenforge.__version__)
     print('APP_TITLE', APP_TITLE)
     expected_modules = [
-        'mugenforge.maintenance_core', 'mugenforge.evidence_core', 'mugenforge.authority_core',
+        'mugenforge.maintenance_core', 'mugenforge.handoff_core', 'mugenforge.operator_console', 'mugenforge.evidence_core', 'mugenforge.authority_core',
         'mugenforge.runtime_lab', 'mugenforge.binary_maturity', 'mugenforge.forge_timeline',
         'mugenforge.visual_forge', 'mugenforge.sff_codec', 'mugenforge.snd_codec',
     ]

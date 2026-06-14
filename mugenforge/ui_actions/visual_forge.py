@@ -33,6 +33,11 @@ from ..visual_forge import (
 )
 
 
+def _safe_preview_name(value: object, default: str = 'move') -> str:
+    safe = re.sub(r'[^A-Za-z0-9_-]+', '_', str(value or '')).strip('_')
+    return safe or default
+
+
 class VisualForgeActions:
     def _vf_int(self, var, default=0):
         try:
@@ -490,7 +495,8 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
             return
         spec = self._vf_composer2_spec()
         result = compose_move2(self.project_root, spec, append=False)
-        out = self.project_root / 'visual_forge' / 'move_composer' / f"{re.sub(r'[^A-Za-z0-9_\-]+', '_', spec.move_name).strip('_') or 'move'}_preview.txt"
+        preview_name = _safe_preview_name(spec.move_name)
+        out = self.project_root / 'visual_forge' / 'move_composer' / f'{preview_name}_preview.txt'
         text = result.to_text()
         if out.exists():
             text += '\n' + out.read_text(encoding='utf-8')

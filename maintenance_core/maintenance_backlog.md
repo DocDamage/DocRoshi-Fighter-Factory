@@ -1,11 +1,11 @@
 # MugenForge Maintenance Backlog after v7.5
 
-Generated: 2026-06-13T19:18:19
+Generated: 2026-06-14T00:15:01
 
 ## Immediate cleanup
 
-- Split `app.py` into tab/controller modules; it is functional but too large for long-term maintainability.
-- Build a formal pytest suite around the smoke scripts and controlled SFF/SND fixtures.
+- Continue consolidating module-backed tabs into role modes; `app.py` is now split into state, shell, tab-builder, and action modules.
+- Extend the real test suite around controlled SFF/SND fixtures and risky backend workflows.
 - Add sample projects with small permissive assets for repeatable visual/binary tests.
 - Add a CI-friendly headless UI test using Xvfb where available.
 - Consolidate duplicate workflow tabs into role modes: Beginner, Visual, Binary, Runtime, Release, Maintenance.

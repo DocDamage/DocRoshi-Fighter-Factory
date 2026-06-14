@@ -86,6 +86,17 @@ def _now() -> str:
     return datetime.now().strftime('%Y%m%d_%H%M%S')
 
 
+def _safe_run_name(value: object, default: str = 'profile') -> str:
+    safe = re.sub(r'[^A-Za-z0-9_-]+', '_', str(value or '')).strip('_')
+    return safe or default
+
+
+def _engine_kind_for_path(path: Optional[Path]) -> str:
+    if path and 'ikemen' in Path(path).name.lower():
+        return 'ikemen'
+    return 'custom'
+
+
 def _safe_copy(src: Path, dst: Path) -> Path:
     dst.parent.mkdir(parents=True, exist_ok=True)
     if src.resolve() != dst.resolve():
@@ -300,7 +311,8 @@ def run_engine_profile(root: Path, profile_path: Optional[Path] = None, profile_
     cwd = Path(str(profile.get('working_directory') or '') or (_ec(root, 'engine')))
     timeout = int(profile.get('timeout_seconds') or 60)
     tag = _now()
-    run_dir = out / f'{tag}_{re.sub(r"[^A-Za-z0-9_\-]+", "_", str(selected.get("name", "profile")))}'
+    run_name = _safe_run_name(selected.get('name', 'profile'))
+    run_dir = out / f'{tag}_{run_name}'
     run_dir.mkdir(parents=True, exist_ok=True)
     preview = {
         'generated': datetime.now().isoformat(timespec='seconds'),
@@ -1236,24 +1248,52 @@ def write_playtest_closure_report(root: Path) -> EvidenceCoreResult:
 # Compatibility/public API used by the v7.0 Tkinter tab
 
 
-def write_engine_profile(root: Path, *, engine_exe: Optional[Path] = None, game_root: Optional[Path] = None, default_stage: str = 'stages/training.def', opponent: str = 'kfm') -> EvidenceCoreResult:
+def write_engine_profile(root: Path, *, engine_exe: Optional[Path] = None, game_root: Optional[Path] = None, default_stage: str = 'stages/stage0.def', opponent: str = 'kfm') -> EvidenceCoreResult:
     root = Path(root)
     result = write_engine_profile_template(root)
     profile_path = _ec(root, 'engine') / 'engine_profile.json'
     profile = json.loads(profile_path.read_text(encoding='utf-8'))
     if engine_exe is not None:
         profile['engine_executable'] = str(Path(engine_exe))
+        profile['engine_kind'] = _engine_kind_for_path(Path(engine_exe))
     if game_root is not None:
         profile['working_directory'] = str(Path(game_root))
     variables = profile.setdefault('variables', {})
     if isinstance(variables, dict):
         variables['opponent'] = opponent
         variables['stage'] = default_stage
+        if _engine_kind_for_path(engine_exe) == 'ikemen':
+            variables['evidence_log'] = str(root / 'evidence_core' / 'runtime_runs' / 'ikemen_quick_vs_latest.log')
     profiles = profile.get('launch_profiles')
     if isinstance(profiles, list) and profiles:
-        # Keep the first profile conservative and user-editable, but make the intent concrete.
-        profiles[0]['arguments'] = ['{character}', '{opponent}', '{stage}']
-        profiles[0]['description'] = 'Default evidence run. Edit arguments for the specific command-line syntax of your engine build.'
+        if profile.get('engine_kind') == 'ikemen':
+            profiles[0]['arguments'] = [
+                '-windowed',
+                '-nosound',
+                '-nomusic',
+                '-nojoy',
+                '-log',
+                '{evidence_log}',
+                '-p1',
+                '{character}',
+                '-p1.ai',
+                '8',
+                '-p2',
+                '{opponent}',
+                '-p2.ai',
+                '8',
+                '-s',
+                '{stage}',
+                '-rounds',
+                '1',
+                '-time',
+                '1',
+            ]
+            profiles[0]['description'] = 'Default IKEMEN quick-VS evidence run: one short AI round with sound and joystick disabled.'
+        else:
+            # Keep custom-engine profiles conservative and user-editable, but make the intent concrete.
+            profiles[0]['arguments'] = ['{character}', '{opponent}', '{stage}']
+            profiles[0]['description'] = 'Default evidence run. Edit arguments for the specific command-line syntax of your engine build.'
     _write_json(root, profile_path, profile, result, changed=True)
     result.notes.append('Engine profile configured. Run Probe/Validate before live launch.')
     return result

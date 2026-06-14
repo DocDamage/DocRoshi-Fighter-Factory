@@ -1,16 +1,16 @@
 {
-  "root": "/mnt/data/mugenforge_studio_v7_5",
+  "root": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory",
   "exists": true,
   "file_counts": {
     ".bat": 1,
-    ".csv": 8,
+    ".csv": 9,
     ".html": 1,
-    ".json": 8,
-    ".md": 38,
-    ".py": 56,
-    ".pyc": 49,
-    ".txt": 10,
-    ".zip": 4
+    ".json": 12,
+    ".md": 46,
+    ".py": 114,
+    ".pyc": 106,
+    ".txt": 12,
+    ".zip": 1
   },
   "character_files": {
     "def": "",

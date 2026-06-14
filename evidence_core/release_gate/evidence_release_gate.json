@@ -1,0 +1,29 @@
+{
+  "generated": "2026-06-14T00:22:39",
+  "version": "7.0.0",
+  "status": "blocked",
+  "score": 41,
+  "reasons": [
+    "-14: 2 runtime/log error finding(s)",
+    "-15: 6 runtime/log warning finding(s)",
+    "-30: missing required project files: .def, .air, .cmd, .cns, .sff, .snd"
+  ],
+  "scenario_count": 3,
+  "scenario_passed": 1,
+  "scenario_blocked_or_failed": 0,
+  "runtime_result_files": [
+    "evidence_core/runtime_runs/20260614_002144_boot_character_smoke/runtime_result.json"
+  ],
+  "runtime_errors": 2,
+  "runtime_warnings": 6,
+  "evidence_files": 7,
+  "missing_required_files": [
+    ".def",
+    ".air",
+    ".cmd",
+    ".cns",
+    ".sff",
+    ".snd"
+  ],
+  "project_root": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory"
+}

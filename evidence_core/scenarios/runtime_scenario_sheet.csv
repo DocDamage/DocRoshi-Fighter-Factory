@@ -1,0 +1,4 @@
+enabled,scenario_id,category,target,method,expected_result,status,evidence_file,observed_result,notes
+yes,EC-0001,boot,DocRoshi-Fighter-Factory,engine_launch,Character loads without engine error or missing asset log.,,,,
+yes,EC-0002,round_start,DocRoshi-Fighter-Factory,manual_playtest,"Round starts, character can idle, move, guard, jump, and return to neutral.",,,,
+yes,EC-IKEMEN-KFM-0001,engine_smoke,ikemen bundled kfm vs kfm,engine_launch,IKEMEN launches a one-round quick-VS sample match and exits with return code 0.,pass,evidence_core/runtime_runs/20260614_002144_boot_character_smoke/runtime_result.json,IKEMEN nightly completed kfm vs kfm quick-VS with runtime_result returncode 0 and match log captured.,Engine installation smoke only; this does not certify DocRoshi character files because they are not present in the app repo root.

@@ -93,7 +93,7 @@ def _read_sff_v1_reader(path: Path, max_sprites: int = 20000) -> SffInfo:
     if info.version[0] >= 2 or info.version[3] == 2 or info.subheader_size not in (0, 32):
         info.v2_metadata = _inspect_sff2_header(data)
         try:
-            from .sff_v2 import read_sff2
+            from ..sff2_codec import read_sff2
             s2 = read_sff2(path)
             if s2.sprites:
                 info.variant = 'sff2-standard-table'
@@ -257,7 +257,7 @@ def build_sff_v1_from_manifest(manifest_path: Path, out_path: Path, *, force_pcx
     out_path.parent.mkdir(parents=True, exist_ok=True)
     header = bytearray(header_size)
     header[0:12] = SFF_SIGNATURE
-    header[12:16] = bytes([1, 0, 1, 0])
+    header[12:16] = bytes([0, 1, 0, 1])
     struct.pack_into('<I', header, 16, len(group_set))
     struct.pack_into('<I', header, 20, len(sprite_payloads))
     struct.pack_into('<I', header, 24, header_size)

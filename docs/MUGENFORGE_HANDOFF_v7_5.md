@@ -19,8 +19,8 @@ Install: `pip install -r requirements.txt`
 
 ## Current architecture snapshot
 
-- Package root: `F:\fighter factory - roshi edition\DocRoshi-Fighter-Factory`
-- Python modules detected: 104
+- Package root: `C:\Users\dferr\OneDrive\Desktop\DocRoshi-Fighter-Factory`
+- Python modules detected: 105
 - Main UI file: `mugenforge/app.py`
 - Maintenance module: `mugenforge/maintenance_core.py`
 - Current project stats from smoke/handoff generation:

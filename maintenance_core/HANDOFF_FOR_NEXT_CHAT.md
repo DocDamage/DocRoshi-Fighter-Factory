@@ -1,12 +1,12 @@
-# MugenForge Studio Handoff — v7.5 Maintenance Core
+# MugenForge Studio Handoff — v7.5 Continuity Core
 
 ## Copy/paste prompt for the next chat
 
-I am continuing **MugenForge Studio**, a clean-room Python/Tkinter M.U.G.E.N character/stage editor and no-code creator suite. Continue from the uploaded package **mugenforge_studio_v7_5.zip**. Do not start over. Unzip it, run smoke tests, inspect `MUGENFORGE_HANDOFF_v7_5.md`, then continue development.
+I am continuing **MugenForge Studio**, a clean-room Python/Tkinter M.U.G.E.N character/stage editor and no-code creator suite. Continue from the uploaded package **mugenforge_studio_v7_5.zip**. Do not start over. Unzip it, run smoke tests, inspect `docs/MUGENFORGE_HANDOFF_v7_5.md`, then continue development.
 
-Latest version: **7.5.0**  
-Latest app title should be: **MugenForge Studio 7.5 Maintenance Core**  
-Run command: `python -m mugenforge.app`  
+Latest version: **7.5.0**
+Latest app title should be: **MugenForge Studio 7.5 Continuity Core**
+Run command: `python -m mugenforge.app`
 Install: `pip install -r requirements.txt`
 
 ## Non-negotiable project rules
@@ -19,8 +19,8 @@ Install: `pip install -r requirements.txt`
 
 ## Current architecture snapshot
 
-- Package root: `/mnt/data/mugenforge_studio_v7_5`
-- Python modules detected: 49
+- Package root: `C:\Users\dferr\OneDrive\Desktop\DocRoshi-Fighter-Factory`
+- Python modules detected: 105
 - Main UI file: `mugenforge/app.py`
 - Maintenance module: `mugenforge/maintenance_core.py`
 - Current project stats from smoke/handoff generation:
@@ -39,12 +39,12 @@ Install: `pip install -r requirements.txt`
 - v5.5 Binary Maturity: deeper SFF2 decode/write candidates, SND patch candidates, runtime harness artifacts.
 - v6.1 Runtime Lab: external engine launchers, logs, evidence, readiness reports.
 - v7.0 Evidence Core line: gap closure, authority/evidence labs, source runtime modeling, corpus validation, verified installs.
-- v7.5 Maintenance Core: handoff bundle, module catalog, UI inventory, claim audit, smoke scripts, maintenance backlog.
+- v7.5 Continuity Core: Operator Console, Handoff Core, Maintenance Core, module/UI catalogs, claim audit, smoke scripts, release-readiness packet, and next-chat handoff bundle.
 
 ## What v7.5 added
 
-- New `mugenforge/maintenance_core.py` backend.
-- New **Maintenance Core** UI tab.
+- New `mugenforge/maintenance_core.py`, `mugenforge/handoff_core.py`, and `mugenforge/operator_console.py` backends.
+- New **Maintenance Core**, **Handoff Core**, and **Operator Console** UI tabs.
 - One-click maintenance pass.
 - Module/API catalog in CSV/JSON/HTML.
 - UI tab inventory.
@@ -54,7 +54,7 @@ Install: `pip install -r requirements.txt`
   - `tools/run_mugenforge_smoke.py`
   - `tools/package_release.py`
   - `tools/print_latest_handoff.py`
-- Package-level `MUGENFORGE_HANDOFF_v7_5.md`.
+- Package-level `docs/MUGENFORGE_HANDOFF_v7_5.md`.
 - Project-level `maintenance_core/HANDOFF_FOR_NEXT_CHAT.md`.
 
 ## First commands to run
@@ -79,9 +79,9 @@ python -m mugenforge.app
 
 - `README.md`
 - `CHANGELOG.md`
-- `RELEASE_SUMMARY_v7_5.md`
-- `TEST_RESULTS_v7_5.txt`
-- `MUGENFORGE_HANDOFF_v7_5.md`
+- `docs/RELEASE_SUMMARY_v7_5.md`
+- `docs/TEST_RESULTS_v7_5.txt`
+- `docs/MUGENFORGE_HANDOFF_v7_5.md`
 - `maintenance_core/MAINTAINER_START_HERE.md`
 - `maintenance_core/module_catalog/module_api_catalog.html`
 - `maintenance_core/ui_inventory/ui_tab_inventory.md`

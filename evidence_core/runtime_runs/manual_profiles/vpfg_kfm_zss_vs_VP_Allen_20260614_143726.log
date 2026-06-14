@@ -1,0 +1,129 @@
+table: 0xc00ac83800 {
+  ["MatchTime"] => 120
+  ["RoundTime"] => 60
+  ["WinSide"] => 1
+  ["LastRound"] => 2
+  ["Draws"] => 1
+  ["Wins"] => table: 0xc00ac83860 {
+                [1] => 0
+                [2] => 1
+              }
+  ["TeamModes"] => table: 0xc00ac838c0 {
+                     [1] => 0
+                     [2] => 0
+                   }
+  ["TotalScore"] => table: 0xc00ac83920 {
+                      [1] => 1600
+                      [2] => 27000
+                    }
+  ["Rounds"] => table: 0xc00ac83980 {
+                  [1] => table: 0xc00ac839e0 {
+                           ["Index"] => 1
+                           ["Timer"] => 60
+                           ["Score"] => table: 0xc00ac83a40 {
+                                          [1] => 1600
+                                          [2] => 0
+                                        }
+                           ["Fighters"] => table: 0xc00ac83aa0 {
+                                             [1] => table: 0xc00ac83b00 {
+                                                      [1] => table: 0xc00ac83b60 {
+                                                               ["Name"] => "Kung Fu Man"
+                                                               ["ID"] => 56
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 0
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1200
+                                                               ["LifeMax"] => 1200
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                             [2] => table: 0xc00ac83bc0 {
+                                                      [1] => table: 0xc00ac83c20 {
+                                                               ["Name"] => "Allen"
+                                                               ["ID"] => 57
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 1
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1200
+                                                               ["LifeMax"] => 1200
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                           }
+                         }
+                  [2] => table: 0xc00ac83c80 {
+                           ["Index"] => 2
+                           ["Timer"] => 60
+                           ["Score"] => table: 0xc00ac83ce0 {
+                                          [1] => 0
+                                          [2] => 27000
+                                        }
+                           ["Fighters"] => table: 0xc00ac83d40 {
+                                             [1] => table: 0xc00ac83da0 {
+                                                      [1] => table: 0xc00ac83e00 {
+                                                               ["Name"] => "Kung Fu Man"
+                                                               ["ID"] => 56
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 0
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1144
+                                                               ["LifeMax"] => 1200
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => false
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                             [2] => table: 0xc00ac83e60 {
+                                                      [1] => table: 0xc00ac83ec0 {
+                                                               ["Name"] => "Allen"
+                                                               ["ID"] => 57
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 1
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1200
+                                                               ["LifeMax"] => 1200
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => true
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => true
+                                                               ["WinPerfect"] => true
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => false
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                           }
+                         }
+                }
+}

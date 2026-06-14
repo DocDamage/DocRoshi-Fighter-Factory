@@ -1,9 +1,9 @@
 {
   "tool": "MugenForge Studio",
   "operator_console_version": "7.5.0",
-  "generated_at": "2026-06-13T19:25:53",
-  "project": "",
-  "operator_score": 44,
+  "generated_at": "2026-06-14T00:22:49",
+  "project": "DocRoshi-Fighter-Factory",
+  "operator_score": 52,
   "release_recommendation": "hold",
   "blockers": [
     {
@@ -32,12 +32,6 @@
     }
   ],
   "warnings": [
-    {
-      "phase": "Runtime evidence",
-      "status": "not started",
-      "reason": "No runtime/evidence artifacts found yet.",
-      "next_action": "Run Runtime Lab or Evidence Core with your local M.U.G.E.N/IKEMEN executable."
-    },
     {
       "phase": "Release packaging",
       "status": "not started",
@@ -84,8 +78,8 @@
     },
     {
       "phase": "Runtime evidence",
-      "status": "not started",
-      "reason": "No runtime/evidence artifacts found yet.",
+      "status": "pass",
+      "reason": "Runtime/evidence artifacts exist.",
       "next_action": "Run Runtime Lab or Evidence Core with your local M.U.G.E.N/IKEMEN executable."
     },
     {

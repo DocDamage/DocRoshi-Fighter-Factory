@@ -1,0 +1,11 @@
+{
+  "summary": {
+    "generated": "2026-06-14T14:40:12",
+    "characters": 103,
+    "missing_def": 0,
+    "missing_refs": 0,
+    "shared_common_refs": 25,
+    "warnings": 0
+  },
+  "findings": []
+}

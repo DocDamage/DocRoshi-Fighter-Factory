@@ -1,0 +1,31 @@
+{
+  "profile": "live",
+  "command": [
+    "C:\\Users\\dferr\\tools\\Ikemen-GO\\Ikemen_GO.exe",
+    "-windowed",
+    "-nosound",
+    "-nojoy",
+    "-log",
+    "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\live_SF2_evilryu_vs_kfm_zss_20260614_144017.log",
+    "-p1",
+    "SF2_evilryu",
+    "-p1.ai",
+    "8",
+    "-p2",
+    "kfm_zss",
+    "-p2.ai",
+    "8",
+    "-s",
+    "stages/kfm.def",
+    "-rounds",
+    "1",
+    "-time",
+    "1"
+  ],
+  "cwd": "C:\\Users\\dferr\\tools\\Ikemen-GO",
+  "returncode": 0,
+  "status": "pass",
+  "log": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\live_SF2_evilryu_vs_kfm_zss_20260614_144017.log",
+  "stdout_tail": "Check A: Selecting Renderer\nCheck B: Initializing GFX\nCheck C: Initializing GFX Font\nCheck D: We are GOOD\n",
+  "stderr_tail": "SF2_normal.st, line 1743: Duplicate 'guard.hittime' parameter\nWARNING: evil Ryu's state 380 in SF2_normal.st, line 1791: Duplicate 'guard.hittime' parameter\nWARNING: evil Ryu's state 365 in SF2_normal.st, line 1839: Duplicate 'guard.hittime' parameter\nWARNING: evil Ryu's state 395 in SF2_normal.st, line 1887: Duplicate 'guard.hittime' parameter\nWARNING: evil Ryu's state 2992 in SF2_normal.st, line 2724: Unknown state controller parameter(s): ontop\nWARNING: evil Ryu's state -2 in SF2_normal.st, line 3929: Unknown state controller parameter(s): sprpriority\nWARNING: evil Ryu's state 1104 in SF2_special.cns, line 95: Unknown state controller parameter(s): supermove\nWARNING: evil Ryu's state 1200 in SF2_special.cns, line 757: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 1201 in SF2_special.cns, line 844: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 1210 in SF2_special.cns, line 959: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 1211 in SF2_special.cns, line 1057: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 1220 in SF2_special.cns, line 1187: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 1221 in SF2_special.cns, line 1291: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 1301 in SF2_special.cns, line 1479: Duplicate 'ground.velocity' parameter\nWARNING: evil Ryu's state 1301 in SF2_special.cns, line 1502: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 1301 in SF2_special.cns, line 1557: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 1311 in SF2_special.cns, line 1719: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 1311 in SF2_special.cns, line 1773: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 1321 in SF2_special.cns, line 1916: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 1321 in SF2_special.cns, line 1971: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 1400 in SF2_special.cns, line 2096: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 1410 in SF2_special.cns, line 2198: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 1420 in SF2_special.cns, line 2300: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 1500 in SF2_special.cns, line 2328: Unknown state controller parameter(s): pausetime\nWARNING: evil Ryu's state 405 in SF2_normal2.st, line 71: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 405 in SF2_normal2.st, line 121: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 410 in SF2_normal2.st, line 197: Unknown state controller parameter(s): juggle\nWARNING: evil Ryu's state 410 in SF2_normal2.st, line 247: Unknown state controller parameter(s): juggle\nFailed to open BGM: open sound/kfm.mid: The system cannot find the file specified.\n"
+}

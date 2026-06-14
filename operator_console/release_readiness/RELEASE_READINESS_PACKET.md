@@ -1,9 +1,9 @@
 # Operator Release Readiness Packet
 
-Project: ``
-Generated: `2026-06-13T19:25:53`
+Project: `DocRoshi-Fighter-Factory`
+Generated: `2026-06-14T00:22:49`
 Recommendation: **hold**
-Operator score: **44/100**
+Operator score: **52/100**
 
 ## Blockers
 
@@ -18,7 +18,6 @@ Operator score: **44/100**
 
 | phase | status | reason | next_action |
 | --- | --- | --- | --- |
-| Runtime evidence | not started | No runtime/evidence artifacts found yet. | Run Runtime Lab or Evidence Core with your local M.U.G.E.N/IKEMEN executable. |
 | Release packaging | not started | No release/export artifacts found yet. | Run Release ZIP / Evidence Bundle / Operator Context Bundle near ship time. |
 
 ## Full phase table
@@ -31,5 +30,5 @@ Operator score: **44/100**
 | State routing | pass | No missing numeric ChangeState/SelfState targets found. | Use State Graph / Authority Lab to inspect and retarget broken transitions. |
 | Sprites / SFF | needs work | No SFF file detected. | Use Binary Maturity for existing SFF2, or Sheet Import / SFF2 Bridge for source images. |
 | Sounds / SND | needs work | No SND file detected. | Use Sound Cue Editor, Binary Core SND sheets, or source WAV rebuild workflow. |
-| Runtime evidence | not started | No runtime/evidence artifacts found yet. | Run Runtime Lab or Evidence Core with your local M.U.G.E.N/IKEMEN executable. |
+| Runtime evidence | pass | Runtime/evidence artifacts exist. | Run Runtime Lab or Evidence Core with your local M.U.G.E.N/IKEMEN executable. |
 | Release packaging | not started | No release/export artifacts found yet. | Run Release ZIP / Evidence Bundle / Operator Context Bundle near ship time. |

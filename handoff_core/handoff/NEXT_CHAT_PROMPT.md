@@ -14,7 +14,7 @@ Please continue from the uploaded package `mugenforge_studio_v7_5.zip`. Unzip it
 
 ## Start here
 
-1. Read `MUGENFORGE_HANDOFF_v7_5.md`.
+1. Read `docs/MUGENFORGE_HANDOFF_v7_5.md`.
 2. Read `handoff_core/HANDOFF_CORE_START_HERE.md`.
 3. Run `python -m compileall -q mugenforge`.
 4. Run `python handoff_core/regression_harness/smoke_v7_5.py`.
@@ -22,8 +22,8 @@ Please continue from the uploaded package `mugenforge_studio_v7_5.zip`. Unzip it
 
 ## Critical next work
 
-- Continue consolidating module-backed tabs into role-based workspaces.
-- Extend the real tests folder beyond smoke checks with focused SFF/SND fixtures.
+- Split `mugenforge/app.py` into tab/controller modules.
+- Move generated smoke checks into a real tests folder.
 - Run binary corpus validation on diverse real SFF/SND files.
 - Consolidate the UI into role-based workspaces.
 - Keep all feature claims honest and clean-room.

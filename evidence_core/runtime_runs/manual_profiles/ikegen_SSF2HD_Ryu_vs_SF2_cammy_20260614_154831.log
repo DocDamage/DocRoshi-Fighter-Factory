@@ -1,0 +1,75 @@
+table: 0xc0151ae5a0 {
+  ["MatchTime"] => 60
+  ["RoundTime"] => 60
+  ["WinSide"] => 0
+  ["LastRound"] => 1
+  ["Draws"] => 0
+  ["Wins"] => table: 0xc0151ae600 {
+                [1] => 1
+                [2] => 0
+              }
+  ["TeamModes"] => table: 0xc0151ae660 {
+                     [1] => 0
+                     [2] => 0
+                   }
+  ["TotalScore"] => table: 0xc0151ae6c0 {
+                      [1] => 27600
+                      [2] => 0
+                    }
+  ["Rounds"] => table: 0xc0151ae720 {
+                  [1] => table: 0xc0151ae780 {
+                           ["Index"] => 1
+                           ["Timer"] => 60
+                           ["Score"] => table: 0xc0151ae7e0 {
+                                          [1] => 27600
+                                          [2] => 0
+                                        }
+                           ["Fighters"] => table: 0xc0151ae840 {
+                                             [1] => table: 0xc0151ae8a0 {
+                                                      [1] => table: 0xc0151ae900 {
+                                                               ["Name"] => "SSF2HD_Ryu"
+                                                               ["ID"] => 56
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 0
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1000
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => true
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => true
+                                                               ["WinPerfect"] => true
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => false
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                             [2] => table: 0xc0151ae960 {
+                                                      [1] => table: 0xc0151ae9c0 {
+                                                               ["Name"] => "Cammy"
+                                                               ["ID"] => 57
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 1
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 960
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => false
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                           }
+                         }
+                }
+}

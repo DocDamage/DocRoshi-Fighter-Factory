@@ -2,6 +2,9 @@ from __future__ import annotations
 
 import compileall
 import importlib
+import json
+import re
+import struct
 import sys
 import tempfile
 import unittest
@@ -120,6 +123,170 @@ class MugenForgeSmokeTests(unittest.TestCase):
         self.assertIn('Binary smoke', text)
         self.assertEqual(text.count('- ready'), 1)
         self.assertIn('- check corpus', text)
+
+    def test_safe_runtime_profile_name(self):
+        from mugenforge.evidence_core import _safe_run_name
+
+        self.assertEqual(_safe_run_name('boot character smoke'), 'boot_character_smoke')
+        self.assertEqual(_safe_run_name('name/with:bad*chars'), 'name_with_bad_chars')
+        self.assertEqual(_safe_run_name('***'), 'profile')
+
+    def test_safe_move_preview_name(self):
+        from mugenforge.ui_actions.visual_forge import _safe_preview_name
+
+        self.assertEqual(_safe_preview_name('Hadoken EX'), 'Hadoken_EX')
+        self.assertEqual(_safe_preview_name('move/with:bad*chars'), 'move_with_bad_chars')
+        self.assertEqual(_safe_preview_name('***'), 'move')
+
+    def test_engine_profile_marks_ikemen_kind(self):
+        from mugenforge.evidence_core import write_engine_profile
+
+        with tempfile.TemporaryDirectory(prefix='mf_ikemen_profile_') as tmp:
+            root = Path(tmp)
+            engine = root / 'engine' / 'Ikemen_GO.exe'
+            engine.parent.mkdir()
+            engine.write_text('placeholder', encoding='utf-8')
+
+            write_engine_profile(root, engine_exe=engine, game_root=engine.parent)
+
+            profile = json.loads((root / 'evidence_core' / 'engine' / 'engine_profile.json').read_text(encoding='utf-8'))
+            self.assertEqual(profile['engine_kind'], 'ikemen')
+
+    def test_ikemen_engine_profile_uses_quick_vs_arguments(self):
+        from mugenforge.evidence_core import write_engine_profile
+
+        with tempfile.TemporaryDirectory(prefix='mf_ikemen_args_') as tmp:
+            root = Path(tmp)
+            engine = root / 'engine' / 'Ikemen_GO.exe'
+            engine.parent.mkdir()
+            engine.write_text('placeholder', encoding='utf-8')
+
+            write_engine_profile(root, engine_exe=engine, game_root=engine.parent, opponent='kfm')
+
+            profile = json.loads((root / 'evidence_core' / 'engine' / 'engine_profile.json').read_text(encoding='utf-8'))
+            args = profile['launch_profiles'][0]['arguments']
+            self.assertIn('-log', args)
+            self.assertIn('-nomusic', args)
+            self.assertIn('-p1', args)
+            self.assertIn('-p2', args)
+            self.assertIn('-s', args)
+            self.assertIn('-rounds', args)
+            self.assertIn('-time', args)
+            self.assertIn('evidence_log', profile['variables'])
+            self.assertEqual(profile['variables']['stage'], 'stages/stage0.def')
+
+    def test_sff_v1_builder_writes_canonical_version_bytes(self):
+        from PIL import Image
+
+        from mugenforge.sff_codec import build_sff_v1_from_manifest
+
+        with tempfile.TemporaryDirectory(prefix='mf_sff_v1_version_') as tmp:
+            root = Path(tmp)
+            sprite = root / 'sprite.png'
+            Image.new('RGBA', (8, 8), (255, 0, 0, 255)).save(sprite)
+            manifest = root / 'manifest.json'
+            manifest.write_text(json.dumps({
+                'sprites': [{
+                    'group': 0,
+                    'image': 0,
+                    'axis': {'x': 4, 'y': 7},
+                    'filename': sprite.name,
+                }]
+            }), encoding='utf-8')
+
+            out = root / 'test.sff'
+            build_sff_v1_from_manifest(manifest, out)
+
+            self.assertEqual(out.read_bytes()[12:16], b'\x00\x01\x00\x01')
+
+    def test_read_sff_routes_sff2_files_to_standard_parser(self):
+        from mugenforge.sff_codec import read_sff
+
+        with tempfile.TemporaryDirectory(prefix='mf_sff2_route_') as tmp:
+            root = Path(tmp)
+            sff = root / 'minimal.sff'
+            data = bytearray(96)
+            data[:12] = b'ElecbyteSpr\x00'
+            data[12:16] = b'\x00\x01\x00\x02'
+            struct.pack_into('<IIIIIIIIII', data, 16, 0, 0, 0, 0, 0, 68, 1, 96, 0, 96)
+            struct.pack_into('<HHHHhhHBBIIHH', data, 68, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0)
+            sff.write_bytes(data)
+
+            info = read_sff(sff)
+
+            self.assertEqual(info.variant, 'sff2-standard')
+            self.assertEqual(len(info.sprites), 1)
+            self.assertFalse(any('cannot import name' in warning for warning in info.warnings))
+
+    def test_decode_sff2_image_accepts_prefixed_png_payloads(self):
+        from io import BytesIO
+
+        from PIL import Image
+
+        from mugenforge.sff.sff_v2 import decode_sff2_image, parse_sff2_standard
+
+        with tempfile.TemporaryDirectory(prefix='mf_sff2_prefixed_png_') as tmp:
+            root = Path(tmp)
+            buf = BytesIO()
+            Image.new('RGBA', (1, 1), (255, 0, 255, 255)).save(buf, format='PNG')
+            payload = b'\x00\x00\x00\x00' + buf.getvalue()
+
+            sff = root / 'prefixed.sff'
+            data = bytearray(96 + len(payload))
+            data[:12] = b'ElecbyteSpr\x00'
+            data[12:16] = b'\x00\x01\x00\x02'
+            struct.pack_into('<IIIIIIIIII', data, 16, 0, 0, 0, 0, 0, 68, 1, 96, 0, 96)
+            struct.pack_into('<HHHHhhHBBIIHH', data, 68, 0, 0, 1, 1, 0, 0, 0, 12, 32, 0, len(payload), 0, 0)
+            data[96:96 + len(payload)] = payload
+            sff.write_bytes(data)
+
+            info = parse_sff2_standard(sff)
+            image = decode_sff2_image(sff, info.sprites[0], info=info)
+
+            self.assertEqual(image.size, (1, 1))
+            self.assertEqual(image.getpixel((0, 0)), (255, 0, 255, 255))
+
+    def test_sff2_builder_writes_prefixed_png_payloads(self):
+        from PIL import Image
+
+        from mugenforge.sff.sff_v2 import build_sff2_standard_from_records, parse_sff2_standard
+
+        with tempfile.TemporaryDirectory(prefix='mf_sff2_build_png_prefix_') as tmp:
+            root = Path(tmp)
+            sprite = root / 'sprite.png'
+            Image.new('RGBA', (2, 3), (255, 0, 255, 0)).save(sprite)
+            out = root / 'built.sff'
+
+            build_sff2_standard_from_records([{
+                'group': 0,
+                'image': 0,
+                'axis_x': 1,
+                'axis_y': 2,
+                'image_file': str(sprite),
+                'strategy': 'png',
+            }], out)
+
+            info = parse_sff2_standard(out)
+            rec = info.sprites[0]
+            data = out.read_bytes()
+            self.assertEqual(struct.unpack_from('<I', data, rec.data_offset)[0], 2 * 3 * 4)
+            self.assertEqual(data[rec.data_offset + 4:rec.data_offset + 12], b'\x89PNG\r\n\x1a\n')
+
+    def test_feature_bank_skips_existing_air_actions(self):
+        from mugenforge.automation_bank import apply_preset
+        from mugenforge.automation_bank.base import auto_setup_project
+
+        with tempfile.TemporaryDirectory(prefix='mf_no_duplicate_air_') as tmp:
+            root = Path(tmp) / 'NoDuplicateHero'
+            auto_setup_project(root)
+
+            apply_preset(root, 'starter_basics')
+            apply_preset(root, 'dash_forward')
+
+            air_text = (root / 'NoDuplicateHero.air').read_text(encoding='utf-8')
+            actions = re.findall(r'^\s*\[Begin Action\s+(-?\d+)\]', air_text, re.M | re.I)
+            duplicates = {action for action in actions if actions.count(action) > 1}
+            self.assertEqual(duplicates, set())
 
     def test_artifact_io_records_outputs(self):
         from mugenforge.artifact_io import (

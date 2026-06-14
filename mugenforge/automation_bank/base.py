@@ -360,6 +360,51 @@ def _append_unique(path: Path, block: str, marker_id: str, result: ApplyResult) 
     result.changed_files.append(f"{path.name}: appended {marker_id}")
 
 
+def _existing_air_actions(text: str) -> set[int]:
+    out: set[int] = set()
+    for match in re.finditer(r'^\s*\[Begin Action\s+(-?\d+)\]', text, re.M | re.I):
+        try:
+            out.add(int(match.group(1)))
+        except Exception:
+            pass
+    return out
+
+
+def _filter_existing_air_actions(block: str, existing: set[int]) -> str:
+    if not block.strip() or not existing:
+        return block
+    lines = block.splitlines()
+    kept: list[str] = []
+    current: list[str] = []
+    current_action: Optional[int] = None
+
+    def flush() -> None:
+        nonlocal current, current_action
+        if not current:
+            return
+        if current_action is None or current_action not in existing:
+            kept.extend(current)
+        current = []
+        current_action = None
+
+    for line in lines:
+        match = re.match(r'^\s*\[Begin Action\s+(-?\d+)\]', line, re.I)
+        if match:
+            flush()
+            try:
+                current_action = int(match.group(1))
+            except Exception:
+                current_action = None
+            current = [line]
+        elif current:
+            current.append(line)
+        else:
+            kept.append(line)
+    flush()
+    text = "\n".join(kept).strip()
+    return text + "\n" if text else ""
+
+
 def _fallback_file(root: Path, kind: str) -> Path:
     stem = root.name or "character"
     suffix = {"cmd": ".cmd", "cns": ".cns", "air": ".air"}[kind]
@@ -376,6 +421,9 @@ def apply_feature_package(root: Path, package: FeaturePackage) -> ApplyResult:
         "air": (find_character_file(root, "air") or _fallback_file(root, "air"), package.air_block),
     }
     for _kind, (path, block) in targets.items():
+        if _kind == "air" and block.strip() and path.exists():
+            old = read_text_safely(path)
+            block = _filter_existing_air_actions(block, _existing_air_actions(old))
         _append_unique(path, block, package.feature_id, result)
     for rel, content in package.extra_files.items():
         target = root / rel
