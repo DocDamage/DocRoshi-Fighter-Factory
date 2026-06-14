@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from datetime import datetime
 import json
@@ -24,32 +24,12 @@ from .sff_codec import read_sff, sprite_lookup, build_sff_v1_from_manifest
 from .snd_codec import read_snd
 from .automation_bank import auto_setup_project, beginner_project_status, make_placeholder_sprite_sheet, ApplyResult
 from .no_code_director import write_no_code_dashboard, _auto_build_placeholder_sff, _auto_build_placeholder_snd
+from .shared_utils import BaseResult, uniq, rel_path as _safe_rel, backup_file
 
 
 @dataclass
-class StudioPlusResult:
+class StudioPlusResult(BaseResult):
     title: str = "Studio Plus Result"
-    created_files: List[Path] = field(default_factory=list)
-    changed_files: List[Path] = field(default_factory=list)
-    skipped_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def to_text(self) -> str:
-        lines = [self.title, "=" * 72]
-        if self.created_files:
-            lines += ["", "Created files:"] + [f"- {p}" for p in self.created_files]
-        if self.changed_files:
-            lines += ["", "Changed files:"] + [f"- {p}" for p in self.changed_files]
-        if self.skipped_files:
-            lines += ["", "Skipped:"] + [f"- {s}" for s in self.skipped_files]
-        if self.warnings:
-            lines += ["", "Warnings:"] + [f"- {w}" for w in self.warnings]
-        if self.notes:
-            lines += ["", "Notes:"] + [f"- {n}" for n in self.notes]
-        if len(lines) == 2:
-            lines.append("No changes were made.")
-        return "\n".join(lines).rstrip() + "\n"
 
 
 def _now_tag() -> str:
@@ -57,19 +37,7 @@ def _now_tag() -> str:
 
 
 def _backup(path: Path) -> Optional[Path]:
-    if not path.exists():
-        return None
-    bak = path.with_name(path.name + f".bak_{_now_tag()}")
-    shutil.copy2(path, bak)
-    return bak
-
-
-def _safe_rel(root: Path, path: Path | str) -> str:
-    try:
-        p = Path(path)
-        return str(p.relative_to(root))
-    except Exception:
-        return str(path)
+    return backup_file(path, "studio_plus")
 
 
 def _main_def(root: Path) -> Optional[Path]:
@@ -81,7 +49,6 @@ def _main_def(root: Path) -> Optional[Path]:
 
 
 def _def_file_paths(root: Path) -> Dict[str, Path]:
-    """Resolve DEF [Files] references where possible, falling back to first file by extension."""
     root = Path(root)
     paths: Dict[str, Path] = {}
     dpath = _main_def(root)
@@ -129,7 +96,7 @@ def _feature_markers(root: Path) -> List[str]:
             markers += rx.findall(read_text_safely(p))
         except Exception:
             continue
-    return sorted(set(markers))
+    return sorted(uniq(markers))
 
 
 def _action_numbers(air_path: Path) -> List[int]:
@@ -414,19 +381,19 @@ def append_missing_standard_air_actions(root: Path) -> StudioPlusResult:
     air_path = paths.get("air") or (root / f"{root.name}.air")
     result = StudioPlusResult("Append Missing Standard AIR Actions")
     if not air_path.exists():
-        result.warnings.append(f"AIR file not found: {air_path}")
+        result.add_warning(f"AIR file not found: {air_path}")
         return result
     text = read_text_safely(air_path)
     existing = {a.number for a in parse_air(text)}
     missing = [n for n in COMMON_ANIMS if n not in existing]
     if not missing:
-        result.skipped_files.append("All common M.U.G.E.N action numbers are already present.")
+        result.add_skipped("All common M.U.G.E.N action numbers are already present.")
         return result
     _backup(air_path)
     append = "\n; === MugenForge Studio Plus: standard action placeholders ===\n" + "\n".join(_common_action_block(n) for n in missing)
     write_text_safely(air_path, text.rstrip() + "\n" + append)
-    result.changed_files.append(air_path)
-    result.notes.append(f"Added {len(missing)} standard placeholder AIR actions. Replace their art later; they exist to keep the character testable.")
+    result.add_changed(root, air_path)
+    result.add_note(f"Added {len(missing)} standard placeholder AIR actions. Replace their art later; they exist to keep the character testable.")
     return result
 
 
@@ -435,59 +402,42 @@ def auto_fix_project_plus(root: Path) -> StudioPlusResult:
     result = StudioPlusResult("Studio Plus Auto Fix / Build Missing Assets")
     root.mkdir(parents=True, exist_ok=True)
     setup = auto_setup_project(root)
-    result.created_files += setup.created_files
-    result.changed_files += setup.changed_files
-    result.skipped_files += setup.skipped_files
-    result.warnings += [w for w in setup.warnings if 'SFF and SND binary files are not auto-created here' not in str(w)]
+    result.merge(setup)
     try:
         dash = write_no_code_dashboard(root, None)
-        result.created_files += dash.created_files
-        result.changed_files += dash.changed_files
-        result.skipped_files += dash.skipped_files
-        result.warnings += dash.warnings
+        result.merge(dash)
     except Exception as exc:
-        result.warnings.append(f"Could not write no-code dashboard/profile docs: {exc}")
+        result.add_warning(f"Could not write no-code dashboard/profile docs: {exc}")
     sub = append_missing_standard_air_actions(root)
-    result.created_files += sub.created_files
-    result.changed_files += sub.changed_files
-    result.skipped_files += sub.skipped_files
-    result.warnings += sub.warnings
-    result.notes += sub.notes
+    result.merge(sub)
     try:
         sheet_result = make_placeholder_sprite_sheet(root)
-        result.created_files += sheet_result.created_files
-        result.changed_files += sheet_result.changed_files
-        result.skipped_files += sheet_result.skipped_files
-        result.warnings += sheet_result.warnings
+        result.merge(sheet_result)
         build_result = ApplyResult()
         _auto_build_placeholder_sff(root, build_result)
-        result.created_files += build_result.created_files
-        result.changed_files += build_result.changed_files
-        result.skipped_files += build_result.skipped_files
-        result.warnings += build_result.warnings
-        result.notes.append("Created/staged placeholder sprite sheet and rebuilt starter SFF.")
+        result.merge(build_result)
+        result.add_note("Created/staged placeholder sprite sheet and rebuilt starter SFF.")
     except Exception as exc:
-        result.warnings.append(f"Placeholder SFF rebuild skipped/failed: {exc}")
+        result.add_warning(f"Placeholder SFF rebuild skipped/failed: {exc}")
     try:
         snd_result = ApplyResult()
         _auto_build_placeholder_snd(root, snd_result)
-        result.created_files += snd_result.created_files
-        result.changed_files += snd_result.changed_files
-        result.skipped_files += snd_result.skipped_files
-        result.warnings += snd_result.warnings
-        result.notes.append("Rebuilt placeholder SND from silent WAV bank.")
+        result.merge(snd_result)
+        result.add_note("Rebuilt placeholder SND from silent WAV bank.")
     except Exception as exc:
-        result.warnings.append(f"Placeholder SND rebuild skipped/failed: {exc}")
+        result.add_warning(f"Placeholder SND rebuild skipped/failed: {exc}")
     try:
         docs = write_beginner_docs(root)
-        result.created_files += [p for p in docs if p.exists()]
+        for doc in docs:
+            if doc.exists():
+                result.add_created(root, doc)
     except Exception as exc:
-        result.warnings.append(f"Could not write beginner docs: {exc}")
+        result.add_warning(f"Could not write beginner docs: {exc}")
     try:
-        result.created_files.append(write_studio_plus_report(root))
-        result.created_files.append(write_studio_plus_report_json(root))
+        result.add_created(root, write_studio_plus_report(root))
+        result.add_created(root, write_studio_plus_report_json(root))
     except Exception as exc:
-        result.warnings.append(f"Could not write Studio Plus report: {exc}")
+        result.add_warning(f"Could not write Studio Plus report: {exc}")
     return result
 
 
@@ -582,7 +532,7 @@ def build_release_zip_plus(root: Path) -> Path:
 
 def create_sff_contact_sheet(sff_path: Path, out_path: Path, max_sprites: int = 240, cell: int = 96) -> Path:
     try:
-        from PIL import Image, ImageDraw, ImageFont  # type: ignore
+        from PIL import Image, ImageDraw  # type: ignore
         from io import BytesIO
     except Exception as exc:
         raise RuntimeError("Pillow is required for contact sheets. Install with: pip install Pillow") from exc
@@ -857,7 +807,7 @@ yscale = .4
 intensity = 0
 
 [Music]
-bgmusic = 
+bgmusic =
 bgmvolume = 100
 
 [BGdef]

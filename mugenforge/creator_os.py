@@ -13,63 +13,33 @@ from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 from .parsers import COMMON_ANIMS, parse_air, parse_code, parse_def, read_text_safely, write_text_safely
 from .move_wizard import find_character_file
+from .shared_utils import (
+    BaseResult,
+    uniq,
+    rel_path,
+    timestamp,
+    backup_file,
+    parse_first_int,
+    get_code_files,
+    scan_hitdefs,
+    scan_commands,
+    scan_air_stats,
+    scan_state_anim_map,
+)
 
 CREATOR_OS_VERSION = "3.2.0"
 
 
 @dataclass
-class CreatorOSResult:
+class CreatorOSResult(BaseResult):
     title: str = "Creator OS"
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def add_created(self, path: Path | str) -> None:
-        self.created_files.append(str(path))
-
-    def add_changed(self, path: Path | str) -> None:
-        self.changed_files.append(str(path))
-
-    def add_warning(self, msg: str) -> None:
-        self.warnings.append(str(msg))
-
-    def add_note(self, msg: str) -> None:
-        self.notes.append(str(msg))
-
-    def merge(self, other: "CreatorOSResult", label: Optional[str] = None) -> None:
-        if not other:
-            return
-        prefix = f"{label}: " if label else ""
-        self.created_files += [prefix + x for x in other.created_files]
-        self.changed_files += [prefix + x for x in other.changed_files]
-        self.warnings += [prefix + x for x in other.warnings]
-        self.notes += [prefix + x for x in other.notes]
-
-    def to_text(self) -> str:
-        lines = [self.title, "=" * max(12, len(self.title)), f"Generated: {datetime.now().isoformat(timespec='seconds')}", ""]
-        if self.changed_files:
-            lines += ["Changed files:"] + [f"- {x}" for x in _uniq(self.changed_files)] + [""]
-        if self.created_files:
-            lines += ["Created files/artifacts:"] + [f"- {x}" for x in _uniq(self.created_files)] + [""]
-        if self.warnings:
-            lines += ["Warnings:"] + [f"- {x}" for x in _uniq(self.warnings)] + [""]
-        if self.notes:
-            lines += ["Notes:"] + [f"- {x}" for x in _uniq(self.notes)] + [""]
-        if len(lines) <= 4:
-            lines.append("No changes made.")
-        return "\n".join(lines).rstrip() + "\n"
 
 
-def _uniq(items: Iterable[str]) -> List[str]:
-    out: List[str] = []
-    seen = set()
-    for item in items:
-        s = str(item)
-        if s not in seen:
-            out.append(s)
-            seen.add(s)
-    return out
+_uniq = uniq
+_rel = rel_path
+_timestamp = timestamp
+_backup = backup_file
+_first_int = parse_first_int
 
 
 def _creator_dir(root: Path) -> Path:
@@ -84,36 +54,13 @@ def _write(path: Path, text: str) -> Path:
     return path
 
 
-def _rel(root: Path, path: Path | str) -> str:
-    try:
-        return str(Path(path).resolve().relative_to(Path(root).resolve()))
-    except Exception:
-        return str(path)
-
-
-def _timestamp() -> str:
-    return datetime.now().strftime("%Y%m%d_%H%M%S")
-
-
-def _backup(path: Path) -> Optional[Path]:
-    if not path.exists():
-        return None
-    dst = path.with_name(path.name + f".bak_creatoros_{_timestamp()}")
-    dst.write_text(read_text_safely(path), encoding="utf-8", errors="replace")
-    return dst
-
-
 def _code_files(root: Path) -> List[Path]:
-    files: List[Path] = []
-    for pattern in ("*.cmd", "*.cns", "*.st"):
-        files.extend(sorted(Path(root).rglob(pattern)))
-    skip_parts = {"__pycache__", "backups", "exports", "quality_lab", "creator_os"}
-    return [p for p in files if p.is_file() and not any(part in skip_parts for part in p.parts)]
+    return get_code_files(root)
 
 
 def _read_code(root: Path) -> Dict[str, str]:
     out: Dict[str, str] = {}
-    for path in _code_files(root):
+    for path in get_code_files(root):
         try:
             out[_rel(root, path)] = read_text_safely(path)
         except Exception:
@@ -121,9 +68,57 @@ def _read_code(root: Path) -> Dict[str, str]:
     return out
 
 
-def _first_int(value: str | int | None, default: int = 0) -> int:
-    m = re.search(r"-?\d+", str(value or ""))
-    return int(m.group(0)) if m else default
+def _command_defs(root: Path) -> Dict[str, Dict[str, object]]:
+    out = {}
+    for cmd in scan_commands(root):
+        name = str(cmd['name']).strip()
+        if name:
+            out[name] = {
+                "file": cmd['file'],
+                "command": cmd['command'],
+                "time": cmd['time'],
+                "buffer.time": cmd['buffer_time']
+            }
+    return out
+
+
+def _air_action_numbers(root: Path) -> Dict[int, object]:
+    path = find_character_file(root, "air")
+    if not path or not path.exists():
+        return {}
+    try:
+        return {a.number: a for a in parse_air(read_text_safely(path))}
+    except Exception:
+        return {}
+
+
+def _hitdef_blocks(root: Path) -> List[Dict[str, object]]:
+    rows = []
+    for hd in scan_hitdefs(root):
+        rows.append({
+            "file": hd['file'],
+            "state": hd['state'],
+            "header": hd['label'],
+            "damage": hd['damage'],
+            "attr": hd['attr'],
+            "hitflag": hd['hitflag'],
+            "guardflag": hd['guardflag'],
+            "pausetime": hd['pausetime'],
+            "sparkno": hd['sparkno'],
+            "hitsound": hd['hitsound'],
+            "guardsound": hd['guardsound'],
+            "ground_velocity": hd['ground_velocity'],
+            "air_velocity": hd['air_velocity'],
+        })
+    return rows
+
+
+def _estimate_state_anim_map(root: Path) -> Dict[int, int]:
+    return scan_state_anim_map(root)
+
+
+def _air_total_ticks(root: Path) -> Dict[int, int]:
+    return {num: stats['ticks'] for num, stats in scan_air_stats(root).items()}
 
 
 def _state_defs_targets_anims(root: Path) -> Tuple[Dict[int, List[str]], Dict[int, List[str]], Dict[int, List[str]]]:
@@ -147,95 +142,6 @@ def _state_defs_targets_anims(root: Path) -> Tuple[Dict[int, List[str]], Dict[in
                     if re.fullmatch(r"\s*-?\d+\s*", val):
                         anims.setdefault(int(val), []).append(f"{rel}:StateDef {st.number}")
     return defs, targets, anims
-
-
-def _command_defs(root: Path) -> Dict[str, Dict[str, object]]:
-    out: Dict[str, Dict[str, object]] = {}
-    cmd_section_re = re.compile(r"^\s*\[\s*Command\s*\]\s*$(.*?)(?=^\s*\[|\Z)", re.I | re.M | re.S)
-    kv_re = re.compile(r"^\s*([^;=]+?)\s*=\s*(.*?)\s*(?:;.*)?$", re.M)
-    for path in sorted(Path(root).rglob("*.cmd")):
-        if not path.is_file():
-            continue
-        try:
-            text = read_text_safely(path)
-        except Exception:
-            continue
-        for block in cmd_section_re.finditer(text):
-            data: Dict[str, str] = {}
-            for kv in kv_re.finditer(block.group(1)):
-                data[kv.group(1).strip().lower()] = kv.group(2).strip().strip('"')
-            name = data.get("name", "").strip()
-            if name:
-                out[name] = {"file": _rel(root, path), "command": data.get("command", ""), "time": data.get("time", ""), "buffer.time": data.get("buffer.time", data.get("buffer_time", ""))}
-    return out
-
-
-def _air_action_numbers(root: Path) -> Dict[int, object]:
-    path = find_character_file(root, "air")
-    if not path or not path.exists():
-        return {}
-    try:
-        return {a.number: a for a in parse_air(read_text_safely(path))}
-    except Exception:
-        return {}
-
-
-def _hitdef_blocks(root: Path) -> List[Dict[str, object]]:
-    rows: List[Dict[str, object]] = []
-    block_re = re.compile(r"^\s*\[\s*State\s+[^\]]+\]\s*$(.*?)(?=^\s*\[|\Z)", re.I | re.M | re.S)
-    header_re = re.compile(r"^\s*\[\s*State\s+([^\]]+)\]", re.I | re.M)
-    kv_re = re.compile(r"^\s*([^;=]+?)\s*=\s*(.*?)\s*(?:;.*)?$", re.M)
-    statedef_re = re.compile(r"^\s*\[\s*Statedef\s+(-?\d+)\s*\]", re.I | re.M)
-    for path in _code_files(root):
-        try:
-            text = read_text_safely(path)
-        except Exception:
-            continue
-        state_no = None
-        # Approximate parent StateDef by scanning previous text for latest Statedef.
-        for block in block_re.finditer(text):
-            before = text[:block.start()]
-            sts = list(statedef_re.finditer(before))
-            if sts:
-                state_no = int(sts[-1].group(1))
-            body = block.group(1)
-            if not re.search(r"^\s*type\s*=\s*HitDef\b", body, re.I | re.M):
-                continue
-            data: Dict[str, str] = {}
-            for kv in kv_re.finditer(body):
-                data[kv.group(1).strip().lower()] = kv.group(2).strip()
-            header = header_re.search(block.group(0))
-            rows.append({
-                "file": _rel(root, path),
-                "state": state_no,
-                "header": header.group(1).strip() if header else "",
-                "damage": _first_int(data.get("damage", "0")),
-                "attr": data.get("attr", ""),
-                "hitflag": data.get("hitflag", ""),
-                "guardflag": data.get("guardflag", ""),
-                "pausetime": data.get("pausetime", ""),
-                "sparkno": data.get("sparkno", ""),
-                "hitsound": data.get("hitsound", ""),
-                "guardsound": data.get("guardsound", ""),
-                "ground_velocity": data.get("ground.velocity", ""),
-                "air_velocity": data.get("air.velocity", ""),
-            })
-    return rows
-
-
-def _estimate_state_anim_map(root: Path) -> Dict[int, int]:
-    out: Dict[int, int] = {}
-    for rel, text in _read_code(root).items():
-        scan = parse_code(text)
-        for st in scan.states:
-            if "anim" in st.values:
-                out[st.number] = _first_int(st.values.get("anim"), st.number)
-    return out
-
-
-def _air_total_ticks(root: Path) -> Dict[int, int]:
-    actions = _air_action_numbers(root)
-    return {num: sum(max(0, getattr(fr, "ticks", 0)) for fr in action.frames) for num, action in actions.items()}
 
 
 def _system_score(root: Path) -> Dict[str, object]:
@@ -317,8 +223,8 @@ def write_creator_os_dashboard(root: Path) -> Path:
         rows.append("| _None yet_ |  |  |")
     body = f"""# MugenForge Creator OS Dashboard
 
-Project: `{root.name}`  
-Generated: {datetime.now().isoformat(timespec='seconds')}  
+Project: `{root.name}`
+Generated: {datetime.now().isoformat(timespec='seconds')}
 Creator OS version: {CREATOR_OS_VERSION}
 
 ## Plain-English status

@@ -27,6 +27,7 @@ from .artifact_io import (
 )
 from .parsers import parse_air, parse_code, parse_def, read_text_safely, write_text_safely, scan_project
 from .move_wizard import find_character_file
+from .binary_results import BinaryCoreResult, _uniq
 
 CLOSURE_LAB_VERSION = "7.0.0"
 CODE_EXTS = {".cmd", ".cns", ".st"}
@@ -35,58 +36,8 @@ EVIDENCE_EXTS = {".txt", ".log", ".json", ".csv", ".md"}
 
 
 @dataclass
-class ClosureLabResult:
+class ClosureLabResult(BinaryCoreResult):
     title: str = "Closure Lab"
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def add_created(self, root: Path, path: Path | str) -> None:
-        self.created_files.append(_rel(root, path))
-
-    def add_changed(self, root: Path, path: Path | str) -> None:
-        self.changed_files.append(_rel(root, path))
-
-    def add_warning(self, message: object) -> None:
-        self.warnings.append(str(message))
-
-    def add_note(self, message: object) -> None:
-        self.notes.append(str(message))
-
-    def merge(self, other: object, label: Optional[str] = None) -> None:
-        if other is None:
-            return
-        prefix = f"{label}: " if label else ""
-        self.created_files += [prefix + str(x) for x in getattr(other, "created_files", []) or []]
-        self.changed_files += [prefix + str(x) for x in getattr(other, "changed_files", []) or []]
-        self.warnings += [prefix + str(x) for x in getattr(other, "warnings", []) or []]
-        self.notes += [prefix + str(x) for x in getattr(other, "notes", []) or []]
-
-    def to_text(self) -> str:
-        lines = [self.title, "=" * max(12, len(self.title)), f"Generated: {datetime.now().isoformat(timespec='seconds')}", ""]
-        if self.notes:
-            lines += ["Notes:"] + [f"- {x}" for x in _uniq(self.notes)] + [""]
-        if self.changed_files:
-            lines += ["Changed files:"] + [f"- {x}" for x in _uniq(self.changed_files)] + [""]
-        if self.created_files:
-            lines += ["Created files/artifacts:"] + [f"- {x}" for x in _uniq(self.created_files)] + [""]
-        if self.warnings:
-            lines += ["Warnings:"] + [f"- {x}" for x in _uniq(self.warnings)] + [""]
-        if len(lines) <= 4:
-            lines.append("No changes made.")
-        return "\n".join(lines).rstrip() + "\n"
-
-
-def _uniq(items: Iterable[str]) -> List[str]:
-    out: List[str] = []
-    seen = set()
-    for item in items:
-        s = str(item)
-        if s not in seen:
-            seen.add(s)
-            out.append(s)
-    return out
 
 
 def _closure_dir(root: Path) -> Path:

@@ -13,13 +13,6 @@ import wave
 import zipfile
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
-from .artifact_io import (
-    rel_path,
-    timestamp as _timestamp,
-    write_csv_artifact,
-    write_json_artifact,
-    write_text_artifact,
-)
 from .parsers import COMMON_ANIMS, parse_air, parse_code, parse_def, read_text_safely, scan_project, write_text_safely
 from .move_wizard import find_character_file
 from .air_tools import parse_air_with_lines
@@ -34,60 +27,34 @@ AUDIO_SUFFIXES = {".wav"}
 GENERATED_PARTS = {"forge_flow", "forge_polish", "forge_beyond", "visual_forge", "quality_lab", "exports", "backups", "__pycache__"}
 
 
+from .shared_utils import (
+    BaseResult,
+    uniq,
+    rel_path,
+    timestamp,
+    backup_file,
+    write_text_artifact,
+    write_json_artifact,
+    write_csv_artifact,
+    discover_project_files,
+    get_code_files,
+    get_all_files,
+    parse_safe_int,
+    is_truthy,
+    sanitize_name,
+)
+
 @dataclass
-class ForgeFlowResult:
+class ForgeFlowResult(BaseResult):
     title: str = "Forge Flow Result"
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    skipped_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def merge(self, other: object, label: Optional[str] = None) -> None:
-        if not other:
-            return
-        prefix = f"{label}: " if label else ""
-        for attr in ("created_files", "changed_files", "skipped_files", "warnings", "notes"):
-            getattr(self, attr).extend(prefix + str(v) for v in (getattr(other, attr, []) or []))
-
-    def add_created(self, root: Path, path: Path | str) -> None:
-        self.created_files.append(_rel(root, path))
-
-    def add_changed(self, root: Path, path: Path | str) -> None:
-        self.changed_files.append(_rel(root, path))
-
-    def to_text(self) -> str:
-        lines = [self.title, "=" * max(12, len(self.title)), f"Generated: {datetime.now().isoformat(timespec='seconds')}", ""]
-        for label, values in (
-            ("Notes", self.notes),
-            ("Created files/artifacts", self.created_files),
-            ("Changed files", self.changed_files),
-            ("Skipped", self.skipped_files),
-            ("Warnings", self.warnings),
-        ):
-            vals = _uniq(values)
-            if vals:
-                lines.append(label + ":")
-                lines.extend(f"- {v}" for v in vals)
-                lines.append("")
-        if len(lines) <= 4:
-            lines.append("No changes made.")
-        return "\n".join(lines).rstrip() + "\n"
 
 
 def _uniq(values: Iterable[str]) -> List[str]:
-    out: List[str] = []
-    seen = set()
-    for value in values:
-        text = str(value)
-        if text not in seen:
-            seen.add(text)
-            out.append(text)
-    return out
+    return uniq(values)
 
 
 def _safe_name(value: object) -> str:
-    return re.sub(r"[^A-Za-z0-9_\-]+", "_", str(value or "")).strip("_") or "item"
+    return sanitize_name(value)
 
 
 def _rel(root: Path, path: Path | str | None) -> str:
@@ -122,70 +89,43 @@ def _read_csv(path: Path) -> List[Dict[str, str]]:
 
 
 def _all_files(root: Path, include_generated: bool = True) -> List[Path]:
-    out: List[Path] = []
-    root = Path(root)
-    for path in sorted(root.rglob("*"), key=lambda p: str(p).lower()):
-        if not path.is_file():
-            continue
-        try:
-            parts = set(path.relative_to(root).parts)
-        except Exception:
-            parts = set(path.parts)
-        if any(part in {"__pycache__", ".git", ".hg", ".svn"} for part in parts):
-            continue
-        if not include_generated and any(part in GENERATED_PARTS for part in parts):
-            continue
-        out.append(path)
-    return out
+    return get_all_files(root, include_generated)
 
 
 def _code_files(root: Path) -> List[Path]:
-    return [p for p in _all_files(root, include_generated=False) if p.suffix.lower() in CODE_SUFFIXES]
+    return get_code_files(root)
 
 
 def _image_files(root: Path, include_generated: bool = False) -> List[Path]:
-    return [p for p in _all_files(root, include_generated=include_generated) if p.suffix.lower() in IMAGE_SUFFIXES]
+    return [p for p in get_all_files(root, include_generated) if p.suffix.lower() in IMAGE_SUFFIXES]
 
 
 def _wav_files(root: Path, include_generated: bool = False) -> List[Path]:
-    return [p for p in _all_files(root, include_generated=include_generated) if p.suffix.lower() == ".wav"]
+    return [p for p in get_all_files(root, include_generated) if p.suffix.lower() == ".wav"]
 
 
 def _act_files(root: Path) -> List[Path]:
-    return [p for p in _all_files(root, include_generated=False) if p.suffix.lower() == ".act"]
+    return [p for p in get_all_files(root, False) if p.suffix.lower() == ".act"]
 
 
 def _truthy(value: object) -> bool:
-    return str(value or "").strip().lower() in {"1", "yes", "y", "true", "on", "apply", "enabled", "add"}
+    return is_truthy(value)
 
 
 def _int(value: object, default: int = 0) -> int:
-    try:
-        return int(str(value).strip())
-    except Exception:
-        return int(default)
+    parsed = parse_safe_int(value, default)
+    return default if parsed is None else parsed
 
 
 def _float(value: object, default: float = 0.0) -> float:
     try:
         return float(str(value).strip())
     except Exception:
-        return float(default)
+        return default
 
 
 def _discover_files(root: Path) -> Dict[str, Optional[Path]]:
-    root = Path(root)
-    out: Dict[str, Optional[Path]] = {"root": root}
-    for kind in ("def", "air", "cmd", "cns", "sff", "snd"):
-        try:
-            found = find_character_file(root, kind)
-        except Exception:
-            found = None
-        if not found:
-            hits = sorted(root.rglob(f"*.{kind}"), key=lambda p: str(p).lower())
-            found = hits[0] if hits else None
-        out[kind] = found
-    return out
+    return discover_project_files(root)
 
 
 def _backup_file(root: Path, path: Path, reason: str) -> Optional[Path]:
@@ -196,7 +136,7 @@ def _backup_file(root: Path, path: Path, reason: str) -> Optional[Path]:
         rel = path.resolve().relative_to(Path(root).resolve())
     except Exception:
         rel = Path(path.name)
-    dst = Path(root) / "backups" / "forge_flow_file_backups" / rel.with_name(rel.name + f".bak_{_safe_name(reason)}_{_timestamp()}")
+    dst = Path(root) / "backups" / "forge_flow_file_backups" / rel.with_name(rel.name + f".bak_{_safe_name(reason)}_{timestamp()}")
     dst.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(path, dst)
     return dst
@@ -1176,7 +1116,7 @@ def build_forge_flow_bundle(root: Path) -> ForgeFlowResult:
     root = Path(root)
     result = ForgeFlowResult("Forge Flow Bundle")
     out = _out(root)
-    zip_path = out / f"forge_flow_bundle_{_timestamp()}.zip"
+    zip_path = out / f"forge_flow_bundle_{timestamp()}.zip"
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
         for path in sorted(out.rglob("*"), key=lambda p: str(p).lower()):
             if not path.is_file() or path == zip_path:

@@ -23,6 +23,7 @@ from .artifact_io import (
 from .parsers import COMMON_ANIMS, parse_code, read_text_safely, scan_project, write_text_safely
 from .move_wizard import find_character_file
 from .palette_tools import read_act, write_act
+from .binary_results import BinaryCoreResult, _uniq
 try:  # optional in older packages during partial imports
     from .visual_forge import create_backup_snapshot
 except Exception:  # pragma: no cover
@@ -38,55 +39,8 @@ GENERATED_PARTS = {"forge_timeline", "forge_polish", "forge_beyond", "visual_for
 
 
 @dataclass
-class ForgeTimelineResult:
+class ForgeTimelineResult(BinaryCoreResult):
     title: str = "Forge Timeline Result"
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    skipped_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def merge(self, other: object, label: Optional[str] = None) -> None:
-        if not other:
-            return
-        prefix = f"{label}: " if label else ""
-        for attr in ("created_files", "changed_files", "skipped_files", "warnings", "notes"):
-            getattr(self, attr).extend(prefix + str(v) for v in (getattr(other, attr, []) or []))
-
-    def add_created(self, root: Path, path: Path | str) -> None:
-        self.created_files.append(_rel(root, path))
-
-    def add_changed(self, root: Path, path: Path | str) -> None:
-        self.changed_files.append(_rel(root, path))
-
-    def add_warning(self, message: str) -> None:
-        self.warnings.append(str(message))
-
-    def add_note(self, message: str) -> None:
-        self.notes.append(str(message))
-
-    def to_text(self) -> str:
-        lines = [self.title, "=" * max(12, len(self.title)), f"Generated: {datetime.now().isoformat(timespec='seconds')}", ""]
-        for label, values in (("Notes", self.notes), ("Created files/artifacts", self.created_files), ("Changed files", self.changed_files), ("Skipped", self.skipped_files), ("Warnings", self.warnings)):
-            values = _uniq(values)
-            if values:
-                lines.append(label + ":")
-                lines.extend(f"- {v}" for v in values)
-                lines.append("")
-        if len(lines) <= 4:
-            lines.append("No changes made.")
-        return "\n".join(lines).rstrip() + "\n"
-
-
-def _uniq(values: Iterable[str]) -> List[str]:
-    out: List[str] = []
-    seen = set()
-    for value in values:
-        text = str(value)
-        if text not in seen:
-            seen.add(text)
-            out.append(text)
-    return out
 
 
 def _safe_name(value: object) -> str:

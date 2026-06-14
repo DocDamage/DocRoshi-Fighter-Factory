@@ -1,28 +1,25 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from datetime import datetime
 import ast
 import html
 import json
-import os
 import re
 import shutil
-import subprocess
-import sys
 import zipfile
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 from .artifact_io import (
-    rel_path as _rel,
-    sha256_file as _sha256,
     write_csv_artifact as _write_csv,
     write_json_artifact as _write_json,
     write_text_artifact,
+    sha256_file as _sha256,
 )
 from .parsers import parse_air, parse_code, parse_def, read_text_safely, scan_project, write_text_safely
 from .move_wizard import find_character_file
+from .shared_utils import BaseResult, uniq, rel_path as _rel
 
 MAINTENANCE_CORE_VERSION = "7.5.0"
 TEXT_EXTS = {'.py', '.md', '.txt', '.csv', '.json', '.def', '.air', '.cmd', '.cns', '.st', '.ini', '.cfg', '.bat', '.sh'}
@@ -31,58 +28,8 @@ SKIP_DIRS = {'__pycache__', '.git', '.mypy_cache', '.pytest_cache', 'backups', '
 
 
 @dataclass
-class MaintenanceResult:
+class MaintenanceResult(BaseResult):
     title: str = 'Maintenance Core'
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def add_created(self, root: Path, path: Path | str) -> None:
-        self.created_files.append(_rel(root, path))
-
-    def add_changed(self, root: Path, path: Path | str) -> None:
-        self.changed_files.append(_rel(root, path))
-
-    def add_warning(self, message: object) -> None:
-        self.warnings.append(str(message))
-
-    def add_note(self, message: object) -> None:
-        self.notes.append(str(message))
-
-    def merge(self, other: 'MaintenanceResult', label: Optional[str] = None) -> None:
-        if not other:
-            return
-        prefix = f'{label}: ' if label else ''
-        self.created_files += [prefix + x for x in other.created_files]
-        self.changed_files += [prefix + x for x in other.changed_files]
-        self.warnings += [prefix + x for x in other.warnings]
-        self.notes += [prefix + x for x in other.notes]
-
-    def to_text(self) -> str:
-        lines = [self.title, '=' * max(12, len(self.title)), f'Generated: {datetime.now().isoformat(timespec="seconds")}', '']
-        if self.notes:
-            lines += ['Notes:'] + [f'- {x}' for x in _unique(self.notes)] + ['']
-        if self.changed_files:
-            lines += ['Changed files:'] + [f'- {x}' for x in _unique(self.changed_files)] + ['']
-        if self.created_files:
-            lines += ['Created files/artifacts:'] + [f'- {x}' for x in _unique(self.created_files)] + ['']
-        if self.warnings:
-            lines += ['Warnings:'] + [f'- {x}' for x in _unique(self.warnings)] + ['']
-        if len(lines) <= 4:
-            lines.append('No changes made.')
-        return '\n'.join(lines).rstrip() + '\n'
-
-
-def _unique(items: Iterable[str]) -> List[str]:
-    out: List[str] = []
-    seen = set()
-    for item in items:
-        s = str(item)
-        if s not in seen:
-            seen.add(s)
-            out.append(s)
-    return out
 
 
 def _repo_root() -> Path:
@@ -106,7 +53,7 @@ def _write(path: Path, text: str) -> Path:
 def _iter_files(root: Path, *, suffixes: Optional[set[str]] = None, max_size: int = 5_000_000) -> Iterable[Path]:
     root = Path(root)
     if not root.exists():
-        return []
+        return
     for p in sorted(root.rglob('*'), key=lambda x: str(x).lower()):
         if not p.is_file():
             continue
@@ -240,7 +187,7 @@ def write_maintainer_dashboard(root: Path) -> MaintenanceResult:
     repo = _repo_root()
     stats = _project_stats(root)
     module_count = len(_module_files())
-    latest_docs = sorted([p.name for p in repo.glob('*v7_*.md')])
+    latest_docs = sorted([p.name for p in (repo / 'docs').glob('*v7_*.md')])
     lines = [
         '# MugenForge Maintenance Core',
         '',
@@ -271,7 +218,7 @@ def write_maintainer_dashboard(root: Path) -> MaintenanceResult:
         '1. Run `tools/run_mugenforge_smoke.py` from the package root.',
         '2. Open `maintenance_core/module_catalog.html` to understand backend modules.',
         '3. Open `maintenance_core/ui_tab_inventory.md` before editing `app.py`.',
-        '4. Read `maintenance_core/HANDOFF_FOR_NEXT_CHAT.md` and package-level `MUGENFORGE_HANDOFF_v7_5.md`.',
+        '4. Read `maintenance_core/HANDOFF_FOR_NEXT_CHAT.md` and package-level `docs/MUGENFORGE_HANDOFF_v7_5.md`.',
         '5. Keep binary claims tied to verified parser/rebuild paths and runtime claims tied to external evidence.',
         '',
         '## Generated maintenance files',
@@ -408,7 +355,7 @@ def write_release_lineage(root: Path) -> MaintenanceResult:
     repo = _repo_root()
     docs = []
     for pat in ('RELEASE_SUMMARY_v*.md', 'MUGENFORGE_HANDOFF_v*.md', 'TEST_RESULTS_v*.txt'):
-        docs.extend(sorted(repo.glob(pat), key=lambda p: p.name.lower()))
+        docs.extend(sorted((repo / 'docs').glob(pat), key=lambda p: p.name.lower()))
     docs += [repo / 'README.md', repo / 'CHANGELOG.md']
     rows: List[Dict[str, object]] = []
     version_re = re.compile(r'v(\d+(?:_\d+)+|\d+(?:\.\d+)+)', re.I)
@@ -608,7 +555,7 @@ def _find_root() -> Path:
     return here.parents[1]
 
 ROOT = _find_root()
-CANDIDATES = sorted(ROOT.glob('MUGENFORGE_HANDOFF_v*.md'), key=lambda p: p.name.lower())
+CANDIDATES = sorted((ROOT / 'docs').glob('MUGENFORGE_HANDOFF_v*.md'), key=lambda p: p.name.lower())
 if not CANDIDATES:
     raise SystemExit('No handoff file found.')
 print(CANDIDATES[-1].read_text(encoding='utf-8', errors='replace'))
@@ -690,11 +637,11 @@ def write_handoff_for_next_chat(root: Path) -> MaintenanceResult:
 
 ## Copy/paste prompt for the next chat
 
-I am continuing **MugenForge Studio**, a clean-room Python/Tkinter M.U.G.E.N character/stage editor and no-code creator suite. Continue from the uploaded package **mugenforge_studio_v7_5.zip**. Do not start over. Unzip it, run smoke tests, inspect `MUGENFORGE_HANDOFF_v7_5.md`, then continue development.
+I am continuing **MugenForge Studio**, a clean-room Python/Tkinter M.U.G.E.N character/stage editor and no-code creator suite. Continue from the uploaded package **mugenforge_studio_v7_5.zip**. Do not start over. Unzip it, run smoke tests, inspect `docs/MUGENFORGE_HANDOFF_v7_5.md`, then continue development.
 
-Latest version: **{version}**  
-Latest app title should be: **MugenForge Studio 7.5 Continuity Core**  
-Run command: `python -m mugenforge.app`  
+Latest version: **{version}**
+Latest app title should be: **MugenForge Studio 7.5 Continuity Core**
+Run command: `python -m mugenforge.app`
 Install: `pip install -r requirements.txt`
 
 ## Non-negotiable project rules
@@ -742,7 +689,7 @@ Install: `pip install -r requirements.txt`
   - `tools/run_mugenforge_smoke.py`
   - `tools/package_release.py`
   - `tools/print_latest_handoff.py`
-- Package-level `MUGENFORGE_HANDOFF_v7_5.md`.
+- Package-level `docs/MUGENFORGE_HANDOFF_v7_5.md`.
 - Project-level `maintenance_core/HANDOFF_FOR_NEXT_CHAT.md`.
 
 ## First commands to run
@@ -767,16 +714,16 @@ python -m mugenforge.app
 
 - `README.md`
 - `CHANGELOG.md`
-- `RELEASE_SUMMARY_v7_5.md`
-- `TEST_RESULTS_v7_5.txt`
-- `MUGENFORGE_HANDOFF_v7_5.md`
+- `docs/RELEASE_SUMMARY_v7_5.md`
+- `docs/TEST_RESULTS_v7_5.txt`
+- `docs/MUGENFORGE_HANDOFF_v7_5.md`
 - `maintenance_core/MAINTAINER_START_HERE.md`
 - `maintenance_core/module_catalog/module_api_catalog.html`
 - `maintenance_core/ui_inventory/ui_tab_inventory.md`
 - `maintenance_core/honesty_claims/honesty_claims_audit.md`
 """
     project_path = _write(_mc_dir(root) / 'HANDOFF_FOR_NEXT_CHAT.md', handoff)
-    package_path = _write(repo / 'MUGENFORGE_HANDOFF_v7_5.md', handoff)
+    package_path = _write(repo / 'docs' / 'MUGENFORGE_HANDOFF_v7_5.md', handoff)
     result.add_created(root, project_path)
     result.add_changed(repo, package_path)
     result.add_note('Wrote project and package handoff files.')
@@ -793,8 +740,12 @@ def build_maintenance_bundle(root: Path) -> MaintenanceResult:
         for p in sorted(out.rglob('*'), key=lambda x: str(x).lower()):
             if p.is_file() and p != zip_path:
                 zf.write(p, p.relative_to(out.parent))
-        for name in ('README.md', 'CHANGELOG.md', 'MUGENFORGE_HANDOFF_v7_5.md', 'RELEASE_SUMMARY_v7_5.md', 'TEST_RESULTS_v7_5.txt'):
+        for name in ('README.md', 'CHANGELOG.md'):
             p = _repo_root() / name
+            if p.exists():
+                zf.write(p, Path('package_docs') / p.name)
+        for name in ('MUGENFORGE_HANDOFF_v7_5.md', 'RELEASE_SUMMARY_v7_5.md', 'TEST_RESULTS_v7_5.txt'):
+            p = _repo_root() / 'docs' / name
             if p.exists():
                 zf.write(p, Path('package_docs') / p.name)
     manifest = {
@@ -831,5 +782,5 @@ def run_maintenance_core_pass(root: Path) -> MaintenanceResult:
         result.merge(build_maintenance_bundle(root), 'bundle')
     except Exception as exc:
         result.add_warning(f'bundle failed: {exc}')
-    result.add_note('Maintenance Core pass completed. Start with maintenance_core/MAINTAINER_START_HERE.md and MUGENFORGE_HANDOFF_v7_5.md.')
+    result.add_note('Maintenance Core pass completed. Start with maintenance_core/MAINTAINER_START_HERE.md and docs/MUGENFORGE_HANDOFF_v7_5.md.')
     return result

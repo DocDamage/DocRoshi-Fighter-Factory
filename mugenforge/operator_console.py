@@ -1,92 +1,34 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from datetime import datetime
-import csv
-import hashlib
 import json
-import os
 import re
 import zipfile
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 from .artifact_io import (
-    rel_path as _rel,
-    timestamp as _now,
     write_csv_artifact,
     write_json_artifact,
     write_text_artifact,
+    sha256_file,
+    timestamp as _now,
 )
-from .parsers import COMMON_ANIMS, parse_air, parse_code, parse_def, read_text_safely, scan_project, write_text_safely
+from .parsers import COMMON_ANIMS, parse_air, parse_code, read_text_safely, scan_project, write_text_safely
 from .move_wizard import find_character_file
 from .sff_codec import read_sff
 from .snd_codec import read_snd
+from .shared_utils import BaseResult, uniq, rel_path as _rel, get_code_files
 
 OPERATOR_CONSOLE_VERSION = "7.5.0"
 TEXT_EXTS = {'.def', '.air', '.cmd', '.cns', '.st', '.txt', '.md', '.json', '.ini', '.cfg', '.csv', '.log'}
-BINARY_EXTS = {'.sff', '.snd', '.act', '.pal', '.wav', '.png', '.pcx', '.bmp', '.gif', '.jpg', '.jpeg', '.webp'}
 SKIP_PARTS = {'__pycache__', '.git', '.hg', '.svn'}
 
 
 @dataclass
-class OperatorResult:
+class OperatorResult(BaseResult):
     title: str = 'Operator Console'
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    skipped_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def add_created(self, root: Path, path: Path | str) -> None:
-        self.created_files.append(_rel(root, path))
-
-    def add_changed(self, root: Path, path: Path | str) -> None:
-        self.changed_files.append(_rel(root, path))
-
-    def add_warning(self, message: object) -> None:
-        self.warnings.append(str(message))
-
-    def add_note(self, message: object) -> None:
-        self.notes.append(str(message))
-
-    def merge(self, other: 'OperatorResult', label: Optional[str] = None) -> None:
-        if not other:
-            return
-        prefix = f'{label}: ' if label else ''
-        self.created_files.extend(prefix + x for x in other.created_files)
-        self.changed_files.extend(prefix + x for x in other.changed_files)
-        self.skipped_files.extend(prefix + x for x in other.skipped_files)
-        self.warnings.extend(prefix + x for x in other.warnings)
-        self.notes.extend(prefix + x for x in other.notes)
-
-    def to_text(self) -> str:
-        lines = [self.title, '=' * max(12, len(self.title)), f'Generated: {datetime.now().isoformat(timespec="seconds")}', '']
-        for label, values in [
-            ('Notes', self.notes),
-            ('Created files/artifacts', self.created_files),
-            ('Changed files', self.changed_files),
-            ('Skipped', self.skipped_files),
-            ('Warnings', self.warnings),
-        ]:
-            if values:
-                lines.append(label + ':')
-                lines.extend(f'- {v}' for v in _uniq(values))
-                lines.append('')
-        if len(lines) <= 4:
-            lines.append('No changes made.')
-        return '\n'.join(lines).rstrip() + '\n'
-
-
-def _uniq(items: Iterable[str]) -> List[str]:
-    out: List[str] = []
-    seen = set()
-    for item in items:
-        s = str(item)
-        if s not in seen:
-            seen.add(s)
-            out.append(s)
-    return out
 
 
 def _console_dir(root: Path) -> Path:
@@ -107,33 +49,15 @@ def _write_csv(root: Path, path: Path, rows: Sequence[Dict[str, object]], fields
     return write_csv_artifact(path, rows, fields, result, root, track_existing=True)
 
 
-def _file_sha256(path: Path, max_bytes: Optional[int] = None) -> str:
-    h = hashlib.sha256()
-    total = 0
-    with path.open('rb') as f:
-        while True:
-            chunk = f.read(1024 * 1024)
-            if not chunk:
-                break
-            if max_bytes is not None and total + len(chunk) > max_bytes:
-                chunk = chunk[:max(0, max_bytes - total)]
-            h.update(chunk)
-            total += len(chunk)
-            if max_bytes is not None and total >= max_bytes:
-                break
-    return h.hexdigest()
+def _file_sha256(path: Path) -> str:
+    return sha256_file(path)
 
 
 def _all_project_files(root: Path) -> List[Path]:
-    root = Path(root)
-    files: List[Path] = []
-    for p in sorted(root.rglob('*'), key=lambda x: str(x).lower()):
-        if not p.is_file():
-            continue
-        if any(part in SKIP_PARTS for part in p.parts):
-            continue
-        files.append(p)
-    return files
+    return [
+        p for p in sorted(Path(root).rglob('*'), key=lambda x: str(x).lower())
+        if p.is_file() and not any(part in SKIP_PARTS for part in p.parts)
+    ]
 
 
 def _safe_read(path: Path) -> str:
@@ -154,7 +78,6 @@ def _discover_main_files(root: Path) -> Dict[str, Optional[Path]]:
     if out.get('def') is None:
         defs = sorted(root.glob('*.def'), key=lambda p: p.name.lower())
         out['def'] = defs[0] if defs else None
-    # Support common .st-only projects when CNS is absent.
     if out.get('cns') is None:
         sts = sorted(root.rglob('*.st'), key=lambda p: str(p).lower())
         out['cns'] = sts[0] if sts else None
@@ -170,7 +93,7 @@ def _project_counts(root: Path) -> Dict[str, int]:
 
 
 def _code_files(root: Path) -> List[Path]:
-    return [p for p in _all_project_files(root) if p.suffix.lower() in {'.cmd', '.cns', '.st'}]
+    return get_code_files(root)
 
 
 def _text_files(root: Path) -> List[Path]:
@@ -200,12 +123,10 @@ def _existing_report_dirs(root: Path) -> Dict[str, Dict[str, object]]:
 
 
 def inspect_project_state(root: Path) -> Dict[str, object]:
-    """Build a concise project state model for handoff and operator dashboards."""
     root = Path(root)
     root.mkdir(parents=True, exist_ok=True)
     files = _discover_main_files(root)
     counts = _project_counts(root)
-    audit = None
     try:
         audit = scan_project(root)
     except Exception:
@@ -534,7 +455,6 @@ def write_operator_roadmap(root: Path) -> OperatorResult:
                 'why': row['reason'],
             })
             priority += 1
-    # Always keep these deeper continuation items visible.
     evergreen = [
         ('Corpus validation', 'Expand real-world SFF2/SND test corpus and record supported/unsupported buckets.'),
         ('Visual timeline depth', 'Collapse move timing, CLSN, HitDef, sounds, helpers, projectiles, and velocity into one primary timeline surface.'),
@@ -587,7 +507,6 @@ def build_operator_context_bundle(root: Path) -> OperatorResult:
     result = OperatorResult('Operator Context Bundle')
     out = _console_dir(root)
     out.mkdir(parents=True, exist_ok=True)
-    # Refresh core docs before bundling.
     write_operator_dashboard(root)
     write_next_chat_handoff(root)
     write_operator_roadmap(root)
@@ -619,7 +538,6 @@ def build_operator_context_bundle(root: Path) -> OperatorResult:
             if p.suffix.lower() not in TEXT_EXTS:
                 continue
             include_files.append(p)
-    # De-duplicate and avoid putting the bundle inside itself.
     unique_files: List[Path] = []
     seen = set()
     for p in include_files:

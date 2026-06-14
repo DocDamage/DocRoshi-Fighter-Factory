@@ -23,6 +23,7 @@ from .parsers import parse_air, parse_code, read_text_safely, write_text_safely,
 from .move_wizard import find_character_file
 from .sff_codec import read_sff
 from .snd_codec import read_snd
+from .binary_results import BinaryCoreResult, _uniq
 
 try:  # optional newer codec layer from Binary Maturity
     from . import sff2_codec
@@ -43,62 +44,11 @@ WARNING_PATTERNS = [
 
 
 @dataclass
-class EvidenceCoreResult:
+class EvidenceCoreResult(BinaryCoreResult):
     title: str = 'Evidence Core Result'
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    skipped_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def merge(self, other: object, label: Optional[str] = None) -> None:
-        if other is None:
-            return
-        prefix = f'{label}: ' if label else ''
-        for attr in ('created_files', 'changed_files', 'skipped_files', 'warnings', 'notes'):
-            values = getattr(other, attr, []) or []
-            getattr(self, attr).extend(prefix + str(v) for v in values)
-
-    def add_created(self, root: Path, path: Path | str) -> None:
-        self.created_files.append(_rel(root, path))
-
-    def add_changed(self, root: Path, path: Path | str) -> None:
-        self.changed_files.append(_rel(root, path))
-
-    def add_warning(self, message: str) -> None:
-        self.warnings.append(str(message))
-
-    def add_note(self, message: str) -> None:
-        self.notes.append(str(message))
-
-    def to_text(self) -> str:
-        lines = [self.title, '=' * max(12, len(self.title)), f'Generated: {datetime.now().isoformat(timespec="seconds")}', '']
-        for label, values in [
-            ('Notes', self.notes),
-            ('Created files/artifacts', self.created_files),
-            ('Changed files', self.changed_files),
-            ('Skipped', self.skipped_files),
-            ('Warnings', self.warnings),
-        ]:
-            uniq = _uniq(values)
-            if uniq:
-                lines.append(label + ':')
-                lines.extend(f'- {v}' for v in uniq)
-                lines.append('')
-        if len(lines) <= 4:
-            lines.append('No changes made.')
-        return '\n'.join(lines).rstrip() + '\n'
 
 
-def _uniq(items: Iterable[str]) -> List[str]:
-    out: List[str] = []
-    seen = set()
-    for item in items:
-        s = str(item)
-        if s not in seen:
-            seen.add(s)
-            out.append(s)
-    return out
+
 
 
 def _ec(root: Path, *parts: str) -> Path:

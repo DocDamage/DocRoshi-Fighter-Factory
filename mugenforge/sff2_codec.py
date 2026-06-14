@@ -681,43 +681,32 @@ def patch_sff2_axis_copy(path: Path, sheet_csv: Path, out_path: Path) -> Tuple[P
     return out_path, changed, warnings
 
 
+def _extract_palette_bytes(pim) -> bytes:
+    pal_flat = (pim.getpalette() or [])[:256 * 3]
+    colors = []
+    for i in range(0, len(pal_flat), 3):
+        r = pal_flat[i]
+        g = pal_flat[i + 1] if i + 1 < len(pal_flat) else 0
+        b = pal_flat[i + 2] if i + 2 < len(pal_flat) else 0
+        colors.append((r, g, b, 0 if len(colors) == 0 else 255))
+    while len(colors) < 256:
+        idx = len(colors)
+        colors.append((idx, idx, idx, 0 if idx == 0 else 255))
+    return b''.join(bytes(c) for c in colors)
+
+
 def _image_to_payload(path: Path, *, mode: str = 'png') -> Tuple[bytes, int, int, int, int, bytes]:
     """Return payload, width, height, format code, color depth, palette bytes."""
     from PIL import Image  # type: ignore
     with Image.open(path) as im:
-        if mode == 'raw8':
+        if mode in {'raw8', 'rle8'}:
             pim = im.convert('P', palette=Image.ADAPTIVE, colors=256)
             w, h = pim.size
             raw = pim.tobytes()
-            pal_flat = (pim.getpalette() or [])[:256 * 3]
-            colors = []
-            for i in range(0, len(pal_flat), 3):
-                r = pal_flat[i]
-                g = pal_flat[i + 1] if i + 1 < len(pal_flat) else 0
-                b = pal_flat[i + 2] if i + 2 < len(pal_flat) else 0
-                colors.append((r, g, b, 0 if len(colors) == 0 else 255))
-            while len(colors) < 256:
-                idx = len(colors)
-                colors.append((idx, idx, idx, 0 if idx == 0 else 255))
-            pal = b''.join(bytes(c) for c in colors)
-            return raw, w, h, 0, 8, pal
-        if mode == 'rle8':
-            pim = im.convert('P', palette=Image.ADAPTIVE, colors=256)
-            w, h = pim.size
-            raw = pim.tobytes()
-            payload = encode_rle8_indices(raw)
-            pal_flat = (pim.getpalette() or [])[:256 * 3]
-            colors = []
-            for i in range(0, len(pal_flat), 3):
-                r = pal_flat[i]
-                g = pal_flat[i + 1] if i + 1 < len(pal_flat) else 0
-                b = pal_flat[i + 2] if i + 2 < len(pal_flat) else 0
-                colors.append((r, g, b, 0 if len(colors) == 0 else 255))
-            while len(colors) < 256:
-                idx = len(colors)
-                colors.append((idx, idx, idx, 0 if idx == 0 else 255))
-            pal = b''.join(bytes(c) for c in colors)
-            return payload, w, h, 2, 8, pal
+            pal = _extract_palette_bytes(pim)
+            if mode == 'raw8':
+                return raw, w, h, 0, 8, pal
+            return encode_rle8_indices(raw), w, h, 2, 8, pal
         rgba = im.convert('RGBA')
         buf = BytesIO()
         rgba.save(buf, format='PNG')
@@ -772,7 +761,7 @@ def build_sff2_from_manifest(manifest_path: Path, out_path: Path, *, payload_mod
             'source': str(img_path),
         })
     if not normalized:
-        raise ValueError('No usable sprite records were found in the manifest.') 
+        raise ValueError('No usable sprite records were found in the manifest.')
 
     # Use a single fallback grayscale palette if PNG-only sources did not require one.
     if not palette_blobs:

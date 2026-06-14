@@ -48,9 +48,6 @@ SFF2_RECORD_SIZE = 28
 SFF2_NATIVE_MAGIC = b'MF_NATIVE_SFF2\x00'
 IMAGE_SUFFIXES = {'.png', '.pcx', '.bmp', '.gif', '.jpg', '.jpeg', '.webp'}
 
-# SFF2 format codes are not centrally documented in the user-facing Elecbyte manual.
-# These labels match the practical encodings exposed by Sprmake2/MUGEN-era tooling and
-# are used as decode strategies, not as proprietary logic.
 SFF2_FORMAT_LABELS = {
     0: 'raw-indexed-or-raw-rgba',
     1: 'raw-indexed-or-linked',
@@ -280,7 +277,6 @@ def _find_embedded_pngs(data: bytes) -> List[Tuple[int, int]]:
         start = data.find(sig, pos)
         if start < 0:
             return out
-        # Parse chunks to avoid false IEND matches in data.
         cur = start + 8
         end = 0
         while cur + 8 <= len(data):
@@ -301,7 +297,6 @@ def _find_embedded_pngs(data: bytes) -> List[Tuple[int, int]]:
 
 
 def _find_pcx_ranges(data: bytes, max_hits: int = 1000) -> List[Tuple[int, int]]:
-    # PCX does not contain a guaranteed EOF marker. Use header sanity plus next common marker/EOF.
     hits: List[int] = []
     for idx in range(0, max(0, len(data) - 128)):
         if data[idx] == 0x0A and data[idx + 2] == 0x01 and data[idx + 3] in {1, 2, 4, 8, 24}:
@@ -318,7 +313,6 @@ def _find_pcx_ranges(data: bytes, max_hits: int = 1000) -> List[Tuple[int, int]]
 
 def _candidate_header_values(data: bytes) -> List[int]:
     vals: List[int] = []
-    # SFF headers are small; scan plausible 32-bit fields and include canonical positions.
     for off in range(16, min(len(data) - 4, 256), 4):
         try:
             val = _u32(data, off)
@@ -361,9 +355,6 @@ def _plausible_record_fields(data: bytes, off: int) -> Optional[Tuple[int, int, 
         return None
     if format_code > 64:
         return None
-    if color_depth not in {0, 5, 8, 16, 24, 32}:
-        # Some SFF2 tools set this byte as flags. Keep it, but penalize later.
-        pass
     return (group, image, width, height, axis_x, axis_y, linked_index, format_code, color_depth, data_offset_field, payload_length, palette_index, flags)
 
 
@@ -468,7 +459,6 @@ def _parse_table_candidate(data: bytes, table_offset: int, record_count: int, da
         ))
     if not records:
         return None
-    # Favor candidates where most records agree with valid payloads.
     score += len(records) * 100 - bad * 250
     if bad:
         warnings.append(f'{bad} candidate records were rejected while scanning this table.')
@@ -496,7 +486,6 @@ def discover_deep_sff2_tables(path: Path) -> Tuple[List[DeepSff2Table], Dict[str
     meta['header_candidate_values'] = header_vals[:80]
     counts = [v for v in header_vals if 0 < v <= 100000]
     offsets = [v for v in header_vals if 0 <= v < len(data)]
-    # Strong candidates from MugenForge native layout and common SFF2 header-like fields.
     seed_triples: List[Tuple[int, int, int, str]] = []
     try:
         seed_triples.append((_u32(data, 24), _u32(data, 28), _u32(data, 32), 'header-0x18/0x1c/0x20'))
@@ -510,8 +499,6 @@ def discover_deep_sff2_tables(path: Path) -> Tuple[List[DeepSff2Table], Dict[str
         seed_triples.append((_u32(data, 32), _u32(data, 20), _u32(data, 40), 'header-0x20/0x14/0x28'))
     except Exception:
         pass
-    # Dense scan: pair plausible table offsets with plausible counts and likely data bases.
-    # Limit combinations to keep big projects responsive.
     for table_off in offsets[:80]:
         if table_off < 64:
             continue
@@ -536,7 +523,6 @@ def discover_deep_sff2_tables(path: Path) -> Tuple[List[DeepSff2Table], Dict[str
         if tab and tab.score > 0:
             tables.append(tab)
     tables.sort(key=lambda t: (t.score, len(t.records)), reverse=True)
-    # Remove near-duplicates; keep strongest per table/data combo.
     filtered: List[DeepSff2Table] = []
     used = set()
     for tab in tables:
@@ -558,8 +544,6 @@ def best_deep_sff2_table(path: Path) -> Optional[DeepSff2Table]:
 
 
 def _palette_for_record(data: bytes, record: DeepSff2Record) -> Optional[List[Tuple[int, int, int, int]]]:
-    # Full SFF2 palette-table discovery is format-variant-sensitive. Use embedded ACT-like
-    # 768/1024-byte palette near EOF only as a last-resort visual aid.
     return None
 
 
@@ -601,7 +585,6 @@ def _unpack_5bit_raw(blob: bytes, expected: int) -> Optional[bytes]:
         if len(vals) >= expected:
             break
     if len(vals) == expected:
-        # Stretch 5-bit indices into a visible 0..255 palette range.
         return bytes((v * 255 // 31) for v in vals)
     return None
 
@@ -685,7 +668,6 @@ def _lzss_probe(blob: bytes, expected: int, flags_lsb: bool = True) -> Optional[
                 b1 = blob[i]
                 b2 = blob[i + 1]
                 i += 2
-                # Two common LZSS layouts. Choose the one that yields a valid back-reference.
                 off1 = ((b2 & 0xF0) << 4) | b1
                 ln1 = (b2 & 0x0F) + 3
                 off2 = ((b1 & 0xF0) << 4) | b2
@@ -709,8 +691,6 @@ def _lzss_probe(blob: bytes, expected: int, flags_lsb: bool = True) -> Optional[
 
 
 def _decode_lz5(blob: bytes, expected: int) -> Tuple[Optional[bytes], str]:
-    # LZ5 in the ecosystem is custom. These LZSS probes make practical recovery attempts
-    # without pretending every variant can be decoded.
     raw5 = _unpack_5bit_raw(blob, expected)
     if raw5 is not None:
         return raw5, 'lz5-raw-5bit-unpack'
@@ -778,7 +758,6 @@ def decode_sff2_record_to_image(data: bytes, record: DeepSff2Record):
         out, m = _decode_lz5(blob, expected)
         if out is not None:
             return _pil_image_from_indexed(out, record.width, record.height, palette, scale5=True), method + m
-    # Try all probes as a recovery fallback.
     for probe_name, probe in [
         ('rle8-fallback', lambda b, e: _decode_rle8(b, e)[0]),
         ('rle5-fallback', lambda b, e: _decode_rle5(b, e)[0]),
@@ -798,7 +777,6 @@ def _export_record_payload_or_png(sff_path: Path, data: bytes, record: DeepSff2R
         img.save(out)
         return out, method
     except Exception as exc:
-        # Store raw payload for manual forensic use.
         if 0 <= record.payload_offset < len(data) and record.payload_offset + record.payload_length <= len(data):
             raw = out_dir / f'g{record.group:04d}_i{record.image:04d}_idx{record.index:05d}_undecoded_fmt{record.format_code}.bin'
             raw.write_bytes(data[record.payload_offset:record.payload_offset + record.payload_length])
@@ -807,7 +785,7 @@ def _export_record_payload_or_png(sff_path: Path, data: bytes, record: DeepSff2R
 
 
 # ---------------------------------------------------------------------------
-# SFF2 public workflows
+# SFF2 deep workflows
 
 
 def write_deep_sff2_inspection(root: Path) -> BinaryCoreResult:
@@ -904,7 +882,6 @@ def export_deep_sff2_sprites(root: Path) -> BinaryCoreResult:
                 exports.append(d)
         res.notes.append(f'Exported/recovered {len(exports)} payload(s) from best SFF2 table candidate.')
     else:
-        # Fall back to embedded PNG/PCX scan.
         png_dir = out_dir / 'embedded_png_scan'
         png_dir.mkdir(parents=True, exist_ok=True)
         for idx, (off, length) in enumerate(_find_embedded_pngs(data)[:5000]):
@@ -944,7 +921,6 @@ def export_deep_sff2_mutation_sheet(root: Path) -> BinaryCoreResult:
     table = best_deep_sff2_table(sff)
     rows: List[Dict[str, object]] = []
     if table:
-        # Export sprites first so replacement paths are easy to edit.
         exp = export_deep_sff2_sprites(root)
         res.merge(exp, 'sprite export')
         export_manifest = _bd(root) / 'sff2_deep_export' / 'deep_sff2_export_manifest.json'
@@ -1061,7 +1037,7 @@ def build_native_sff2_from_image_records(records: Sequence[Dict[str, object]], o
         struct.pack_into('<H', table, off + 6, _clamp_u16(int(rec['height'])))
         struct.pack_into('<h', table, off + 8, _clamp_i16(int(rec['axis_x'])))
         struct.pack_into('<h', table, off + 10, _clamp_i16(int(rec['axis_y'])))
-        struct.pack_into('<H', table, off + 12, 0xFFFF)  # not linked
+        struct.pack_into('<H', table, off + 12, 0xFFFF)
         table[off + 14] = int(rec['format_code']) & 0xFF
         table[off + 15] = int(rec['color_depth']) & 0xFF
         struct.pack_into('<I', table, off + 16, cursor)
@@ -1080,7 +1056,6 @@ def build_native_sff2_from_manifest(root: Path, manifest_path: Optional[Path] = 
     work.mkdir(parents=True, exist_ok=True)
     manifest = Path(manifest_path) if manifest_path else work / 'native_sff2_build_manifest.json'
     if not manifest.exists():
-        # Auto-create from source image folders and current deep exports.
         candidates = [root / 'source_sprites', root / 'sprites', root / 'staged_sprites', _bd(root) / 'sff2_deep_export' / 'sprites', _bc(root) / 'sff_payloads' / 'sff2_png_subset']
         imgs: List[Path] = []
         for cand in candidates:
@@ -1161,7 +1136,6 @@ def apply_deep_sff2_mutation_sheet(root: Path, sheet_path: Optional[Path] = None
     data = bytearray(sff.read_bytes())
     axis_applied = 0
     replace_records: List[Dict[str, object]] = []
-    existing_export_dir = _bd(root) / 'sff2_deep_export' / 'sprites'
     for row in enabled:
         action = str(row.get('action') or 'axis').strip().lower()
         table_off = _safe_int(row.get('table_offset'), -1)
@@ -1372,7 +1346,7 @@ def apply_snd_direct_patch_sheet(root: Path, sheet_path: Optional[Path] = None, 
 
 
 # ---------------------------------------------------------------------------
-# Runtime-oriented test artifacts and source scaffolding confidence
+# Runtime state checklists & Telemetry helpers
 
 
 def write_runtime_validation_lab(root: Path) -> BinaryCoreResult:
@@ -1420,7 +1394,6 @@ ignorehitpause = 1
         '- `runtime_telemetry_helper.cns`', '',
         'Reports remain source-estimated until you paste/import actual engine log lines containing `MFRT`.',
     ]), res, root)
-    # Ingest any existing logs under testing/ or runtime_validation_lab/.
     telemetry_rows: List[Dict[str, object]] = []
     rx = re.compile(r'MFRT\s+state=(?P<state>-?\d+)\s+anim=(?P<anim>-?\d+)\s+elem=(?P<elem>-?\d+)\s+time=(?P<time>-?\d+)\s+ctrl=(?P<ctrl>-?\d+)')
     for log in list(out_dir.glob('*.log')) + list((root / 'testing').glob('*.log')) if (root / 'testing').exists() else list(out_dir.glob('*.log')):
@@ -1441,101 +1414,7 @@ ignorehitpause = 1
 
 
 # ---------------------------------------------------------------------------
-# Dashboard, bundle, one-click
-
-
-def write_binary_deep_dashboard(root: Path) -> BinaryCoreResult:
-    root = Path(root)
-    res = BinaryCoreResult('Binary Deep Dashboard')
-    sff = _file(root, 'sff')
-    snd = _file(root, 'snd')
-    sff_line = 'missing'
-    if sff and sff.exists():
-        tables, _meta, warns = discover_deep_sff2_tables(sff)
-        sff_line = f'{_rel(root, sff)} — deep candidate tables={len(tables)}; best records={len(tables[0].records) if tables else 0}; warnings={len(warns)}'
-    snd_line = 'missing'
-    if snd and snd.exists():
-        sinfo = read_snd(snd)
-        patchable = sum(1 for s in sinfo.sounds if s.header_offset is not None)
-        snd_line = f'{_rel(root, snd)} — sounds={len(sinfo.sounds)}; direct-ID patchable headers={patchable}'
-    lines = [
-        '# MugenForge Binary Deep Dashboard', '',
-        f'Version: {BINARY_DEEP_VERSION}', '',
-        CAPABILITY_NOTE, '',
-        '## Current project status', '',
-        f'- SFF: {sff_line}',
-        f'- SND: {snd_line}', '',
-        '## What this release changes', '',
-        '- Adds broad SFF2 table discovery instead of only the old MugenForge PNG-subset probe.',
-        '- Adds direct export/decode attempts for PNG, PCX, zlib-wrapped images, raw indexed/RGB/RGBA and RLE8 payloads, plus diagnostic-only 5-bit/LZ-style probes for unsupported records.',
-        '- Adds deep SFF2 mutation sheets for axis patch candidates and native PNG-backed rebuild candidates.',
-        '- Adds SND direct patch candidates for IDs and same-or-smaller WAV replacements, while larger WAVs route to rebuild workflow.',
-        '- Adds runtime validation artifacts so source reports can be paired with real playtest telemetry when available.', '',
-        '## Remaining honest boundary', '',
-        'Unknown, corrupt, encrypted, or tool-specific binary variants can still require manual review. MugenForge now attempts more formats and writes candidates, but it will still warn/refuse when a record cannot be proven safe.',
-    ]
-    _write_text(_bd(root) / 'BINARY_DEEP_DASHBOARD.md', '\n'.join(lines), res, root)
-    _write_text(_bd(root) / 'BINARY_DEEP_START_HERE.md', '\n'.join(lines + ['', 'Generated by Binary Deep.']), res, root)
-    res.notes.append('Wrote Binary Deep dashboard and start-here guide.')
-    return res
-
-
-def build_binary_deep_bundle(root: Path) -> BinaryCoreResult:
-    root = Path(root)
-    res = BinaryCoreResult('Binary Deep Bundle')
-    base = _bd(root)
-    if not base.exists():
-        res.add_warning('binary_deep folder does not exist yet. Run a Binary Deep report first.')
-        return res
-    out_dir = base / 'bundles'
-    out_dir.mkdir(parents=True, exist_ok=True)
-    out = out_dir / f'{root.name}_binary_deep_bundle_{_now()}.zip'
-    with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zf:
-        for p in sorted(base.rglob('*')):
-            if p.is_file() and p != out:
-                zf.write(p, p.relative_to(base))
-    res.add_created(root, out)
-    res.notes.append('Bundled Binary Deep reports/workspaces.')
-    return res
-
-
-def run_binary_deep_pass(root: Path) -> BinaryCoreResult:
-    root = Path(root)
-    res = BinaryCoreResult('One-Click Binary Deep Pass')
-    for label, fn in [
-        ('binary core compatibility pass', run_binary_core_pass),
-        ('dashboard', write_binary_deep_dashboard),
-        ('deep sff2 inspection', write_deep_sff2_inspection),
-        ('deep sff2 export', export_deep_sff2_sprites),
-        ('deep sff2 mutation sheet', export_deep_sff2_mutation_sheet),
-        ('native sff2 build manifest/candidate', build_native_sff2_from_manifest),
-        ('snd direct patch sheet', export_snd_direct_patch_sheet),
-        ('snd waveform preview', write_snd_waveform_preview),
-        ('runtime validation lab', write_runtime_validation_lab),
-    ]:
-        try:
-            res.merge(fn(root), label)
-        except Exception as exc:
-            res.add_warning(f'{label} failed: {exc}')
-    try:
-        res.merge(build_binary_deep_bundle(root), 'bundle')
-    except Exception as exc:
-        res.add_warning(f'bundle failed: {exc}')
-    return res
-
-
-# Compatibility names for UI/test scripts.
-inspect_sff2_deep = write_deep_sff2_inspection
-export_sff2_deep_sprites = export_deep_sff2_sprites
-export_sff2_mutation_sheet = export_deep_sff2_mutation_sheet
-apply_sff2_mutation_sheet = apply_deep_sff2_mutation_sheet
-build_native_sff2 = build_native_sff2_from_manifest
-export_snd_patch_sheet = export_snd_direct_patch_sheet
-apply_snd_patch_sheet = apply_snd_direct_patch_sheet
-write_runtime_lab = write_runtime_validation_lab
-
-# ---------------------------------------------------------------------------
-# Built-in codec probe suite for raw/RLE8/diagnostic-probe paths
+# Codec Probes, Dashboard, Bundling, One-Click Pass
 
 
 def _pack_5bit_raw(indices: bytes) -> bytes:
@@ -1612,11 +1491,6 @@ def _write_native_sff2_payload_records(records: Sequence[Dict[str, object]], out
 
 
 def write_sff2_codec_probe_suite(root: Path) -> BinaryCoreResult:
-    """Generate and verify controlled fixtures for the deep raw/RLE8/diagnostic-probe paths.
-
-    This does not prove every third-party SFF2 in the wild; it proves that the native
-    decoder implementations are exercised and can round-trip supported payload shapes.
-    """
     root = Path(root)
     res = BinaryCoreResult('SFF2 Codec Probe Suite')
     out_dir = _bd(root) / 'sff2_codec_probe_suite'
@@ -1628,7 +1502,6 @@ def write_sff2_codec_probe_suite(root: Path) -> BinaryCoreResult:
     raw5_indices = bytes((i % 32) for i in range(w * h))
     raw5 = _pack_5bit_raw(raw5_indices)
     lz5_probe = _pack_5bit_raw(bytes(((31 - i) % 32) for i in range(w * h)))
-    # zlib-wrapped PNG fixture
     try:
         from PIL import Image  # type: ignore
         img = _pil_image_from_indexed(raw, w, h)
@@ -1675,27 +1548,62 @@ def write_sff2_codec_probe_suite(root: Path) -> BinaryCoreResult:
     return res
 
 
-# Patch the v5.5 pass to include the codec suite while preserving the earlier definition name.
-_run_binary_deep_pass_base = run_binary_deep_pass
-
-def run_binary_deep_pass(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
+def write_binary_deep_dashboard(root: Path) -> BinaryCoreResult:
     root = Path(root)
-    res = _run_binary_deep_pass_base(root)
-    try:
-        res.merge(write_sff2_codec_probe_suite(root), 'sff2 codec probe suite')
-    except Exception as exc:
-        res.add_warning(f'sff2 codec probe suite failed: {exc}')
-    try:
-        res.merge(build_binary_deep_bundle(root), 'bundle refresh')
-    except Exception as exc:
-        res.add_warning(f'bundle refresh failed: {exc}')
+    res = BinaryCoreResult('Binary Deep Dashboard')
+    sff = _file(root, 'sff')
+    snd = _file(root, 'snd')
+    sff_line = 'missing'
+    if sff and sff.exists():
+        tables, _meta, warns = discover_deep_sff2_tables(sff)
+        sff_line = f'{_rel(root, sff)} — deep candidate tables={len(tables)}; best records={len(tables[0].records) if tables else 0}; warnings={len(warns)}'
+    snd_line = 'missing'
+    if snd and snd.exists():
+        sinfo = read_snd(snd)
+        patchable = sum(1 for s in sinfo.sounds if s.header_offset is not None)
+        snd_line = f'{_rel(root, snd)} — sounds={len(sinfo.sounds)}; direct-ID patchable headers={patchable}'
+    lines = [
+        '# MugenForge Binary Deep Dashboard', '',
+        f'Version: {BINARY_DEEP_VERSION}', '',
+        CAPABILITY_NOTE, '',
+        '## Current project status', '',
+        f'- SFF: {sff_line}',
+        f'- SND: {snd_line}', '',
+        '## What this release changes', '',
+        '- Adds broad SFF2 table discovery instead of only the old MugenForge PNG-subset probe.',
+        '- Adds direct export/decode attempts for PNG, PCX, zlib-wrapped images, raw indexed/RGB/RGBA and RLE8 payloads, plus diagnostic-only 5-bit/LZ-style probes for unsupported records.',
+        '- Adds deep SFF2 mutation sheets for axis patch candidates and native PNG-backed rebuild candidates.',
+        '- Adds SND direct patch candidates for IDs and same-or-smaller WAV replacements, while larger WAVs route to rebuild workflow.',
+        '- Adds runtime validation artifacts so source reports can be paired with real playtest telemetry when available.', '',
+        '## Remaining honest boundary', '',
+        'Unknown, corrupt, encrypted, or tool-specific binary variants can still require manual review. MugenForge now attempts more formats and writes candidates, but it will still warn/refuse when a record cannot be proven safe.',
+    ]
+    _write_text(_bd(root) / 'BINARY_DEEP_DASHBOARD.md', '\n'.join(lines), res, root)
+    _write_text(_bd(root) / 'BINARY_DEEP_START_HERE.md', '\n'.join(lines + ['', 'Generated by Binary Deep.']), res, root)
+    res.notes.append('Wrote Binary Deep dashboard and start-here guide.')
     return res
 
-# Update compatibility alias after redefining one-click.
-run_binary_deep = run_binary_deep_pass
 
-# Final v5.5 one-click definition: focus on Deep workflows instead of replaying old limitation reports.
-def run_binary_deep_pass(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
+def build_binary_deep_bundle(root: Path) -> BinaryCoreResult:
+    root = Path(root)
+    res = BinaryCoreResult('Binary Deep Bundle')
+    base = _bd(root)
+    if not base.exists():
+        res.add_warning('binary_deep folder does not exist yet. Run a Binary Deep report first.')
+        return res
+    out_dir = base / 'bundles'
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out = out_dir / f'{root.name}_binary_deep_bundle_{_now()}.zip'
+    with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zf:
+        for p in sorted(base.rglob('*')):
+            if p.is_file() and p != out:
+                zf.write(p, p.relative_to(base))
+    res.add_created(root, out)
+    res.notes.append('Bundled Binary Deep reports/workspaces.')
+    return res
+
+
+def run_binary_deep_pass(root: Path) -> BinaryCoreResult:
     root = Path(root)
     res = BinaryCoreResult('One-Click Binary Deep Pass')
     for label, fn in [
@@ -1721,4 +1629,14 @@ def run_binary_deep_pass(root: Path) -> BinaryCoreResult:  # type: ignore[no-red
         res.add_warning(f'bundle failed: {exc}')
     return res
 
+
+# Compatibility names for UI/test scripts.
+inspect_sff2_deep = write_deep_sff2_inspection
+export_sff2_deep_sprites = export_deep_sff2_sprites
+export_sff2_mutation_sheet = export_deep_sff2_mutation_sheet
+apply_sff2_mutation_sheet = apply_deep_sff2_mutation_sheet
+build_native_sff2 = build_native_sff2_from_manifest
+export_snd_patch_sheet = export_snd_direct_patch_sheet
+apply_snd_patch_sheet = apply_snd_direct_patch_sheet
+write_runtime_lab = write_runtime_validation_lab
 run_binary_deep = run_binary_deep_pass

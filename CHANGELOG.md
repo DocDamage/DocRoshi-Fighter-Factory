@@ -11,7 +11,7 @@
 - New **Handoff Core** tab.
 - Rebuilt `mugenforge/handoff_core.py` with context digest, package inventory, regression harness, next-chat prompt, development handoff, and handoff bundle.
 - Package-level `tools/run_mugenforge_smoke.py`, `tools/package_release.py`, and `tools/print_latest_handoff.py`.
-- Updated `MUGENFORGE_HANDOFF_v7_5.md`, `RELEASE_SUMMARY_v7_5.md`, and `TEST_RESULTS_v7_5.txt`.
+- Updated `docs/MUGENFORGE_HANDOFF_v7_5.md`, `docs/RELEASE_SUMMARY_v7_5.md`, and `docs/TEST_RESULTS_v7_5.txt`.
 
 ### Changed
 

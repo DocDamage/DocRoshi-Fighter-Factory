@@ -13,15 +13,6 @@ import subprocess
 import zipfile
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
-from .artifact_io import (
-    backup_file,
-    rel_path as _rel,
-    sha256_file as _sha256,
-    timestamp as _now,
-    write_csv_artifact,
-    write_json_artifact,
-    write_text_artifact,
-)
 from .parsers import parse_air, parse_code, parse_def, read_text_safely, write_text_safely, scan_project
 from .move_wizard import find_character_file
 from .sff_codec import read_sff
@@ -33,59 +24,30 @@ BINARY_EXTS = {".sff", ".snd"}
 EVIDENCE_EXTS = {".txt", ".log", ".json", ".csv", ".md", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp"}
 
 
+from .shared_utils import (
+    BaseResult,
+    uniq,
+    rel_path as _rel,
+    sha256_file as _sha256,
+    timestamp as _now,
+    backup_file,
+    write_text_artifact,
+    write_json_artifact,
+    write_csv_artifact,
+    discover_project_files,
+    get_code_files,
+    get_character_name,
+    parse_first_int,
+    parse_numbers,
+)
+
 @dataclass
-class GapCloserResult:
+class GapCloserResult(BaseResult):
     title: str = "Gap Closer"
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def add_created(self, root: Path, path: Path | str) -> None:
-        self.created_files.append(_rel(root, path))
-
-    def add_changed(self, root: Path, path: Path | str) -> None:
-        self.changed_files.append(_rel(root, path))
-
-    def add_warning(self, msg: object) -> None:
-        self.warnings.append(str(msg))
-
-    def add_note(self, msg: object) -> None:
-        self.notes.append(str(msg))
-
-    def merge(self, other: object, label: Optional[str] = None) -> None:
-        if not other:
-            return
-        prefix = f"{label}: " if label else ""
-        self.created_files += [prefix + str(x) for x in getattr(other, "created_files", []) or []]
-        self.changed_files += [prefix + str(x) for x in getattr(other, "changed_files", []) or []]
-        self.warnings += [prefix + str(x) for x in getattr(other, "warnings", []) or []]
-        self.notes += [prefix + str(x) for x in getattr(other, "notes", []) or []]
-
-    def to_text(self) -> str:
-        lines = [self.title, "=" * max(12, len(self.title)), f"Generated: {datetime.now().isoformat(timespec='seconds')}", ""]
-        if self.notes:
-            lines += ["Notes:"] + [f"- {x}" for x in _uniq(self.notes)] + [""]
-        if self.changed_files:
-            lines += ["Changed files:"] + [f"- {x}" for x in _uniq(self.changed_files)] + [""]
-        if self.created_files:
-            lines += ["Created files/artifacts:"] + [f"- {x}" for x in _uniq(self.created_files)] + [""]
-        if self.warnings:
-            lines += ["Warnings:"] + [f"- {x}" for x in _uniq(self.warnings)] + [""]
-        if len(lines) <= 4:
-            lines.append("No changes made.")
-        return "\n".join(lines).rstrip() + "\n"
 
 
 def _uniq(items: Iterable[str]) -> List[str]:
-    out: List[str] = []
-    seen = set()
-    for item in items:
-        s = str(item)
-        if s not in seen:
-            seen.add(s)
-            out.append(s)
-    return out
+    return uniq(items)
 
 
 def _gap_dir(root: Path) -> Path:
@@ -124,81 +86,27 @@ def _backup_file(path: Path) -> Optional[Path]:
 
 
 def _main_def(root: Path) -> Optional[Path]:
-    root = Path(root)
-    exact = root / f"{root.name}.def"
-    if exact.exists():
-        return exact
-    hits = sorted(root.glob("*.def"), key=lambda p: p.name.lower())
-    return hits[0] if hits else None
+    return discover_project_files(root).get("def")
 
 
 def _project_files(root: Path) -> Dict[str, Optional[Path]]:
-    root = Path(root)
-    out: Dict[str, Optional[Path]] = {"root": root, "def": _main_def(root)}
-    refs: Dict[str, str] = {}
-    dpath = out.get("def")
-    if dpath and dpath.exists():
-        try:
-            sec = parse_def(read_text_safely(dpath)).get("files")
-            if sec:
-                refs = {k.lower(): str(v).strip().strip('"') for k, v in sec.values.items()}
-        except Exception:
-            refs = {}
-
-    def by_ref(key: str, ext: str) -> Optional[Path]:
-        ref = refs.get(key)
-        if ref:
-            p = (root / ref).resolve()
-            if p.exists():
-                return p
-        try:
-            p2 = find_character_file(root, ext)
-            if p2 and p2.exists():
-                return p2
-        except Exception:
-            pass
-        exact = root / f"{root.name}.{ext}"
-        if exact.exists():
-            return exact
-        hits = sorted(root.glob(f"*.{ext}"), key=lambda p: p.name.lower())
-        return hits[0] if hits else None
-
-    out["cmd"] = by_ref("cmd", "cmd")
-    out["cns"] = by_ref("cns", "cns")
-    out["air"] = by_ref("anim", "air")
-    out["sff"] = by_ref("sprite", "sff")
-    out["snd"] = by_ref("sound", "snd")
-    return out
+    return discover_project_files(root)
 
 
 def _code_files(root: Path) -> List[Path]:
-    skip = {"__pycache__", "gap_closer", "runtime_lab", "binary_core", "binary_deep", "binary_maturity", "forge_timeline", "forge_polish", "forge_beyond", "visual_forge"}
-    out: List[Path] = []
-    for p in sorted(Path(root).rglob("*"), key=lambda x: str(x).lower()):
-        if p.is_file() and p.suffix.lower() in CODE_EXTS and not any(part in skip or part.startswith(".") for part in p.parts):
-            out.append(p)
-    return out
+    return get_code_files(root)
 
 
 def _char_name(root: Path) -> str:
-    dpath = _main_def(root)
-    if dpath and dpath.exists():
-        try:
-            info = parse_def(read_text_safely(dpath)).get("info")
-            if info:
-                return (info.values.get("displayname") or info.values.get("name") or Path(root).name).strip().strip('"')
-        except Exception:
-            pass
-    return Path(root).name or "character"
+    return get_character_name(root)
 
 
 def _first_int(value: object, default: int = 0) -> int:
-    m = re.search(r"-?\d+", str(value or ""))
-    return int(m.group(0)) if m else default
+    return parse_first_int(value, default)
 
 
 def _numbers(value: object) -> List[float]:
-    return [float(x) for x in re.findall(r"-?\d+(?:\.\d+)?", str(value or ""))]
+    return parse_numbers(value)
 
 
 def write_gap_closer_dashboard(root: Path) -> GapCloserResult:

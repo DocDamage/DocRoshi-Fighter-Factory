@@ -32,63 +32,32 @@ BINARY_EXTS = {".sff", ".snd"}
 EVIDENCE_EXTS = {".txt", ".log", ".json", ".csv", ".md"}
 
 
+from .shared_utils import (
+    BaseResult,
+    uniq,
+    rel_path,
+    timestamp,
+    parse_first_int,
+    get_code_files,
+    discover_project_files,
+)
+from .artifact_io import sha256_file as _hash_file
+
+ENGINE_AUTHORITY_VERSION = "7.0.0"
+CODE_EXTS = {".cmd", ".cns", ".st"}
+BINARY_EXTS = {".sff", ".snd"}
+EVIDENCE_EXTS = {".txt", ".log", ".json", ".csv", ".md"}
+
+
 @dataclass
-class AuthorityResult:
+class AuthorityResult(BaseResult):
     title: str = "Engine Authority"
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def add_created(self, root: Path, path: Path | str) -> None:
-        self.created_files.append(_rel(root, path))
-
-    def add_changed(self, root: Path, path: Path | str) -> None:
-        self.changed_files.append(_rel(root, path))
-
-    def add_warning(self, msg: object) -> None:
-        self.warnings.append(str(msg))
-
-    def add_note(self, msg: object) -> None:
-        self.notes.append(str(msg))
-
-    def merge(self, other: object, label: Optional[str] = None) -> None:
-        if other is None:
-            return
-        prefix = f"{label}: " if label else ""
-        self.created_files += [prefix + str(x) for x in getattr(other, "created_files", []) or []]
-        self.changed_files += [prefix + str(x) for x in getattr(other, "changed_files", []) or []]
-        self.warnings += [prefix + str(x) for x in getattr(other, "warnings", []) or []]
-        self.notes += [prefix + str(x) for x in getattr(other, "notes", []) or []]
-
-    def to_text(self) -> str:
-        lines = [self.title, "=" * max(12, len(self.title)), f"Generated: {datetime.now().isoformat(timespec='seconds')}", ""]
-        if self.notes:
-            lines += ["Notes:"] + [f"- {x}" for x in _uniq(self.notes)] + [""]
-        if self.changed_files:
-            lines += ["Changed files:"] + [f"- {x}" for x in _uniq(self.changed_files)] + [""]
-        if self.created_files:
-            lines += ["Created files/artifacts:"] + [f"- {x}" for x in _uniq(self.created_files)] + [""]
-        if self.warnings:
-            lines += ["Warnings:"] + [f"- {x}" for x in _uniq(self.warnings)] + [""]
-        if len(lines) <= 4:
-            lines.append("No changes made.")
-        return "\n".join(lines).rstrip() + "\n"
 
 
-def _uniq(items: Iterable[str]) -> List[str]:
-    out: List[str] = []
-    seen = set()
-    for item in items:
-        s = str(item)
-        if s not in seen:
-            seen.add(s)
-            out.append(s)
-    return out
-
-
-def _now() -> str:
-    return datetime.now().strftime("%Y%m%d_%H%M%S")
+_uniq = uniq
+_now = timestamp
+_rel = rel_path
+_parse_int = parse_first_int
 
 
 def _auth_dir(root: Path) -> Path:
@@ -124,20 +93,8 @@ def _read_json(path: Path, default: object) -> object:
         return default
 
 
-def _hash_file(path: Path) -> str:
-    h = sha256()
-    with Path(path).open("rb") as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b""):
-            h.update(chunk)
-    return h.hexdigest()
-
-
 def _main_def(root: Path) -> Optional[Path]:
-    exact = Path(root) / f"{Path(root).name}.def"
-    if exact.exists():
-        return exact
-    hits = sorted(Path(root).glob("*.def"), key=lambda p: p.name.lower())
-    return hits[0] if hits else None
+    return discover_project_files(root).get('def')
 
 
 def _def_refs(root: Path) -> Dict[str, str]:
@@ -154,53 +111,15 @@ def _def_refs(root: Path) -> Dict[str, str]:
 
 
 def _project_files(root: Path) -> Dict[str, Optional[Path]]:
-    root = Path(root)
-    refs = _def_refs(root)
-    out: Dict[str, Optional[Path]] = {"root": root, "def": _main_def(root)}
-
-    def by_key(key: str, ext: str) -> Optional[Path]:
-        ref = refs.get(key)
-        if ref:
-            p = (root / ref).resolve()
-            if p.exists():
-                return p
-        try:
-            p2 = find_character_file(root, ext)
-            if p2 and p2.exists():
-                return p2
-        except Exception:
-            pass
-        exact = root / f"{root.name}.{ext}"
-        if exact.exists():
-            return exact
-        hits = sorted(root.glob(f"*.{ext}"), key=lambda p: p.name.lower())
-        return hits[0] if hits else None
-
-    out["cmd"] = by_key("cmd", "cmd")
-    out["cns"] = by_key("cns", "cns")
-    out["air"] = by_key("anim", "air")
-    out["sff"] = by_key("sprite", "sff")
-    out["snd"] = by_key("sound", "snd")
-    return out
+    return discover_project_files(root)
 
 
 def _code_files(root: Path) -> List[Path]:
-    skip = {
-        "__pycache__", "runtime_lab", "engine_authority", "binary_core", "binary_deep", "binary_maturity",
-        "forge_timeline", "forge_polish", "forge_beyond", "visual_forge", "exports", "backups",
-    }
-    files: List[Path] = []
-    for p in sorted(Path(root).rglob("*"), key=lambda x: str(x).lower()):
-        if not p.is_file() or p.suffix.lower() not in CODE_EXTS:
-            continue
-        if any(part in skip or part.startswith(".") for part in p.parts):
-            continue
-        files.append(p)
-    return files
+    return get_code_files(root)
 
 
 def _all_air_actions(root: Path) -> Dict[int, object]:
-    air = _project_files(root).get("air")
+    air = discover_project_files(root).get("air")
     if not air or not air.exists():
         return {}
     try:
@@ -208,10 +127,6 @@ def _all_air_actions(root: Path) -> Dict[int, object]:
     except Exception:
         return {}
 
-
-def _parse_int(value: object, default: int = 0) -> int:
-    m = re.search(r"-?\d+", str(value or ""))
-    return int(m.group(0)) if m else default
 
 
 def _trigger_summary(values: Dict[str, str]) -> str:

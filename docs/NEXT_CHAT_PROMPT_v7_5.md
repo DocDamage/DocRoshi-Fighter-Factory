@@ -14,7 +14,7 @@ Please continue from the uploaded package `mugenforge_studio_v7_5.zip`. Unzip it
 
 ## Start here
 
-1. Read `MUGENFORGE_HANDOFF_v7_5.md`.
+1. Read `docs/MUGENFORGE_HANDOFF_v7_5.md`.
 2. Read `handoff_core/HANDOFF_CORE_START_HERE.md`.
 3. Run `python -m compileall -q mugenforge`.
 4. Run `python handoff_core/regression_harness/smoke_v7_5.py`.

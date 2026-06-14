@@ -27,6 +27,7 @@ from .parsers import parse_air, parse_code, parse_def, read_text_safely, write_t
 from .move_wizard import find_character_file
 from .sff_codec import read_sff
 from .snd_codec import read_snd
+from .binary_results import BinaryCoreResult, _uniq
 
 try:  # v5.5+ standard SFF2 helpers. Keep the module importable if older packages reuse it.
     from .sff2_codec import read_sff2, export_sff2_sprites, write_sff2_report
@@ -43,55 +44,8 @@ BINARY_EXTS = {'.sff', '.snd'}
 
 
 @dataclass
-class ClosureResult:
+class ClosureResult(BinaryCoreResult):
     title: str = 'Closure Core Result'
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    skipped_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def add_created(self, root: Path, path: Path | str) -> None:
-        self.created_files.append(_rel(root, path))
-
-    def add_changed(self, root: Path, path: Path | str) -> None:
-        self.changed_files.append(_rel(root, path))
-
-    def add_skipped(self, msg: str) -> None:
-        self.skipped_files.append(str(msg))
-
-    def add_warning(self, msg: str) -> None:
-        self.warnings.append(str(msg))
-
-    def add_note(self, msg: str) -> None:
-        self.notes.append(str(msg))
-
-    def merge(self, other: 'ClosureResult', label: Optional[str] = None) -> None:
-        if not other:
-            return
-        prefix = f'{label}: ' if label else ''
-        self.created_files.extend(prefix + x for x in other.created_files)
-        self.changed_files.extend(prefix + x for x in other.changed_files)
-        self.skipped_files.extend(prefix + x for x in other.skipped_files)
-        self.warnings.extend(prefix + x for x in other.warnings)
-        self.notes.extend(prefix + x for x in other.notes)
-
-    def to_text(self) -> str:
-        lines = [self.title, '=' * max(12, len(self.title)), f'Generated: {datetime.now().isoformat(timespec="seconds")}', '']
-        for label, values in [
-            ('Notes', self.notes),
-            ('Changed files', self.changed_files),
-            ('Created files/artifacts', self.created_files),
-            ('Skipped', self.skipped_files),
-            ('Warnings', self.warnings),
-        ]:
-            if values:
-                lines.append(label + ':')
-                lines.extend(f'- {x}' for x in _uniq(values))
-                lines.append('')
-        if len(lines) <= 4:
-            lines.append('No changes made.')
-        return '\n'.join(lines).rstrip() + '\n'
 
 
 @dataclass
@@ -121,15 +75,6 @@ class MicroScenario:
 # Shared helpers
 
 
-def _uniq(items: Iterable[str]) -> List[str]:
-    out: List[str] = []
-    seen = set()
-    for item in items:
-        s = str(item)
-        if s not in seen:
-            seen.add(s)
-            out.append(s)
-    return out
 
 
 def _closure_dir(root: Path) -> Path:

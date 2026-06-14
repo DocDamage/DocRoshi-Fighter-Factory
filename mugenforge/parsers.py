@@ -108,16 +108,17 @@ def write_text_safely(path: Path, text: str) -> None:
 
 
 def strip_inline_comment(value: str) -> str:
-    if ';' in value:
-        return value.split(';', 1)[0].strip()
+    for char in (';', '#'):
+        if char in value:
+            value = value.split(char, 1)[0]
     return value.strip()
 
 
 def parse_def(text: str) -> Dict[str, DefSection]:
     sections: Dict[str, DefSection] = {}
     current: Optional[DefSection] = None
-    section_re = re.compile(r'^\s*\[([^\]]+)\]\s*(?:;.*)?$')
-    kv_re = re.compile(r'^\s*([^;#=]+?)\s*=\s*(.*?)\s*(?:;.*)?$')
+    section_re = re.compile(r'^\s*\[([^\]]+)\]\s*(?:[;#].*)?$')
+    kv_re = re.compile(r'^\s*([^;#=]+?)\s*=\s*(.*?)\s*(?:[;#].*)?$')
     for line in text.splitlines():
         m = section_re.match(line)
         if m:
@@ -137,8 +138,8 @@ def parse_air(text: str) -> List[AirAction]:
     actions: List[AirAction] = []
     current: Optional[AirAction] = None
     pending_clsn: List[AirClsnBox] = []
-    action_re = re.compile(r'^\s*\[\s*Begin\s+Action\s+(-?\d+)\s*\]\s*(?:;\s*(.*))?$', re.IGNORECASE)
-    frame_re = re.compile(r'^\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*(?:,\s*([^;]+))?')
+    action_re = re.compile(r'^\s*\[\s*Begin\s+Action\s+(-?\d+)\s*\]\s*(?:[;#]\s*(.*))?$', re.IGNORECASE)
+    frame_re = re.compile(r'^\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*(?:,\s*([^;#]+))?')
     clsn_re = re.compile(r'^\s*Clsn([12])\[\s*\d+\s*\]\s*=\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)', re.IGNORECASE)
     for line in text.splitlines():
         am = action_re.match(line)
@@ -168,8 +169,8 @@ def parse_air(text: str) -> List[AirAction]:
 def parse_code(text: str) -> CodeScan:
     scan = CodeScan()
     lines = text.splitlines()
-    section_re = re.compile(r'^\s*\[\s*([^\]]+)\s*\]\s*(?:;.*)?$', re.I)
-    kv_re = re.compile(r'^\s*([^;=]+?)\s*=\s*(.*?)\s*(?:;.*)?$')
+    section_re = re.compile(r'^\s*\[\s*([^\]]+)\s*\]\s*(?:[;#].*)?$', re.I)
+    kv_re = re.compile(r'^\s*([^;#=]+?)\s*=\s*(.*?)\s*(?:[;#].*)?$')
     current_cmd: Optional[Dict[str, str]] = None
     current_cmd_line = 0
     current_state: Optional[StateDef] = None

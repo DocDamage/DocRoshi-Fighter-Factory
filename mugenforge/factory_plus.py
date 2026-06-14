@@ -19,14 +19,11 @@ from .snd_codec import make_placeholder_sound_bank, build_snd_from_manifest
 FACTORY_PLUS_VERSION = "2.4.0"
 
 
+from .shared_utils import BaseResult, uniq, rel_path, backup_file
+
 @dataclass
-class FactoryPlusResult:
+class FactoryPlusResult(BaseResult):
     title: str = "Factory+ Result"
-    changed_files: List[str] = field(default_factory=list)
-    created_files: List[str] = field(default_factory=list)
-    skipped_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
 
     def merge_apply(self, result: ApplyResult, prefix: str = "") -> None:
         p = (prefix + ": ") if prefix else ""
@@ -34,40 +31,6 @@ class FactoryPlusResult:
         self.created_files += [p + item for item in result.created_files]
         self.skipped_files += [p + item for item in result.skipped_files]
         self.warnings += [p + item for item in result.warnings]
-
-    def merge(self, result: "FactoryPlusResult", prefix: str = "") -> None:
-        p = (prefix + ": ") if prefix else ""
-        self.changed_files += [p + item for item in result.changed_files]
-        self.created_files += [p + item for item in result.created_files]
-        self.skipped_files += [p + item for item in result.skipped_files]
-        self.warnings += [p + item for item in result.warnings]
-        self.notes += [p + item for item in result.notes]
-
-    def to_text(self) -> str:
-        lines = [self.title, "=" * len(self.title), ""]
-        if self.notes:
-            lines.append("Notes:")
-            lines.extend(f"- {item}" for item in self.notes)
-            lines.append("")
-        if self.created_files:
-            lines.append("Created:")
-            lines.extend(f"- {item}" for item in self.created_files)
-            lines.append("")
-        if self.changed_files:
-            lines.append("Changed:")
-            lines.extend(f"- {item}" for item in self.changed_files)
-            lines.append("")
-        if self.skipped_files:
-            lines.append("Skipped:")
-            lines.extend(f"- {item}" for item in self.skipped_files)
-            lines.append("")
-        if self.warnings:
-            lines.append("Warnings:")
-            lines.extend(f"- {item}" for item in self.warnings)
-            lines.append("")
-        if len(lines) <= 3:
-            lines.append("No changes made.")
-        return "\n".join(lines).strip() + "\n"
 
 
 @dataclass
@@ -82,18 +45,11 @@ class CharacterFiles:
 
 
 def _backup(path: Path) -> Optional[Path]:
-    if not path.exists():
-        return None
-    backup = path.with_suffix(path.suffix + f".bak_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
-    backup.write_bytes(path.read_bytes())
-    return backup
+    return backup_file(path, "factory")
 
 
 def _rel(root: Path, path: Path) -> str:
-    try:
-        return str(path.relative_to(root))
-    except Exception:
-        return str(path)
+    return rel_path(root, path)
 
 
 def _first(root: Path, suffix: str) -> Optional[Path]:
@@ -786,228 +742,6 @@ def build_release_zip(root: Path) -> FactoryPlusResult:
     result.notes.append("Release ZIP skips backups/temp files and refreshes Doctor + Move List first.")
     return result
 
-# ---------------------------------------------------------------------------
-# Compatibility helpers for experimental Factory+/Forge+ UI hooks.
-# These wrappers keep older/parallel tab code importable while routing the work
-# through the stable Factory+ functions above.
-# ---------------------------------------------------------------------------
-
-def project_doctor_report(root: Path) -> str:
-    return deep_factory_doctor(Path(root))
-
-
-def write_factory_doctor_report(root: Path) -> Path:
-    out = Path(root) / "MUGENFORGE_FACTORY_PLUS_DOCTOR.md"
-    write_text_safely(out, deep_factory_doctor(Path(root)))
-    return out
-
-
-def one_click_upgrade(root: Path) -> FactoryPlusResult:
-    return smart_complete_project(Path(root))
-
-
-def ensure_standard_air_actions(root: Path) -> FactoryPlusResult:
-    return ensure_required_animations(Path(root))
-
-
-def write_move_list_markdown(root: Path) -> Path:
-    export_move_list(Path(root))
-    return Path(root) / "MUGENFORGE_MOVE_LIST.md"
-
-
-def write_move_list_html(root: Path) -> Path:
-    export_move_list(Path(root))
-    return Path(root) / "MUGENFORGE_MOVE_LIST.html"
-
-
-def export_state_graph(root: Path) -> Path:
-    export_state_map(Path(root))
-    return Path(root) / "MUGENFORGE_STATE_MAP.dot"
-
-
-def asset_inventory(root: Path) -> str:
-    root = Path(root)
-    files = discover_character_files(root)
-    pairs = _air_sprite_pairs(root)
-    lines = [f"Asset inventory: {root.name}", "", f"AIR sprite references: {len(pairs)}"]
-    if files.sff_path and files.sff_path.exists():
-        try:
-            info = read_sff(files.sff_path)
-            lines += [f"SFF: {files.sff_path.name}", f"SFF variant: {info.variant}", f"Parsed sprites: {len(info.sprites)}"]
-        except Exception as exc:
-            lines.append(f"SFF scan failed: {exc}")
-    else:
-        lines.append("SFF: not found")
-    if files.snd_path and files.snd_path.exists():
-        lines.append(f"SND: {files.snd_path.name} ({files.snd_path.stat().st_size:,} bytes)")
-    else:
-        lines.append("SND: not found")
-    installed = installed_feature_ids(root)
-    lines += ["", f"Installed Feature Bank markers: {len(installed)}"]
-    lines += [f"- {x}" for x in installed[:100]]
-    return "\n".join(lines).strip() + "\n"
-
-
-def export_asset_report(root: Path) -> Path:
-    root = Path(root)
-    out = root / "MUGENFORGE_ASSET_INVENTORY.txt"
-    out.write_text(asset_inventory(root), encoding="utf-8")
-    return out
-
-
-def rebuild_missing_placeholder_assets(root: Path) -> FactoryPlusResult:
-    root = Path(root)
-    result = FactoryPlusResult("Factory+ Rebuild Missing Placeholder Assets")
-    result.merge(rebuild_placeholder_sff_from_air(root), "SFF")
-    try:
-        manifest = make_placeholder_sound_bank(root / "sounds")
-        snd = root / f"{root.name}.snd"
-        if snd.exists():
-            _backup(snd)
-        build_snd_from_manifest(manifest, snd)
-        result.changed_files.append(_rel(root, snd))
-        result.created_files.append(_rel(root, manifest))
-    except Exception as exc:
-        result.warnings.append(f"Placeholder SND failed: {exc}")
-    return result
-
-
-def make_factory_plus_workspace(root: Path) -> FactoryPlusResult:
-    root = Path(root)
-    result = FactoryPlusResult("Factory+ Workspace")
-    for rel in ["factory_plus_staged_sprites", "factory_plus_bulk_import", "exports", "docs", "references", "sounds", "spritesheets"]:
-        p = root / rel
-        if not p.exists():
-            p.mkdir(parents=True, exist_ok=True)
-            result.created_files.append(rel + "/")
-        else:
-            result.skipped_files.append(rel + "/ already exists")
-    result.merge(write_start_here(root), "start guide")
-    result.merge(write_function_bank(root), "function bank")
-    return result
-
-
-def _find_air(root: Path) -> Optional[Path]:
-    return discover_character_files(Path(root)).air_path
-
-
-def duplicate_action(root: Path, source_action: int, new_action: int) -> Path:
-    root = Path(root)
-    air = _find_air(root)
-    if not air or not air.exists():
-        raise FileNotFoundError("No AIR file found")
-    text = read_text_safely(air)
-    rx = re.compile(rf"(^\s*\[\s*Begin\s+Action\s+{int(source_action)}\s*\].*?)(?=^\s*\[\s*Begin\s+Action\s+-?\d+\s*\]|\Z)", re.I | re.M | re.S)
-    m = rx.search(text)
-    if not m:
-        raise ValueError(f"Action {source_action} was not found")
-    block = re.sub(r"\[\s*Begin\s+Action\s+-?\d+\s*\]", f"[Begin Action {int(new_action)}]", m.group(1), count=1, flags=re.I)
-    block = "; Factory+ duplicated action\n" + block.strip() + "\n"
-    _backup(air)
-    write_text_safely(air, text.rstrip() + "\n\n" + block)
-    return air
-
-
-def retime_action(root: Path, action_no: int, tick_scale: float = 1.0) -> Path:
-    root = Path(root)
-    air = _find_air(root)
-    if not air or not air.exists():
-        raise FileNotFoundError("No AIR file found")
-    text = read_text_safely(air)
-    scale = float(tick_scale or 1.0)
-    def repl_block(m):
-        block = m.group(1)
-        def repl_frame(fm):
-            g, i, x, y, t, rest = fm.groups()
-            nt = max(1, int(round(int(t) * scale)))
-            return f"{g}, {i}, {x}, {y}, {nt}{rest or ''}"
-        return re.sub(r"^\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)(.*)$", repl_frame, block, flags=re.M)
-    rx = re.compile(rf"(^\s*\[\s*Begin\s+Action\s+{int(action_no)}\s*\].*?)(?=^\s*\[\s*Begin\s+Action\s+-?\d+\s*\]|\Z)", re.I | re.M | re.S)
-    new_text, count = rx.subn(repl_block, text, count=1)
-    if count == 0:
-        raise ValueError(f"Action {action_no} was not found")
-    _backup(air)
-    write_text_safely(air, new_text)
-    return air
-
-
-def mirror_action_clsn(root: Path, action_no: int) -> Path:
-    root = Path(root)
-    air = _find_air(root)
-    if not air or not air.exists():
-        raise FileNotFoundError("No AIR file found")
-    text = read_text_safely(air)
-    def mirror_line(m):
-        kind, idx, x1, y1, x2, y2 = m.groups()
-        nx1, nx2 = -int(x2), -int(x1)
-        return f"  Clsn{kind}[{idx}] = {nx1},{y1},{nx2},{y2}"
-    def repl_block(m):
-        return re.sub(r"\s*Clsn([12])\[(\d+)\]\s*=\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)", mirror_line, m.group(1), flags=re.I)
-    rx = re.compile(rf"(^\s*\[\s*Begin\s+Action\s+{int(action_no)}\s*\].*?)(?=^\s*\[\s*Begin\s+Action\s+-?\d+\s*\]|\Z)", re.I | re.M | re.S)
-    new_text, count = rx.subn(repl_block, text, count=1)
-    if count == 0:
-        raise ValueError(f"Action {action_no} was not found")
-    _backup(air)
-    write_text_safely(air, new_text)
-    return air
-
-
-def auto_body_boxes_for_action(root: Path, action_no: int, box: Tuple[int, int, int, int] = (-20, -88, 20, 0)) -> Path:
-    root = Path(root)
-    air = _find_air(root)
-    if not air or not air.exists():
-        raise FileNotFoundError("No AIR file found")
-    text = read_text_safely(air)
-    bx = tuple(int(v) for v in box)
-    def add_body_to_block(m):
-        lines = []
-        for line in m.group(1).splitlines():
-            if re.match(r"\s*-?\d+\s*,\s*-?\d+\s*,", line):
-                lines.append("Clsn2: 1")
-                lines.append(f"  Clsn2[0] = {bx[0]},{bx[1]},{bx[2]},{bx[3]}")
-            lines.append(line)
-        return "\n".join(lines) + "\n"
-    rx = re.compile(rf"(^\s*\[\s*Begin\s+Action\s+{int(action_no)}\s*\].*?)(?=^\s*\[\s*Begin\s+Action\s+-?\d+\s*\]|\Z)", re.I | re.M | re.S)
-    new_text, count = rx.subn(add_body_to_block, text, count=1)
-    if count == 0:
-        raise ValueError(f"Action {action_no} was not found")
-    _backup(air)
-    write_text_safely(air, new_text)
-    return air
-
-
-def export_sprite_contact_sheet(root_or_sff: Path, out_path: Optional[Path] = None) -> Path:
-    # Conservative placeholder: export an inventory text if full visual sheet is unavailable.
-    p = Path(root_or_sff)
-    root = p if p.is_dir() else p.parent
-    out = Path(out_path) if out_path else root / "MUGENFORGE_SPRITE_CONTACT_SHEET.txt"
-    out.write_text(asset_inventory(root), encoding="utf-8")
-    return out
-
-
-def export_animation_gif(root: Path, action_no: int, out_path: Optional[Path] = None, **_kwargs) -> Path:
-    root = Path(root)
-    out = Path(out_path) if out_path else root / f"action_{int(action_no)}_preview.txt"
-    out.write_text(f"Animation GIF export placeholder for action {action_no}. Use Studio Plus/Sprite Lab GIF export when Pillow assets are available.\n", encoding="utf-8")
-    return out
-
-
-def batch_export_animation_gifs(root: Path, out_dir: Optional[Path] = None, **kwargs) -> List[Path]:
-    root = Path(root)
-    air = _find_air(root)
-    actions = parse_air(read_text_safely(air)) if air and air.exists() else []
-    out_dir = Path(out_dir) if out_dir else root / "exports" / "action_gifs"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    return [export_animation_gif(root, a.number, out_dir / f"action_{a.number}.txt", **kwargs) for a in actions[:100]]
-
-
-def batch_export_action_pngs(root: Path, out_dir: Optional[Path] = None, **_kwargs) -> List[Path]:
-    root = Path(root)
-    out_dir = Path(out_dir) if out_dir else root / "exports" / "action_pngs"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    out = out_dir / "README.txt"
-    out.write_text("Batch action PNG export requires decoded sprite frames. Use Sprites/SFF export or Studio Plus GIF export for supported SFF v1 assets.\n", encoding="utf-8")
-    return [out]
 
 # ---------------------------------------------------------------------------
 # Compatibility and expanded Factory+ helpers used by newer UI panels.

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from datetime import datetime
 import html
@@ -12,65 +12,11 @@ from .parsers import parse_air, parse_code, read_text_safely, COMMON_ANIMS
 from .move_wizard import find_character_file
 from .quality_lab import build_reference_matrix, _matrix_score
 from .automation_bank import available_presets, kit_names, kit_preview_text, feature_bank_stats_text
-
+from .shared_utils import BaseResult, uniq, rel_path as _rel, get_code_files, parse_first_int
 
 @dataclass
-class CreatorHubResult:
+class CreatorHubResult(BaseResult):
     title: str = 'Creator Hub'
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def add_created(self, path: Path | str) -> None:
-        self.created_files.append(str(path))
-
-    def add_changed(self, path: Path | str) -> None:
-        self.changed_files.append(str(path))
-
-    def add_warning(self, message: str) -> None:
-        self.warnings.append(str(message))
-
-    def merge(self, other: 'CreatorHubResult', label: Optional[str] = None) -> None:
-        if not other:
-            return
-        prefix = f'{label}: ' if label else ''
-        self.created_files.extend(prefix + x for x in other.created_files)
-        self.changed_files.extend(prefix + x for x in other.changed_files)
-        self.warnings.extend(prefix + x for x in other.warnings)
-        self.notes.extend(prefix + x for x in other.notes)
-
-    def to_text(self) -> str:
-        lines = [self.title, '=' * max(12, len(self.title)), f'Generated: {datetime.now().isoformat(timespec="seconds")}', '']
-        if self.notes:
-            lines += ['Notes:'] + [f'- {x}' for x in _uniq(self.notes)] + ['']
-        if self.changed_files:
-            lines += ['Changed files:'] + [f'- {x}' for x in _uniq(self.changed_files)] + ['']
-        if self.created_files:
-            lines += ['Created files/artifacts:'] + [f'- {x}' for x in _uniq(self.created_files)] + ['']
-        if self.warnings:
-            lines += ['Warnings:'] + [f'- {x}' for x in _uniq(self.warnings)] + ['']
-        if len(lines) <= 4:
-            lines.append('No changes made.')
-        return '\n'.join(lines).rstrip() + '\n'
-
-
-def _uniq(items: Iterable[str]) -> List[str]:
-    out: List[str] = []
-    seen = set()
-    for item in items:
-        s = str(item)
-        if s not in seen:
-            seen.add(s)
-            out.append(s)
-    return out
-
-
-def _rel(root: Path, path: Path | str) -> str:
-    try:
-        return str(Path(path).resolve().relative_to(root.resolve()))
-    except Exception:
-        return str(path)
 
 
 def _hub_dir(root: Path) -> Path:
@@ -91,16 +37,9 @@ def _write_csv(path: Path, rows: Sequence[Dict[str, object]], fields: Sequence[s
     return write_csv_artifact(path, rows, fields)
 
 
-def _code_files(root: Path) -> List[Path]:
-    files: List[Path] = []
-    for pat in ('*.cmd', '*.cns', '*.st'):
-        files.extend(sorted(Path(root).rglob(pat)))
-    return [p for p in files if p.is_file() and not any(part.startswith('.') or part == '__pycache__' for part in p.parts)]
-
-
 def _read_code_texts(root: Path) -> Dict[str, str]:
     out: Dict[str, str] = {}
-    for path in _code_files(root):
+    for path in get_code_files(root):
         try:
             out[_rel(root, path)] = read_text_safely(path)
         except Exception:
@@ -111,28 +50,34 @@ def _read_code_texts(root: Path) -> Dict[str, str]:
 def _all_commands(root: Path) -> List[Dict[str, object]]:
     rows: List[Dict[str, object]] = []
     for path in sorted(Path(root).rglob('*.cmd')):
-        if path.is_file():
-            scan = parse_code(read_text_safely(path))
-            for c in scan.commands:
-                rows.append({
-                    'file': _rel(root, path), 'line': c.line, 'name': c.name,
-                    'command': c.command, 'time': c.time or '', 'buffer_time': c.buffer_time or '',
-                    'normalized': _normalize_input(c.command),
-                })
+        if path.is_file() and not any(part.startswith('.') or part == '__pycache__' for part in path.parts):
+            try:
+                scan = parse_code(read_text_safely(path))
+                for c in scan.commands:
+                    rows.append({
+                        'file': _rel(root, path), 'line': c.line, 'name': c.name,
+                        'command': c.command, 'time': c.time or '', 'buffer_time': c.buffer_time or '',
+                        'normalized': _normalize_input(c.command),
+                    })
+            except Exception:
+                pass
     return rows
 
 
 def _all_states(root: Path) -> List[Dict[str, object]]:
     rows: List[Dict[str, object]] = []
-    for path in _code_files(root):
-        text = read_text_safely(path)
-        scan = parse_code(text)
-        for st in scan.states:
-            rows.append({
-                'file': _rel(root, path), 'line': st.line, 'state': st.number,
-                'anim': st.values.get('anim', ''), 'ctrl': st.values.get('ctrl', ''), 'type': st.values.get('type', ''),
-                'controller_count': len(st.controllers),
-            })
+    for path in get_code_files(root):
+        try:
+            text = read_text_safely(path)
+            scan = parse_code(text)
+            for st in scan.states:
+                rows.append({
+                    'file': _rel(root, path), 'line': st.line, 'state': st.number,
+                    'anim': st.values.get('anim', ''), 'ctrl': st.values.get('ctrl', ''), 'type': st.values.get('type', ''),
+                    'controller_count': len(st.controllers),
+                })
+        except Exception:
+            pass
     return rows
 
 
@@ -149,7 +94,7 @@ def _parse_hitdefs(root: Path) -> List[Dict[str, object]]:
             for kv in kv_re.finditer(body):
                 data[kv.group(1).strip().lower()] = kv.group(2).strip()
             state_no = _nearest_state_before(text, block.start())
-            damage = _first_int(data.get('damage', '0'))
+            damage = parse_first_int(data.get('damage', '0'))
             pausetime = data.get('pausetime', '')
             ground_velocity = data.get('ground.velocity', '')
             air_velocity = data.get('air.velocity', '')
@@ -181,26 +126,16 @@ def _nearest_state_before(text: str, offset: int) -> Optional[int]:
     return found
 
 
-def _first_int(value: str, default: int = 0) -> int:
-    m = re.search(r'-?\d+', str(value or ''))
-    return int(m.group(0)) if m else default
-
-
 def _normalize_input(command: str) -> str:
-    s = str(command or '').lower()
-    s = s.replace(' ', '')
+    s = str(command or '').lower().replace(' ', '')
     s = re.sub(r'[^a-z0-9,/$~+]', '', s)
-    s = s.replace('df', 'd/f').replace('db', 'd/b')
-    return s
+    return s.replace('df', 'd/f').replace('db', 'd/b')
 
 
 def _command_family(command: str) -> str:
-    s = _normalize_input(command)
-    # Remove hold/release markers and button suffixes to group by motion shape.
-    s = s.replace('~', '').replace('$', '')
+    s = _normalize_input(command).replace('~', '').replace('$', '')
     s = re.sub(r',[abcxyzs][0-9]*$', ',BTN', s)
-    s = re.sub(r'\+[abcxyzs]$', '+BTN', s)
-    return s
+    return re.sub(r'\+[abcxyzs]$', '+BTN', s)
 
 
 def _difficulty_for_input(command: str, time: object = '') -> str:
@@ -394,7 +329,7 @@ def write_input_conflict_lab(root: Path) -> CreatorHubResult:
         if _difficulty_for_input(str(r['command']), r.get('time')) == 'hard':
             issues.append({'severity': 'Medium', 'type': 'Hard input', 'input': str(r['command']), 'commands': str(r['name']), 'fix': 'Consider a beginner-friendly alternate input or add buffering.'})
     csv_path = out / 'INPUT_CONFLICT_LAB.csv'
-    command_rows: List[Dict[str, object]] = []
+    command_rows = []
     for r in rows:
         rr = dict(r)
         rr['difficulty'] = _difficulty_for_input(str(r['command']), r.get('time'))
@@ -470,7 +405,6 @@ def write_combo_trial_pack(root: Path) -> CreatorHubResult:
     add('Two-button confirm', low_normals[:1] + mids[:1] + specials[:1], 'Practice basic hit-confirm structure.', 'Beginner')
     add('Special into super idea', specials[:1] + supers[:1], 'Check if the character has a resource-spend route.', 'Intermediate')
     add('Full BnB draft', low_normals[:1] + mids[:1] + specials[:1] + supers[:1], 'A first bread-and-butter draft. Tune manually after playtesting.', 'Intermediate')
-    # Add state-based trials if there are no commands yet.
     if not trials and states:
         sample_states = [str(s['state']) for s in states[:5]]
         add('State smoke test', sample_states, 'Manually visit these states in debug/testing and confirm they animate safely.', 'Beginner')
@@ -513,7 +447,7 @@ def write_asset_request_pack(root: Path) -> CreatorHubResult:
     sprite_requests = []
     for a in actions:
         label = COMMON_ANIMS.get(a.number, a.label or '')
-        refs = _uniq(f'{fr.group},{fr.image}' for fr in a.frames)
+        refs = uniq(f'{fr.group},{fr.image}' for fr in a.frames)
         sprite_requests.append({'action': a.number, 'label': label, 'frames': len(a.frames), 'ticks': sum(max(0, f.ticks) for f in a.frames), 'sprite_refs': refs})
     sound_refs = []
     for rel, text in _read_code_texts(root).items():

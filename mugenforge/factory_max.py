@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from datetime import datetime
 import csv
 import json
-import math
-import os
 import re
 import shutil
 import zipfile
@@ -17,6 +15,7 @@ from .sff_codec import read_sff, sprite_lookup, export_all_sprites, build_sff_v1
 from .snd_codec import read_snd, make_placeholder_sound_bank, build_snd_from_manifest
 from .automation_bank import apply_kit, feature_bank_stats_text, auto_setup_project
 from . import factory_plus as fp
+from .shared_utils import BaseResult, uniq, rel_path as _rel, backup_file
 
 FACTORY_MAX_VERSION = "2.5.0"
 
@@ -25,55 +24,16 @@ TEXT_SUFFIXES = {".def", ".air", ".cmd", ".cns", ".st", ".txt", ".md", ".json", 
 
 
 @dataclass
-class MaxResult:
+class MaxResult(BaseResult):
     title: str = "Factory Max Result"
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    skipped_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def merge(self, other: object, prefix: str = "") -> None:
-        p = f"{prefix}: " if prefix else ""
-        for attr in ("created_files", "changed_files", "skipped_files", "warnings", "notes"):
-            vals = getattr(other, attr, []) or []
-            getattr(self, attr).extend([p + str(v) for v in vals])
-
-    def to_text(self) -> str:
-        lines = [self.title, "=" * len(self.title), ""]
-        for label, attr in [
-            ("Notes", self.notes),
-            ("Created", self.created_files),
-            ("Changed", self.changed_files),
-            ("Skipped", self.skipped_files),
-            ("Warnings", self.warnings),
-        ]:
-            if attr:
-                lines.append(label + ":")
-                lines.extend(f"- {item}" for item in attr)
-                lines.append("")
-        if len(lines) <= 3:
-            lines.append("No changes made.")
-        return "\n".join(lines).rstrip() + "\n"
 
 
 def _now() -> str:
     return datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
-def _rel(root: Path, path: Path | str) -> str:
-    try:
-        return str(Path(path).relative_to(root)).replace("\\", "/")
-    except Exception:
-        return str(path).replace("\\", "/")
-
-
 def _backup(path: Path) -> Optional[Path]:
-    if not path.exists():
-        return None
-    backup = path.with_name(path.name + f".bak_{_now()}")
-    backup.write_bytes(path.read_bytes())
-    return backup
+    return backup_file(path, "factory_max")
 
 
 def _write(path: Path, text: str, result: Optional[MaxResult] = None, root: Optional[Path] = None, changed: bool = False) -> Path:
@@ -136,7 +96,6 @@ def _image_dimensions_from_payload(data: bytes, suffix: str) -> Optional[Tuple[i
         if im.mode in {"RGBA", "LA"}:
             bbox = im.getbbox()
         else:
-            # For PCX/opaque sprites, transparent index can vary, so keep full bounds.
             bbox = (0, 0, im.size[0], im.size[1])
         return im.size[0], im.size[1], bbox
     except Exception:
@@ -198,13 +157,13 @@ def factory_max_profile_report(root: Path) -> MaxResult:
             sff_sprites = len(sff.sprites)
             sff_extract = sff.is_supported_for_extraction
         except Exception as exc:
-            result.warnings.append(f"SFF scan failed: {exc}")
+            result.add_warning(f"SFF scan failed: {exc}")
     snd_sounds = 0
     if files.get("snd") and files["snd"].exists():
         try:
             snd_sounds = len(read_snd(files["snd"]).sounds)
         except Exception as exc:
-            result.warnings.append(f"SND scan failed: {exc}")
+            result.add_warning(f"SND scan failed: {exc}")
     score = 100
     score -= min(32, len(audit.missing_required) * 8)
     score -= min(25, len(audit.missing_references) * 5)
@@ -316,17 +275,13 @@ def write_state_graph(root: Path) -> MaxResult:
         text = read_text_safely(p)
         scan = parse_code(text)
         commands += [c.name for c in scan.commands]
-        current_state = None
         for state in scan.states:
-            current_state = state.number
             states[state.number] = {"file": _rel(root, p), "anim": state.values.get("anim", "")}
             for ctrl in state.controllers:
                 if ctrl.stype == "changestate":
                     val = ctrl.values.get("value", "")
                     if re.match(r"^-?\d+$", val):
-                        label = ctrl.header
-                        edges.append((state.number, int(val), label))
-    # Also catch State -1 / -2 controllers parsed outside StateDefs poorly by parser.
+                        edges.append((state.number, int(val), ctrl.header or ""))
     for p in _all_code_files(root):
         text = read_text_safely(p)
         sec = None
@@ -349,7 +304,7 @@ def write_state_graph(root: Path) -> MaxResult:
         dot.append(f"  s{a} -> s{b} [label=\"{str(label)[:32].replace(chr(34), '')}\"];")
     dot.append("}")
     out_dot.write_text("\n".join(dot) + "\n", encoding="utf-8")
-    lines = ["# MugenForge State Graph", "", f"States detected: {len(states)}", f"Edges detected: {len(edges)}", f"Commands detected: {len(set(commands))}", "", "## Edges", ""]
+    lines = ["# MugenForge State Graph", "", f"States detected: {len(states)}", f"Edges detected: {len(edges)}", f"Commands detected: {len(uniq(commands))}", "", "## Edges", ""]
     for a, b, label in edges[:500]:
         lines.append(f"- `{a}` -> `{b}` ({label})")
     write_text_safely(out_md, "\n".join(lines).rstrip() + "\n")
@@ -403,17 +358,17 @@ def suggest_clsn_from_sff(root: Path, padding: int = 2, save: bool = True) -> Ma
     air_path = files.get("air")
     sff_path = files.get("sff")
     if not air_path or not air_path.exists():
-        result.warnings.append("No AIR file found.")
+        result.add_warning("No AIR file found.")
         return result
     if not sff_path or not sff_path.exists():
-        result.warnings.append("No SFF file found.")
+        result.add_warning("No SFF file found.")
         return result
     try:
         sff = read_sff(sff_path)
         lookup = sprite_lookup(sff)
         data = sff_path.read_bytes()
     except Exception as exc:
-        result.warnings.append(f"Could not inspect SFF: {exc}")
+        result.add_warning(f"Could not inspect SFF: {exc}")
         return result
     size_cache: Dict[Tuple[int, int], Tuple[int, int, Tuple[int, int, int, int] | None, int, int]] = {}
     for key, spr in lookup.items():
@@ -446,7 +401,6 @@ def suggest_clsn_from_sff(root: Path, padding: int = 2, save: bool = True) -> Ma
                 y1 = by1 - sy + fy + padding
                 x2 = bx2 - sx + fx - padding
                 y2 = by2 - sy + fy - padding
-                # Body boxes should never be completely degenerate.
                 if x2 <= x1: x2 = x1 + max(2, w - padding * 2)
                 if y2 <= y1: y2 = y1 + max(2, h - padding * 2)
                 out.append("Clsn2: 1 ; Factory Max auto-body box from sprite bounds")
@@ -461,9 +415,9 @@ def suggest_clsn_from_sff(root: Path, padding: int = 2, save: bool = True) -> Ma
     if added and save:
         _backup(air_path)
         write_text_safely(air_path, "\n".join(out).rstrip() + "\n")
-        result.changed_files.append(_rel(root, air_path))
+        result.add_changed(root, air_path)
     elif not added:
-        result.skipped_files.append("No missing frame-level CLSN boxes were found, or SFF image dimensions could not be decoded.")
+        result.add_skipped("No missing frame-level CLSN boxes were found, or SFF image dimensions could not be decoded.")
     result.notes.append(f"Auto body boxes added: {added}")
     result.notes.append("Generated boxes are a starting point. Use the visual CLSN editor to tune the fun/feel part.")
     return result
@@ -475,7 +429,7 @@ def retime_air(root: Path, tick_scale: float = 1.0, min_ticks: int = 1) -> MaxRe
     files = _discover_files(root)
     air_path = files.get("air")
     if not air_path or not air_path.exists():
-        result.warnings.append("No AIR file found.")
+        result.add_warning("No AIR file found.")
         return result
     scale = max(0.05, float(tick_scale))
     old = read_text_safely(air_path)
@@ -494,9 +448,9 @@ def retime_air(root: Path, tick_scale: float = 1.0, min_ticks: int = 1) -> MaxRe
     if changed:
         _backup(air_path)
         write_text_safely(air_path, new)
-        result.changed_files.append(_rel(root, air_path))
+        result.add_changed(root, air_path)
     else:
-        result.skipped_files.append("No frame ticks changed.")
+        result.add_skipped("No frame ticks changed.")
     result.notes.append(f"Tick scale: {scale}")
     result.notes.append(f"Frame lines retimed: {changed}")
     return result
@@ -508,12 +462,12 @@ def renumber_air_actions(root: Path, offset: int = 10000) -> MaxResult:
     files = _discover_files(root)
     air_path = files.get("air")
     if not air_path or not air_path.exists():
-        result.warnings.append("No AIR file found.")
+        result.add_warning("No AIR file found.")
         return result
     old = read_text_safely(air_path)
     actions = parse_air(old)
     if not actions:
-        result.warnings.append("AIR file has no actions to clone.")
+        result.add_warning("AIR file has no actions to clone.")
         return result
     blocks: List[str] = ["", f"; Factory Max cloned action bank offset {offset}"]
     for action in actions:
@@ -521,7 +475,6 @@ def renumber_air_actions(root: Path, offset: int = 10000) -> MaxResult:
             continue
         raw = "\n".join(action.raw_lines)
         cloned = re.sub(r"(\[\s*Begin\s+Action\s+)(-?\d+)(\s*\])", lambda m: f"{m.group(1)}{int(m.group(2))+offset}{m.group(3)}", raw, count=1, flags=re.I)
-        # Also offset sprite group references only where group equals the old action number.
         cloned_lines = []
         frame_re = re.compile(r"^(\s*)(-?\d+)(\s*,\s*-?\d+\s*,.*)$")
         for line in cloned.splitlines():
@@ -533,7 +486,7 @@ def renumber_air_actions(root: Path, offset: int = 10000) -> MaxResult:
         blocks.append("\n".join(cloned_lines))
     out_path = air_path.with_name(air_path.stem + f"_cloned_offset_{offset}.air")
     write_text_safely(out_path, old.rstrip() + "\n" + "\n\n".join(blocks).rstrip() + "\n")
-    result.created_files.append(_rel(root, out_path))
+    result.add_created(root, out_path)
     result.notes.append(f"Cloned {len(actions)} actions to new action numbers using offset {offset}.")
     return result
 
@@ -563,7 +516,7 @@ end.time = 180
 0,0, 0,0, 180
 """
     write_text_safely(def_path, text)
-    result.created_files.append(_rel(root, def_path))
+    result.add_created(root, def_path)
     result.notes.append("Creates the storyboard text scaffold. Add storyboard sprites/SFF later.")
     return result
 
@@ -607,7 +560,9 @@ p2.pos = 280,20
 
 [ExtraStages]
 """)
-    result.created_files += [_rel(root, system_def), _rel(root, fight_def), _rel(root, select_def)]
+    result.add_created(root, system_def)
+    result.add_created(root, fight_def)
+    result.add_created(root, select_def)
     result.notes.append("Starter screenpack text only. Full motif editing still requires art/SFF/SND replacement.")
     return result
 
@@ -633,10 +588,12 @@ def create_sound_autobank(root: Path) -> MaxResult:
         manifest = make_placeholder_sound_bank(sounds_dir)
         snd_path = root / f"{root.name}.snd"
         build_snd_from_manifest(manifest, snd_path)
-        result.created_files += [_rel(root, cue_csv), _rel(root, manifest), _rel(root, snd_path)]
+        result.add_created(root, cue_csv)
+        result.add_created(root, manifest)
+        result.add_created(root, snd_path)
     except Exception as exc:
-        result.created_files.append(_rel(root, cue_csv))
-        result.warnings.append(f"Silent SND build failed: {exc}")
+        result.add_created(root, cue_csv)
+        result.add_warning(f"Silent SND build failed: {exc}")
     result.notes.append("Replace silent WAVs with real sounds using the same filenames, then rebuild SND.")
     return result
 
@@ -669,7 +626,7 @@ def create_quick_test_suite(root: Path) -> MaxResult:
         "- Package release ZIP.",
     ]
     write_text_safely(out, "\n".join(lines).rstrip() + "\n")
-    result.created_files.append(_rel(root, out))
+    result.add_created(root, out)
     return result
 
 
@@ -678,7 +635,7 @@ def safe_import_from_project(root: Path, source: Path, mode: str = "copy") -> Ma
     source = Path(source)
     result = MaxResult("Factory Max Safe Project Import")
     if not source.exists() or not source.is_dir():
-        result.warnings.append("Source project folder does not exist.")
+        result.add_warning("Source project folder does not exist.")
         return result
     dest = root / "imports" / re.sub(r"[^A-Za-z0-9_\-]+", "_", source.name)
     dest.mkdir(parents=True, exist_ok=True)
@@ -705,7 +662,7 @@ def safe_import_from_project(root: Path, source: Path, mode: str = "copy") -> Ma
         "note": "Safe import copies assets/code into an imports folder first. Merge manually or use Feature Bank to recreate behavior safely.",
     }, indent=2), encoding="utf-8")
     result.created_files += copied[:300]
-    result.created_files.append(_rel(root, manifest))
+    result.add_created(root, manifest)
     result.notes.append(f"Copied {len(copied)} files into imports/{dest.name}/ without overwriting the active character.")
     return result
 
@@ -730,7 +687,7 @@ def build_factory_max_release_zip(root: Path) -> MaxResult:
             if "__pycache__" in lower or ".git" in lower or ".bak_" in lower or lower.endswith((".pyc", ".tmp")):
                 continue
             z.write(path, arcname=f"{root.name}/{rel_str}")
-    result.created_files.append(_rel(root, out))
+    result.add_created(root, out)
     result.notes.append("Release ZIP includes generated reports so testers know what changed and what is still placeholder.")
     return result
 
@@ -738,7 +695,6 @@ def build_factory_max_release_zip(root: Path) -> MaxResult:
 def one_click_factory_max_upgrade(root: Path) -> MaxResult:
     root = Path(root)
     result = MaxResult("Factory Max One-Click Better-than-FF Upgrade")
-    # v2.4 Smart Complete first: file routing, placeholders, docs.
     result.merge(fp.smart_complete_project(root), "Factory+")
     for kit in [
         "FF+ Fighter Factory-Style Essentials",
@@ -752,7 +708,7 @@ def one_click_factory_max_upgrade(root: Path) -> MaxResult:
         try:
             result.merge(apply_kit(root, kit), f"kit {kit}")
         except Exception as exc:
-            result.warnings.append(f"Could not apply kit {kit}: {exc}")
+            result.add_warning(f"Could not apply kit {kit}: {exc}")
     result.merge(write_codesense_bank(root), "codesense")
     result.merge(write_state_graph(root), "state graph")
     result.merge(write_organizer_manifest(root), "organizer")
@@ -786,7 +742,7 @@ def image_factory_process_folder(
     try:
         from PIL import Image, ImageOps, ImageFilter  # type: ignore
     except Exception as exc:
-        result.warnings.append(f"Pillow is required for image processing: {exc}")
+        result.add_warning(f"Pillow is required for image processing: {exc}")
         return result
     count = 0
     for src in sorted(in_dir.rglob("*"), key=lambda p: str(p).lower()):
@@ -823,12 +779,9 @@ def image_factory_process_folder(
             if outline:
                 alpha = im.getchannel("A")
                 grown = alpha.filter(ImageFilter.MaxFilter(3))
-                outline_img = Image.new("RGBA", im.size, (0, 0, 0, 0))
-                outline_img.putalpha(grown)
                 outline_layer = Image.new("RGBA", im.size, (0, 0, 0, 255))
                 outline_layer.putalpha(grown)
-                final = Image.alpha_composite(outline_layer, im)
-                im = final
+                im = Image.alpha_composite(outline_layer, im)
             if shadow:
                 shadow_alpha = im.getchannel("A").filter(ImageFilter.GaussianBlur(1.0))
                 sh = Image.new("RGBA", (im.width + 4, im.height + 4), (0, 0, 0, 0))
@@ -850,10 +803,10 @@ def image_factory_process_folder(
             dst = out_dir / rel.with_suffix(".png")
             dst.parent.mkdir(parents=True, exist_ok=True)
             im.save(dst)
-            result.created_files.append(str(dst))
+            result.add_created(in_dir, dst)
             count += 1
         except Exception as exc:
-            result.warnings.append(f"{src.name}: {exc}")
+            result.add_warning(f"{src.name}: {exc}")
     result.notes.append(f"Processed images: {count}")
     return result
 
@@ -866,7 +819,7 @@ def make_palette_variants(folder: Path, out_dir: Path, variants: int = 6) -> Max
     try:
         from PIL import Image, ImageEnhance  # type: ignore
     except Exception as exc:
-        result.warnings.append(f"Pillow is required: {exc}")
+        result.add_warning(f"Pillow is required: {exc}")
         return result
     images = [p for p in sorted(folder.rglob("*"), key=lambda p: str(p).lower()) if p.is_file() and p.suffix.lower() in IMAGE_SUFFIXES]
     created = 0
@@ -885,7 +838,7 @@ def make_palette_variants(folder: Path, out_dir: Path, variants: int = 6) -> Max
                 mod.save(dst)
                 created += 1
         except Exception as exc:
-            result.warnings.append(f"{src.name}: {exc}")
+            result.add_warning(f"{src.name}: {exc}")
     result.notes.append(f"Palette variant images created: {created}")
-    result.created_files.append(str(out_dir))
+    result.add_created(folder, out_dir)
     return result

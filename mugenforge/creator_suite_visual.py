@@ -24,66 +24,27 @@ IMAGE_EXTS = {'.png', '.pcx', '.bmp', '.gif', '.jpg', '.jpeg', '.webp'}
 AUDIO_EXTS = {'.wav'}
 
 
+from .shared_utils import (
+    BaseResult,
+    uniq,
+    rel_path,
+    timestamp,
+    backup_file,
+    get_code_files,
+    discover_project_files,
+    sanitize_name,
+    parse_safe_int,
+)
+
+
 @dataclass
-class CreatorSuiteResult:
+class CreatorSuiteResult(BaseResult):
     title: str = 'Creator Suite'
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def add_created(self, root: Path, path: Path | str) -> None:
-        self.created_files.append(_rel(root, path))
-
-    def add_changed(self, root: Path, path: Path | str) -> None:
-        self.changed_files.append(_rel(root, path))
-
-    def add_warning(self, msg: str) -> None:
-        self.warnings.append(str(msg))
-
-    def add_note(self, msg: str) -> None:
-        self.notes.append(str(msg))
-
-    def merge(self, other: 'CreatorSuiteResult', label: Optional[str] = None) -> None:
-        if not other:
-            return
-        prefix = f'{label}: ' if label else ''
-        self.created_files.extend(prefix + x for x in other.created_files)
-        self.changed_files.extend(prefix + x for x in other.changed_files)
-        self.warnings.extend(prefix + x for x in other.warnings)
-        self.notes.extend(prefix + x for x in other.notes)
-
-    def to_text(self) -> str:
-        lines = [self.title, '=' * max(12, len(self.title)), f'Generated: {datetime.now().isoformat(timespec="seconds")}', '']
-        if self.created_files:
-            lines += ['Created files/artifacts:'] + [f'- {x}' for x in _uniq(self.created_files)] + ['']
-        if self.changed_files:
-            lines += ['Changed files:'] + [f'- {x}' for x in _uniq(self.changed_files)] + ['']
-        if self.warnings:
-            lines += ['Warnings:'] + [f'- {x}' for x in _uniq(self.warnings)] + ['']
-        if self.notes:
-            lines += ['Notes:'] + [f'- {x}' for x in _uniq(self.notes)] + ['']
-        if len(lines) <= 4:
-            lines.append('No changes made.')
-        return '\n'.join(lines).rstrip() + '\n'
 
 
-def _uniq(items: Iterable[str]) -> List[str]:
-    out: List[str] = []
-    seen = set()
-    for item in items:
-        s = str(item)
-        if s not in seen:
-            out.append(s)
-            seen.add(s)
-    return out
-
-
-def _rel(root: Path, path: Path | str) -> str:
-    try:
-        return str(Path(path).resolve().relative_to(Path(root).resolve())).replace('\\', '/')
-    except Exception:
-        return str(path).replace('\\', '/')
+_uniq = uniq
+_rel = rel_path
+_slug = sanitize_name
 
 
 def _suite_dir(root: Path) -> Path:
@@ -93,10 +54,7 @@ def _suite_dir(root: Path) -> Path:
 
 
 def _backup(path: Path) -> None:
-    path = Path(path)
-    if path.exists():
-        stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        path.with_name(path.name + f'.bak_{stamp}').write_bytes(path.read_bytes())
+    backup_file(path)
 
 
 def _write(root: Path, path: Path, text: str, result: Optional[CreatorSuiteResult] = None, *, changed: bool = False) -> Path:
@@ -108,55 +66,15 @@ def _csv(path: Path, rows: Sequence[Dict[str, object]], fields: Sequence[str]) -
 
 
 def _code_files(root: Path) -> List[Path]:
-    exts = {'.cmd', '.cns', '.st'}
-    return [p for p in sorted(Path(root).rglob('*'), key=lambda x: str(x).lower()) if p.is_file() and p.suffix.lower() in exts]
+    return get_code_files(root)
 
 
 def _discover_files(root: Path) -> Dict[str, Optional[Path]]:
-    root = Path(root)
-    out: Dict[str, Optional[Path]] = {'root': root}
-    def_path = root / f'{root.name}.def'
-    if not def_path.exists():
-        defs = sorted(root.glob('*.def'), key=lambda p: p.name.lower())
-        def_path = defs[0] if defs else def_path
-    out['def'] = def_path if def_path.exists() else None
-    refs: Dict[str, str] = {}
-    if out['def']:
-        try:
-            files = parse_def(read_text_safely(out['def'])).get('files')
-            if files:
-                refs = {k.lower(): v.strip().strip('"') for k, v in files.values.items()}
-        except Exception:
-            refs = {}
-
-    def pick(key: str, ext: str) -> Optional[Path]:
-        if key in refs:
-            candidate = (root / refs[key]).resolve()
-            if candidate.exists():
-                return candidate
-        exact = root / f'{root.name}.{ext}'
-        if exact.exists():
-            return exact
-        matches = sorted(root.glob(f'*.{ext}'), key=lambda p: p.name.lower())
-        return matches[0] if matches else None
-
-    out['cmd'] = pick('cmd', 'cmd')
-    out['cns'] = pick('cns', 'cns') or pick('st', 'st')
-    out['air'] = pick('anim', 'air')
-    out['sff'] = pick('sprite', 'sff')
-    out['snd'] = pick('sound', 'snd')
-    return out
-
-
-def _slug(text: str) -> str:
-    return re.sub(r'[^A-Za-z0-9_\-]+', '_', str(text)).strip('_') or 'item'
+    return discover_project_files(root)
 
 
 def _safe_int(value: object, default: int = 0) -> int:
-    try:
-        return int(str(value).strip())
-    except Exception:
-        return default
+    return parse_safe_int(value, default) or default
 
 
 def _find_images(folder: Path) -> List[Path]:
@@ -179,6 +97,7 @@ def _parse_sprite_filename(path: Path, fallback_index: int = 0) -> Tuple[int, in
         if m:
             return int(m.group(1)), int(m.group(2))
     return 0, fallback_index
+
 
 
 def _image_size(path: Path) -> Tuple[int, int]:

@@ -41,59 +41,37 @@ WARN_RE = re.compile(r'\b(warn(?:ing)?|missing|not found|invalid|cannot|could no
 TELEMETRY_RE = re.compile(r'\b(?:MFTELEMETRY|MFRUNTIME|MFSTAT)\b\s*[:=]?\s*(.*)$', re.I)
 
 
+from .shared_utils import (
+    BaseResult,
+    uniq,
+    rel_path,
+    timestamp,
+    parse_first_int,
+    get_code_files,
+    discover_project_files,
+    get_character_name,
+)
+
+AUTHORITY_CORE_VERSION = '7.0.0'
+TEXT_CODE_EXTS = {'.cmd', '.cns', '.st'}
+BINARY_EXTS = {'.sff', '.snd'}
+EVIDENCE_EXTS = {'.txt', '.log', '.json', '.csv', '.md', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.bmp'}
+ERROR_RE = re.compile(r'\b(error|exception|traceback|crash|failed|fatal|assert|panic|segmentation)\b', re.I)
+WARN_RE = re.compile(r'\b(warn(?:ing)?|missing|not found|invalid|cannot|could not|unable|unsupported)\b', re.I)
+TELEMETRY_RE = re.compile(r'\b(?:MFTELEMETRY|MFRUNTIME|MFSTAT)\b\s*[:=]?\s*(.*)$', re.I)
+
+
 @dataclass
-class AuthorityCoreResult:
+class AuthorityCoreResult(BaseResult):
     title: str = 'Authority Core'
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def add_created(self, root: Path, path: Path | str) -> None:
-        self.created_files.append(_rel(root, path))
-
-    def add_changed(self, root: Path, path: Path | str) -> None:
-        self.changed_files.append(_rel(root, path))
-
-    def add_warning(self, msg: object) -> None:
-        self.warnings.append(str(msg))
-
-    def add_note(self, msg: object) -> None:
-        self.notes.append(str(msg))
-
-    def merge(self, other: 'AuthorityCoreResult', label: Optional[str] = None) -> None:
-        if not other:
-            return
-        prefix = f'{label}: ' if label else ''
-        self.created_files.extend(prefix + x for x in other.created_files)
-        self.changed_files.extend(prefix + x for x in other.changed_files)
-        self.warnings.extend(prefix + x for x in other.warnings)
-        self.notes.extend(prefix + x for x in other.notes)
-
-    def to_text(self) -> str:
-        lines = [self.title, '=' * max(12, len(self.title)), f'Generated: {datetime.now().isoformat(timespec="seconds")}', '']
-        if self.notes:
-            lines += ['Notes:'] + [f'- {x}' for x in _uniq(self.notes)] + ['']
-        if self.changed_files:
-            lines += ['Changed files:'] + [f'- {x}' for x in _uniq(self.changed_files)] + ['']
-        if self.created_files:
-            lines += ['Created files/artifacts:'] + [f'- {x}' for x in _uniq(self.created_files)] + ['']
-        if self.warnings:
-            lines += ['Warnings:'] + [f'- {x}' for x in _uniq(self.warnings)] + ['']
-        if len(lines) <= 4:
-            lines.append('No changes made.')
-        return '\n'.join(lines).rstrip() + '\n'
 
 
-def _uniq(items: Iterable[str]) -> List[str]:
-    out: List[str] = []
-    seen = set()
-    for item in items:
-        s = str(item)
-        if s not in seen:
-            seen.add(s)
-            out.append(s)
-    return out
+_uniq = uniq
+_rel = rel_path
+_first_int = parse_first_int
+_discover_files = discover_project_files
+_code_files = get_code_files
+_project_char_name = get_character_name
 
 
 def _authority_dir(root: Path) -> Path:
@@ -134,52 +112,6 @@ def _csv_read(path: Path) -> List[Dict[str, str]]:
 def _backup_file(path: Path) -> Optional[Path]:
     return backup_file(path, 'authority')
 
-
-def _discover_files(root: Path) -> Dict[str, Optional[Path]]:
-    root = Path(root)
-    out: Dict[str, Optional[Path]] = {'root': root}
-    for ext in ('def', 'air', 'cmd', 'cns', 'sff', 'snd'):
-        found = None
-        try:
-            found = find_character_file(root, ext)
-        except Exception:
-            found = None
-        if found is None:
-            exact = root / f'{root.name}.{ext}'
-            if exact.exists():
-                found = exact
-        if found is None:
-            hits = sorted(root.glob(f'*.{ext}'), key=lambda p: p.name.lower())
-            found = hits[0] if hits else None
-        out[ext] = found
-    return out
-
-
-def _code_files(root: Path) -> List[Path]:
-    skip = {'__pycache__', '.mugenforge', 'authority_core', 'runtime_lab', 'binary_core', 'binary_deep', 'binary_maturity', 'forge_timeline', 'forge_polish', 'forge_beyond'}
-    out: List[Path] = []
-    for p in sorted(Path(root).rglob('*'), key=lambda x: str(x).lower()):
-        if p.is_file() and p.suffix.lower() in TEXT_CODE_EXTS and not any(part in skip for part in p.parts):
-            out.append(p)
-    return out
-
-
-def _first_int(value: object, default: int = 0) -> int:
-    m = re.search(r'-?\d+', str(value or ''))
-    return int(m.group(0)) if m else int(default)
-
-
-def _project_char_name(root: Path) -> str:
-    dpath = _discover_files(root).get('def')
-    if dpath and dpath.exists():
-        try:
-            text = read_text_safely(dpath)
-            m = re.search(r'^\s*name\s*=\s*"?([^";\n]+)', text, re.I | re.M)
-            if m:
-                return m.group(1).strip() or Path(root).name
-        except Exception:
-            pass
-    return Path(root).name or 'character'
 
 
 def _default_engine_config(root: Path) -> Dict[str, object]:

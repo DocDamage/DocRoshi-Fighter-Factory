@@ -11,13 +11,6 @@ import shutil
 import zipfile
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
-from .artifact_io import (
-    rel_path as _rel,
-    timestamp as _timestamp,
-    write_csv_artifact,
-    write_json_artifact,
-    write_text_artifact,
-)
 from .parsers import (
     COMMON_ANIMS,
     parse_air,
@@ -40,45 +33,32 @@ AUDIO_SUFFIXES = {".wav", ".ogg", ".mp3", ".flac", ".snd"}
 SKIP_PARTS = {"__pycache__", ".git", ".hg", ".svn"}
 
 
-@dataclass
-class ForgeBeyondResult:
-    title: str = "Forge Beyond Result"
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    skipped_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
+from .shared_utils import (
+    BaseResult,
+    uniq,
+    sanitize_name,
+    parse_first_int,
+    get_all_files,
+    get_code_files,
+    discover_project_files,
+    scan_commands,
+    rel_path as _rel,
+    timestamp as _timestamp,
+    write_text_artifact,
+    write_json_artifact,
+    write_csv_artifact,
+)
 
-    def merge(self, other: object, label: Optional[str] = None) -> None:
-        if not other:
-            return
-        prefix = f"{label}: " if label else ""
-        for attr in ("created_files", "changed_files", "skipped_files", "warnings", "notes"):
-            vals = getattr(other, attr, []) or []
-            getattr(self, attr).extend(prefix + str(v) for v in vals)
+
+@dataclass
+class ForgeBeyondResult(BaseResult):
+    title: str = "Forge Beyond Result"
 
     def add_created(self, root: Path, path: Path | str) -> None:
         self.created_files.append(_rel(root, path))
 
     def add_changed(self, root: Path, path: Path | str) -> None:
         self.changed_files.append(_rel(root, path))
-
-    def to_text(self) -> str:
-        lines = [self.title, "=" * max(12, len(self.title)), f"Generated: {datetime.now().isoformat(timespec='seconds')}", ""]
-        for label, values in (
-            ("Notes", self.notes),
-            ("Created files/artifacts", self.created_files),
-            ("Changed files", self.changed_files),
-            ("Skipped", self.skipped_files),
-            ("Warnings", self.warnings),
-        ):
-            if values:
-                lines.append(label + ":")
-                lines.extend(f"- {v}" for v in _uniq(values))
-                lines.append("")
-        if len(lines) <= 4:
-            lines.append("No changes made.")
-        return "\n".join(lines).rstrip() + "\n"
 
 
 @dataclass
@@ -95,19 +75,10 @@ class ImageEditSpec:
     palette_colors: int = 0
 
 
-def _uniq(items: Iterable[str]) -> List[str]:
-    out: List[str] = []
-    seen = set()
-    for item in items:
-        text = str(item)
-        if text not in seen:
-            out.append(text)
-            seen.add(text)
-    return out
-
-
-def _safe_name(name: str) -> str:
-    return re.sub(r"[^A-Za-z0-9_\-]+", "_", str(name or "")).strip("_") or "project"
+_uniq = uniq
+_safe_name = sanitize_name
+_first_int = parse_first_int
+_discover_files = discover_project_files
 
 
 def _beyond_dir(root: Path) -> Path:
@@ -169,24 +140,19 @@ def _backup_text_file(path: Path, root: Path, label: str = "forge_beyond") -> Op
 
 
 def _all_files(root: Path) -> List[Path]:
-    return [p for p in sorted(Path(root).rglob("*"), key=lambda x: str(x).lower()) if p.is_file() and not any(part in SKIP_PARTS for part in p.parts)]
+    return get_all_files(root)
 
 
 def _code_files(root: Path) -> List[Path]:
-    return [p for p in _all_files(root) if p.suffix.lower() in CODE_SUFFIXES and not any(part in {"forge_beyond", "visual_forge", "backups"} for part in p.parts)]
+    return get_code_files(root)
 
 
 def _image_files(root: Path) -> List[Path]:
-    return [p for p in _all_files(root) if p.suffix.lower() in IMAGE_SUFFIXES]
+    return [p for p in get_all_files(root) if p.suffix.lower() in IMAGE_SUFFIXES]
 
 
 def _wav_files(root: Path) -> List[Path]:
-    return [p for p in _all_files(root) if p.suffix.lower() == ".wav"]
-
-
-def _first_int(value: object, default: int = 0) -> int:
-    m = re.search(r"-?\d+", str(value or ""))
-    return int(m.group(0)) if m else default
+    return [p for p in get_all_files(root) if p.suffix.lower() == ".wav"]
 
 
 def _category_for_file(path: Path) -> str:
@@ -210,66 +176,23 @@ def _category_for_file(path: Path) -> str:
     return "other"
 
 
-def _discover_files(root: Path) -> Dict[str, Optional[Path]]:
-    root = Path(root)
-    out: Dict[str, Optional[Path]] = {"root": root}
-    def_path = root / f"{root.name}.def"
-    if not def_path.exists():
-        defs = sorted(root.glob("*.def"), key=lambda p: p.name.lower())
-        def_path = defs[0] if defs else def_path
-    out["def"] = def_path if def_path.exists() else None
-    refs: Dict[str, str] = {}
-    if out["def"]:
-        try:
-            files = parse_def(read_text_safely(out["def"])).get("files")
-            if files:
-                refs = {k.lower(): v.strip().strip('"') for k, v in files.values.items()}
-        except Exception:
-            refs = {}
-
-    def by_ref(key: str, ext: str) -> Optional[Path]:
-        ref = refs.get(key)
-        if ref:
-            p = (root / ref).resolve()
-            if p.exists():
-                return p
-        exact = root / f"{root.name}.{ext}"
-        if exact.exists():
-            return exact
-        matches = sorted(root.glob(f"*.{ext}"), key=lambda p: p.name.lower())
-        return matches[0] if matches else None
-
-    out["cmd"] = by_ref("cmd", "cmd")
-    out["cns"] = by_ref("cns", "cns") or by_ref("st", "st")
-    out["air"] = by_ref("anim", "air")
-    out["sff"] = by_ref("sprite", "sff")
-    out["snd"] = by_ref("sound", "snd")
-    return out
-
-
 def _commands_from_project(root: Path) -> List[Dict[str, object]]:
     rows: List[Dict[str, object]] = []
-    for path in _code_files(root):
-        if path.suffix.lower() != ".cmd":
-            continue
-        try:
-            scan = parse_code(read_text_safely(path))
-        except Exception:
-            continue
-        for c in scan.commands:
-            rows.append({
-                "file": _rel(root, path),
-                "line": c.line,
-                "name": c.name,
-                "command": c.command,
-                "time": c.time if c.time is not None else "",
-                "buffer_time": c.buffer_time if c.buffer_time is not None else "",
-                "new_command": c.command,
-                "new_time": c.time if c.time is not None else "",
-                "new_buffer_time": c.buffer_time if c.buffer_time is not None else "",
-                "note": "edit new_* columns only",
-            })
+    for cmd in scan_commands(root):
+        rows.append({
+            "file": cmd["file"],
+            "line": cmd["line"],
+            "name": cmd["name"],
+            "command": cmd["command"],
+            "time": cmd["time"] if cmd["time"] is not None else "",
+            "buffer_time": cmd["buffer_time"] if cmd["buffer_time"] is not None else "",
+            "new_command": cmd["command"],
+            "new_time": cmd["time"] if cmd["time"] is not None else "",
+            "new_buffer_time": cmd["buffer_time"] if cmd["buffer_time"] is not None else "",
+            "note": "edit new_* columns only",
+        })
     return rows
+
 
 
 def _state_controller_rows(root: Path) -> Tuple[List[Dict[str, object]], List[Dict[str, object]], List[Dict[str, object]]]:

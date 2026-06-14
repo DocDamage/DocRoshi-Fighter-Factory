@@ -10,7 +10,7 @@ def _find_root() -> Path:
     return here.parents[1]
 
 ROOT = _find_root()
-CANDIDATES = sorted(ROOT.glob('MUGENFORGE_HANDOFF_v*.md'), key=lambda p: p.name.lower())
+CANDIDATES = sorted((ROOT / 'docs').glob('MUGENFORGE_HANDOFF_v*.md'), key=lambda p: p.name.lower())
 if not CANDIDATES:
     raise SystemExit('No handoff file found.')
 print(CANDIDATES[-1].read_text(encoding='utf-8', errors='replace'))

@@ -7,6 +7,7 @@ from tkinter import filedialog, messagebox
 
 from ..move_wizard import normalize_spec
 from ..parsers import parse_code, read_text_safely
+from ..shared_utils import handle_ui_errors
 from ..visual_forge import (
     BeginnerProjectSpec,
     MigrationSpec,
@@ -123,33 +124,26 @@ class VisualForgeActions:
             power_style=v['power_style'].get().strip() or 'classic',
         )
 
+    @handle_ui_errors('Visual Forge wizard')
     def vf_create_project_from_wizard(self):
-        try:
-            parent = Path(self.vf_wizard_vars['parent'].get().strip()).expanduser()
-            if not str(parent):
-                messagebox.showinfo('Parent folder needed', 'Choose a parent folder first.')
-                return
-            spec = self._vf_wizard_spec()
-            result = create_visual_forge_project(parent, spec, install_pack=bool(self.vf_wizard_install_pack_var.get()))
-            self.load_project(parent / spec.safe_name)
-            self.set_text(self.vf_home_output, result.to_text())
-            self.notebook.select(self.vf_home_frame)
-            self.status_var.set(f'Visual Forge project created: {spec.safe_name}')
-        except Exception as exc:
-            messagebox.showerror('Wizard failed', str(exc))
-            if self.project_root:
-                log_error(self.project_root, 'Visual Forge wizard', exc)
+        parent = Path(self.vf_wizard_vars['parent'].get().strip()).expanduser()
+        if not str(parent):
+            messagebox.showinfo('Parent folder needed', 'Choose a parent folder first.')
+            return
+        spec = self._vf_wizard_spec()
+        result = create_visual_forge_project(parent, spec, install_pack=bool(self.vf_wizard_install_pack_var.get()))
+        self.load_project(parent / spec.safe_name)
+        self.set_text(self.vf_home_output, result.to_text())
+        self.notebook.select(self.vf_home_frame)
+        self.status_var.set(f'Visual Forge project created: {spec.safe_name}')
 
+    @handle_ui_errors('Visual Forge Quick Start')
     def vf_quick_start_ui(self):
         if not self._vf_require_project():
             return
-        try:
-            result = quick_start_pass(self.project_root)
-            self.set_text(self.vf_home_output, result.to_text())
-            self.status_var.set('Visual Forge Quick Start finished')
-        except Exception as exc:
-            messagebox.showerror('Quick Start failed', str(exc))
-            log_error(self.project_root, 'Visual Forge Quick Start', exc)
+        result = quick_start_pass(self.project_root)
+        self.set_text(self.vf_home_output, result.to_text())
+        self.status_var.set('Visual Forge Quick Start finished')
 
     def vf_tutorials_ui(self):
         text = '''Visual Forge beginner path
@@ -169,36 +163,30 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
         self.set_text(self.vf_home_output, text)
         self.notebook.select(self.vf_home_frame)
 
+    @handle_ui_errors('Write Visual Forge home docs')
     def vf_write_home_docs_ui(self):
         if not self._vf_require_project():
             return
-        try:
-            result = write_beginner_project_home(self.project_root, BeginnerProjectSpec(name=self.project_root.name))
-            self.set_text(self.vf_home_output, result.to_text())
-            self.status_var.set('Visual Forge home docs written')
-        except Exception as exc:
-            messagebox.showerror('Home docs failed', str(exc))
-            log_error(self.project_root, 'Write Visual Forge home docs', exc)
+        result = write_beginner_project_home(self.project_root, BeginnerProjectSpec(name=self.project_root.name))
+        self.set_text(self.vf_home_output, result.to_text())
+        self.status_var.set('Visual Forge home docs written')
 
     def vf_import_legacy_from_home(self):
         self.notebook.select(self.vf_migration_frame)
 
+    @handle_ui_errors('Visual Timeline refresh')
     def vf_refresh_timeline_ui(self):
         if not self._vf_require_project():
             return
-        try:
-            self.vf_timeline_model = build_visual_timeline_model(self.project_root)
-            actions = self.vf_timeline_model.get('actions', [])
-            values = [f"{a.get('action')} :: {a.get('label') or 'action'} ({len(a.get('frames', []))} frames)" for a in actions]
-            self.vf_timeline_action_combo.configure(values=values)
-            if values:
-                self.vf_timeline_action_var.set(values[0])
-            self.vf_timeline_preview_ticks = {}
-            self.vf_draw_timeline()
-            self.status_var.set('Visual timeline refreshed')
-        except Exception as exc:
-            messagebox.showerror('Timeline refresh failed', str(exc))
-            log_error(self.project_root, 'Visual Timeline refresh', exc)
+        self.vf_timeline_model = build_visual_timeline_model(self.project_root)
+        actions = self.vf_timeline_model.get('actions', [])
+        values = [f"{a.get('action')} :: {a.get('label') or 'action'} ({len(a.get('frames', []))} frames)" for a in actions]
+        self.vf_timeline_action_combo.configure(values=values)
+        if values:
+            self.vf_timeline_action_var.set(values[0])
+        self.vf_timeline_preview_ticks = {}
+        self.vf_draw_timeline()
+        self.status_var.set('Visual timeline refreshed')
 
     def _vf_selected_timeline_action(self):
         raw = self.vf_timeline_action_var.get()
@@ -288,6 +276,7 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
     def vf_timeline_release(self, event):
         self.vf_timeline_drag_data = None
 
+    @handle_ui_errors('Visual Timeline save ticks')
     def vf_timeline_save_ticks(self):
         if not self._vf_require_project():
             return
@@ -299,14 +288,10 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
         if idx < 0:
             messagebox.showinfo('No frame selected', 'Click or drag a frame tile first.')
             return
-        try:
-            result = update_air_frame_ticks(self.project_root, int(action.get('action')), idx, ticks)
-            self.set_text(self.vf_timeline_info, result.to_text())
-            self.vf_refresh_timeline_ui()
-            self.reload_project()
-        except Exception as exc:
-            messagebox.showerror('Save ticks failed', str(exc))
-            log_error(self.project_root, 'Visual Timeline save ticks', exc)
+        result = update_air_frame_ticks(self.project_root, int(action.get('action')), idx, ticks)
+        self.set_text(self.vf_timeline_info, result.to_text())
+        self.vf_refresh_timeline_ui()
+        self.reload_project()
 
     def vf_timeline_play(self):
         self.vf_timeline_pause()
@@ -334,32 +319,26 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
         self.vf_timeline_play_idx += 1
         self.vf_timeline_play_after = self.after(max(60, int(ticks * 1000 / 60)), self._vf_timeline_play_step)
 
+    @handle_ui_errors('Timeline export')
     def vf_timeline_export_ui(self):
         if not self._vf_require_project():
             return
-        try:
-            action = self._vf_selected_timeline_action()
-            action_no = int(action.get('action')) if action else None
-            result = write_visual_timeline_manifest(self.project_root, action_no)
-            self.set_text(self.vf_timeline_info, result.to_text())
-            self.status_var.set('Timeline manifest exported')
-        except Exception as exc:
-            messagebox.showerror('Timeline export failed', str(exc))
-            log_error(self.project_root, 'Timeline export', exc)
+        action = self._vf_selected_timeline_action()
+        action_no = int(action.get('action')) if action else None
+        result = write_visual_timeline_manifest(self.project_root, action_no)
+        self.set_text(self.vf_timeline_info, result.to_text())
+        self.status_var.set('Timeline manifest exported')
 
+    @handle_ui_errors('Offset refresh')
     def vf_refresh_offset_ui(self):
         if not self._vf_require_project():
             return
-        try:
-            self.vf_offset_model = build_sprite_offset_model(self.project_root)
-            values = [f"{a.get('action')} :: {a.get('label') or 'action'} ({len(a.get('frames', []))} frames)" for a in self.vf_offset_model.get('actions', [])]
-            self.vf_offset_action_combo.configure(values=values)
-            if values:
-                self.vf_offset_action_var.set(values[0])
-            self.vf_on_offset_action()
-        except Exception as exc:
-            messagebox.showerror('Offset refresh failed', str(exc))
-            log_error(self.project_root, 'Offset refresh', exc)
+        self.vf_offset_model = build_sprite_offset_model(self.project_root)
+        values = [f"{a.get('action')} :: {a.get('label') or 'action'} ({len(a.get('frames', []))} frames)" for a in self.vf_offset_model.get('actions', [])]
+        self.vf_offset_action_combo.configure(values=values)
+        if values:
+            self.vf_offset_action_var.set(values[0])
+        self.vf_on_offset_action()
 
     def _vf_selected_offset_action(self):
         raw = self.vf_offset_action_var.get()
@@ -442,6 +421,7 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
         self.vf_offset_y_var.set(str(ny))
         self.vf_draw_offset_canvas()
 
+    @handle_ui_errors('Offset save')
     def vf_save_offset_ui(self):
         if not self._vf_require_project():
             return
@@ -450,65 +430,52 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
         if not action or not sel:
             messagebox.showinfo('No frame selected', 'Choose an action/frame first.')
             return
-        try:
-            result = update_air_frame_offset(self.project_root, int(action.get('action')), sel[0], self._vf_int(self.vf_offset_x_var, 0), self._vf_int(self.vf_offset_y_var, 0))
-            self.set_text(self.vf_offset_info, result.to_text())
-            self.vf_refresh_offset_ui()
-            self.reload_project()
-        except Exception as exc:
-            messagebox.showerror('Offset save failed', str(exc))
-            log_error(self.project_root, 'Offset save', exc)
+        result = update_air_frame_offset(self.project_root, int(action.get('action')), sel[0], self._vf_int(self.vf_offset_x_var, 0), self._vf_int(self.vf_offset_y_var, 0))
+        self.set_text(self.vf_offset_info, result.to_text())
+        self.vf_refresh_offset_ui()
+        self.reload_project()
 
+    @handle_ui_errors('Sound cue refresh')
     def vf_refresh_sound_cues_ui(self):
         if not self._vf_require_project():
             return
-        try:
-            states = []
-            for path in sorted(Path(self.project_root).rglob('*')):
-                if path.suffix.lower() in {'.cmd', '.cns', '.st'} and path.is_file():
-                    try:
-                        for st in parse_code(read_text_safely(path)).states:
-                            states.append(f"{st.number}  ({path.name}, anim {st.values.get('anim', '')})")
-                    except Exception:
-                        pass
-            self.vf_sound_state_combo.configure(values=sorted(set(states), key=lambda s: int(str(s).split()[0]) if str(s).split()[0].lstrip('-').isdigit() else 0))
-            result = write_sound_cue_manifest(self.project_root)
-            self.set_text(self.vf_sound_output, result.to_text())
-            self.status_var.set('Sound cue manifest refreshed')
-        except Exception as exc:
-            messagebox.showerror('Sound cue refresh failed', str(exc))
-            log_error(self.project_root, 'Sound cue refresh', exc)
+        states = []
+        for path in sorted(Path(self.project_root).rglob('*')):
+            if path.suffix.lower() in {'.cmd', '.cns', '.st'} and path.is_file():
+                try:
+                    for st in parse_code(read_text_safely(path)).states:
+                        states.append(f"{st.number}  ({path.name}, anim {st.values.get('anim', '')})")
+                except Exception:
+                    pass
+        self.vf_sound_state_combo.configure(values=sorted(set(states), key=lambda s: int(str(s).split()[0]) if str(s).split()[0].lstrip('-').isdigit() else 0))
+        result = write_sound_cue_manifest(self.project_root)
+        self.set_text(self.vf_sound_output, result.to_text())
+        self.status_var.set('Sound cue manifest refreshed')
 
+    @handle_ui_errors('Add sound cue')
     def vf_add_sound_cue_ui(self):
         if not self._vf_require_project():
             return
-        try:
-            raw_state = self.vf_sound_state_var.get().strip().split()[0]
-            cue = SoundCueSpec(
-                state_no=int(raw_state),
-                frame=self._vf_int(self.vf_sound_frame_var, 2),
-                sound_group=self._vf_int(self.vf_sound_group_var, 5),
-                sound_index=self._vf_int(self.vf_sound_index_var, 0),
-                channel=self._vf_int(self.vf_sound_channel_var, 0),
-                label='Visual Forge Sound Cue',
-            )
-            result = add_sound_cue_controller(self.project_root, cue)
-            result.merge(write_sound_cue_manifest(self.project_root), 'Cue Manifest')
-            self.set_text(self.vf_sound_output, result.to_text())
-            self.reload_project()
-        except Exception as exc:
-            messagebox.showerror('Add sound cue failed', str(exc))
-            log_error(self.project_root, 'Add sound cue', exc)
+        raw_state = self.vf_sound_state_var.get().strip().split()[0]
+        cue = SoundCueSpec(
+            state_no=int(raw_state),
+            frame=self._vf_int(self.vf_sound_frame_var, 2),
+            sound_group=self._vf_int(self.vf_sound_group_var, 5),
+            sound_index=self._vf_int(self.vf_sound_index_var, 0),
+            channel=self._vf_int(self.vf_sound_channel_var, 0),
+            label='Visual Forge Sound Cue',
+        )
+        result = add_sound_cue_controller(self.project_root, cue)
+        result.merge(write_sound_cue_manifest(self.project_root), 'Cue Manifest')
+        self.set_text(self.vf_sound_output, result.to_text())
+        self.reload_project()
 
+    @handle_ui_errors('Cue manifest')
     def vf_export_sound_cue_manifest_ui(self):
         if not self._vf_require_project():
             return
-        try:
-            result = write_sound_cue_manifest(self.project_root)
-            self.set_text(self.vf_sound_output, result.to_text())
-        except Exception as exc:
-            messagebox.showerror('Cue manifest failed', str(exc))
-            log_error(self.project_root, 'Cue manifest', exc)
+        result = write_sound_cue_manifest(self.project_root)
+        self.set_text(self.vf_sound_output, result.to_text())
 
     def _vf_composer2_spec(self):
         data = {k: v.get() for k, v in self.vf_compose_vars.items()}
@@ -517,33 +484,27 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
         data['guard_sparkno'] = '40'
         return normalize_spec(**data)
 
+    @handle_ui_errors('Move Composer preview')
     def vf_composer2_preview(self):
         if not self._vf_require_project():
             return
-        try:
-            spec = self._vf_composer2_spec()
-            result = compose_move2(self.project_root, spec, append=False)
-            out = self.project_root / 'visual_forge' / 'move_composer' / f"{re.sub(r'[^A-Za-z0-9_\-]+', '_', spec.move_name).strip('_') or 'move'}_preview.txt"
-            text = result.to_text()
-            if out.exists():
-                text += '\n' + out.read_text(encoding='utf-8')
-            self.set_text(self.vf_composer2_output, text)
-        except Exception as exc:
-            messagebox.showerror('Composer preview failed', str(exc))
-            log_error(self.project_root, 'Move Composer preview', exc)
+        spec = self._vf_composer2_spec()
+        result = compose_move2(self.project_root, spec, append=False)
+        out = self.project_root / 'visual_forge' / 'move_composer' / f"{re.sub(r'[^A-Za-z0-9_\-]+', '_', spec.move_name).strip('_') or 'move'}_preview.txt"
+        text = result.to_text()
+        if out.exists():
+            text += '\n' + out.read_text(encoding='utf-8')
+        self.set_text(self.vf_composer2_output, text)
 
+    @handle_ui_errors('Move Composer append')
     def vf_composer2_append(self):
         if not self._vf_require_project():
             return
-        try:
-            spec = self._vf_composer2_spec()
-            result = compose_move2(self.project_root, spec, append=True)
-            result.merge(write_visual_timeline_manifest(self.project_root, spec.anim_no), 'Timeline Manifest')
-            self.set_text(self.vf_composer2_output, result.to_text())
-            self.reload_project()
-        except Exception as exc:
-            messagebox.showerror('Composer append failed', str(exc))
-            log_error(self.project_root, 'Move Composer append', exc)
+        spec = self._vf_composer2_spec()
+        result = compose_move2(self.project_root, spec, append=True)
+        result.merge(write_visual_timeline_manifest(self.project_root, spec.anim_no), 'Timeline Manifest')
+        self.set_text(self.vf_composer2_output, result.to_text())
+        self.reload_project()
 
     def vf_choose_import_source(self):
         folder = filedialog.askdirectory(title='Choose existing character folder to import')
@@ -556,80 +517,61 @@ Honest limits stay in force: generated code is scaffolding, balance/frame report
         if folder:
             self.vf_migration_dest_var.set(folder)
 
+    @handle_ui_errors('Migration wizard')
     def vf_run_migration_ui(self):
-        try:
-            spec = MigrationSpec(Path(self.vf_migration_source_var.get().strip()), Path(self.vf_migration_dest_var.get().strip()), self.vf_migration_name_var.get().strip())
-            result = migrate_existing_character(spec)
-            self.set_text(self.vf_migration_output, result.to_text())
-            dest = spec.destination_parent / (spec.new_name.strip() or spec.source_root.name)
-            if dest.exists():
-                self.load_project(dest)
-        except Exception as exc:
-            messagebox.showerror('Migration failed', str(exc))
-            if self.project_root:
-                log_error(self.project_root, 'Migration wizard', exc)
+        spec = MigrationSpec(Path(self.vf_migration_source_var.get().strip()), Path(self.vf_migration_dest_var.get().strip()), self.vf_migration_name_var.get().strip())
+        result = migrate_existing_character(spec)
+        self.set_text(self.vf_migration_output, result.to_text())
+        dest = spec.destination_parent / (spec.new_name.strip() or spec.source_root.name)
+        if dest.exists():
+            self.load_project(dest)
 
+    @handle_ui_errors('Training debug install')
     def vf_install_training_debug_ui(self):
         if not self._vf_require_project():
             return
-        try:
-            result = install_training_debug_pack(self.project_root)
-            self.set_text(self.vf_training_output, result.to_text())
-            self.reload_project()
-        except Exception as exc:
-            messagebox.showerror('Training debug install failed', str(exc))
-            log_error(self.project_root, 'Training debug install', exc)
+        result = install_training_debug_pack(self.project_root)
+        self.set_text(self.vf_training_output, result.to_text())
+        self.reload_project()
 
+    @handle_ui_errors('Template/plugin install')
     def vf_install_templates_ui(self):
         if not self._vf_require_project():
             return
-        try:
-            result = install_template_architecture(self.project_root)
-            target = self.vf_plugin_output if hasattr(self, 'vf_plugin_output') else self.vf_home_output
-            self.set_text(target, result.to_text())
-            self.status_var.set('Template/plugin foundation installed')
-        except Exception as exc:
-            messagebox.showerror('Template install failed', str(exc))
-            log_error(self.project_root, 'Template/plugin install', exc)
+        result = install_template_architecture(self.project_root)
+        target = self.vf_plugin_output if hasattr(self, 'vf_plugin_output') else self.vf_home_output
+        self.set_text(target, result.to_text())
+        self.status_var.set('Template/plugin foundation installed')
 
+    @handle_ui_errors('SFF2 Bridge Pack')
     def vf_sff2_pack_ui(self):
         if not self._vf_require_project():
             return
-        try:
-            folder = filedialog.askdirectory(title='Optional: choose image folder for Sprmake2 source project, or cancel to write guide only')
-            img = Path(folder) if folder else None
-            result = write_visual_sff2_bridge_pack(self.project_root, img)
-            target = self.vf_plugin_output if hasattr(self, 'vf_plugin_output') else self.vf_home_output
-            self.set_text(target, result.to_text())
-        except Exception as exc:
-            messagebox.showerror('SFF2 bridge pack failed', str(exc))
-            log_error(self.project_root, 'SFF2 Bridge Pack', exc)
+        folder = filedialog.askdirectory(title='Optional: choose image folder for Sprmake2 source project, or cancel to write guide only')
+        img = Path(folder) if folder else None
+        result = write_visual_sff2_bridge_pack(self.project_root, img)
+        target = self.vf_plugin_output if hasattr(self, 'vf_plugin_output') else self.vf_home_output
+        self.set_text(target, result.to_text())
 
+    @handle_ui_errors('Backup snapshot')
     def vf_backup_snapshot_ui(self):
         if not self._vf_require_project():
             return
-        try:
-            label = self.vf_backup_label_var.get() if hasattr(self, 'vf_backup_label_var') else 'manual'
-            result = create_backup_snapshot(self.project_root, label)
-            target = self.vf_backup_output if hasattr(self, 'vf_backup_output') else self.vf_home_output
-            self.set_text(target, result.to_text())
-            self.status_var.set('Visual Forge backup snapshot created')
-        except Exception as exc:
-            messagebox.showerror('Backup failed', str(exc))
-            log_error(self.project_root, 'Backup snapshot', exc)
+        label = self.vf_backup_label_var.get() if hasattr(self, 'vf_backup_label_var') else 'manual'
+        result = create_backup_snapshot(self.project_root, label)
+        target = self.vf_backup_output if hasattr(self, 'vf_backup_output') else self.vf_home_output
+        self.set_text(target, result.to_text())
+        self.status_var.set('Visual Forge backup snapshot created')
 
+    @handle_ui_errors('Restore latest snapshot')
     def vf_restore_snapshot_ui(self):
         if not self._vf_require_project():
             return
         if not messagebox.askyesno('Restore latest snapshot', 'Restore the latest Visual Forge snapshot? A pre-restore guard snapshot will be created first.'):
             return
-        try:
-            result = restore_latest_snapshot(self.project_root)
-            self.set_text(self.vf_backup_output, result.to_text())
-            self.reload_project()
-        except Exception as exc:
-            messagebox.showerror('Restore failed', str(exc))
-            log_error(self.project_root, 'Restore latest snapshot', exc)
+        result = restore_latest_snapshot(self.project_root)
+        self.set_text(self.vf_backup_output, result.to_text())
+        self.reload_project()
 
     def vf_view_error_log_ui(self):
         if not self._vf_require_project():

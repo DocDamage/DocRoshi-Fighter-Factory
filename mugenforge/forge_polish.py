@@ -34,60 +34,29 @@ SKIP_PARTS = {"__pycache__", ".git", ".hg", ".svn", ".venv", "venv"}
 GENERATED_PARTS = {"forge_polish", "polish_lab", "forge_beyond", "visual_forge", "backups", "exports", "quality_lab"}
 
 
+from .shared_utils import (
+    BaseResult,
+    uniq,
+    rel_path,
+    timestamp,
+    backup_file,
+    get_all_files,
+    get_code_files,
+    discover_project_files,
+    parse_safe_int,
+    is_truthy,
+    sanitize_name,
+)
+
+
 @dataclass
-class ForgePolishResult:
+class ForgePolishResult(BaseResult):
     title: str = "Forge Polish Result"
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    skipped_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def merge(self, other: object, label: Optional[str] = None) -> None:
-        if not other:
-            return
-        prefix = f"{label}: " if label else ""
-        for attr in ("created_files", "changed_files", "skipped_files", "warnings", "notes"):
-            getattr(self, attr).extend(prefix + str(v) for v in (getattr(other, attr, []) or []))
-
-    def add_created(self, root: Path, path: Path | str) -> None:
-        self.created_files.append(_rel(root, path))
-
-    def add_changed(self, root: Path, path: Path | str) -> None:
-        self.changed_files.append(_rel(root, path))
-
-    def to_text(self) -> str:
-        lines = [self.title, "=" * max(12, len(self.title)), f"Generated: {datetime.now().isoformat(timespec='seconds')}", ""]
-        for label, values in (("Notes", self.notes), ("Created files/artifacts", self.created_files), ("Changed files", self.changed_files), ("Skipped", self.skipped_files), ("Warnings", self.warnings)):
-            values = _uniq(values)
-            if values:
-                lines.append(label + ":")
-                lines.extend(f"- {v}" for v in values)
-                lines.append("")
-        if len(lines) <= 4:
-            lines.append("No changes made.")
-        return "\n".join(lines).rstrip() + "\n"
 
 
-def _uniq(values: Iterable[str]) -> List[str]:
-    out: List[str] = []
-    seen = set()
-    for value in values:
-        text = str(value)
-        if text not in seen:
-            seen.add(text)
-            out.append(text)
-    return out
-
-
-def _safe_name(value: object) -> str:
-    return re.sub(r"[^A-Za-z0-9_\-]+", "_", str(value or "")).strip("_") or "item"
-
-
-def _rel(root: Path, path: Path | str | None) -> str:
-    if path is None:
-        return ""
-    return rel_path(root, path)
+_uniq = uniq
+_safe_name = sanitize_name
+_rel = rel_path
 
 
 def _out(root: Path, *parts: str) -> Path:
@@ -116,48 +85,27 @@ def _read_csv(path: Path) -> List[Dict[str, str]]:
 
 
 def _all_files(root: Path, include_generated: bool = True) -> List[Path]:
-    out: List[Path] = []
-    for path in sorted(Path(root).rglob("*"), key=lambda p: str(p).lower()):
-        if not path.is_file() or any(part in SKIP_PARTS for part in path.parts):
-            continue
-        if not include_generated and any(part in GENERATED_PARTS for part in path.relative_to(root).parts):
-            continue
-        out.append(path)
-    return out
+    return get_all_files(root, include_generated)
 
 
 def _code_files(root: Path) -> List[Path]:
-    return [p for p in _all_files(root, include_generated=False) if p.suffix.lower() in CODE_SUFFIXES]
+    return get_code_files(root)
 
 
 def _image_files(root: Path, include_generated: bool = False) -> List[Path]:
-    return [p for p in _all_files(root, include_generated=include_generated) if p.suffix.lower() in IMAGE_SUFFIXES]
+    return [p for p in get_all_files(root, include_generated) if p.suffix.lower() in IMAGE_SUFFIXES]
 
 
 def _discover_files(root: Path) -> Dict[str, Optional[Path]]:
-    root = Path(root)
-    out: Dict[str, Optional[Path]] = {"root": root}
-    for kind in ("def", "air", "cmd", "cns", "sff", "snd"):
-        try:
-            found = find_character_file(root, kind)
-        except Exception:
-            found = None
-        if not found:
-            hits = sorted(root.rglob(f"*.{kind}"), key=lambda p: str(p).lower())
-            found = hits[0] if hits else None
-        out[kind] = found
-    return out
+    return discover_project_files(root)
 
 
 def _int(value: object, default: Optional[int] = None) -> Optional[int]:
-    try:
-        return int(str(value).strip())
-    except Exception:
-        return default
+    return parse_safe_int(value, default)
 
 
 def _truthy(value: object) -> bool:
-    return str(value or "").strip().lower() in {"1", "yes", "y", "true", "on", "apply", "enabled"}
+    return is_truthy(value)
 
 
 def _backup_text_file(root: Path, path: Path, reason: str) -> Optional[Path]:
@@ -171,6 +119,7 @@ def _backup_text_file(root: Path, path: Path, reason: str) -> Optional[Path]:
     dst.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(path, dst)
     return dst
+
 
 
 # ---------------------------------------------------------------------------

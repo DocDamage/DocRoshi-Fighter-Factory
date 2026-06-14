@@ -275,7 +275,7 @@ def write_context_digest(root: Path) -> HandoffResult:
         'handoff_target_summary': inv['handoff_target_summary'],
         'resume_order': [
             'Read handoff_core/HANDOFF_CORE_START_HERE.md',
-            'Read MUGENFORGE_HANDOFF_v7_5.md and RELEASE_SUMMARY_v7_5.md',
+            'Read docs/MUGENFORGE_HANDOFF_v7_5.md and docs/RELEASE_SUMMARY_v7_5.md',
             'Run python -m compileall -q mugenforge',
             'Run python handoff_core/regression_harness/smoke_v7_5.py',
             'Open the UI and start in Operator Console, then Handoff Core',
@@ -362,7 +362,7 @@ Please continue from the uploaded package `mugenforge_studio_v7_5.zip`. Unzip it
 
 ## Start here
 
-1. Read `MUGENFORGE_HANDOFF_v7_5.md`.
+1. Read `docs/MUGENFORGE_HANDOFF_v7_5.md`.
 2. Read `handoff_core/HANDOFF_CORE_START_HERE.md`.
 3. Run `python -m compileall -q mugenforge`.
 4. Run `python handoff_core/regression_harness/smoke_v7_5.py`.
@@ -377,7 +377,7 @@ Please continue from the uploaded package `mugenforge_studio_v7_5.zip`. Unzip it
 - Keep all feature claims honest and clean-room.
 '''
     _write(root, out / 'NEXT_CHAT_PROMPT.md', prompt, result)
-    _write(root, root / 'NEXT_CHAT_PROMPT_v7_5.md', prompt, result)
+    _write(root, root / 'docs' / 'NEXT_CHAT_PROMPT_v7_5.md', prompt, result)
     return result
 
 
@@ -424,7 +424,7 @@ v7.5 is a stabilization/continuity pass. It adds **Operator Console** and **Hand
 5. Package tutorials/sample projects after architecture stabilizes.
 '''
     _write(root, out / 'CURRENT_STATE_HANDOFF.md', text, result)
-    _write(root, root / 'MUGENFORGE_HANDOFF_v7_5.md', text, result)
+    _write(root, root / 'docs' / 'MUGENFORGE_HANDOFF_v7_5.md', text, result)
     return result
 
 
@@ -535,8 +535,12 @@ def build_handoff_bundle(root: Path) -> HandoffResult:
             for p in sorted(base.rglob('*'), key=lambda x: str(x).lower()):
                 if p.is_file() and p.suffix.lower() in TEXT_EXTS and p != bundle:
                     include_files.append(p)
-    for name in ['README.md', 'CHANGELOG.md', 'MUGENFORGE_HANDOFF_v7_5.md', 'RELEASE_SUMMARY_v7_5.md', 'TEST_RESULTS_v7_5.txt', 'NEXT_CHAT_PROMPT_v7_5.md', 'requirements.txt', 'run_windows.bat']:
+    for name in ['README.md', 'CHANGELOG.md', 'requirements.txt', 'run_windows.bat']:
         p = root / name
+        if p.exists():
+            include_files.append(p)
+    for name in ['MUGENFORGE_HANDOFF_v7_5.md', 'RELEASE_SUMMARY_v7_5.md', 'TEST_RESULTS_v7_5.txt', 'NEXT_CHAT_PROMPT_v7_5.md']:
+        p = root / 'docs' / name
         if p.exists():
             include_files.append(p)
     seen = set()

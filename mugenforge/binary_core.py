@@ -35,12 +35,12 @@ from .sff_codec import (
 )
 from .snd_codec import read_snd, export_sound, build_snd_from_manifest, summarize_snd_detailed
 
-BINARY_CORE_VERSION = '5.0.0'
+BINARY_CORE_VERSION = '5.5.0'
 IMAGE_SUFFIXES = {'.png', '.pcx', '.bmp', '.gif', '.jpg', '.jpeg', '.webp'}
 TRUTH_NOTE = (
-    'Binary Core is conservative. It performs native metadata inspection, safe extraction for supported payloads, '
-    'SFF v1 axis patch-copy workflows, SND WAV-bank rebuild candidates, and source-based SFF2 workspaces. '
-    'It refuses unsupported arbitrary SFF2 mutation instead of guessing.'
+    'Binary Core v5.5 adds common-table SFF2 v2/v2.1 parsing, decoded export for PNG/raw/RLE8/RLE5/LZ5 paths, '
+    'standard SFF2 candidate rebuilds from manifests, SFF1/SFF2 copied axis mutation, guarded SND slot patch candidates, '
+    'and runtime evidence scaffolding. Unknown or corrupt variants are still refused with warnings rather than silently guessed.'
 )
 
 @dataclass
@@ -160,11 +160,13 @@ def _image_size(path: Path) -> Tuple[int, int]:
 def _truth_lines() -> List[str]:
     return [
         'Honest capability boundary:',
-        '- Full arbitrary mature SFF v2 extraction/rebuild/mutation is still not implemented.',
-        '- Supported binary edits create patched copies or explicit rebuild candidates first.',
-        '- Unsupported SFF2 compression/layouts are reported and refused, not guessed.',
-        '- SND rebuilds are WAV-manifest based and backed up before optional install.',
-        '- Use real M.U.G.E.N playtesting before release.',
+        '- Common SFF2 v2/v2.1 table parsing is implemented for the 28-byte sprite table / 16-byte palette table layout.',
+        '- Decoded SFF2 export now supports direct PNG payloads, raw indexed/truecolor payloads, RLE8, RLE5, and LZ5 paths used by supported MugenForge/Sprmake2-style workflows.',
+        '- Direct and zlib-wrapped PNG/PCX payload recovery remains available for transitional or rescue cases.',
+        '- SFF axis mutation writes patched copies first for SFF1 subheaders and common SFF2 sprite-table axis fields.',
+        '- Native SFF2 rebuilds are candidate files built from explicit source manifests; engine testing is still required before release.',
+        '- SND editing supports rebuilt candidates and guarded same-or-smaller WAV slot patch copies; arbitrary unsafe byte patching is refused.',
+        '- Generated gameplay code still requires real playtesting. Runtime Lab can capture configured external engine evidence, but static reports remain source-analysis aids.',
     ]
 
 
@@ -215,7 +217,6 @@ def _find_embedded_pngs(data: bytes) -> List[Tuple[int, int]]:
 
 
 def _find_pcx_markers(data: bytes, limit: int = 2000) -> List[int]:
-    # PCX starts with 0x0A and a version/encoding byte. This is only a marker aid, not a parser.
     out: List[int] = []
     for idx in range(0, max(0, len(data) - 4)):
         if data[idx] == 0x0A and data[idx + 2] == 0x01 and data[idx + 3] in {1, 2, 4, 8, 24}:
@@ -318,237 +319,20 @@ def _probe_mugenforge_png_subset(path: Path) -> Tuple[List[Sff2ProbeRecord], Dic
     return records, meta, warnings
 
 
-def write_sff2_inspection(root: Path) -> BinaryCoreResult:
-    root = Path(root)
-    res = BinaryCoreResult('SFF / SFF2 Native Inspection')
-    sff = _file(root, 'sff')
-    out_dir = _bc(root) / 'sff_inspection'
-    out_dir.mkdir(parents=True, exist_ok=True)
-    if not sff or not sff.exists():
-        res.add_warning('No SFF file found for this project.')
-        return res
-
-    data = sff.read_bytes()
-    info = read_sff(sff)
-    subset_records, subset_meta, subset_warnings = _probe_mugenforge_png_subset(sff)
-    png_hits = _find_embedded_pngs(data)
-    pcx_hits = _find_pcx_markers(data, limit=200)
-    v1_rows = [
-        {
-            'index': spr.index,
-            'group': spr.group,
-            'image': spr.image,
-            'axis_x': spr.x,
-            'axis_y': spr.y,
-            'length': spr.length,
-            'data_offset': spr.data_offset,
-            'next_offset': spr.next_offset,
-            'same_palette': spr.same_palette,
-            'format': spr.format_hint,
-            'raw_header_offset': spr.raw_header_offset,
-        }
-        for spr in info.sprites
-    ]
-    report = {
-        'tool': 'MugenForge Studio Binary Core',
-        'version': BINARY_CORE_VERSION,
-        'file': str(sff),
-        'size': len(data),
-        'sha256': _sha256(sff),
-        'read_sff': {
-            'version': info.version,
-            'variant': info.variant,
-            'header_sprite_count': info.sprite_count,
-            'header_group_count': info.group_count,
-            'first_subfile_offset': info.first_subfile_offset,
-            'subheader_size': info.subheader_size,
-            'palette_type': info.palette_type,
-            'supported_for_extraction': info.is_supported_for_extraction,
-            'warnings': info.warnings,
-        },
-        'header_slots': _header_slots(data),
-        'v1_sprite_records': v1_rows,
-        'mugenforge_png_subset_records': [r.to_dict() for r in subset_records],
-        'embedded_png_ranges': [{'offset': off, 'length': length} for off, length in png_hits[:1000]],
-        'pcx_marker_offsets': pcx_hits[:200],
-        'warnings': _uniq(info.warnings + subset_warnings),
-        'honest_limitations': _truth_lines(),
-    }
-    _write_json(out_dir / 'sff_binary_inspection.json', report, res, root)
-    if v1_rows:
-        _write_csv(out_dir / 'sff_v1_sprite_records.csv', v1_rows, ['index','group','image','axis_x','axis_y','length','data_offset','next_offset','same_palette','format','raw_header_offset'], res, root)
-    if subset_records:
-        _write_csv(out_dir / 'sff2_png_subset_records.csv', [r.to_dict() for r in subset_records], ['index','group','image','width','height','axis_x','axis_y','palette','format_code','flags','payload_offset','payload_length','table_offset','data_base','source','note'], res, root)
-
-    lines = [
-        '# SFF / SFF2 Native Inspection',
-        '',
-        f'File: `{_rel(root, sff)}`',
-        f'Size: {len(data):,} bytes',
-        f'SHA-256: `{report["sha256"]}`',
-        f'Parser layout: `{info.variant}`',
-        f'Raw version bytes: `{info.version_text}`',
-        f'Header sprite count: {info.sprite_count}',
-        f'Parsed v1-style sprites: {len(info.sprites)}',
-        f'MugenForge PNG-subset SFF2 records: {len(subset_records)}',
-        f'Embedded PNG payloads found: {len(png_hits)}',
-        '',
-    ]
-    if info.is_supported_for_extraction:
-        lines.append('Supported path: SFF v1-style PCX/PNG payload extraction and axis patch-copy workflow are available.')
-    elif subset_records:
-        lines.append('Supported path: this file matches the MugenForge experimental PNG-subset table, so payload extraction and axis patch-copy are available for that subset.')
-    else:
-        lines.append('Supported path: metadata and embedded payload discovery only. Full arbitrary SFF2 mutation/rebuild is refused in this release.')
-    lines += ['', '## Honest limitations'] + _truth_lines()[1:]
-    if info.warnings or subset_warnings:
-        lines += ['', '## Warnings'] + [f'- {w}' for w in _uniq(info.warnings + subset_warnings)]
-    lines += ['', '## Detail from existing SFF reader', '', '```text', summarize_sff_detailed(sff), '```']
-    _write_text(out_dir / 'SFF_BINARY_INSPECTION.md', '\n'.join(lines), res, root)
-    res.notes.append('Wrote SFF/SFF2 metadata, supported table reports, hashes, and honest capability notes.')
-    res.warnings.extend(_uniq(info.warnings + subset_warnings))
-    return res
+def _sff2_records_from_info(info: SffInfo) -> List[Dict[str, object]]:
+    if info.v2_metadata:
+        rows = info.v2_metadata.get('sff2_records') or []
+        if isinstance(rows, list):
+            return [r for r in rows if isinstance(r, dict)]
+    return []
 
 
-def inspect_sff2_native(root: Path) -> BinaryCoreResult:
-    return write_sff2_inspection(root)
-
-
-def export_sff2_payloads(root: Path) -> BinaryCoreResult:
-    root = Path(root)
-    res = BinaryCoreResult('Supported SFF Payload Export')
-    sff = _file(root, 'sff')
-    if not sff or not sff.exists():
-        res.add_warning('No SFF file found for payload export.')
-        return res
-    out_dir = _bc(root) / 'sff_payloads'
-    out_dir.mkdir(parents=True, exist_ok=True)
-    info = read_sff(sff)
-    manifest: Dict[str, object] = {
-        'tool': 'MugenForge Binary Core',
-        'mode': 'supported_sff_payload_export',
-        'source_sff': str(sff),
-        'source_sha256': _sha256(sff),
-        'exports': [],
-        'warnings': [],
-    }
-
-    if info.is_supported_for_extraction and info.sprites:
-        folder = out_dir / 'sff1_supported'
-        exported = export_all_sprites(sff, folder)
-        for p in exported:
-            res.add_created(root, p)
-        manifest['exports'] = [{'path': _rel(root, p), 'mode': 'sff1_linked_payload'} for p in exported]
-        res.notes.append(f'Exported {len(exported)} supported SFF v1 payloads.')
-    else:
-        records, _meta, warns = _probe_mugenforge_png_subset(sff)
-        data = sff.read_bytes()
-        exports: List[Dict[str, object]] = []
-        if records:
-            folder = out_dir / 'sff2_png_subset'
-            folder.mkdir(parents=True, exist_ok=True)
-            for r in records:
-                if r.payload_length <= 0 or r.payload_offset + r.payload_length > len(data):
-                    continue
-                blob = data[r.payload_offset:r.payload_offset + r.payload_length]
-                if blob[:8] != b'\x89PNG\r\n\x1a\n':
-                    continue
-                out = folder / f'g{r.group:04d}_i{r.image:04d}_idx{r.index:05d}.png'
-                out.write_bytes(blob)
-                res.add_created(root, out)
-                exports.append({'path': _rel(root, out), 'group': r.group, 'image': r.image, 'axis': {'x': r.axis_x, 'y': r.axis_y}, 'mode': 'mugenforge_png_subset'})
-            res.notes.append(f'Exported {len(exports)} PNG payloads from supported MugenForge SFF2 subset records.')
-        if not exports:
-            folder = out_dir / 'embedded_png_scan'
-            folder.mkdir(parents=True, exist_ok=True)
-            for idx, (off, length) in enumerate(_find_embedded_pngs(data)[:5000]):
-                out = folder / f'embedded_png_{idx:05d}_off{off:08X}.png'
-                out.write_bytes(data[off:off + length])
-                res.add_created(root, out)
-                exports.append({'path': _rel(root, out), 'offset': off, 'length': length, 'mode': 'raw_embedded_png_scan_no_sprite_id'})
-            if exports:
-                res.warnings.append('Embedded PNG scan exported raw images without reliable group/image/axis mapping.')
-        manifest['exports'] = exports
-        manifest['warnings'] = warns + res.warnings
-        if not exports:
-            res.add_warning('No supported extractable payloads found. Unsupported compressed SFF2 layouts remain metadata-only.')
-    _write_json(out_dir / 'supported_sff_payload_export_manifest.json', manifest, res, root)
-    return res
-
-
-def export_supported_sff2_payloads(root: Path) -> BinaryCoreResult:
-    return export_sff2_payloads(root)
-
-
-# ---------------------------------------------------------------------------
-# SFF axis sheet and patch-copy workflows
-
-
-def export_sff_axis_sheet(root: Path) -> BinaryCoreResult:
-    root = Path(root)
-    res = BinaryCoreResult('SFF Axis Sheet Export')
-    sff = _file(root, 'sff')
-    if not sff or not sff.exists():
-        res.add_warning('No SFF file found for axis sheet export.')
-        return res
-    out_dir = _bc(root) / 'sff_axis_editor'
-    out_dir.mkdir(parents=True, exist_ok=True)
-    info = read_sff(sff)
-    rows: List[Dict[str, object]] = []
-    if info.sprites:
-        for spr in info.sprites:
-            rows.append({
-                'enabled': 'no',
-                'record_type': 'sff1_subfile',
-                'index': spr.index,
-                'group': spr.group,
-                'image': spr.image,
-                'current_x': spr.x,
-                'current_y': spr.y,
-                'new_x': spr.x,
-                'new_y': spr.y,
-                'format': spr.format_hint,
-                'length': spr.length,
-                'raw_header_offset': spr.raw_header_offset,
-                'note': 'Set enabled=yes and edit new_x/new_y. Apply creates a patched copy; original is not overwritten.',
-            })
-    else:
-        records, _meta, warnings = _probe_mugenforge_png_subset(sff)
-        for r in records:
-            rows.append({
-                'enabled': 'no',
-                'record_type': 'mugenforge_png_subset',
-                'index': r.index,
-                'group': r.group,
-                'image': r.image,
-                'current_x': r.axis_x,
-                'current_y': r.axis_y,
-                'new_x': r.axis_x,
-                'new_y': r.axis_y,
-                'format': f'code:{r.format_code}',
-                'length': r.payload_length,
-                'raw_header_offset': r.table_offset,
-                'note': 'Supported only for MugenForge experimental PNG-subset SFF2 tables. Apply creates a patched copy.',
-            })
-        res.warnings.extend(warnings)
-    fields = ['enabled','record_type','index','group','image','current_x','current_y','new_x','new_y','format','length','raw_header_offset','note']
-    sheet = _write_csv(out_dir / 'sff_axis_edit_sheet.csv', rows, fields, res, root)
-    _write_text(out_dir / 'README_SFF_AXIS_EDITOR.md', '\n'.join([
-        '# SFF Axis Editor Sheet',
-        '',
-        'Edit `sff_axis_edit_sheet.csv`.',
-        '',
-        'Set `enabled=yes` for rows to patch and edit `new_x` / `new_y`.',
-        '',
-        'Applying the sheet creates a patched copy under `binary_core/sff_axis_editor/patched/`.',
-        'The original SFF is not overwritten by this workflow.',
-        '',
-        *(_truth_lines()),
-    ]), res, root)
-    res.notes.append(f'Exported {len(rows)} axis rows to {sheet.name}.')
-    if not rows:
-        res.add_warning('No patchable SFF axis records were found. General SFF2 axis mutation remains unsupported.')
-    return res
+def _sff2_palettes_from_info(info: SffInfo) -> List[Dict[str, object]]:
+    if info.v2_metadata:
+        rows = info.v2_metadata.get('sff2_palettes') or []
+        if isinstance(rows, list):
+            return [r for r in rows if isinstance(r, dict)]
+    return []
 
 
 def _truthy(value: object) -> bool:
@@ -560,74 +344,6 @@ def _safe_int(value: object, default: int = 0) -> int:
         return int(str(value).strip())
     except Exception:
         return default
-
-
-def apply_sff_axis_sheet(root: Path, sheet_path: Optional[Path] = None) -> BinaryCoreResult:
-    root = Path(root)
-    res = BinaryCoreResult('SFF Axis Sheet Apply')
-    sff = _file(root, 'sff')
-    if not sff or not sff.exists():
-        res.add_warning('No SFF file found for axis patching.')
-        return res
-    sheet = Path(sheet_path) if sheet_path else _bc(root) / 'sff_axis_editor' / 'sff_axis_edit_sheet.csv'
-    if not sheet.exists():
-        res.add_warning('Axis sheet not found. Export the SFF Axis Sheet first.')
-        return res
-    rows = list(csv.DictReader(sheet.open('r', encoding='utf-8-sig', newline='')))
-    enabled = [r for r in rows if _truthy(r.get('enabled'))]
-    if not enabled:
-        res.add_skipped('No rows have enabled=yes; no patched copy was created.')
-        return res
-    data = bytearray(sff.read_bytes())
-    applied = 0
-    errors: List[str] = []
-    for row in enabled:
-        rec_type = str(row.get('record_type') or '').strip().lower()
-        off = _safe_int(row.get('raw_header_offset'), -1)
-        x = max(-32768, min(32767, _safe_int(row.get('new_x'), _safe_int(row.get('current_x'), 0))))
-        y = max(-32768, min(32767, _safe_int(row.get('new_y'), _safe_int(row.get('current_y'), 0))))
-        try:
-            if rec_type == 'sff1_subfile':
-                if off < 0 or off + 12 > len(data):
-                    raise ValueError(f'invalid SFF v1 subheader offset {off}')
-                struct.pack_into('<h', data, off + 8, x)
-                struct.pack_into('<h', data, off + 10, y)
-                applied += 1
-            elif rec_type == 'mugenforge_png_subset':
-                if off < 0 or off + 12 > len(data):
-                    raise ValueError(f'invalid SFF2 table offset {off}')
-                struct.pack_into('<h', data, off + 8, x)
-                struct.pack_into('<h', data, off + 10, y)
-                applied += 1
-            else:
-                errors.append(f"Unsupported record_type for row {row.get('index')}: {rec_type or 'blank'}")
-        except Exception as exc:
-            errors.append(str(exc))
-    if applied:
-        out_dir = _bc(root) / 'sff_axis_editor' / 'patched'
-        out_dir.mkdir(parents=True, exist_ok=True)
-        out = out_dir / f'{sff.stem}_axis_patched_{_now()}{sff.suffix}'
-        out.write_bytes(bytes(data))
-        res.add_created(root, out)
-        before = _sha256(sff)
-        after = _sha256(out)
-        _write_json(out_dir / 'axis_patch_report.json', {
-            'source': str(sff),
-            'output': str(out),
-            'source_sha256': before,
-            'output_sha256': after,
-            'applied_rows': applied,
-            'errors': errors,
-            'note': 'The original SFF was not overwritten.',
-        }, res, root)
-        res.notes.append(f'Created patched SFF copy with {applied} axis row(s) applied.')
-    if errors:
-        res.warnings.extend(errors)
-    return res
-
-
-# ---------------------------------------------------------------------------
-# SFF2 source workspace and experimental PNG-subset copy
 
 
 def _auto_image_sources(root: Path) -> List[Path]:
@@ -650,16 +366,220 @@ def _auto_image_sources(root: Path) -> List[Path]:
     return out
 
 
+def _png_bytes_for_sff2(path: Path) -> Tuple[bytes, int, int]:
+    try:
+        from PIL import Image  # type: ignore
+    except Exception as exc:
+        raise RuntimeError('Pillow is required for the experimental PNG-subset SFF copy builder.') from exc
+    with Image.open(path) as im:
+        rgba = im.convert('RGBA')
+        buf = BytesIO()
+        rgba.save(buf, format='PNG')
+        return buf.getvalue(), rgba.width, rgba.height
+
+
+# ---------------------------------------------------------------------------
+# SFF/SFF2 inspection, payloads, axis sheets, rebuilds
+
+
+def write_sff2_inspection(root: Path) -> BinaryCoreResult:
+    root = Path(root)
+    res = BinaryCoreResult('SFF / SFF2 v5.5 Native Inspection')
+    sff = _file(root, 'sff')
+    out_dir = _bc(root) / 'sff_inspection'
+    out_dir.mkdir(parents=True, exist_ok=True)
+    if not sff or not sff.exists():
+        res.add_warning('No SFF file found for this project.')
+        return res
+    data = sff.read_bytes()
+    info = read_sff(sff)
+    sff2_rows = _sff2_records_from_info(info)
+    palette_rows = _sff2_palettes_from_info(info)
+    subset_records, subset_meta, subset_warnings = _probe_mugenforge_png_subset(sff)
+    png_hits = _find_embedded_pngs(data)
+    pcx_hits = _find_pcx_markers(data, limit=200)
+    rows = [
+        {
+            'index': spr.index, 'group': spr.group, 'image': spr.image,
+            'axis_x': spr.x, 'axis_y': spr.y, 'length': spr.length,
+            'data_offset': spr.data_offset, 'next_offset': spr.next_offset,
+            'same_palette': spr.same_palette, 'format': spr.format_hint,
+            'raw_header_offset': spr.raw_header_offset,
+        }
+        for spr in info.sprites
+    ]
+    report = {
+        'tool': 'MugenForge Studio Binary Core', 'version': BINARY_CORE_VERSION,
+        'file': str(sff), 'size': len(data), 'sha256': _sha256(sff),
+        'read_sff': {
+            'version': info.version, 'version_text': info.version_text, 'variant': info.variant,
+            'header_sprite_count': info.sprite_count, 'header_group_count': info.group_count,
+            'supported_for_extraction': info.is_supported_for_extraction, 'warnings': info.warnings,
+        },
+        'common_sff2_sprite_records': sff2_rows,
+        'common_sff2_palette_records': palette_rows,
+        'all_sprite_rows_for_ui': rows,
+        'mugenforge_png_subset_records': [r.to_dict() for r in subset_records],
+        'embedded_png_ranges': [{'offset': off, 'length': length} for off, length in png_hits[:1000]],
+        'pcx_marker_offsets': pcx_hits[:200],
+        'warnings': _uniq(info.warnings + subset_warnings),
+        'honest_capabilities': _truth_lines(),
+    }
+    _write_json(out_dir / 'sff_binary_inspection.json', report, res, root)
+    if rows:
+        _write_csv(out_dir / 'sff_sprite_records.csv', rows, ['index','group','image','axis_x','axis_y','length','data_offset','next_offset','same_palette','format','raw_header_offset'], res, root)
+    if sff2_rows:
+        fields = ['index','group','image','width','height','axis_x','axis_y','linked_index','format_code','format_name','color_depth','data_offset','data_length','palette_index','flags','table_offset','payload_offset','payload_base','note']
+        _write_csv(out_dir / 'sff2_common_sprite_table.csv', sff2_rows, fields, res, root)
+    if palette_rows:
+        fields = ['index','group','item','num_colors','data_offset','data_length','table_offset']
+        _write_csv(out_dir / 'sff2_common_palette_table.csv', palette_rows, fields, res, root)
+    lines = [
+        '# SFF / SFF2 v5.5 Native Inspection', '',
+        f'File: `{_rel(root, sff)}`', f'Size: {len(data):,} bytes',
+        f'SHA-256: `{report["sha256"]}`', f'Parser layout: `{info.variant}`',
+        f'Raw version bytes: `{info.version_text}`',
+        f'Parsed sprite rows: {len(rows)}',
+        f'Common SFF2 table rows: {len(sff2_rows)}',
+        f'Common SFF2 palette rows: {len(palette_rows)}',
+        f'Embedded PNG payloads found: {len(png_hits)}', '',
+    ]
+    if info.variant == 'sff2-standard':
+        lines.append('Supported path: common-table SFF2 decode/export, axis patch-copy, and manifest-based SFF2 rebuild candidates are available.')
+    elif info.is_supported_for_extraction:
+        lines.append('Supported path: SFF v1-style PCX/PNG payload extraction and axis patch-copy are available.')
+    elif subset_records:
+        lines.append('Supported path: MugenForge legacy PNG-subset recovery is available.')
+    else:
+        lines.append('Supported path: metadata and embedded payload discovery only; unsafe mutation is refused.')
+    lines += ['', '## Honest capability boundary'] + _truth_lines()[1:]
+    if info.warnings or subset_warnings:
+        lines += ['', '## Warnings'] + [f'- {w}' for w in _uniq(info.warnings + subset_warnings)]
+    lines += ['', '## Detail from reader', '', '```text', summarize_sff_detailed(sff), '```']
+    _write_text(out_dir / 'SFF_BINARY_INSPECTION.md', '\n'.join(lines), res, root)
+    res.notes.append('Wrote v5.5 common-table SFF2 inspection, CSVs, hashes, and capability notes.')
+    res.warnings.extend(_uniq(info.warnings + subset_warnings))
+    return res
+
+
+def export_sff2_payloads(root: Path) -> BinaryCoreResult:
+    root = Path(root)
+    res = BinaryCoreResult('Supported SFF Payload Export v5.5')
+    sff = _file(root, 'sff')
+    if not sff or not sff.exists():
+        res.add_warning('No SFF file found for payload export.')
+        return res
+    out_dir = _bc(root) / 'sff_payloads'
+    out_dir.mkdir(parents=True, exist_ok=True)
+    info = read_sff(sff)
+    folder = out_dir / ('sff2_decoded_png' if info.variant == 'sff2-standard' else 'sff1_supported')
+    exported = export_all_sprites(sff, folder)
+    exports: List[Dict[str, object]] = []
+    for p in exported:
+        res.add_created(root, p)
+        exports.append({'path': _rel(root, p), 'mode': 'decoded_sff2_or_supported_sff1'})
+    if not exports:
+        data = sff.read_bytes()
+        folder = out_dir / 'embedded_png_scan'
+        folder.mkdir(parents=True, exist_ok=True)
+        for idx, (off, length) in enumerate(_find_embedded_pngs(data)[:5000]):
+            out = folder / f'embedded_png_{idx:05d}_off{off:08X}.png'
+            out.write_bytes(data[off:off + length])
+            res.add_created(root, out)
+            exports.append({'path': _rel(root, out), 'offset': off, 'length': length, 'mode': 'embedded_png_scan_no_sprite_id'})
+        if exports:
+            res.add_warning('Embedded PNG scan exported raw images without guaranteed group/image/axis mapping.')
+    manifest = {
+        'tool': 'MugenForge Binary Core', 'version': BINARY_CORE_VERSION,
+        'mode': 'supported_sff_payload_export_v55',
+        'source_sff': str(sff), 'source_sha256': _sha256(sff),
+        'source_variant': info.variant, 'exports': exports,
+        'warnings': info.warnings + res.warnings,
+        'capabilities': _truth_lines(),
+    }
+    _write_json(out_dir / 'supported_sff_payload_export_manifest.json', manifest, res, root)
+    if exports:
+        res.notes.append(f'Exported {len(exports)} supported SFF payload/image artifact(s).')
+    else:
+        res.add_warning('No supported extractable SFF payloads found.')
+    return res
+
+
+def export_sff_axis_sheet(root: Path) -> BinaryCoreResult:
+    root = Path(root)
+    res = BinaryCoreResult('SFF Axis Sheet Export v5.5')
+    sff = _file(root, 'sff')
+    if not sff or not sff.exists():
+        res.add_warning('No SFF file found for axis sheet export.')
+        return res
+    out_dir = _bc(root) / 'sff_axis_editor'
+    out_dir.mkdir(parents=True, exist_ok=True)
+    info = read_sff(sff)
+    rows: List[Dict[str, object]] = []
+    for spr in info.sprites:
+        rows.append({
+            'enabled': 'no',
+            'record_type': 'sff2_standard_sprite' if info.variant == 'sff2-standard' else 'sff1_subfile',
+            'index': spr.index, 'group': spr.group, 'image': spr.image,
+            'current_x': spr.x, 'current_y': spr.y, 'new_x': spr.x, 'new_y': spr.y,
+            'format': spr.format_hint, 'length': spr.length, 'raw_header_offset': spr.raw_header_offset,
+            'note': 'Set enabled=yes and edit new_x/new_y. Apply creates a patched copy; original is not overwritten.',
+        })
+    fields = ['enabled','record_type','index','group','image','current_x','current_y','new_x','new_y','format','length','raw_header_offset','note']
+    sheet = _write_csv(out_dir / 'sff_axis_edit_sheet.csv', rows, fields, res, root)
+    _write_text(out_dir / 'README_SFF_AXIS_EDITOR.md', '\n'.join([
+        '# SFF Axis Editor Sheet', '',
+        'Edit `sff_axis_edit_sheet.csv` and set `enabled=yes` for rows to patch.',
+        'SFF1 and common-table SFF2 axis fields are patched into a copied file under `patched/`.',
+        'The original SFF is not overwritten by this workflow.', '', *_truth_lines(),
+    ]), res, root)
+    res.notes.append(f'Exported {len(rows)} axis rows to {sheet.name}.')
+    if not rows:
+        res.add_warning('No patchable SFF axis records were found.')
+    return res
+
+
+def apply_sff_axis_sheet(root: Path, sheet_path: Optional[Path] = None) -> BinaryCoreResult:
+    root = Path(root)
+    res = BinaryCoreResult('SFF Axis Sheet Apply v5.5')
+    sff = _file(root, 'sff')
+    if not sff or not sff.exists():
+        res.add_warning('No SFF file found for axis patching.')
+        return res
+    sheet = Path(sheet_path) if sheet_path else _bc(root) / 'sff_axis_editor' / 'sff_axis_edit_sheet.csv'
+    if not sheet.exists():
+        res.add_warning('Axis sheet not found. Export the SFF Axis Sheet first.')
+        return res
+    rows = [r for r in csv.DictReader(sheet.open('r', encoding='utf-8-sig', newline='')) if _truthy(r.get('enabled'))]
+    if not rows:
+        res.add_skipped('No rows have enabled=yes; no patched copy was created.')
+        return res
+    from .sff_codec import patch_sff2_axis_copy
+    out_dir = _bc(root) / 'sff_axis_editor' / 'patched'
+    out = out_dir / f'{sff.stem}_axis_patched_{_now()}{sff.suffix}'
+    try:
+        info2 = patch_sff2_axis_copy(sff, rows, out)
+        res.add_created(root, out)
+        _write_json(out_dir / 'axis_patch_report.json', {
+            'source': str(sff), 'output': str(out), 'source_sha256': _sha256(sff),
+            'output_sha256': _sha256(out), 'applied_rows': len(rows),
+            'parsed_output_variant': info2.variant, 'note': 'The original SFF was not overwritten.',
+        }, res, root)
+        res.notes.append(f'Created patched SFF copy with {len(rows)} enabled axis row(s).')
+    except Exception as exc:
+        res.add_warning(f'Axis patch-copy failed: {exc}')
+    return res
+
+
 def write_sff2_rebuild_workspace(root: Path, image_folder: Optional[Path] = None) -> BinaryCoreResult:
     root = Path(root)
-    res = BinaryCoreResult('SFF2 Source Rebuild Workspace')
+    res = BinaryCoreResult('SFF2 Standard Rebuild Workspace')
     work = _bc(root) / 'sff2_rebuild_workspace'
     src_dir = work / 'sprites'
     src_dir.mkdir(parents=True, exist_ok=True)
     images = _image_files(Path(image_folder)) if image_folder else _auto_image_sources(root)
     if not images:
-        export_res = export_sff2_payloads(root)
-        res.merge(export_res, 'payload export')
+        res.merge(export_sff2_payloads(root), 'payload export')
         images = _auto_image_sources(root)
     if not images:
         res.add_warning('No source images found for SFF2 rebuild workspace. Add PNG/PCX files to source_sprites/ and rerun.')
@@ -680,158 +600,130 @@ def write_sff2_rebuild_workspace(root: Path, image_folder: Optional[Path] = None
             'width': w,
             'height': h,
             'axis': {'x': w // 2 if w else 0, 'y': h if h else 0},
+            'compression': 'raw',
             'source': str(img),
+            'note': 'compression may be raw, rle8, rle5, or lz5 for MugenForge round-trip builds',
         })
     manifest = {
-        'tool': 'MugenForge Studio Binary Core',
+        'tool': 'MugenForge Studio Binary Mastery',
         'version': BINARY_CORE_VERSION,
-        'mode': 'sff2_source_rebuild_workspace',
+        'mode': 'sff2_standard_source_manifest',
+        'default_compression': 'raw',
         'sprites': records,
-        'note': 'This workspace is source-based. For release-grade SFF2 builds, use Elecbyte Sprmake2 with this source set. The experimental PNG copy builder is not a full Sprmake2 replacement.',
+        'note': 'This workspace can build standard-table SFF2 candidate files with raw/rle8/rle5/lz5 payloads. Test in target engine before release.',
     }
+    _write_json(work / 'mugenforge_sff2_manifest.json', manifest, res, root)
     _write_json(work / 'mugenforge_sff2_png_manifest.json', manifest, res, root)
     _write_csv(work / 'sff2_axis_sheet.csv', [
-        {'enabled': 'yes', 'group': r['group'], 'image': r['image'], 'axis_x': r['axis']['x'], 'axis_y': r['axis']['y'], 'filename': r['filename']}  # type: ignore[index]
+        {
+            'enabled': 'yes',
+            'index': r['index'],
+            'group': r['group'],
+            'image': r['image'],
+            'filename': r['filename'],
+            'axis_x': r['axis']['x'],
+            'axis_y': r['axis']['y'],
+            'compression': r['compression'],
+            'note': 'Edit this for source-axis planning; build uses manifest axis values.',
+        }
         for r in records
-    ], ['enabled','group','image','axis_x','axis_y','filename'], res, root)
-    spr_lines = ['; MugenForge Binary Core source list for Sprmake2-style rebuilds', '; Review syntax for your target Sprmake2 version before building.', '']
-    for r in records:
-        axis = r.get('axis') if isinstance(r.get('axis'), dict) else {'x': 0, 'y': 0}
-        spr_lines.append(f"{r['group']},{r['image']}, {r['filename']}, {axis.get('x', 0)}, {axis.get('y', 0)}")
-    _write_text(work / 'sprmake2_source_list.def', '\n'.join(spr_lines), res, root)
-    _write_text(work / 'build_with_sprmake2.bat', '\n'.join([
-        '@echo off',
-        'echo This is a source handoff helper, not an internal SFF2 binary rebuild guarantee.',
-        'echo Place sprmake2.exe here or edit this script for your local setup.',
-        'echo Review sprmake2_source_list.def before use.',
-        'pause',
-    ]), res, root)
-    _write_text(work / 'README_SFF2_REBUILD_WORKSPACE.md', '\n'.join([
-        '# SFF2 Source Rebuild Workspace',
+    ], ['enabled','index','group','image','filename','axis_x','axis_y','compression','note'], res, root)
+    guide = [
+        '# SFF2 Standard Rebuild Workspace',
         '',
-        TRUTH_NOTE,
+        'Edit `mugenforge_sff2_manifest.json` to control group/image, axis, and compression per sprite.',
         '',
-        'Files in `sprites/` were copied from your source image folders or supported payload exports.',
-        'Use `mugenforge_sff2_png_manifest.json` and `sff2_axis_sheet.csv` as the editable source of truth.',
+        'Supported build compression values:',
+        '- `raw` — indexed pixels with palette table.',
+        '- `rle8` — pair-RLE8 stream generated by MugenForge.',
+        '- `rle5` — 32-color pair-RLE5 stream generated by MugenForge.',
+        '- `lz5` — literal/LZSS-style LZ5 stream generated by MugenForge.',
         '',
-        'For release-grade SFF2 output, use Elecbyte Sprmake2 or another documented external pipeline. MugenForge v5.0 does not claim full arbitrary SFF2 rebuild parity.',
+        'The builder creates a candidate SFF2 under `experimental/`; verify in the target engine before replacing a release file.',
         '',
         *(_truth_lines()),
-    ]), res, root)
-    zip_path = work / f'{root.name}_sff2_source_workspace.zip'
+    ]
+    _write_text(work / 'README_SFF2_STANDARD_REBUILD.md', '\n'.join(guide), res, root)
+    zip_path = work / f'{root.name}_sff2_standard_source_workspace.zip'
     with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zf:
-        for p in sorted(work.rglob('*')):
-            if p.is_file() and p != zip_path:
-                zf.write(p, p.relative_to(work))
+        for pth in sorted(work.rglob('*')):
+            if pth.is_file() and pth != zip_path:
+                zf.write(pth, pth.relative_to(work))
     res.add_created(root, zip_path)
-    res.notes.append(f'Created SFF2 source rebuild workspace with {len(records)} image records.')
+    res.notes.append(f'Prepared {len(records)} sprite rows for standard SFF2 rebuild.')
     return res
 
 
-def create_sff2_source_rebuild_pack(root: Path, image_folder: Optional[Path] = None) -> BinaryCoreResult:
-    return write_sff2_rebuild_workspace(root, image_folder)
-
-
-def _png_bytes_for_sff2(path: Path) -> Tuple[bytes, int, int]:
+def build_sff2_standard_workspace(root: Path, compression: Optional[str] = None) -> BinaryCoreResult:
+    root = Path(root)
+    res = BinaryCoreResult('Build Standard SFF2 Candidate')
+    work = _bc(root) / 'sff2_rebuild_workspace'
+    manifest = work / 'mugenforge_sff2_manifest.json'
+    if not manifest.exists():
+        res.merge(write_sff2_rebuild_workspace(root), 'workspace')
+    if not manifest.exists():
+        res.add_warning('SFF2 workspace manifest not found.')
+        return res
+    out_dir = work / 'experimental'
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out = out_dir / f'{root.name}_standard_table.sff'
     try:
-        from PIL import Image  # type: ignore
+        from .sff_codec import build_sff_v2_from_manifest
+        data = json.loads(manifest.read_text(encoding='utf-8'))
+        default_comp = compression or str(data.get('default_compression') or 'raw')
+        info = build_sff_v2_from_manifest(manifest, out, compression=default_comp)
     except Exception as exc:
-        raise RuntimeError('Pillow is required for the experimental PNG-subset SFF copy builder.') from exc
-    with Image.open(path) as im:
-        rgba = im.convert('RGBA')
-        buf = BytesIO()
-        rgba.save(buf, format='PNG')
-        return buf.getvalue(), rgba.width, rgba.height
+        res.add_warning(f'SFF2 standard build failed: {exc}')
+        return res
+    res.add_created(root, out)
+    rows = _sff2_records_from_info(info)
+    _write_json(out_dir / 'standard_sff2_build_report.json', {
+        'output': str(out),
+        'output_sha256': _sha256(out),
+        'variant': info.variant,
+        'sprite_records': len(rows),
+        'palettes': len(_sff2_palette_rows_from_info(info)),
+        'warnings': info.warnings,
+        'honest_capability_boundary': _truth_lines(),
+    }, res, root)
+    if rows:
+        _write_csv(out_dir / 'standard_sff2_build_records.csv', rows, ['index','group','image','width','height','axis_x','axis_y','format_code','format_name','color_depth','data_length','palette_index','flags','table_offset','payload_offset','note'], res, root)
+    res.notes.append(f'Built standard-table SFF2 candidate with {len(rows)} parsed sprite record(s).')
+    res.warnings.extend(info.warnings)
+    return res
 
 
 def build_sff2_png_workspace_copy(root: Path) -> BinaryCoreResult:
     root = Path(root)
-    res = BinaryCoreResult('Experimental SFF2 PNG Workspace Copy')
+    res = BinaryCoreResult('Standard SFF2 Build Candidate')
     work = _bc(root) / 'sff2_rebuild_workspace'
     manifest = work / 'mugenforge_sff2_png_manifest.json'
     if not manifest.exists():
         res.merge(write_sff2_rebuild_workspace(root), 'workspace')
     if not manifest.exists():
-        res.add_warning('SFF2 workspace manifest not found; cannot build experimental copy.')
+        res.add_warning('SFF2 workspace manifest not found; cannot build candidate.')
         return res
-    data = json.loads(manifest.read_text(encoding='utf-8'))
-    records = data.get('sprites') if isinstance(data, dict) else []
-    if not isinstance(records, list) or not records:
-        res.add_warning('SFF2 workspace manifest contains no sprites.')
-        return res
-    payloads: List[bytes] = []
-    normalized: List[Dict[str, int]] = []
-    for idx, rec in enumerate(records):
-        if not isinstance(rec, dict):
-            continue
-        src = work / str(rec.get('filename', ''))
-        if not src.exists():
-            res.add_warning(f'Missing workspace image: {src}')
-            continue
-        try:
-            blob, w, h = _png_bytes_for_sff2(src)
-        except Exception as exc:
-            res.add_warning(f'Could not convert {src.name} to PNG payload: {exc}')
-            continue
-        axis = rec.get('axis') if isinstance(rec.get('axis'), dict) else {}
-        normalized.append({
-            'group': _safe_int(rec.get('group'), 0),
-            'image': _safe_int(rec.get('image'), idx),
-            'width': _safe_int(rec.get('width'), w) or w,
-            'height': _safe_int(rec.get('height'), h) or h,
-            'axis_x': _safe_int(axis.get('x') if isinstance(axis, dict) else 0, w // 2),
-            'axis_y': _safe_int(axis.get('y') if isinstance(axis, dict) else 0, h),
-            'payload_index': len(payloads),
-        })
-        payloads.append(blob)
-    if not normalized:
-        res.add_warning('No valid PNG payloads were available for the experimental copy.')
-        return res
-    header_size = 512
-    record_size = 28
-    table_offset = header_size
-    table_size = record_size * len(normalized)
-    data_base = table_offset + table_size
-    header = bytearray(header_size)
-    header[0:12] = SFF_SIGNATURE
-    header[12:16] = bytes([2, 0, 1, 0])
-    struct.pack_into('<I', header, 16, len(normalized))
-    struct.pack_into('<I', header, 20, len({r['group'] for r in normalized}))
-    struct.pack_into('<I', header, 24, table_offset)
-    struct.pack_into('<I', header, 28, len(normalized))
-    struct.pack_into('<I', header, 32, data_base)
-    struct.pack_into('<I', header, 36, sum(len(p) for p in payloads))
-    table = bytearray(table_size)
-    cursor = 0
-    for row_idx, rec in enumerate(normalized):
-        blob = payloads[rec['payload_index']]
-        off = row_idx * record_size
-        struct.pack_into('<H', table, off + 0, rec['group'] & 0xFFFF)
-        struct.pack_into('<H', table, off + 2, rec['image'] & 0xFFFF)
-        struct.pack_into('<H', table, off + 4, max(0, rec['width']) & 0xFFFF)
-        struct.pack_into('<H', table, off + 6, max(0, rec['height']) & 0xFFFF)
-        struct.pack_into('<h', table, off + 8, max(-32768, min(32767, rec['axis_x'])))
-        struct.pack_into('<h', table, off + 10, max(-32768, min(32767, rec['axis_y'])))
-        struct.pack_into('<H', table, off + 12, 0)
-        table[off + 14] = 10
-        table[off + 15] = 32
-        struct.pack_into('<I', table, off + 16, cursor)
-        struct.pack_into('<I', table, off + 20, len(blob))
-        cursor += len(blob)
-    out_dir = work / 'experimental'
+    out_dir = work / 'builds'
     out_dir.mkdir(parents=True, exist_ok=True)
-    out = out_dir / f'{root.name}_mugenforge_png_subset.sff'
-    out.write_bytes(bytes(header) + bytes(table) + b''.join(payloads))
-    res.add_created(root, out)
-    records2, meta, warns = _probe_mugenforge_png_subset(out)
-    _write_json(out_dir / 'experimental_sff2_png_subset_report.json', {'output': str(out), 'probe': meta, 'records': [r.to_dict() for r in records2], 'warnings': warns}, res, root)
-    res.notes.append('Built an experimental MugenForge PNG-subset SFF2-style copy for inspection/pipeline testing. Use Sprmake2 for release-grade SFF2 builds.')
-    res.warnings.extend(warns)
+    out = out_dir / f'{root.name}_standard_sff2_png32_candidate.sff'
+    try:
+        from .sff_codec import build_sff_v2_from_manifest
+        info = build_sff_v2_from_manifest(manifest, out, compression='png32')
+        res.add_created(root, out)
+        _write_json(out_dir / 'standard_sff2_build_report.json', {
+            'output': str(out), 'output_sha256': _sha256(out),
+            'parsed_variant': info.variant, 'sprite_count': len(info.sprites),
+            'warnings': info.warnings, 'capabilities': _truth_lines(),
+        }, res, root)
+        res.notes.append(f'Built standard-table SFF2 PNG32 candidate with {len(info.sprites)} sprite record(s).')
+        res.warnings.extend(info.warnings)
+    except Exception as exc:
+        res.add_warning(f'SFF2 build candidate failed: {exc}')
     return res
 
 
 # ---------------------------------------------------------------------------
-# SND workspace, rebuild, waveform preview
+# SND bank workspace, rebuild, waveform preview
 
 
 def export_snd_bank_sheet(root: Path) -> BinaryCoreResult:
@@ -896,10 +788,6 @@ def export_snd_bank_sheet(root: Path) -> BinaryCoreResult:
     res.notes.append(f'Exported {len(rows)} SND sound rows.')
     res.warnings.extend(info.warnings)
     return res
-
-
-def export_snd_bank_workspace(root: Path) -> BinaryCoreResult:
-    return export_snd_bank_sheet(root)
 
 
 def _sheet_rows_sorted(sheet: Path) -> List[Dict[str, str]]:
@@ -1068,738 +956,17 @@ def write_snd_waveform_preview(root: Path) -> BinaryCoreResult:
     img.save(out)
     res.add_created(root, out)
     _write_text(out_dir / 'SND_WAVEFORM_PREVIEW.md', 'Generated waveform preview for exported SND WAV rows. This is a visual editing aid, not an audio-normalization tool.', res, root)
-    return res
 
-
-# ---------------------------------------------------------------------------
-# Safety, dashboard, roundtrip, bundle
-
-
-def write_binary_safety_report(root: Path) -> BinaryCoreResult:
-    root = Path(root)
-    res = BinaryCoreResult('Binary Safety Report')
-    out_dir = _bc(root) / 'safety'
-    out_dir.mkdir(parents=True, exist_ok=True)
-    files: List[Dict[str, object]] = []
-    for ext in ('sff', 'snd'):
-        p = _file(root, ext)
-        if p and p.exists():
-            files.append({'kind': ext.upper(), 'path': _rel(root, p), 'size': p.stat().st_size, 'sha256': _sha256(p)})
-        else:
-            files.append({'kind': ext.upper(), 'path': '', 'size': 0, 'sha256': '', 'warning': f'No {ext.upper()} file found'})
-    _write_json(out_dir / 'binary_safety_hashes.json', {'generated': datetime.now().isoformat(timespec='seconds'), 'files': files, 'limitations': _truth_lines()}, res, root)
-    lines = ['# Binary Safety Report', '', TRUTH_NOTE, '', '## Current binary hashes', '']
-    for f in files:
-        if f.get('path'):
-            lines.append(f"- {f['kind']}: `{f['path']}` — {int(f['size']):,} bytes — SHA-256 `{f['sha256']}`")
-        else:
-            lines.append(f"- {f['kind']}: not found")
-    lines += ['', '## Policy'] + _truth_lines()[1:]
-    _write_text(out_dir / 'BINARY_SAFETY_REPORT.md', '\n'.join(lines), res, root)
-    res.notes.append('Wrote binary hashes and safety notes before mutation-oriented workflows.')
-    return res
-
-
-def write_binary_core_dashboard(root: Path) -> BinaryCoreResult:
-    root = Path(root)
-    res = BinaryCoreResult('Binary Core Dashboard')
-    sff = _file(root, 'sff')
-    snd = _file(root, 'snd')
-    sff_status = 'missing'
-    sff_notes: List[str] = []
-    if sff and sff.exists():
-        try:
-            info = read_sff(sff)
-            records, _meta, warns = _probe_mugenforge_png_subset(sff)
-            sff_status = f'{info.variant}; v1 records={len(info.sprites)}; png-subset records={len(records)}'
-            sff_notes = info.warnings + warns
-        except Exception as exc:
-            sff_status = f'inspection failed: {exc}'
-    snd_status = 'missing'
-    snd_notes: List[str] = []
-    if snd and snd.exists():
-        try:
-            sinfo = read_snd(snd)
-            snd_status = f'RIFF/WAVE sounds={len(sinfo.sounds)}; signature={sinfo.has_signature}'
-            snd_notes = sinfo.warnings
-        except Exception as exc:
-            snd_status = f'inspection failed: {exc}'
-    lines = [
-        '# MugenForge Binary Core Dashboard',
-        '',
-        f'Version: {BINARY_CORE_VERSION}',
-        '',
-        TRUTH_NOTE,
-        '',
-        '## Project binary status',
-        '',
-        f'- SFF: {sff_status}',
-        f'- SND: {snd_status}',
-        '',
-        '## Recommended next actions',
-        '',
-        '1. Run **Binary Safety Report** to capture hashes.',
-        '2. Run **SFF/SFF2 Native Inspection** to classify the sprite file.',
-        '3. For SFF v1 or MugenForge PNG-subset files, export/apply axis sheets to patched copies.',
-        '4. For SFF2 release builds, create a source rebuild workspace and use a documented external Sprmake2 workflow.',
-        '5. Export the SND bank sheet, edit WAV IDs/order, and build a rebuilt candidate before optional install.',
-        '6. Keep real M.U.G.E.N playtesting in the release checklist.',
-        '',
-        '## Honest limitations',
-        *_truth_lines()[1:],
-    ]
-    if sff_notes or snd_notes:
-        lines += ['', '## Current parser warnings'] + [f'- {w}' for w in _uniq(sff_notes + snd_notes)]
-    _write_text(_bc(root) / 'BINARY_CORE_DASHBOARD.md', '\n'.join(lines), res, root)
-    _write_text(_bc(root) / 'BINARY_CORE_START_HERE.md', '\n'.join(lines + ['', 'Generated by the v5.0 Binary Core cockpit.']), res, root)
-    res.notes.append('Wrote Binary Core dashboard and start-here guide.')
-    return res
-
-
-def write_binary_roundtrip_lab(root: Path) -> BinaryCoreResult:
-    root = Path(root)
-    res = BinaryCoreResult('Binary Roundtrip Lab')
-    out_dir = _bc(root) / 'roundtrip_lab'
-    out_dir.mkdir(parents=True, exist_ok=True)
-    report: Dict[str, object] = {'generated': datetime.now().isoformat(timespec='seconds'), 'sff': {}, 'snd': {}, 'limitations': _truth_lines()}
-
-    sff = _file(root, 'sff')
-    if sff and sff.exists():
-        info = read_sff(sff)
-        sff_data: Dict[str, object] = {'source': str(sff), 'source_sha256': _sha256(sff), 'variant': info.variant, 'source_sprite_records': len(info.sprites), 'supported': bool(info.is_supported_for_extraction and info.sprites)}
-        if info.is_supported_for_extraction and info.sprites:
-            export_dir = out_dir / 'sff_v1_exported'
-            exported = export_all_sprites(sff, export_dir)
-            records = []
-            by_key = {(spr.group, spr.image, spr.index): spr for spr in info.sprites}
-            for idx, p in enumerate(exported):
-                m = re.search(r'g(\d+)_i(\d+)_idx(\d+)', p.stem)
-                if m:
-                    g, i, si = int(m.group(1)), int(m.group(2)), int(m.group(3))
-                    spr = by_key.get((g, i, si))
-                    axis = {'x': spr.x if spr else 0, 'y': spr.y if spr else 0}
-                else:
-                    g, i, axis = 0, idx, {'x': 0, 'y': 0}
-                records.append({'group': g, 'image': i, 'axis': axis, 'filename': p.name})
-            manifest = export_dir / 'roundtrip_sff_manifest.json'
-            _write_json(manifest, {'sprites': records}, res, root)
-            rebuilt = out_dir / 'roundtrip_rebuilt_v1.sff'
-            try:
-                rebuilt_info = build_sff_v1_from_manifest(manifest, rebuilt)
-                res.add_created(root, rebuilt)
-                sff_data.update({'rebuilt': str(rebuilt), 'rebuilt_sha256': _sha256(rebuilt), 'rebuilt_sprite_records': len(rebuilt_info.sprites), 'pass': len(rebuilt_info.sprites) == len(info.sprites)})
-            except Exception as exc:
-                sff_data.update({'pass': False, 'error': str(exc)})
-        else:
-            sff_data['note'] = 'SFF roundtrip rebuild skipped because this is not a supported SFF v1 extraction layout.'
-        report['sff'] = sff_data
-    else:
-        report['sff'] = {'warning': 'No SFF file found.'}
-
-    snd = _file(root, 'snd')
-    if snd and snd.exists():
-        sinfo = read_snd(snd)
-        report['snd'] = {'source': str(snd), 'source_sha256': _sha256(snd), 'source_sounds': len(sinfo.sounds), 'warnings': sinfo.warnings}
-        exp = export_snd_bank_sheet(root)
-        res.merge(exp, 'snd sheet')
-        rb = apply_snd_bank_sheet(root, install=False)
-        res.merge(rb, 'snd rebuild')
-        rebuilt = _bc(root) / 'snd_editor' / 'rebuilt' / f'{root.name}_rebuilt.snd'
-        if rebuilt.exists():
-            rinfo = read_snd(rebuilt)
-            report['snd'] = {**report['snd'], 'rebuilt': str(rebuilt), 'rebuilt_sha256': _sha256(rebuilt), 'rebuilt_sounds': len(rinfo.sounds), 'pass': len(rinfo.sounds) == len(sinfo.sounds)}
-    else:
-        report['snd'] = {'warning': 'No SND file found.'}
-
-    _write_json(out_dir / 'binary_roundtrip_report.json', report, res, root)
-    lines = ['# Binary Roundtrip Lab', '', TRUTH_NOTE, '', '## Results', '', '```json', json.dumps(report, indent=2), '```']
-    _write_text(out_dir / 'BINARY_ROUNDTRIP_REPORT.md', '\n'.join(lines), res, root)
-    return res
-
-
-def build_binary_roundtrip_report(root: Path) -> BinaryCoreResult:
-    return write_binary_roundtrip_lab(root)
-
-
-def build_binary_core_bundle(root: Path) -> BinaryCoreResult:
-    root = Path(root)
-    res = BinaryCoreResult('Binary Core Bundle')
-    base = _bc(root)
-    if not base.exists():
-        res.add_warning('binary_core folder does not exist yet. Run a Binary Core report first.')
-        return res
-    out_dir = base / 'bundles'
-    out_dir.mkdir(parents=True, exist_ok=True)
-    out = out_dir / f'{root.name}_binary_core_bundle_{_now()}.zip'
-    with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zf:
-        for p in sorted(base.rglob('*')):
-            if p.is_file() and p != out:
-                zf.write(p, p.relative_to(base))
-    res.add_created(root, out)
-    res.notes.append('Bundled Binary Core reports and safe workspaces.')
-    return res
-
-
-def run_binary_core_pass(root: Path) -> BinaryCoreResult:
-    root = Path(root)
-    res = BinaryCoreResult('One-Click Binary Core Pass')
-    for label, fn in [
-        ('dashboard', write_binary_core_dashboard),
-        ('safety', write_binary_safety_report),
-        ('sff inspection', write_sff2_inspection),
-        ('sff payload export', export_sff2_payloads),
-        ('sff axis sheet', export_sff_axis_sheet),
-        ('sff2 source workspace', write_sff2_rebuild_workspace),
-        ('snd bank sheet', export_snd_bank_sheet),
-        ('snd waveform preview', write_snd_waveform_preview),
-        ('roundtrip lab', write_binary_roundtrip_lab),
-    ]:
-        try:
-            res.merge(fn(root), label)
-        except Exception as exc:
-            res.add_warning(f'{label} failed: {exc}')
-    try:
-        res.merge(build_binary_core_bundle(root), 'bundle')
-    except Exception as exc:
-        res.add_warning(f'bundle failed: {exc}')
-    return res
-
-
-# Backward/alternate public names used by drafts and UI variants.
-write_binary_safety_audit = write_binary_safety_report
-inspect_sff_binary = write_sff2_inspection
-export_sff_supported_payloads = export_sff2_payloads
-write_sff2_source_rebuild_pack = write_sff2_rebuild_workspace
-create_sff2_source_rebuild_pack = write_sff2_rebuild_workspace
-export_snd_bank_workspace = export_snd_bank_sheet
-write_snd_waveform_board = write_snd_waveform_preview
-run_binary_roundtrip_tests = write_binary_roundtrip_lab
-
-# Final v5.0 compatibility wrappers for test scripts and UI variants.
-def write_sff_binary_audit(root: Path) -> BinaryCoreResult:
-    return write_sff2_inspection(root)
-
-
-def write_sff_axis_sheet(root: Path) -> BinaryCoreResult:
-    return export_sff_axis_sheet(root)
-
-
-def inspect_snd_bank(root: Path) -> BinaryCoreResult:
-    # The sheet export also writes a manifest and warnings for the current bank.
-    return export_snd_bank_sheet(root)
-
-
-_write_snd_waveform_preview_impl = write_snd_waveform_preview
-def write_snd_waveform_preview(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
-    root = Path(root)
-    res = _write_snd_waveform_preview_impl(root)
-    src = _bc(root) / 'snd_editor' / 'snd_waveform_preview.png'
     dst = _bc(root) / 'snd_bank' / 'snd_waveform_preview.png'
-    if src.exists():
+    if out.exists():
         dst.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(src, dst)
+        shutil.copy2(out, dst)
         res.add_created(root, dst)
     return res
 
-write_snd_waveform_board = write_snd_waveform_preview
 
 # ---------------------------------------------------------------------------
-# v5.5 Binary Mastery overrides: broader SFF2 decode/rebuild, SND byte-patch
-# copies, and runtime verification artifacts. These functions replace the v5.0
-# conservative subset workflows while preserving v5.0 public names.
-
-_v50_truth_lines = _truth_lines
-_v50_write_sff2_inspection = write_sff2_inspection
-_v50_export_sff2_payloads = export_sff2_payloads
-_v50_export_sff_axis_sheet = export_sff_axis_sheet
-_v50_apply_sff_axis_sheet = apply_sff_axis_sheet
-_v50_write_sff2_rebuild_workspace = write_sff2_rebuild_workspace
-_v50_build_sff2_png_workspace_copy = build_sff2_png_workspace_copy
-_v50_write_binary_core_dashboard = write_binary_core_dashboard
-_v50_write_binary_roundtrip_lab = write_binary_roundtrip_lab
-_v50_run_binary_core_pass = run_binary_core_pass
-
-BINARY_CORE_VERSION = '5.5.0'
-TRUTH_NOTE = (
-    'Binary Mastery expands Binary Core with standard SFF2 table parsing, palette inspection, '
-    'decodable raw/RLE8/RLE5/LZ5-style payload export for supported records, standard-table SFF2 candidate rebuilds, '
-    'SFF/SND byte-patch copies, and runtime verification workspaces. Unknown or contradictory binary layouts are still refused.'
-)
-
-
-def _truth_lines() -> List[str]:  # type: ignore[no-redef]
-    return [
-        'Honest capability boundary:',
-        '- Standard-layout SFF2 tables are parsed natively; SFF1 remains supported.',
-        '- Decoding supports raw indexed payloads, pair-RLE8, pair-RLE5, MugenForge literal/LZSS-style LZ5, and direct/zlib PNG/PCX payloads where the table ranges are valid.',
-        '- SFF2 rebuilds create standard-table candidate files from source manifests; unknown third-party codec variants are detected and refused rather than guessed.',
-        '- Axis mutation writes a verified patched copy first; optional installation remains a deliberate user action outside the sheet export step.',
-        '- SND sheet workflows can rebuild a new bank and can byte-patch recognized group/sound ID headers into copied files.',
-        '- Runtime reports become engine-backed only when the user supplies M.U.G.E.N/IKEMEN logs or launches through the generated runtime harness.',
-    ]
-
-
-def _sff2_rows_from_info(info: SffInfo) -> List[Dict[str, object]]:
-    meta = info.v2_metadata or {}
-    rows = meta.get('sff2_records') or []
-    if isinstance(rows, list):
-        return [dict(r) for r in rows if isinstance(r, dict)]
-    return []
-
-
-def _sff2_palette_rows_from_info(info: SffInfo) -> List[Dict[str, object]]:
-    meta = info.v2_metadata or {}
-    rows = meta.get('sff2_palettes') or []
-    if isinstance(rows, list):
-        return [dict(r) for r in rows if isinstance(r, dict)]
-    return []
-
-
-def write_sff2_inspection(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
-    root = Path(root)
-    res = BinaryCoreResult('SFF / SFF2 Binary Mastery Inspection')
-    sff = _file(root, 'sff')
-    out_dir = _bc(root) / 'sff_inspection'
-    out_dir.mkdir(parents=True, exist_ok=True)
-    if not sff or not sff.exists():
-        res.add_warning('No SFF file found for this project.')
-        return res
-    data = sff.read_bytes()
-    info = read_sff(sff)
-    standard_rows = _sff2_rows_from_info(info)
-    palette_rows = _sff2_palette_rows_from_info(info)
-    subset_records, subset_meta, subset_warnings = _probe_mugenforge_png_subset(sff)
-    png_hits = _find_embedded_pngs(data)
-    pcx_hits = _find_pcx_markers(data, limit=500)
-    v1_rows = [
-        {
-            'index': spr.index,
-            'group': spr.group,
-            'image': spr.image,
-            'axis_x': spr.x,
-            'axis_y': spr.y,
-            'length': spr.length,
-            'data_offset': spr.data_offset,
-            'next_offset': spr.next_offset,
-            'same_palette': spr.same_palette,
-            'format': spr.format_hint,
-            'raw_header_offset': spr.raw_header_offset,
-        }
-        for spr in info.sprites if info.variant != 'sff2-standard'
-    ]
-    report = {
-        'tool': 'MugenForge Studio Binary Mastery',
-        'version': BINARY_CORE_VERSION,
-        'file': str(sff),
-        'size': len(data),
-        'sha256': _sha256(sff),
-        'reader': {
-            'version': info.version,
-            'variant': info.variant,
-            'sprite_count': info.sprite_count,
-            'group_count': info.group_count,
-            'supported_for_extraction': info.is_supported_for_extraction,
-            'warnings': info.warnings,
-        },
-        'sff2_standard_records': standard_rows,
-        'sff2_palette_records': palette_rows,
-        'sff2_legacy_png_subset_records': [r.to_dict() for r in subset_records],
-        'sff1_sprite_records': v1_rows,
-        'embedded_png_ranges': [{'offset': off, 'length': length} for off, length in png_hits[:1000]],
-        'pcx_marker_offsets': pcx_hits[:500],
-        'honest_capability_boundary': _truth_lines(),
-        'warnings': _uniq(info.warnings + subset_warnings),
-    }
-    _write_json(out_dir / 'sff_binary_mastery_inspection.json', report, res, root)
-    if standard_rows:
-        fields = ['index','group','image','width','height','axis_x','axis_y','linked_index','format_code','format_name','color_depth','data_offset','data_length','palette_index','flags','table_offset','payload_offset','payload_base','note']
-        _write_csv(out_dir / 'sff2_standard_sprite_records.csv', standard_rows, fields, res, root)
-    if palette_rows:
-        flat_pal = []
-        for pidx, pal in enumerate(palette_rows):
-            for color in (pal.get('colors') or [])[:256]:
-                if isinstance(color, dict):
-                    flat_pal.append({'palette_index': pal.get('index', pidx), 'color_index': color.get('index', ''), 'r': color.get('r', ''), 'g': color.get('g', ''), 'b': color.get('b', '')})
-        _write_csv(out_dir / 'sff2_palette_table.csv', palette_rows, ['index','group','item','num_colors','data_offset','data_length','table_offset'], res, root)
-        if flat_pal:
-            _write_csv(out_dir / 'sff2_palette_colors.csv', flat_pal, ['palette_index','color_index','r','g','b'], res, root)
-    if v1_rows:
-        _write_csv(out_dir / 'sff_v1_sprite_records.csv', v1_rows, ['index','group','image','axis_x','axis_y','length','data_offset','next_offset','same_palette','format','raw_header_offset'], res, root)
-    if subset_records and not standard_rows:
-        _write_csv(out_dir / 'sff2_legacy_png_subset_records.csv', [r.to_dict() for r in subset_records], ['index','group','image','width','height','axis_x','axis_y','palette','format_code','flags','payload_offset','payload_length','table_offset','data_base','source','note'], res, root)
-    lines = [
-        '# SFF / SFF2 Binary Mastery Inspection',
-        '',
-        f'File: `{_rel(root, sff)}`',
-        f'Size: {len(data):,} bytes',
-        f'SHA-256: `{report["sha256"]}`',
-        f'Parser layout: `{info.variant}`',
-        f'Raw version bytes: `{info.version_text}`',
-        f'SFF2 standard records: {len(standard_rows)}',
-        f'SFF2 palette records: {len(palette_rows)}',
-        f'Legacy MugenForge PNG-subset records: {len(subset_records)}',
-        f'Parsed SFF1/v1-style records: {len(v1_rows)}',
-        f'Embedded PNG payloads found: {len(png_hits)}',
-        '',
-        '## Capability result',
-        '',
-    ]
-    if standard_rows:
-        formats = sorted({str(r.get('format_name', r.get('format_code', 'unknown'))) for r in standard_rows})
-        lines.append('Standard SFF2 table parsing is active for this file.')
-        lines.append(f'Detected SFF2 formats: {", ".join(formats)}')
-        lines.append('Use Export Supported SFF Payloads to decode records into PNG where the codec and payload range are supported.')
-    elif info.is_supported_for_extraction:
-        lines.append('SFF v1-style extraction and axis patch-copy are available for this file.')
-    elif subset_records:
-        lines.append('Legacy MugenForge PNG-subset extraction is available for this transitional SFF2-style file.')
-    else:
-        lines.append('No fully decodable sprite table was found. Metadata and embedded payload scanning are available only.')
-    lines += ['', '## Honest capability boundary'] + _truth_lines()[1:]
-    if info.warnings or subset_warnings:
-        lines += ['', '## Warnings'] + [f'- {w}' for w in _uniq(info.warnings + subset_warnings)]
-    lines += ['', '## Detail from SFF reader', '', '```text', summarize_sff_detailed(sff), '```']
-    _write_text(out_dir / 'SFF_BINARY_MASTERY_INSPECTION.md', '\n'.join(lines), res, root)
-    res.notes.append('Wrote SFF2 standard tables, palette tables, hashes, supported codec summary, and extraction guidance.')
-    res.warnings.extend(_uniq(info.warnings + subset_warnings))
-    return res
-
-
-def inspect_sff2_native(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
-    return write_sff2_inspection(root)
-
-
-def export_sff2_payloads(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
-    root = Path(root)
-    res = BinaryCoreResult('Supported SFF Payload Export / Decode')
-    sff = _file(root, 'sff')
-    if not sff or not sff.exists():
-        res.add_warning('No SFF file found for payload export.')
-        return res
-    out_dir = _bc(root) / 'sff_payloads'
-    out_dir.mkdir(parents=True, exist_ok=True)
-    info = read_sff(sff)
-    exports: List[Dict[str, object]] = []
-    warnings: List[str] = list(info.warnings)
-    if info.variant == 'sff2-standard':
-        folder = out_dir / 'sff2_decoded_png'
-        folder.mkdir(parents=True, exist_ok=True)
-        from .sff_codec import export_sprite as _export_sprite_current
-        for spr in info.sprites:
-            try:
-                out_path = _export_sprite_current(sff, spr, folder)
-                res.add_created(root, out_path)
-                exports.append({'path': _rel(root, out_path), 'group': spr.group, 'image': spr.image, 'index': spr.index, 'axis': {'x': spr.x, 'y': spr.y}, 'mode': spr.format_hint})
-            except Exception as exc:
-                warnings.append(f'SFF2 record #{spr.index} ({spr.group},{spr.image}) decode skipped: {exc}')
-        res.notes.append(f'Decoded/exported {len(exports)} SFF2 standard sprite payload(s).')
-    elif info.is_supported_for_extraction and info.sprites:
-        folder = out_dir / 'sff1_supported'
-        exported = export_all_sprites(sff, folder)
-        for pth in exported:
-            res.add_created(root, pth)
-            exports.append({'path': _rel(root, pth), 'mode': 'sff1_linked_payload'})
-        res.notes.append(f'Exported {len(exported)} supported SFF v1 payload(s).')
-    else:
-        records, _meta, warns = _probe_mugenforge_png_subset(sff)
-        data = sff.read_bytes()
-        warnings.extend(warns)
-        if records:
-            folder = out_dir / 'sff2_legacy_png_subset'
-            folder.mkdir(parents=True, exist_ok=True)
-            for r in records:
-                if r.payload_length <= 0 or r.payload_offset + r.payload_length > len(data):
-                    continue
-                blob = data[r.payload_offset:r.payload_offset + r.payload_length]
-                if blob[:8] != b'\x89PNG\r\n\x1a\n':
-                    continue
-                out = folder / f'g{r.group:04d}_i{r.image:04d}_idx{r.index:05d}.png'
-                out.write_bytes(blob)
-                res.add_created(root, out)
-                exports.append({'path': _rel(root, out), 'group': r.group, 'image': r.image, 'axis': {'x': r.axis_x, 'y': r.axis_y}, 'mode': 'legacy_mugenforge_png_subset'})
-        if not exports:
-            folder = out_dir / 'embedded_png_scan'
-            folder.mkdir(parents=True, exist_ok=True)
-            for idx, (off, length) in enumerate(_find_embedded_pngs(data)[:5000]):
-                out = folder / f'embedded_png_{idx:05d}_off{off:08X}.png'
-                out.write_bytes(data[off:off + length])
-                res.add_created(root, out)
-                exports.append({'path': _rel(root, out), 'offset': off, 'length': length, 'mode': 'raw_embedded_png_scan_no_sprite_id'})
-            if exports:
-                warnings.append('Embedded PNG scan exported raw images without reliable group/image/axis mapping.')
-    manifest = {
-        'tool': 'MugenForge Binary Mastery',
-        'version': BINARY_CORE_VERSION,
-        'source_sff': str(sff),
-        'source_sha256': _sha256(sff),
-        'source_variant': info.variant,
-        'exports': exports,
-        'warnings': _uniq(warnings),
-        'honest_capability_boundary': _truth_lines(),
-    }
-    if not exports:
-        res.add_warning('No supported extractable payloads were decoded. Unknown compression/layouts were not guessed.')
-    _write_json(out_dir / 'supported_sff_payload_export_manifest.json', manifest, res, root)
-    if warnings:
-        res.warnings.extend(_uniq(warnings))
-    return res
-
-
-def export_supported_sff2_payloads(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
-    return export_sff2_payloads(root)
-
-
-def export_sff_axis_sheet(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
-    root = Path(root)
-    res = BinaryCoreResult('SFF Axis Sheet Export')
-    sff = _file(root, 'sff')
-    if not sff or not sff.exists():
-        res.add_warning('No SFF file found for axis sheet export.')
-        return res
-    out_dir = _bc(root) / 'sff_axis_editor'
-    out_dir.mkdir(parents=True, exist_ok=True)
-    info = read_sff(sff)
-    rows: List[Dict[str, object]] = []
-    if info.variant == 'sff2-standard':
-        for row in _sff2_rows_from_info(info):
-            rows.append({
-                'enabled': 'no',
-                'record_type': 'sff2_standard',
-                'index': row.get('index', ''),
-                'group': row.get('group', ''),
-                'image': row.get('image', ''),
-                'current_x': row.get('axis_x', 0),
-                'current_y': row.get('axis_y', 0),
-                'new_x': row.get('axis_x', 0),
-                'new_y': row.get('axis_y', 0),
-                'format': row.get('format_name', row.get('format_code', '')),
-                'length': row.get('data_length', ''),
-                'raw_header_offset': row.get('table_offset', ''),
-                'note': 'Set enabled=yes and edit new_x/new_y. Apply creates a patched SFF2 copy first.',
-            })
-    elif info.sprites:
-        for spr in info.sprites:
-            rows.append({
-                'enabled': 'no',
-                'record_type': 'sff1_subfile',
-                'index': spr.index,
-                'group': spr.group,
-                'image': spr.image,
-                'current_x': spr.x,
-                'current_y': spr.y,
-                'new_x': spr.x,
-                'new_y': spr.y,
-                'format': spr.format_hint,
-                'length': spr.length,
-                'raw_header_offset': spr.raw_header_offset,
-                'note': 'Set enabled=yes and edit new_x/new_y. Apply creates a patched copy first.',
-            })
-    else:
-        records, _meta, warnings = _probe_mugenforge_png_subset(sff)
-        for r in records:
-            rows.append({
-                'enabled': 'no',
-                'record_type': 'mugenforge_png_subset',
-                'index': r.index,
-                'group': r.group,
-                'image': r.image,
-                'current_x': r.axis_x,
-                'current_y': r.axis_y,
-                'new_x': r.axis_x,
-                'new_y': r.axis_y,
-                'format': f'code:{r.format_code}',
-                'length': r.payload_length,
-                'raw_header_offset': r.table_offset,
-                'note': 'Legacy MugenForge PNG-subset axis row. Apply creates a patched copy first.',
-            })
-        res.warnings.extend(warnings)
-    fields = ['enabled','record_type','index','group','image','current_x','current_y','new_x','new_y','format','length','raw_header_offset','note']
-    sheet = _write_csv(out_dir / 'sff_axis_edit_sheet.csv', rows, fields, res, root)
-    _write_text(out_dir / 'README_SFF_AXIS_EDITOR.md', '\n'.join([
-        '# SFF Axis Editor Sheet',
-        '',
-        'Edit `sff_axis_edit_sheet.csv`.',
-        '',
-        'Set `enabled=yes` for rows to patch and edit `new_x` / `new_y`.',
-        'Applying the sheet creates a patched copy under `binary_core/sff_axis_editor/patched/`.',
-        'The original SFF is not overwritten by this workflow.',
-        '',
-        *(_truth_lines()),
-    ]), res, root)
-    res.notes.append(f'Exported {len(rows)} axis rows to {sheet.name}.')
-    if not rows:
-        res.add_warning('No patchable SFF axis records were found.')
-    return res
-
-
-def apply_sff_axis_sheet(root: Path, sheet_path: Optional[Path] = None) -> BinaryCoreResult:  # type: ignore[no-redef]
-    root = Path(root)
-    res = BinaryCoreResult('SFF Axis Sheet Apply')
-    sff = _file(root, 'sff')
-    if not sff or not sff.exists():
-        res.add_warning('No SFF file found for axis patching.')
-        return res
-    sheet = Path(sheet_path) if sheet_path else _bc(root) / 'sff_axis_editor' / 'sff_axis_edit_sheet.csv'
-    if not sheet.exists():
-        res.add_warning('Axis sheet not found. Export the SFF Axis Sheet first.')
-        return res
-    rows = list(csv.DictReader(sheet.open('r', encoding='utf-8-sig', newline='')))
-    enabled = [r for r in rows if _truthy(r.get('enabled'))]
-    if not enabled:
-        res.add_skipped('No rows have enabled=yes; no patched copy was created.')
-        return res
-    out_dir = _bc(root) / 'sff_axis_editor' / 'patched'
-    out_dir.mkdir(parents=True, exist_ok=True)
-    out = out_dir / f'{sff.stem}_axis_patched_{_now()}{sff.suffix}'
-    try:
-        from .sff_codec import patch_sff2_axis_copy
-        parsed = patch_sff2_axis_copy(sff, enabled, out)
-    except Exception as exc:
-        res.add_warning(f'SFF axis patch failed: {exc}')
-        return res
-    _write_json(out_dir / 'axis_patch_report.json', {
-        'source': str(sff),
-        'output': str(out),
-        'source_sha256': _sha256(sff),
-        'output_sha256': _sha256(out),
-        'applied_rows': len(enabled),
-        'parsed_variant_after_patch': parsed.variant,
-        'parsed_sprite_records_after_patch': len(parsed.sprites),
-        'note': 'Original SFF was not overwritten.',
-    }, res, root)
-    res.add_created(root, out)
-    res.notes.append(f'Created patched SFF copy with {len(enabled)} requested axis row(s).')
-    return res
-
-
-def write_sff2_rebuild_workspace(root: Path, image_folder: Optional[Path] = None) -> BinaryCoreResult:  # type: ignore[no-redef]
-    root = Path(root)
-    res = BinaryCoreResult('SFF2 Standard Rebuild Workspace')
-    work = _bc(root) / 'sff2_rebuild_workspace'
-    src_dir = work / 'sprites'
-    src_dir.mkdir(parents=True, exist_ok=True)
-    images = _image_files(Path(image_folder)) if image_folder else _auto_image_sources(root)
-    if not images:
-        res.merge(export_sff2_payloads(root), 'payload export')
-        images = _auto_image_sources(root)
-    if not images:
-        res.add_warning('No source images found for SFF2 rebuild workspace. Add PNG/PCX files to source_sprites/ and rerun.')
-        return res
-    records: List[Dict[str, object]] = []
-    for idx, img in enumerate(images):
-        g, i = _parse_group_image(img, idx)
-        w, h = _image_size(img)
-        dst_name = f'g{g:04d}_i{i:04d}_{idx:05d}{img.suffix.lower()}'
-        dst = src_dir / dst_name
-        shutil.copy2(img, dst)
-        res.add_created(root, dst)
-        records.append({
-            'index': idx,
-            'group': g,
-            'image': i,
-            'filename': f'sprites/{dst_name}',
-            'width': w,
-            'height': h,
-            'axis': {'x': w // 2 if w else 0, 'y': h if h else 0},
-            'compression': 'raw',
-            'source': str(img),
-            'note': 'compression may be raw, rle8, rle5, or lz5 for MugenForge round-trip builds',
-        })
-    manifest = {
-        'tool': 'MugenForge Studio Binary Mastery',
-        'version': BINARY_CORE_VERSION,
-        'mode': 'sff2_standard_source_manifest',
-        'default_compression': 'raw',
-        'sprites': records,
-        'note': 'This workspace can build standard-table SFF2 candidate files with raw/rle8/rle5/lz5 payloads. Test in target engine before release.',
-    }
-    _write_json(work / 'mugenforge_sff2_manifest.json', manifest, res, root)
-    _write_json(work / 'mugenforge_sff2_png_manifest.json', manifest, res, root)
-    _write_csv(work / 'sff2_axis_sheet.csv', [
-        {
-            'enabled': 'yes',
-            'index': r['index'],
-            'group': r['group'],
-            'image': r['image'],
-            'filename': r['filename'],
-            'axis_x': r['axis']['x'],
-            'axis_y': r['axis']['y'],
-            'compression': r['compression'],
-            'note': 'Edit this for source-axis planning; build uses manifest axis values.',
-        }
-        for r in records
-    ], ['enabled','index','group','image','filename','axis_x','axis_y','compression','note'], res, root)
-    guide = [
-        '# SFF2 Standard Rebuild Workspace',
-        '',
-        'Edit `mugenforge_sff2_manifest.json` to control group/image, axis, and compression per sprite.',
-        '',
-        'Supported build compression values:',
-        '- `raw` — indexed pixels with palette table.',
-        '- `rle8` — pair-RLE8 stream generated by MugenForge.',
-        '- `rle5` — 32-color pair-RLE5 stream generated by MugenForge.',
-        '- `lz5` — literal/LZSS-style LZ5 stream generated by MugenForge.',
-        '',
-        'The builder creates a candidate SFF2 under `experimental/`; verify in the target engine before replacing a release file.',
-        '',
-        *(_truth_lines()),
-    ]
-    _write_text(work / 'README_SFF2_STANDARD_REBUILD.md', '\n'.join(guide), res, root)
-    zip_path = work / f'{root.name}_sff2_standard_source_workspace.zip'
-    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zf:
-        for pth in sorted(work.rglob('*')):
-            if pth.is_file() and pth != zip_path:
-                zf.write(pth, pth.relative_to(work))
-    res.add_created(root, zip_path)
-    res.notes.append(f'Prepared {len(records)} sprite rows for standard SFF2 rebuild.')
-    return res
-
-
-def create_sff2_source_rebuild_pack(root: Path, image_folder: Optional[Path] = None) -> BinaryCoreResult:  # type: ignore[no-redef]
-    return write_sff2_rebuild_workspace(root, image_folder)
-
-
-def build_sff2_standard_workspace(root: Path, compression: Optional[str] = None) -> BinaryCoreResult:
-    root = Path(root)
-    res = BinaryCoreResult('Build Standard SFF2 Candidate')
-    work = _bc(root) / 'sff2_rebuild_workspace'
-    manifest = work / 'mugenforge_sff2_manifest.json'
-    if not manifest.exists():
-        res.merge(write_sff2_rebuild_workspace(root), 'workspace')
-    if not manifest.exists():
-        res.add_warning('SFF2 workspace manifest not found.')
-        return res
-    out_dir = work / 'experimental'
-    out_dir.mkdir(parents=True, exist_ok=True)
-    out = out_dir / f'{root.name}_standard_table.sff'
-    try:
-        from .sff_codec import build_sff_v2_from_manifest
-        data = json.loads(manifest.read_text(encoding='utf-8'))
-        default_comp = compression or str(data.get('default_compression') or 'raw')
-        info = build_sff_v2_from_manifest(manifest, out, compression=default_comp)
-    except Exception as exc:
-        res.add_warning(f'SFF2 standard build failed: {exc}')
-        return res
-    res.add_created(root, out)
-    rows = _sff2_rows_from_info(info)
-    _write_json(out_dir / 'standard_sff2_build_report.json', {
-        'output': str(out),
-        'output_sha256': _sha256(out),
-        'variant': info.variant,
-        'sprite_records': len(rows),
-        'palettes': len(_sff2_palette_rows_from_info(info)),
-        'warnings': info.warnings,
-        'honest_capability_boundary': _truth_lines(),
-    }, res, root)
-    if rows:
-        _write_csv(out_dir / 'standard_sff2_build_records.csv', rows, ['index','group','image','width','height','axis_x','axis_y','format_code','format_name','color_depth','data_length','palette_index','flags','table_offset','payload_offset','note'], res, root)
-    res.notes.append(f'Built standard-table SFF2 candidate with {len(rows)} parsed sprite record(s).')
-    res.warnings.extend(info.warnings)
-    return res
-
-
-def build_sff2_png_workspace_copy(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
-    return build_sff2_standard_workspace(root)
+# SND ID byte patch / Slot patch / Runtime verification / Roundtrip
 
 
 def export_snd_byte_patch_sheet(root: Path) -> BinaryCoreResult:
@@ -2000,435 +1167,6 @@ def import_runtime_logs(root: Path) -> BinaryCoreResult:
     return res
 
 
-def write_binary_core_dashboard(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
-    root = Path(root)
-    res = BinaryCoreResult('Binary Mastery Dashboard')
-    sff = _file(root, 'sff')
-    snd = _file(root, 'snd')
-    runtime_json = _bc(root) / 'runtime_lab' / 'runtime_trace_summary.json'
-    sff_status = 'missing'
-    sff_notes: List[str] = []
-    if sff and sff.exists():
-        try:
-            info = read_sff(sff)
-            std_rows = _sff2_rows_from_info(info)
-            sff_status = f'{info.variant}; parsed sprites={len(info.sprites)}; sff2_standard={len(std_rows)}; extractable={info.is_supported_for_extraction}'
-            sff_notes = info.warnings
-        except Exception as exc:
-            sff_status = f'inspection failed: {exc}'
-    snd_status = 'missing'
-    snd_notes: List[str] = []
-    if snd and snd.exists():
-        try:
-            sinfo = read_snd(snd)
-            patchable = sum(1 for s in sinfo.sounds if s.header_offset is not None)
-            snd_status = f'RIFF/WAVE sounds={len(sinfo.sounds)}; byte-patchable IDs={patchable}; signature={sinfo.has_signature}'
-            snd_notes = sinfo.warnings
-        except Exception as exc:
-            snd_status = f'inspection failed: {exc}'
-    runtime_status = 'not imported'
-    if runtime_json.exists():
-        try:
-            data = json.loads(runtime_json.read_text(encoding='utf-8'))
-            runtime_status = f"engine-backed rows={len(data.get('rows') or [])}"
-        except Exception:
-            runtime_status = 'runtime summary exists but could not be parsed'
-    lines = [
-        '# MugenForge Binary Mastery Dashboard',
-        '',
-        f'Version: {BINARY_CORE_VERSION}',
-        '',
-        TRUTH_NOTE,
-        '',
-        '## Project binary status',
-        '',
-        f'- SFF: {sff_status}',
-        f'- SND: {snd_status}',
-        f'- Runtime evidence: {runtime_status}',
-        '',
-        '## Recommended next actions',
-        '',
-        '1. Run **Safety Report** to capture hashes.',
-        '2. Run **SFF/SFF2 Binary Mastery Inspection** to classify sprite tables and palettes.',
-        '3. Run **Export Supported SFF Payloads** to decode SFF1/SFF2 records into source PNGs where supported.',
-        '4. Use **SFF Axis Sheet** to patch axis fields into a copied SFF.',
-        '5. Use **SFF2 Standard Rebuild Workspace** and **Build Standard SFF2 Candidate** for source-based candidate output.',
-        '6. Use **SND Bank Sheet** for rebuilds or **SND Byte Patch Sheet** for recognized ID-header edits.',
-        '7. Use **Runtime Verification Pack** and **Import Runtime Logs** when you need engine-backed evidence.',
-        '',
-        '## Honest capability boundary',
-        *_truth_lines()[1:],
-    ]
-    if sff_notes or snd_notes:
-        lines += ['', '## Current parser warnings'] + [f'- {w}' for w in _uniq(sff_notes + snd_notes)]
-    _write_text(_bc(root) / 'BINARY_CORE_DASHBOARD.md', '\n'.join(lines), res, root)
-    _write_text(_bc(root) / 'BINARY_CORE_START_HERE.md', '\n'.join(lines + ['', 'Generated by the v5.5 Binary Mastery cockpit.']), res, root)
-    res.notes.append('Wrote Binary Mastery dashboard and start-here guide.')
-    return res
-
-
-def write_binary_roundtrip_lab(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
-    root = Path(root)
-    res = BinaryCoreResult('Binary Mastery Roundtrip Lab')
-    out_dir = _bc(root) / 'roundtrip_lab'
-    out_dir.mkdir(parents=True, exist_ok=True)
-    report: Dict[str, object] = {'generated': datetime.now().isoformat(timespec='seconds'), 'version': BINARY_CORE_VERSION, 'sff': {}, 'snd': {}, 'runtime': {}, 'capability_boundary': _truth_lines()}
-    sff = _file(root, 'sff')
-    if sff and sff.exists():
-        info = read_sff(sff)
-        sff_data: Dict[str, object] = {'source': str(sff), 'source_sha256': _sha256(sff), 'variant': info.variant, 'source_sprite_records': len(info.sprites), 'warnings': info.warnings}
-        try:
-            exp = export_sff2_payloads(root)
-            res.merge(exp, 'sff export')
-            sff_data['exported_artifacts'] = exp.created_files
-            work_res = write_sff2_rebuild_workspace(root)
-            res.merge(work_res, 'sff2 workspace')
-            build_res = build_sff2_standard_workspace(root)
-            res.merge(build_res, 'sff2 build')
-            built = _bc(root) / 'sff2_rebuild_workspace' / 'experimental' / f'{root.name}_standard_table.sff'
-            if built.exists():
-                binfo = read_sff(built)
-                sff_data.update({'rebuilt': str(built), 'rebuilt_sha256': _sha256(built), 'rebuilt_variant': binfo.variant, 'rebuilt_sprite_records': len(binfo.sprites), 'pass': len(binfo.sprites) > 0})
-        except Exception as exc:
-            sff_data.update({'pass': False, 'error': str(exc)})
-        report['sff'] = sff_data
-    else:
-        report['sff'] = {'warning': 'No SFF file found.'}
-    snd = _file(root, 'snd')
-    if snd and snd.exists():
-        sinfo = read_snd(snd)
-        report['snd'] = {'source': str(snd), 'source_sha256': _sha256(snd), 'source_sounds': len(sinfo.sounds), 'warnings': sinfo.warnings}
-        exp = export_snd_bank_sheet(root)
-        res.merge(exp, 'snd sheet')
-        rb = apply_snd_bank_sheet(root, install=False)
-        res.merge(rb, 'snd rebuild')
-        patch = export_snd_byte_patch_sheet(root)
-        res.merge(patch, 'snd byte patch sheet')
-        rebuilt = _bc(root) / 'snd_editor' / 'rebuilt' / f'{root.name}_rebuilt.snd'
-        if rebuilt.exists():
-            rinfo = read_snd(rebuilt)
-            report['snd'] = {**report['snd'], 'rebuilt': str(rebuilt), 'rebuilt_sha256': _sha256(rebuilt), 'rebuilt_sounds': len(rinfo.sounds), 'pass': len(rinfo.sounds) == len(sinfo.sounds)}
-    else:
-        report['snd'] = {'warning': 'No SND file found.'}
-    runtime = import_runtime_logs(root)
-    res.merge(runtime, 'runtime logs')
-    runtime_json = _bc(root) / 'runtime_lab' / 'runtime_trace_summary.json'
-    if runtime_json.exists():
-        try:
-            report['runtime'] = json.loads(runtime_json.read_text(encoding='utf-8'))
-        except Exception:
-            report['runtime'] = {'warning': 'Runtime summary could not be parsed.'}
-    _write_json(out_dir / 'binary_roundtrip_report.json', report, res, root)
-    lines = ['# Binary Mastery Roundtrip Lab', '', TRUTH_NOTE, '', '## Results', '', '```json', json.dumps(report, indent=2), '```']
-    _write_text(out_dir / 'BINARY_ROUNDTRIP_REPORT.md', '\n'.join(lines), res, root)
-    return res
-
-
-def build_binary_roundtrip_report(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
-    return write_binary_roundtrip_lab(root)
-
-
-def run_binary_core_pass(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
-    root = Path(root)
-    res = BinaryCoreResult('One-Click Binary Mastery Pass')
-    for label, fn in [
-        ('dashboard', write_binary_core_dashboard),
-        ('safety', write_binary_safety_report),
-        ('sff inspection', write_sff2_inspection),
-        ('sff payload export', export_sff2_payloads),
-        ('sff axis sheet', export_sff_axis_sheet),
-        ('sff2 standard workspace', write_sff2_rebuild_workspace),
-        ('sff2 standard build', build_sff2_standard_workspace),
-        ('snd bank sheet', export_snd_bank_sheet),
-        ('snd byte patch sheet', export_snd_byte_patch_sheet),
-        ('snd waveform preview', write_snd_waveform_preview),
-        ('runtime verification pack', write_runtime_verification_pack),
-        ('runtime log import', import_runtime_logs),
-        ('roundtrip lab', write_binary_roundtrip_lab),
-    ]:
-        try:
-            res.merge(fn(root), label)
-        except Exception as exc:
-            res.add_warning(f'{label} failed: {exc}')
-    try:
-        res.merge(build_binary_core_bundle(root), 'bundle')
-    except Exception as exc:
-        res.add_warning(f'bundle failed: {exc}')
-    return res
-
-
-# Refresh public aliases after v5.5 overrides.
-write_binary_safety_audit = write_binary_safety_report
-inspect_sff_binary = write_sff2_inspection
-export_sff_supported_payloads = export_sff2_payloads
-write_sff2_source_rebuild_pack = write_sff2_rebuild_workspace
-create_sff2_source_rebuild_pack = write_sff2_rebuild_workspace
-export_snd_bank_workspace = export_snd_bank_sheet
-write_snd_waveform_board = write_snd_waveform_preview
-run_binary_roundtrip_tests = write_binary_roundtrip_lab
-write_sff_binary_audit = write_sff2_inspection
-write_sff_axis_sheet = export_sff_axis_sheet
-inspect_snd_bank = export_snd_bank_sheet
-
-# ---------------------------------------------------------------------------
-# v5.5 Binary Maturity overrides.
-# These keep older public function names intact while routing the core workflows
-# through the standard-table SFF2 reader/writer added in sff_codec.py.
-
-BINARY_CORE_VERSION = '5.5.0'
-TRUTH_NOTE = (
-    'Binary Core v5.5 adds common-table SFF2 v2/v2.1 parsing, decoded export for PNG/raw/RLE8/RLE5/LZ5 paths, '
-    'standard SFF2 candidate rebuilds from manifests, SFF1/SFF2 copied axis mutation, guarded SND slot patch candidates, '
-    'and runtime evidence scaffolding. Unknown or corrupt variants are still refused with warnings rather than silently guessed.'
-)
-
-
-def _truth_lines() -> List[str]:  # type: ignore[no-redef]
-    return [
-        'Honest capability boundary:',
-        '- Common SFF2 v2/v2.1 table parsing is implemented for the 28-byte sprite table / 16-byte palette table layout.',
-        '- Decoded SFF2 export now supports direct PNG payloads, raw indexed/truecolor payloads, RLE8, RLE5, and LZ5 paths used by supported MugenForge/Sprmake2-style workflows.',
-        '- Direct and zlib-wrapped PNG/PCX payload recovery remains available for transitional or rescue cases.',
-        '- SFF axis mutation writes patched copies first for SFF1 subheaders and common SFF2 sprite-table axis fields.',
-        '- Native SFF2 rebuilds are candidate files built from explicit source manifests; engine testing is still required before release.',
-        '- SND editing supports rebuilt candidates and guarded same-or-smaller WAV slot patch copies; arbitrary unsafe byte patching is refused.',
-        '- Generated gameplay code still requires real playtesting. Runtime Lab can capture configured external engine evidence, but static reports remain source-analysis aids.',
-    ]
-
-
-def _sff2_records_from_info(info: SffInfo) -> List[Dict[str, object]]:
-    if info.v2_metadata:
-        rows = info.v2_metadata.get('sff2_records') or []
-        if isinstance(rows, list):
-            return [r for r in rows if isinstance(r, dict)]
-    return []
-
-
-def _sff2_palettes_from_info(info: SffInfo) -> List[Dict[str, object]]:
-    if info.v2_metadata:
-        rows = info.v2_metadata.get('sff2_palettes') or []
-        if isinstance(rows, list):
-            return [r for r in rows if isinstance(r, dict)]
-    return []
-
-
-def write_sff2_inspection(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
-    root = Path(root)
-    res = BinaryCoreResult('SFF / SFF2 v5.5 Native Inspection')
-    sff = _file(root, 'sff')
-    out_dir = _bc(root) / 'sff_inspection'
-    out_dir.mkdir(parents=True, exist_ok=True)
-    if not sff or not sff.exists():
-        res.add_warning('No SFF file found for this project.')
-        return res
-    data = sff.read_bytes()
-    info = read_sff(sff)
-    sff2_rows = _sff2_records_from_info(info)
-    palette_rows = _sff2_palettes_from_info(info)
-    subset_records, subset_meta, subset_warnings = _probe_mugenforge_png_subset(sff)
-    png_hits = _find_embedded_pngs(data)
-    pcx_hits = _find_pcx_markers(data, limit=200)
-    rows = [
-        {
-            'index': spr.index, 'group': spr.group, 'image': spr.image,
-            'axis_x': spr.x, 'axis_y': spr.y, 'length': spr.length,
-            'data_offset': spr.data_offset, 'next_offset': spr.next_offset,
-            'same_palette': spr.same_palette, 'format': spr.format_hint,
-            'raw_header_offset': spr.raw_header_offset,
-        }
-        for spr in info.sprites
-    ]
-    report = {
-        'tool': 'MugenForge Studio Binary Core', 'version': BINARY_CORE_VERSION,
-        'file': str(sff), 'size': len(data), 'sha256': _sha256(sff),
-        'read_sff': {
-            'version': info.version, 'version_text': info.version_text, 'variant': info.variant,
-            'header_sprite_count': info.sprite_count, 'header_group_count': info.group_count,
-            'supported_for_extraction': info.is_supported_for_extraction, 'warnings': info.warnings,
-        },
-        'common_sff2_sprite_records': sff2_rows,
-        'common_sff2_palette_records': palette_rows,
-        'all_sprite_rows_for_ui': rows,
-        'mugenforge_png_subset_records': [r.to_dict() for r in subset_records],
-        'embedded_png_ranges': [{'offset': off, 'length': length} for off, length in png_hits[:1000]],
-        'pcx_marker_offsets': pcx_hits[:200],
-        'warnings': _uniq(info.warnings + subset_warnings),
-        'honest_capabilities': _truth_lines(),
-    }
-    _write_json(out_dir / 'sff_binary_inspection.json', report, res, root)
-    if rows:
-        _write_csv(out_dir / 'sff_sprite_records.csv', rows, ['index','group','image','axis_x','axis_y','length','data_offset','next_offset','same_palette','format','raw_header_offset'], res, root)
-    if sff2_rows:
-        fields = ['index','group','image','width','height','axis_x','axis_y','linked_index','format_code','format_name','color_depth','data_offset','data_length','palette_index','flags','table_offset','payload_offset','payload_base','note']
-        _write_csv(out_dir / 'sff2_common_sprite_table.csv', sff2_rows, fields, res, root)
-    if palette_rows:
-        fields = ['index','group','item','num_colors','data_offset','data_length','table_offset']
-        _write_csv(out_dir / 'sff2_common_palette_table.csv', palette_rows, fields, res, root)
-    lines = [
-        '# SFF / SFF2 v5.5 Native Inspection', '',
-        f'File: `{_rel(root, sff)}`', f'Size: {len(data):,} bytes',
-        f'SHA-256: `{report["sha256"]}`', f'Parser layout: `{info.variant}`',
-        f'Raw version bytes: `{info.version_text}`',
-        f'Parsed sprite rows: {len(rows)}',
-        f'Common SFF2 table rows: {len(sff2_rows)}',
-        f'Common SFF2 palette rows: {len(palette_rows)}',
-        f'Embedded PNG payloads found: {len(png_hits)}', '',
-    ]
-    if info.variant == 'sff2-standard':
-        lines.append('Supported path: common-table SFF2 decode/export, axis patch-copy, and manifest-based SFF2 rebuild candidates are available.')
-    elif info.is_supported_for_extraction:
-        lines.append('Supported path: SFF v1-style PCX/PNG payload extraction and axis patch-copy are available.')
-    elif subset_records:
-        lines.append('Supported path: MugenForge legacy PNG-subset recovery is available.')
-    else:
-        lines.append('Supported path: metadata and embedded payload discovery only; unsafe mutation is refused.')
-    lines += ['', '## Honest capability boundary'] + _truth_lines()[1:]
-    if info.warnings or subset_warnings:
-        lines += ['', '## Warnings'] + [f'- {w}' for w in _uniq(info.warnings + subset_warnings)]
-    lines += ['', '## Detail from reader', '', '```text', summarize_sff_detailed(sff), '```']
-    _write_text(out_dir / 'SFF_BINARY_INSPECTION.md', '\n'.join(lines), res, root)
-    res.notes.append('Wrote v5.5 common-table SFF2 inspection, CSVs, hashes, and capability notes.')
-    res.warnings.extend(_uniq(info.warnings + subset_warnings))
-    return res
-
-
-def export_sff2_payloads(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
-    root = Path(root)
-    res = BinaryCoreResult('Supported SFF Payload Export v5.5')
-    sff = _file(root, 'sff')
-    if not sff or not sff.exists():
-        res.add_warning('No SFF file found for payload export.')
-        return res
-    out_dir = _bc(root) / 'sff_payloads'
-    out_dir.mkdir(parents=True, exist_ok=True)
-    info = read_sff(sff)
-    folder = out_dir / ('sff2_decoded_png' if info.variant == 'sff2-standard' else 'sff1_supported')
-    exported = export_all_sprites(sff, folder)
-    exports: List[Dict[str, object]] = []
-    for p in exported:
-        res.add_created(root, p)
-        exports.append({'path': _rel(root, p), 'mode': 'decoded_sff2_or_supported_sff1'})
-    if not exports:
-        data = sff.read_bytes()
-        folder = out_dir / 'embedded_png_scan'
-        folder.mkdir(parents=True, exist_ok=True)
-        for idx, (off, length) in enumerate(_find_embedded_pngs(data)[:5000]):
-            out = folder / f'embedded_png_{idx:05d}_off{off:08X}.png'
-            out.write_bytes(data[off:off + length])
-            res.add_created(root, out)
-            exports.append({'path': _rel(root, out), 'offset': off, 'length': length, 'mode': 'embedded_png_scan_no_sprite_id'})
-        if exports:
-            res.add_warning('Embedded PNG scan exported raw images without guaranteed group/image/axis mapping.')
-    manifest = {
-        'tool': 'MugenForge Binary Core', 'version': BINARY_CORE_VERSION,
-        'mode': 'supported_sff_payload_export_v55',
-        'source_sff': str(sff), 'source_sha256': _sha256(sff),
-        'source_variant': info.variant, 'exports': exports,
-        'warnings': info.warnings + res.warnings,
-        'capabilities': _truth_lines(),
-    }
-    _write_json(out_dir / 'supported_sff_payload_export_manifest.json', manifest, res, root)
-    if exports:
-        res.notes.append(f'Exported {len(exports)} supported SFF payload/image artifact(s).')
-    else:
-        res.add_warning('No supported extractable SFF payloads found.')
-    return res
-
-
-def export_sff_axis_sheet(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
-    root = Path(root)
-    res = BinaryCoreResult('SFF Axis Sheet Export v5.5')
-    sff = _file(root, 'sff')
-    if not sff or not sff.exists():
-        res.add_warning('No SFF file found for axis sheet export.')
-        return res
-    out_dir = _bc(root) / 'sff_axis_editor'
-    out_dir.mkdir(parents=True, exist_ok=True)
-    info = read_sff(sff)
-    rows: List[Dict[str, object]] = []
-    for spr in info.sprites:
-        rows.append({
-            'enabled': 'no',
-            'record_type': 'sff2_standard_sprite' if info.variant == 'sff2-standard' else 'sff1_subfile',
-            'index': spr.index, 'group': spr.group, 'image': spr.image,
-            'current_x': spr.x, 'current_y': spr.y, 'new_x': spr.x, 'new_y': spr.y,
-            'format': spr.format_hint, 'length': spr.length, 'raw_header_offset': spr.raw_header_offset,
-            'note': 'Set enabled=yes and edit new_x/new_y. Apply creates a patched copy; original is not overwritten.',
-        })
-    fields = ['enabled','record_type','index','group','image','current_x','current_y','new_x','new_y','format','length','raw_header_offset','note']
-    sheet = _write_csv(out_dir / 'sff_axis_edit_sheet.csv', rows, fields, res, root)
-    _write_text(out_dir / 'README_SFF_AXIS_EDITOR.md', '\n'.join([
-        '# SFF Axis Editor Sheet', '',
-        'Edit `sff_axis_edit_sheet.csv` and set `enabled=yes` for rows to patch.',
-        'SFF1 and common-table SFF2 axis fields are patched into a copied file under `patched/`.',
-        'The original SFF is not overwritten by this workflow.', '', *_truth_lines(),
-    ]), res, root)
-    res.notes.append(f'Exported {len(rows)} axis rows to {sheet.name}.')
-    if not rows:
-        res.add_warning('No patchable SFF axis records were found.')
-    return res
-
-
-def apply_sff_axis_sheet(root: Path, sheet_path: Optional[Path] = None) -> BinaryCoreResult:  # type: ignore[no-redef]
-    root = Path(root)
-    res = BinaryCoreResult('SFF Axis Sheet Apply v5.5')
-    sff = _file(root, 'sff')
-    if not sff or not sff.exists():
-        res.add_warning('No SFF file found for axis patching.')
-        return res
-    sheet = Path(sheet_path) if sheet_path else _bc(root) / 'sff_axis_editor' / 'sff_axis_edit_sheet.csv'
-    if not sheet.exists():
-        res.add_warning('Axis sheet not found. Export the SFF Axis Sheet first.')
-        return res
-    rows = [r for r in csv.DictReader(sheet.open('r', encoding='utf-8-sig', newline='')) if _truthy(r.get('enabled'))]
-    if not rows:
-        res.add_skipped('No rows have enabled=yes; no patched copy was created.')
-        return res
-    from .sff_codec import patch_sff2_axis_copy
-    out_dir = _bc(root) / 'sff_axis_editor' / 'patched'
-    out = out_dir / f'{sff.stem}_axis_patched_{_now()}{sff.suffix}'
-    try:
-        info2 = patch_sff2_axis_copy(sff, rows, out)
-        res.add_created(root, out)
-        _write_json(out_dir / 'axis_patch_report.json', {
-            'source': str(sff), 'output': str(out), 'source_sha256': _sha256(sff),
-            'output_sha256': _sha256(out), 'applied_rows': len(rows),
-            'parsed_output_variant': info2.variant, 'note': 'The original SFF was not overwritten.',
-        }, res, root)
-        res.notes.append(f'Created patched SFF copy with {len(rows)} enabled axis row(s).')
-    except Exception as exc:
-        res.add_warning(f'Axis patch-copy failed: {exc}')
-    return res
-
-
-def build_sff2_png_workspace_copy(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
-    root = Path(root)
-    res = BinaryCoreResult('Standard SFF2 Build Candidate')
-    work = _bc(root) / 'sff2_rebuild_workspace'
-    manifest = work / 'mugenforge_sff2_png_manifest.json'
-    if not manifest.exists():
-        res.merge(write_sff2_rebuild_workspace(root), 'workspace')
-    if not manifest.exists():
-        res.add_warning('SFF2 workspace manifest not found; cannot build candidate.')
-        return res
-    out_dir = work / 'builds'
-    out = out_dir / f'{root.name}_standard_sff2_png32_candidate.sff'
-    try:
-        from .sff_codec import build_sff_v2_from_manifest
-        info = build_sff_v2_from_manifest(manifest, out, compression='png32')
-        res.add_created(root, out)
-        _write_json(out_dir / 'standard_sff2_build_report.json', {
-            'output': str(out), 'output_sha256': _sha256(out),
-            'parsed_variant': info.variant, 'sprite_count': len(info.sprites),
-            'warnings': info.warnings, 'capabilities': _truth_lines(),
-        }, res, root)
-        res.notes.append(f'Built standard-table SFF2 PNG32 candidate with {len(info.sprites)} sprite record(s).')
-        res.warnings.extend(info.warnings)
-    except Exception as exc:
-        res.add_warning(f'SFF2 build candidate failed: {exc}')
-    return res
-
-
 def export_snd_slot_patch_sheet(root: Path) -> BinaryCoreResult:
     root = Path(root)
     res = BinaryCoreResult('SND Slot Patch Sheet Export')
@@ -2569,7 +1307,179 @@ def write_runtime_validation_lab(root: Path) -> BinaryCoreResult:
     return res
 
 
-def run_binary_core_pass(root: Path) -> BinaryCoreResult:  # type: ignore[no-redef]
+# ---------------------------------------------------------------------------
+# Safety, Dashboard, Roundtrip, Bundles
+
+
+def write_binary_safety_report(root: Path) -> BinaryCoreResult:
+    root = Path(root)
+    res = BinaryCoreResult('Binary Safety Report')
+    out_dir = _bc(root) / 'safety'
+    out_dir.mkdir(parents=True, exist_ok=True)
+    files: List[Dict[str, object]] = []
+    for ext in ('sff', 'snd'):
+        p = _file(root, ext)
+        if p and p.exists():
+            files.append({'kind': ext.upper(), 'path': _rel(root, p), 'size': p.stat().st_size, 'sha256': _sha256(p)})
+        else:
+            files.append({'kind': ext.upper(), 'path': '', 'size': 0, 'sha256': '', 'warning': f'No {ext.upper()} file found'})
+    _write_json(out_dir / 'binary_safety_hashes.json', {'generated': datetime.now().isoformat(timespec='seconds'), 'files': files, 'limitations': _truth_lines()}, res, root)
+    lines = ['# Binary Safety Report', '', TRUTH_NOTE, '', '## Current binary hashes', '']
+    for f in files:
+        if f.get('path'):
+            lines.append(f"- {f['kind']}: `{f['path']}` — {int(f['size']):,} bytes — SHA-256 `{f['sha256']}`")
+        else:
+            lines.append(f"- {f['kind']}: not found")
+    lines += ['', '## Policy'] + _truth_lines()[1:]
+    _write_text(out_dir / 'BINARY_SAFETY_REPORT.md', '\n'.join(lines), res, root)
+    res.notes.append('Wrote binary hashes and safety notes before mutation-oriented workflows.')
+    return res
+
+
+def write_binary_core_dashboard(root: Path) -> BinaryCoreResult:
+    root = Path(root)
+    res = BinaryCoreResult('Binary Mastery Dashboard')
+    sff = _file(root, 'sff')
+    snd = _file(root, 'snd')
+    runtime_json = _bc(root) / 'runtime_lab' / 'runtime_trace_summary.json'
+    sff_status = 'missing'
+    sff_notes: List[str] = []
+    if sff and sff.exists():
+        try:
+            info = read_sff(sff)
+            std_rows = _sff2_records_from_info(info)
+            sff_status = f'{info.variant}; parsed sprites={len(info.sprites)}; sff2_standard={len(std_rows)}; extractable={info.is_supported_for_extraction}'
+            sff_notes = info.warnings
+        except Exception as exc:
+            sff_status = f'inspection failed: {exc}'
+    snd_status = 'missing'
+    snd_notes: List[str] = []
+    if snd and snd.exists():
+        try:
+            sinfo = read_snd(snd)
+            patchable = sum(1 for s in sinfo.sounds if s.header_offset is not None)
+            snd_status = f'RIFF/WAVE sounds={len(sinfo.sounds)}; byte-patchable IDs={patchable}; signature={sinfo.has_signature}'
+            snd_notes = sinfo.warnings
+        except Exception as exc:
+            snd_status = f'inspection failed: {exc}'
+    runtime_status = 'not imported'
+    if runtime_json.exists():
+        try:
+            data = json.loads(runtime_json.read_text(encoding='utf-8'))
+            runtime_status = f"engine-backed rows={len(data.get('rows') or [])}"
+        except Exception:
+            runtime_status = 'runtime summary exists but could not be parsed'
+    lines = [
+        '# MugenForge Binary Mastery Dashboard',
+        '',
+        f'Version: {BINARY_CORE_VERSION}',
+        '',
+        TRUTH_NOTE,
+        '',
+        '## Project binary status',
+        '',
+        f'- SFF: {sff_status}',
+        f'- SND: {snd_status}',
+        f'- Runtime evidence: {runtime_status}',
+        '',
+        '## Recommended next actions',
+        '',
+        '1. Run **Safety Report** to capture hashes.',
+        '2. Run **SFF/SFF2 Binary Mastery Inspection** to classify sprite tables and palettes.',
+        '3. Run **Export Supported SFF Payloads** to decode SFF1/SFF2 records into source PNGs where supported.',
+        '4. Use **SFF Axis Sheet** to patch axis fields into a copied SFF.',
+        '5. Use **SFF2 Standard Rebuild Workspace** and **Build Standard SFF2 Candidate** for source-based candidate output.',
+        '6. Use **SND Bank Sheet** for rebuilds or **SND Byte Patch Sheet** for recognized ID-header edits.',
+        '7. Use **Runtime Verification Pack** and **Import Runtime Logs** when you need engine-backed evidence.',
+        '',
+        '## Honest capability boundary',
+        *_truth_lines()[1:],
+    ]
+    if sff_notes or snd_notes:
+        lines += ['', '## Current parser warnings'] + [f'- {w}' for w in _uniq(sff_notes + snd_notes)]
+    _write_text(_bc(root) / 'BINARY_CORE_DASHBOARD.md', '\n'.join(lines), res, root)
+    _write_text(_bc(root) / 'BINARY_CORE_START_HERE.md', '\n'.join(lines + ['', 'Generated by the v5.5 Binary Mastery cockpit.']), res, root)
+    res.notes.append('Wrote Binary Mastery dashboard and start-here guide.')
+    return res
+
+
+def write_binary_roundtrip_lab(root: Path) -> BinaryCoreResult:
+    root = Path(root)
+    res = BinaryCoreResult('Binary Mastery Roundtrip Lab')
+    out_dir = _bc(root) / 'roundtrip_lab'
+    out_dir.mkdir(parents=True, exist_ok=True)
+    report: Dict[str, object] = {'generated': datetime.now().isoformat(timespec='seconds'), 'version': BINARY_CORE_VERSION, 'sff': {}, 'snd': {}, 'runtime': {}, 'capability_boundary': _truth_lines()}
+    sff = _file(root, 'sff')
+    if sff and sff.exists():
+        info = read_sff(sff)
+        sff_data: Dict[str, object] = {'source': str(sff), 'source_sha256': _sha256(sff), 'variant': info.variant, 'source_sprite_records': len(info.sprites), 'warnings': info.warnings}
+        try:
+            exp = export_sff2_payloads(root)
+            res.merge(exp, 'sff export')
+            sff_data['exported_artifacts'] = exp.created_files
+            work_res = write_sff2_rebuild_workspace(root)
+            res.merge(work_res, 'sff2 workspace')
+            build_res = build_sff2_standard_workspace(root)
+            res.merge(build_res, 'sff2 build')
+            built = _bc(root) / 'sff2_rebuild_workspace' / 'experimental' / f'{root.name}_standard_table.sff'
+            if built.exists():
+                binfo = read_sff(built)
+                sff_data.update({'rebuilt': str(built), 'rebuilt_sha256': _sha256(built), 'rebuilt_variant': binfo.variant, 'rebuilt_sprite_records': len(binfo.sprites), 'pass': len(binfo.sprites) > 0})
+        except Exception as exc:
+            sff_data.update({'pass': False, 'error': str(exc)})
+        report['sff'] = sff_data
+    else:
+        report['sff'] = {'warning': 'No SFF file found.'}
+    snd = _file(root, 'snd')
+    if snd and snd.exists():
+        sinfo = read_snd(snd)
+        report['snd'] = {'source': str(snd), 'source_sha256': _sha256(snd), 'source_sounds': len(sinfo.sounds), 'warnings': sinfo.warnings}
+        exp = export_snd_bank_sheet(root)
+        res.merge(exp, 'snd sheet')
+        rb = apply_snd_bank_sheet(root, install=False)
+        res.merge(rb, 'snd rebuild')
+        patch = export_snd_byte_patch_sheet(root)
+        res.merge(patch, 'snd byte patch sheet')
+        rebuilt = _bc(root) / 'snd_editor' / 'rebuilt' / f'{root.name}_rebuilt.snd'
+        if rebuilt.exists():
+            rinfo = read_snd(rebuilt)
+            report['snd'] = {**report['snd'], 'rebuilt': str(rebuilt), 'rebuilt_sha256': _sha256(rebuilt), 'rebuilt_sounds': len(rinfo.sounds), 'pass': len(rinfo.sounds) == len(sinfo.sounds)}
+    else:
+        report['snd'] = {'warning': 'No SND file found.'}
+    runtime = import_runtime_logs(root)
+    res.merge(runtime, 'runtime logs')
+    runtime_json = _bc(root) / 'runtime_lab' / 'runtime_trace_summary.json'
+    if runtime_json.exists():
+        try:
+            report['runtime'] = json.loads(runtime_json.read_text(encoding='utf-8'))
+        except Exception:
+            report['runtime'] = {'warning': 'Runtime summary could not be parsed.'}
+    _write_json(out_dir / 'binary_roundtrip_report.json', report, res, root)
+    lines = ['# Binary Mastery Roundtrip Lab', '', TRUTH_NOTE, '', '## Results', '', '```json', json.dumps(report, indent=2), '```']
+    _write_text(out_dir / 'BINARY_ROUNDTRIP_REPORT.md', '\n'.join(lines), res, root)
+    return res
+
+
+def build_binary_core_bundle(root: Path) -> BinaryCoreResult:
+    root = Path(root)
+    res = BinaryCoreResult('Binary Core Bundle')
+    base = _bc(root)
+    if not base.exists():
+        res.add_warning('binary_core folder does not exist yet. Run a Binary Core report first.')
+        return res
+    out_dir = base / 'bundles'
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out = out_dir / f'{root.name}_binary_core_bundle_{_now()}.zip'
+    with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zf:
+        for p in sorted(base.rglob('*')):
+            if p.is_file() and p != out:
+                zf.write(p, p.relative_to(base))
+    res.add_created(root, out)
+    res.notes.append('Bundled Binary Core reports and safe workspaces.')
+    return res
+
+
+def run_binary_core_pass(root: Path) -> BinaryCoreResult:
     root = Path(root)
     res = BinaryCoreResult('One-Click Binary Core v5.5 Pass')
     for label, fn in [
@@ -2596,10 +1506,20 @@ def run_binary_core_pass(root: Path) -> BinaryCoreResult:  # type: ignore[no-red
         res.add_warning(f'bundle failed: {exc}')
     return res
 
-# Refresh compatibility names after v5.5 redefinitions.
+
+# Backward/compatibility public names for tests and UI variants.
+write_binary_safety_audit = write_binary_safety_report
+inspect_sff_binary = write_sff2_inspection
+export_sff_supported_payloads = export_sff2_payloads
+write_sff2_source_rebuild_pack = write_sff2_rebuild_workspace
+create_sff2_source_rebuild_pack = write_sff2_rebuild_workspace
+export_snd_bank_workspace = export_snd_bank_sheet
+write_snd_waveform_board = write_snd_waveform_preview
+run_binary_roundtrip_tests = write_binary_roundtrip_lab
+write_sff_binary_audit = write_sff2_inspection
+write_sff_axis_sheet = export_sff_axis_sheet
+inspect_snd_bank = export_snd_bank_sheet
 inspect_sff2_native = write_sff2_inspection
 export_supported_sff2_payloads = export_sff2_payloads
-export_sff_supported_payloads = export_sff2_payloads
-create_sff2_source_rebuild_pack = write_sff2_rebuild_workspace
-write_sff2_source_rebuild_pack = write_sff2_rebuild_workspace
 write_runtime_lab = write_runtime_validation_lab
+build_binary_roundtrip_report = write_binary_roundtrip_lab

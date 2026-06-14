@@ -23,37 +23,29 @@ IMAGE_SUFFIXES = {".png", ".pcx", ".bmp", ".gif", ".jpg", ".jpeg", ".webp"}
 ASSET_SUFFIXES = IMAGE_SUFFIXES | {".sff", ".snd", ".act", ".wav", ".ogg", ".mp3"}
 
 
+from .shared_utils import (
+    BaseResult,
+    uniq,
+    rel_path,
+    backup_file,
+    timestamp,
+    write_text_artifact,
+    write_json_artifact,
+    discover_project_files,
+    get_code_files,
+    get_all_files,
+    parse_safe_int,
+    parse_damage_pair,
+    scan_air_stats,
+    scan_hitdefs,
+    scan_commands,
+    TEXT_SUFFIXES,
+    IMAGE_SUFFIXES,
+)
+
 @dataclass
-class UltraResult:
+class UltraResult(BaseResult):
     title: str = "Factory Ultra Result"
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    skipped_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def merge(self, other: object, prefix: str = "") -> None:
-        p = f"{prefix}: " if prefix else ""
-        for attr in ("created_files", "changed_files", "skipped_files", "warnings", "notes"):
-            vals = getattr(other, attr, []) or []
-            getattr(self, attr).extend([p + str(v) for v in vals])
-
-    def to_text(self) -> str:
-        lines = [self.title, "=" * len(self.title), ""]
-        for label, values in [
-            ("Notes", self.notes),
-            ("Created", self.created_files),
-            ("Changed", self.changed_files),
-            ("Skipped", self.skipped_files),
-            ("Warnings", self.warnings),
-        ]:
-            if values:
-                lines.append(label + ":")
-                lines.extend(f"- {v}" for v in values)
-                lines.append("")
-        if len(lines) <= 3:
-            lines.append("No changes made.")
-        return "\n".join(lines).rstrip() + "\n"
 
 
 # Backward-compatible alias for older annotations/import expectations.
@@ -61,138 +53,71 @@ MaxResult = UltraResult
 
 
 def _now() -> str:
-    return datetime.now().strftime("%Y%m%d_%H%M%S")
+    return timestamp()
 
 
 def _rel(root: Path, path: Path | str | None) -> str:
     if path is None:
         return "missing"
-    try:
-        return str(Path(path).relative_to(root)).replace("\\", "/")
-    except Exception:
-        return str(path).replace("\\", "/")
+    return rel_path(root, path)
 
 
 def _backup(path: Path) -> Optional[Path]:
-    if not path.exists():
-        return None
-    backup = path.with_name(path.name + f".bak_{_now()}")
-    backup.write_bytes(path.read_bytes())
-    return backup
+    return backup_file(path, "ultra")
 
 
 def _write(path: Path, text: str, result: Optional[UltraResult] = None, root: Optional[Path] = None, changed: bool = False) -> Path:
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    if changed and path.exists():
+    existed = path.exists()
+    if existed and changed:
         _backup(path)
-    write_text_safely(path, text)
-    if result is not None:
-        (result.changed_files if changed else result.created_files).append(_rel(root or path.parent, path))
-    return path
+    return write_text_artifact(path, text, result, root, changed, track_existing=True, writer=write_text_safely)
 
 
 def _write_json(path: Path, payload: object, result: Optional[UltraResult] = None, root: Optional[Path] = None) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    if result is not None:
-        result.created_files.append(_rel(root or path.parent, path))
-    return path
+    return write_json_artifact(path, payload, result, root, track_existing=True)
 
 
 def _discover_files(root: Path) -> Dict[str, Optional[Path]]:
     try:
         return fm._discover_files(Path(root))  # type: ignore[attr-defined]
     except Exception:
-        out: Dict[str, Optional[Path]] = {"root": Path(root)}
-        for ext in ("def", "cmd", "cns", "air", "sff", "snd"):
-            hits = sorted(Path(root).glob(f"*.{ext}"), key=lambda p: p.name.lower())
-            out[ext] = hits[0] if hits else None
-        return out
+        return discover_project_files(root)
 
 
 def _code_files(root: Path) -> List[Path]:
-    return [p for p in sorted(Path(root).rglob("*"), key=lambda x: str(x).lower()) if p.is_file() and p.suffix.lower() in CODE_SUFFIXES]
+    return get_code_files(root)
 
 
 def _text_files(root: Path) -> List[Path]:
-    return [p for p in sorted(Path(root).rglob("*"), key=lambda x: str(x).lower()) if p.is_file() and p.suffix.lower() in TEXT_SUFFIXES]
+    return [p for p in get_all_files(root) if p.suffix.lower() in TEXT_SUFFIXES]
 
 
 def _images(root: Path) -> List[Path]:
-    return [p for p in sorted(Path(root).rglob("*"), key=lambda x: str(x).lower()) if p.is_file() and p.suffix.lower() in IMAGE_SUFFIXES]
+    return [p for p in get_all_files(root) if p.suffix.lower() in IMAGE_SUFFIXES]
 
 
 def _counts(root: Path) -> Dict[str, int]:
     counts: Dict[str, int] = {}
-    for p in Path(root).rglob("*"):
-        if p.is_file():
-            ext = p.suffix.lower() or "[none]"
-            counts[ext] = counts.get(ext, 0) + 1
+    for p in get_all_files(root):
+        ext = p.suffix.lower() or "[none]"
+        counts[ext] = counts.get(ext, 0) + 1
     return counts
 
 
 def _intish(value: object, default: Optional[int] = None) -> Optional[int]:
-    if value is None:
-        return default
-    m = re.search(r"-?\d+", str(value))
-    return int(m.group(0)) if m else default
+    return parse_safe_int(value, default)
 
 
 def _damage_pair(value: str) -> Tuple[int, Optional[int]]:
-    nums = [int(n) for n in re.findall(r"-?\d+", value or "")]
-    if not nums:
-        return 0, None
-    return nums[0], nums[1] if len(nums) > 1 else None
+    return parse_damage_pair(value)
 
 
 def _air_stats(root: Path) -> Dict[int, Dict[str, int]]:
-    files = _discover_files(root)
-    air = files.get("air")
-    out: Dict[int, Dict[str, int]] = {}
-    if not air or not air.exists():
-        return out
-    for action in parse_air(read_text_safely(air)):
-        active = [i for i, frame in enumerate(action.frames, 1) if any(b.kind.lower() == "clsn1" for b in frame.clsn)]
-        body = [i for i, frame in enumerate(action.frames, 1) if any(b.kind.lower() == "clsn2" for b in frame.clsn)]
-        out[action.number] = {
-            "frames": len(action.frames),
-            "ticks": sum(max(0, frame.ticks) for frame in action.frames),
-            "first_active": active[0] if active else 0,
-            "last_active": active[-1] if active else 0,
-            "active_frames": len(active),
-            "body_frames": len(body),
-        }
-    return out
+    return scan_air_stats(root)
 
 
 def _hit_records(root: Path) -> List[Dict[str, object]]:
-    rows: List[Dict[str, object]] = []
-    for path in _code_files(root):
-        scan = parse_code(read_text_safely(path))
-        for state in scan.states:
-            anim = _intish(state.values.get("anim"), state.number)
-            for ctrl in state.controllers:
-                stype = (ctrl.stype or ctrl.values.get("type", "")).lower()
-                if stype != "hitdef":
-                    continue
-                dmg, gdmg = _damage_pair(ctrl.values.get("damage", "0"))
-                rows.append({
-                    "file": _rel(root, path),
-                    "line": ctrl.line,
-                    "state": state.number,
-                    "anim": anim,
-                    "damage": dmg,
-                    "guard_damage": gdmg,
-                    "attr": ctrl.values.get("attr", ""),
-                    "hitflag": ctrl.values.get("hitflag", ""),
-                    "guardflag": ctrl.values.get("guardflag", ""),
-                    "pausetime": ctrl.values.get("pausetime", ""),
-                    "ground_velocity": ctrl.values.get("ground.velocity", ctrl.values.get("ground.velocity.x", "")),
-                    "air_velocity": ctrl.values.get("air.velocity", ctrl.values.get("air.velocity.x", "")),
-                    "sparkno": ctrl.values.get("sparkno", ""),
-                })
-    return rows
+    return scan_hitdefs(root)
 
 
 def _feature_hits(root: Path) -> List[str]:
@@ -208,21 +133,7 @@ def _feature_hits(root: Path) -> List[str]:
 
 
 def _cmd_commands(root: Path) -> List[Dict[str, object]]:
-    out: List[Dict[str, object]] = []
-    for path in _code_files(root):
-        if path.suffix.lower() != ".cmd":
-            continue
-        for c in parse_code(read_text_safely(path)).commands:
-            out.append({
-                "file": _rel(root, path),
-                "line": c.line,
-                "name": c.name,
-                "command": c.command,
-                "norm": re.sub(r"\s+", "", c.command.lower()),
-                "time": c.time,
-                "buffer_time": c.buffer_time,
-            })
-    return out
+    return scan_commands(root)
 
 
 def write_ultra_audit(root: Path) -> UltraResult:
@@ -365,33 +276,6 @@ def write_balance_lab(root: Path) -> UltraResult:
 def generate_balance_lab(root: Path) -> UltraResult:
     return write_balance_lab(root)
 
-
-def write_frame_data_report(root: Path) -> UltraResult:
-    root = Path(root)
-    result = UltraResult("Factory Ultra Frame Data Export")
-    air = _air_stats(root)
-    csv_path = root / "MUGENFORGE_FRAME_DATA.csv"
-    with csv_path.open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
-        w.writerow(["action", "label", "frames", "ticks", "first_active_frame", "last_active_frame", "active_frames", "body_frames", "approx_seconds"])
-        for num, st in sorted(air.items()):
-            w.writerow([num, COMMON_ANIMS.get(num, ""), st["frames"], st["ticks"], st["first_active"], st["last_active"], st["active_frames"], st["body_frames"], round(st["ticks"] / 60, 3)])
-    result.created_files.append(_rel(root, csv_path))
-    lines = [f"# Frame Data Export: {root.name}", "", "Assumes 60 ticks per second.", ""]
-    if air:
-        lines += ["| Action | Label | Frames | Ticks | Active | Seconds |", "|---:|---|---:|---:|---|---:|"]
-        for num, st in sorted(air.items())[:400]:
-            active = "" if not st["first_active"] else f"{st['first_active']}-{st['last_active']}"
-            lines.append(f"| {num} | {COMMON_ANIMS.get(num, '')} | {st['frames']} | {st['ticks']} | {active} | {round(st['ticks'] / 60, 3)} |")
-    else:
-        lines.append("No AIR actions found.")
-    _write(root / "MUGENFORGE_FRAME_DATA.md", "\n".join(lines).rstrip() + "\n", result, root)
-    result.notes.append(f"AIR actions exported: {len(air)}")
-    return result
-
-
-def generate_frame_data_lab(root: Path) -> UltraResult:
-    return write_frame_data_report(root)
 
 
 def write_combo_lab(root: Path) -> UltraResult:
@@ -941,97 +825,6 @@ def write_ultra_task_board(root: Path) -> UltraResult:
     return write_smart_next_steps(root)
 
 
-def build_ultra_release_zip(root: Path) -> UltraResult:
-    root = Path(root)
-    result = UltraResult("Factory Ultra Release ZIP")
-    for label, fn in [
-        ("readiness", generate_release_readiness_report),
-        ("dashboard", write_creator_home_dashboard),
-        ("asset QA", generate_asset_usage_lab),
-        ("balance", write_balance_lab),
-        ("frame data", write_frame_data_report),
-        ("combo", write_combo_lab),
-        ("compatibility", write_compatibility_matrix),
-    ]:
-        try:
-            result.merge(fn(root), label)
-        except Exception as exc:
-            result.warnings.append(f"{label} failed: {exc}")
-    out_dir = root / "exports"
-    out_dir.mkdir(exist_ok=True)
-    out = out_dir / f"{root.name}_factory_ultra_release_{_now()}.zip"
-    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
-        for path in sorted(root.rglob("*"), key=lambda p: str(p).lower()):
-            if path.is_dir():
-                continue
-            rel = path.relative_to(root)
-            rel_s = str(rel).replace("\\", "/")
-            low = rel_s.lower()
-            if "__pycache__" in low or ".git" in low or ".bak_" in low or low.endswith((".pyc", ".tmp")) or low.startswith("snapshots/"):
-                continue
-            z.write(path, arcname=f"{root.name}/{rel_s}")
-    result.created_files.append(_rel(root, out))
-    result.notes.append("Factory Ultra release ZIP includes reports and excludes snapshots/backups/temp files.")
-    return result
-
-
-def build_factory_ultra_release_zip(root: Path) -> UltraResult:
-    return build_ultra_release_zip(root)
-
-
-def one_click_factory_ultra_upgrade(root: Path) -> UltraResult:
-    root = Path(root)
-    result = UltraResult("Factory Ultra One-Click No-Code Production Upgrade")
-    try:
-        result.merge(fm.one_click_factory_max_upgrade(root), "Factory Max")
-    except Exception as exc:
-        result.warnings.append(f"Factory Max base upgrade failed: {exc}")
-    for kit in [
-        "Ultra No-Code Production Kit", "Ultra Beginner Safety Kit", "Ultra Beginner Moves Kit",
-        "Ultra Advanced Combat Kit", "Ultra Boss and Training Kit", "Ultra Release Polish Kit",
-        "Creator AutoPilot Full Kit",
-    ]:
-        if kit not in KIT_PRESETS:
-            result.skipped_files.append(f"kit {kit}: not bundled")
-            continue
-        try:
-            result.merge(apply_kit(root, kit), f"kit {kit}")
-        except Exception as exc:
-            result.warnings.append(f"Could not apply kit {kit}: {exc}")
-    for label, fn in [
-        ("command center", write_beginner_command_center),
-        ("function map", write_no_code_function_map),
-        ("recipe bank", write_no_code_recipe_bank),
-        ("generated code map", write_generated_code_map),
-        ("codesense", fm.write_codesense_bank),
-        ("state graph", fm.write_state_graph),
-        ("organizer", fm.write_organizer_manifest),
-        ("audit", write_ultra_audit),
-        ("task board", write_smart_next_steps),
-        ("inputs", write_input_conflict_report),
-        ("balance", write_balance_lab),
-        ("frame data", write_frame_data_report),
-        ("combo", write_combo_lab),
-        ("compatibility", write_compatibility_matrix),
-        ("cancel lab", generate_cancel_lab),
-        ("asset lab", generate_asset_usage_lab),
-        ("axis lab", generate_sprite_axis_lab),
-        ("AI lab", generate_ai_tuning_lab),
-        ("sprite atlas", create_sff_sprite_atlas),
-        ("sound sheet", create_snd_waveform_sheet),
-        ("controller library", write_controller_snippet_library),
-    ]:
-        try:
-            result.merge(fn(root), label)
-        except Exception as exc:
-            result.warnings.append(f"{label} failed: {exc}")
-    result.notes.append("Factory Ultra turns the project into a guided creator suite: reports and scaffolds first, fun creative tuning second.")
-    return result
-
-
-def one_click_ultra_production_pass(root: Path) -> UltraResult:
-    return one_click_factory_ultra_upgrade(root)
-
 # ---------------------------------------------------------------------------
 # Final v3.0 stable overrides
 # ---------------------------------------------------------------------------
@@ -1073,50 +866,6 @@ def write_frame_data_report(root: Path) -> UltraResult:  # type: ignore[override
 def generate_frame_data_lab(root: Path) -> UltraResult:  # type: ignore[override]
     return write_frame_data_report(root)
 
-
-def _factory_ultra_release_impl(root: Path) -> UltraResult:
-    root = Path(root)
-    result = UltraResult("Factory Ultra Release ZIP")
-    for label, fn in [
-        ("readiness", generate_release_readiness_report),
-        ("command center", write_beginner_command_center),
-        ("asset QA", generate_asset_usage_lab),
-        ("balance", generate_balance_lab),
-        ("frame data", generate_frame_data_lab),
-        ("input map", generate_input_map_assistant),
-    ]:
-        try:
-            result.merge(fn(root), label)
-        except Exception as exc:
-            result.warnings.append(f"{label} failed: {exc}")
-    out_dir = root / "exports"
-    out_dir.mkdir(exist_ok=True)
-    out = out_dir / f"{root.name}_factory_ultra_release_{_now()}.zip"
-    manifest = root / "MUGENFORGE_ULTRA_RELEASE_MANIFEST.json"
-    manifest.write_text(json.dumps({"tool": "MugenForge Factory Ultra", "version": FACTORY_ULTRA_VERSION, "project": root.name, "generated": datetime.now().isoformat(timespec="seconds")}, indent=2), encoding="utf-8")
-    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
-        for p in sorted(root.rglob("*"), key=lambda x: str(x).lower()):
-            if p.is_dir():
-                continue
-            rel = p.relative_to(root)
-            rel_s = str(rel).replace("\\", "/")
-            low = rel_s.lower()
-            if "__pycache__" in low or ".git" in low or ".bak_" in low or low.endswith((".pyc", ".tmp")):
-                continue
-            if low.startswith("snapshots/"):
-                continue
-            z.write(p, arcname=f"{root.name}/{rel_s}")
-    result.created_files += [_rel(root, manifest), _rel(root, out)]
-    result.notes.append("Factory Ultra release ZIP built without snapshots/backups/temp files.")
-    return result
-
-
-def build_ultra_release_zip(root: Path) -> UltraResult:  # type: ignore[override]
-    return _factory_ultra_release_impl(root)
-
-
-def build_factory_ultra_release_zip(root: Path) -> UltraResult:  # type: ignore[override]
-    return _factory_ultra_release_impl(root)
 
 
 def one_click_factory_ultra_upgrade(root: Path) -> UltraResult:  # type: ignore[override]

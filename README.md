@@ -72,7 +72,7 @@ Maintenance Core is for package-level maintainability. It writes:
 2. Start in **Operator Console** and run **One-Click Operator Pass**.
 3. Use the dashboard’s next action to move into Visual/Timeline/Binary/Runtime/Evidence tools.
 4. Before ending a long session, run **Maintenance Core → One-Click Maintenance Pass** and **Handoff Core → One-Click Handoff Core Pass**.
-5. Send the next developer `MUGENFORGE_HANDOFF_v7_5.md` plus the generated handoff/operator/maintenance bundles.
+5. Send the next developer `docs/MUGENFORGE_HANDOFF_v7_5.md` plus the generated handoff/operator/maintenance bundles.
 
 ## Honest scope retained
 

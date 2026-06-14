@@ -31,59 +31,11 @@ LOG_PATTERNS = [
 ]
 
 
+from .shared_utils import BaseResult, uniq as _uniq
+
 @dataclass
-class RuntimeLabResult:
+class RuntimeLabResult(BaseResult):
     title: str = 'Runtime Lab'
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def add_created(self, root: Path, path: Path | str) -> None:
-        self.created_files.append(_rel(root, path))
-
-    def add_changed(self, root: Path, path: Path | str) -> None:
-        self.changed_files.append(_rel(root, path))
-
-    def add_warning(self, msg: object) -> None:
-        self.warnings.append(str(msg))
-
-    def add_note(self, msg: object) -> None:
-        self.notes.append(str(msg))
-
-    def merge(self, other: 'RuntimeLabResult', label: Optional[str] = None) -> None:
-        if not other:
-            return
-        prefix = f'{label}: ' if label else ''
-        self.created_files.extend(prefix + x for x in other.created_files)
-        self.changed_files.extend(prefix + x for x in other.changed_files)
-        self.warnings.extend(prefix + x for x in other.warnings)
-        self.notes.extend(prefix + x for x in other.notes)
-
-    def to_text(self) -> str:
-        lines = [self.title, '=' * max(12, len(self.title)), f'Generated: {datetime.now().isoformat(timespec="seconds")}', '']
-        if self.notes:
-            lines += ['Notes:'] + [f'- {x}' for x in _uniq(self.notes)] + ['']
-        if self.changed_files:
-            lines += ['Changed files:'] + [f'- {x}' for x in _uniq(self.changed_files)] + ['']
-        if self.created_files:
-            lines += ['Created files/artifacts:'] + [f'- {x}' for x in _uniq(self.created_files)] + ['']
-        if self.warnings:
-            lines += ['Warnings:'] + [f'- {x}' for x in _uniq(self.warnings)] + ['']
-        if len(lines) <= 4:
-            lines.append('No changes made.')
-        return '\n'.join(lines).rstrip() + '\n'
-
-
-def _uniq(items: Iterable[str]) -> List[str]:
-    out: List[str] = []
-    seen = set()
-    for item in items:
-        s = str(item)
-        if s not in seen:
-            seen.add(s)
-            out.append(s)
-    return out
 
 
 def _runtime_dir(root: Path) -> Path:

@@ -96,7 +96,7 @@ class HandoffCoreTab(AppBackedTab):
         try:
             res = ho_core.run_handoff_core_pass(root)
             self._handoff_core_show_result(res, 'Handoff Core pass complete')
-            messagebox.showinfo('Handoff Core complete', 'Handoff Core pass completed. Review handoff_core/HANDOFF_CORE_START_HERE.md and NEXT_CHAT_PROMPT_v7_5.md.')
+            messagebox.showinfo('Handoff Core complete', 'Handoff Core pass completed. Review handoff_core/HANDOFF_CORE_START_HERE.md and docs/NEXT_CHAT_PROMPT_v7_5.md.')
         except Exception as exc:
             messagebox.showerror('Handoff Core failed', str(exc))
 
@@ -336,7 +336,7 @@ class MaintenanceCoreTab(AppBackedTab):
         body.grid(row=1, column=0, sticky='ew', padx=6, pady=(0, 6))
         workflow = (
             'Run One-Click Maintenance Pass → open maintenance_core/MAINTAINER_START_HERE.md → run tools/run_mugenforge_smoke.py → '
-            'read MUGENFORGE_HANDOFF_v7_5.md → use the generated module catalog and UI inventory before the next edit.'
+            'read docs/MUGENFORGE_HANDOFF_v7_5.md → use the generated module catalog and UI inventory before the next edit.'
         )
         ttk.Label(body, text=workflow, wraplength=1180, justify='left').grid(row=0, column=0, sticky='ew')
 
@@ -366,7 +366,7 @@ class MaintenanceCoreTab(AppBackedTab):
             return
         try:
             self._maintenance_core_show_result(maint_core.run_maintenance_core_pass(root), 'Maintenance Core pass complete')
-            messagebox.showinfo('Maintenance Core complete', 'Maintenance Core pass completed. Review maintenance_core/MAINTAINER_START_HERE.md and MUGENFORGE_HANDOFF_v7_5.md.')
+            messagebox.showinfo('Maintenance Core complete', 'Maintenance Core pass completed. Review maintenance_core/MAINTAINER_START_HERE.md and docs/MUGENFORGE_HANDOFF_v7_5.md.')
         except Exception as exc:
             messagebox.showerror('Maintenance Core failed', str(exc))
 

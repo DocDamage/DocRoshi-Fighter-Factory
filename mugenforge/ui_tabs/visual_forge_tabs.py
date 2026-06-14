@@ -33,25 +33,31 @@ class VisualForgeHomeTab(AppBackedTab):
         left.grid(row=1, column=0, sticky='nsw')
         actions = ttk.LabelFrame(left, text='Start', padding=(8, 8))
         actions.grid(row=0, column=0, sticky='ew')
-        ttk.Button(actions, text='Open Character Folder', command=self.app.open_folder).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Button(actions, text='Create From Wizard', command=self.app.vf_create_project_from_wizard).grid(row=1, column=0, sticky='ew', pady=2)
-        ttk.Button(actions, text='Quick Start Current Project', command=self.app.vf_quick_start_ui).grid(row=2, column=0, sticky='ew', pady=2)
-        ttk.Button(actions, text='Tutorials / Beginner Workflow', command=self.app.vf_tutorials_ui).grid(row=3, column=0, sticky='ew', pady=2)
-        ttk.Button(actions, text='Import Existing Character', command=self.app.vf_import_legacy_from_home).grid(row=4, column=0, sticky='ew', pady=2)
+        self._create_action_buttons(actions, [
+            ('Open Character Folder', self.app.open_folder),
+            ('Create From Wizard', self.app.vf_create_project_from_wizard),
+            ('Quick Start Current Project', self.app.vf_quick_start_ui),
+            ('Tutorials / Beginner Workflow', self.app.vf_tutorials_ui),
+            ('Import Existing Character', self.app.vf_import_legacy_from_home),
+        ])
 
         recent = ttk.LabelFrame(left, text='Open Recent', padding=(8, 8))
         recent.grid(row=1, column=0, sticky='ew', pady=(8, 0))
         self.app.vf_recent_list = tk.Listbox(recent, width=46, height=8, font=('Consolas', 9), exportselection=False)
         self.app.vf_recent_list.grid(row=0, column=0, sticky='ew')
-        ttk.Button(recent, text='Open Selected', command=self.app._vf_open_recent_selected).grid(row=1, column=0, sticky='ew', pady=(4, 2))
-        ttk.Button(recent, text='Refresh Recent List', command=self.app._vf_refresh_recent_list).grid(row=2, column=0, sticky='ew', pady=2)
+        self._create_action_buttons(recent, [
+            ('Open Selected', self.app._vf_open_recent_selected, 'ew', (4, 2)),
+            ('Refresh Recent List', self.app._vf_refresh_recent_list, 'ew', 2),
+        ])
 
         tools = ttk.LabelFrame(left, text='Project Tools', padding=(8, 8))
         tools.grid(row=2, column=0, sticky='ew', pady=(8, 0))
-        ttk.Button(tools, text='Write Home Docs', command=self.app.vf_write_home_docs_ui).grid(row=0, column=0, sticky='ew', pady=2)
-        ttk.Button(tools, text='Install Templates / Plugins', command=self.app.vf_install_templates_ui).grid(row=1, column=0, sticky='ew', pady=2)
-        ttk.Button(tools, text='Write SFF2 Bridge Pack', command=self.app.vf_sff2_pack_ui).grid(row=2, column=0, sticky='ew', pady=2)
-        ttk.Button(tools, text='Create Backup Snapshot', command=self.app.vf_backup_snapshot_ui).grid(row=3, column=0, sticky='ew', pady=2)
+        self._create_action_buttons(tools, [
+            ('Write Home Docs', self.app.vf_write_home_docs_ui),
+            ('Install Templates / Plugins', self.app.vf_install_templates_ui),
+            ('Write SFF2 Bridge Pack', self.app.vf_sff2_pack_ui),
+            ('Create Backup Snapshot', self.app.vf_backup_snapshot_ui),
+        ])
 
         right = ttk.Frame(home, padding=(0, 0))
         right.grid(row=1, column=1, sticky='nsew', padx=(0, 8), pady=(0, 8))
@@ -95,11 +101,7 @@ class VisualForgeHomeTab(AppBackedTab):
             'The wizard creates clean M.U.G.E.N starter files, writes a dashboard and beginner guide, prepares data-only templates/plugins, and optionally installs starter move scaffolds. It keeps SFF/SND work conservative and does not claim arbitrary SFF2 binary editing.'
         ), wraplength=900, justify='left').grid(row=0, column=0, sticky='ew')
 
-        self.app.vf_home_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
-        y = ttk.Scrollbar(right, orient='vertical', command=self.app.vf_home_output.yview)
-        self.app.vf_home_output.configure(yscrollcommand=y.set)
-        self.app.vf_home_output.grid(row=2, column=0, sticky='nsew')
-        y.grid(row=2, column=1, sticky='ns')
+        self.app.vf_home_output, _ = self._create_scrolled_text(right, height=15, row=2, column=0)
         self.notebook.add(home, text='Project Home')
         self.app._vf_refresh_recent_list()
         self._set_text(
@@ -265,25 +267,19 @@ class SoundCueEditorTab(AppBackedTab):
         self.app.vf_sound_group_var = tk.StringVar(value='5')
         self.app.vf_sound_index_var = tk.StringVar(value='0')
         self.app.vf_sound_channel_var = tk.StringVar(value='0')
-        for row, (label, var) in enumerate((
-            ('AnimElem frame', self.app.vf_sound_frame_var),
-            ('Sound group', self.app.vf_sound_group_var),
-            ('Sound index', self.app.vf_sound_index_var),
-            ('Channel', self.app.vf_sound_channel_var),
-        )):
-            ttk.Label(fields, text=label).grid(row=row, column=0, sticky='w')
-            ttk.Entry(fields, textvariable=var, width=10).grid(row=row, column=1, sticky='w')
+        self._create_input_grid(fields, [
+            ('AnimElem frame', self.app.vf_sound_frame_var, 'entry', 10),
+            ('Sound group', self.app.vf_sound_group_var, 'entry', 10),
+            ('Sound index', self.app.vf_sound_index_var, 'entry', 10),
+            ('Channel', self.app.vf_sound_channel_var, 'entry', 10),
+        ], columns=1)
         ttk.Button(fields, text='Add PlaySnd Cue (.bak)', command=self.app.vf_add_sound_cue_ui).grid(row=4, column=0, columnspan=2, sticky='ew', pady=(6, 0))
         ttk.Button(left, text='Export Cue Manifest Only', command=self.app.vf_export_sound_cue_manifest_ui).grid(row=4, column=0, sticky='ew', pady=(8, 2))
         right = ttk.Frame(tab, padding=(0, 0))
         right.grid(row=1, column=1, sticky='nsew', padx=(0, 8), pady=(0, 8))
         right.columnconfigure(0, weight=1)
         right.rowconfigure(0, weight=1)
-        self.app.vf_sound_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
-        y = ttk.Scrollbar(right, orient='vertical', command=self.app.vf_sound_output.yview)
-        self.app.vf_sound_output.configure(yscrollcommand=y.set)
-        self.app.vf_sound_output.grid(row=0, column=0, sticky='nsew')
-        y.grid(row=0, column=1, sticky='ns')
+        self.app.vf_sound_output, _ = self._create_scrolled_text(right, height=15, row=0, column=0)
         self.notebook.add(tab, text='Sound Cue Editor')
 
 
@@ -316,14 +312,15 @@ class MoveComposer2Tab(AppBackedTab):
             ('sound_group', '5'), ('sound_index', '0'), ('hit_x1', '18'), ('hit_y1', '-72'), ('hit_x2', '58'), ('hit_y2', '-36'),
             ('body_x1', '-18'), ('body_y1', '-88'), ('body_x2', '18'), ('body_y2', '0'),
         ]
-        for row, (key, value) in enumerate(defaults):
-            ttk.Label(left, text=key).grid(row=row, column=0, sticky='e', padx=(0, 4), pady=1)
+        fields = []
+        for key, value in defaults:
             var = tk.StringVar(value=value)
             self.app.vf_compose_vars[key] = var
             if key == 'move_type':
-                ttk.Combobox(left, textvariable=var, values=('attack', 'projectile', 'movement'), state='readonly', width=18).grid(row=row, column=1, sticky='w', pady=1)
+                fields.append((key, var, 'combobox', ('attack', 'projectile', 'movement'), 18))
             else:
-                ttk.Entry(left, textvariable=var, width=20).grid(row=row, column=1, sticky='w', pady=1)
+                fields.append((key, var, 'entry', 20))
+        self._create_input_grid(left, fields, columns=1)
         ttk.Button(left, text='Preview Move Package', command=self.app.vf_composer2_preview).grid(row=len(defaults), column=0, columnspan=2, sticky='ew', pady=(8, 2))
         ttk.Button(left, text='Append To Project (.bak)', command=self.app.vf_composer2_append).grid(row=len(defaults) + 1, column=0, columnspan=2, sticky='ew', pady=2)
         ttk.Button(left, text='Open Visual Timeline', command=lambda: self.notebook.select(self.app.vf_timeline_frame)).grid(row=len(defaults) + 2, column=0, columnspan=2, sticky='ew', pady=2)
@@ -414,11 +411,7 @@ class TrainingDebugTab(AppBackedTab):
         right.grid(row=1, column=1, sticky='nsew', padx=(0, 8), pady=(0, 8))
         right.columnconfigure(0, weight=1)
         right.rowconfigure(0, weight=1)
-        self.app.vf_training_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
-        y = ttk.Scrollbar(right, orient='vertical', command=self.app.vf_training_output.yview)
-        self.app.vf_training_output.configure(yscrollcommand=y.set)
-        self.app.vf_training_output.grid(row=0, column=0, sticky='nsew')
-        y.grid(row=0, column=1, sticky='ns')
+        self.app.vf_training_output, _ = self._create_scrolled_text(right, height=15, row=0, column=0)
         self.notebook.add(tab, text='Training Debug')
 
 
@@ -449,11 +442,7 @@ class PluginTemplateTab(AppBackedTab):
         right.grid(row=1, column=1, sticky='nsew', padx=(0, 8), pady=(0, 8))
         right.columnconfigure(0, weight=1)
         right.rowconfigure(0, weight=1)
-        self.app.vf_plugin_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
-        y = ttk.Scrollbar(right, orient='vertical', command=self.app.vf_plugin_output.yview)
-        self.app.vf_plugin_output.configure(yscrollcommand=y.set)
-        self.app.vf_plugin_output.grid(row=0, column=0, sticky='nsew')
-        y.grid(row=0, column=1, sticky='ns')
+        self.app.vf_plugin_output, _ = self._create_scrolled_text(right, height=15, row=0, column=0)
         self.notebook.add(tab, text='Templates / Plugins')
 
 
@@ -488,9 +477,5 @@ class BackupLogTab(AppBackedTab):
         right.grid(row=1, column=1, sticky='nsew', padx=(0, 8), pady=(0, 8))
         right.columnconfigure(0, weight=1)
         right.rowconfigure(0, weight=1)
-        self.app.vf_backup_output = tk.Text(right, wrap='word', font=('Consolas', 10), state='disabled')
-        y = ttk.Scrollbar(right, orient='vertical', command=self.app.vf_backup_output.yview)
-        self.app.vf_backup_output.configure(yscrollcommand=y.set)
-        self.app.vf_backup_output.grid(row=0, column=0, sticky='nsew')
-        y.grid(row=0, column=1, sticky='ns')
+        self.app.vf_backup_output, _ = self._create_scrolled_text(right, height=15, row=0, column=0)
         self.notebook.add(tab, text='Backups / Logs')

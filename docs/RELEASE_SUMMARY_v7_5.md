@@ -1,9 +1,9 @@
 # Release Summary — MugenForge Studio v7.5 Continuity Core
 
-**Version:** `7.5.0`  
-**Title:** `MugenForge Studio 7.5 Continuity Core`  
-**Run command:** `python -m mugenforge.app`  
-**Windows launcher:** `run_windows.bat`  
+**Version:** `7.5.0`
+**Title:** `MugenForge Studio 7.5 Continuity Core`
+**Run command:** `python -m mugenforge.app`
+**Windows launcher:** `run_windows.bat`
 **Install dependencies:** `pip install -r requirements.txt`
 
 v7.5 is a continuity, stabilization, and maintainability release. It preserves the v7.0 Evidence/Authority stack and adds a front-door operating layer for long projects and future development sessions.
@@ -72,8 +72,8 @@ handoff_core/inventory/PACKAGE_INVENTORY.md
 handoff_core/handoff/NEXT_CHAT_PROMPT.md
 handoff_core/handoff/CURRENT_STATE_HANDOFF.md
 handoff_core/regression_harness/smoke_v7_5.py
-MUGENFORGE_HANDOFF_v7_5.md
-NEXT_CHAT_PROMPT_v7_5.md
+docs/MUGENFORGE_HANDOFF_v7_5.md
+docs/NEXT_CHAT_PROMPT_v7_5.md
 ```
 
 ## Why this release

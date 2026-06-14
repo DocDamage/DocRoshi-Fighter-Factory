@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from datetime import datetime
 from io import BytesIO
@@ -16,72 +16,19 @@ from .parsers import COMMON_ANIMS, parse_air, parse_code, parse_def, read_text_s
 from .move_wizard import find_character_file
 from .sff_codec import read_sff, export_all_sprites, sprite_lookup
 from .snd_codec import read_snd, export_all_sounds
+from .shared_utils import BaseResult, uniq, rel_path as _rel, get_code_files, parse_first_int, sanitize_name, parse_numbers, is_truthy
 
 TEXT_EXTS = {'.def', '.air', '.cmd', '.cns', '.st', '.txt', '.md', '.json', '.ini', '.cfg'}
 IMAGE_EXTS = {'.png', '.pcx', '.bmp', '.gif', '.jpg', '.jpeg', '.webp'}
 
 
 @dataclass
-class QualityLabResult:
+class QualityLabResult(BaseResult):
     title: str = 'Quality Lab'
-    created_files: List[str] = field(default_factory=list)
-    changed_files: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-
-    def add_created(self, path: Path | str) -> None:
-        self.created_files.append(str(path))
-
-    def add_changed(self, path: Path | str) -> None:
-        self.changed_files.append(str(path))
-
-    def add_warning(self, msg: str) -> None:
-        self.warnings.append(str(msg))
-
-    def merge(self, other: 'QualityLabResult', label: Optional[str] = None) -> None:
-        if not other:
-            return
-        prefix = f'{label}: ' if label else ''
-        self.created_files += [prefix + x for x in other.created_files]
-        self.changed_files += [prefix + x for x in other.changed_files]
-        self.warnings += [prefix + x for x in other.warnings]
-        self.notes += [prefix + x for x in other.notes]
-
-    def to_text(self) -> str:
-        lines = [self.title, '=' * max(12, len(self.title)), f'Generated: {datetime.now().isoformat(timespec="seconds")}', '']
-        if self.changed_files:
-            lines += ['Changed files:'] + [f'- {x}' for x in _uniq(self.changed_files)] + ['']
-        if self.created_files:
-            lines += ['Created files/artifacts:'] + [f'- {x}' for x in _uniq(self.created_files)] + ['']
-        if self.warnings:
-            lines += ['Warnings:'] + [f'- {x}' for x in _uniq(self.warnings)] + ['']
-        if self.notes:
-            lines += ['Notes:'] + [f'- {x}' for x in _uniq(self.notes)] + ['']
-        if len(lines) <= 4:
-            lines.append('No changes made.')
-        return '\n'.join(lines).rstrip() + '\n'
-
-
-def _uniq(items: Iterable[str]) -> List[str]:
-    out: List[str] = []
-    seen = set()
-    for item in items:
-        s = str(item)
-        if s not in seen:
-            out.append(s)
-            seen.add(s)
-    return out
 
 
 def _safe_stem(name: str) -> str:
-    return re.sub(r'[^A-Za-z0-9_\-]+', '_', str(name)).strip('_') or 'item'
-
-
-def _rel(root: Path, path: Path | str) -> str:
-    try:
-        return str(Path(path).resolve().relative_to(root.resolve()))
-    except Exception:
-        return str(path)
+    return sanitize_name(name)
 
 
 def _ql_dir(root: Path) -> Path:
@@ -96,16 +43,9 @@ def _write(path: Path, text: str) -> Path:
     return path
 
 
-def _code_files(root: Path) -> List[Path]:
-    files: List[Path] = []
-    for pat in ('*.cmd', '*.cns', '*.st'):
-        files.extend(sorted(Path(root).rglob(pat)))
-    return [p for p in files if p.is_file() and not any(part == '__pycache__' for part in p.parts)]
-
-
 def _read_code(root: Path) -> Dict[str, str]:
     out: Dict[str, str] = {}
-    for path in _code_files(root):
+    for path in get_code_files(root):
         try:
             out[_rel(root, path)] = read_text_safely(path)
         except Exception:
@@ -114,17 +54,12 @@ def _read_code(root: Path) -> Dict[str, str]:
 
 
 def _parse_numeric_pair(value: str) -> Tuple[float, float]:
-    nums = re.findall(r'-?\d+(?:\.\d+)?', str(value))
+    nums = parse_numbers(value)
     if len(nums) >= 2:
-        return float(nums[0]), float(nums[1])
+        return nums[0], nums[1]
     if len(nums) == 1:
-        return float(nums[0]), 0.0
+        return nums[0], 0.0
     return 0.0, 0.0
-
-
-def _first_int(value: str, default: int = 0) -> int:
-    m = re.search(r'-?\d+', str(value or ''))
-    return int(m.group(0)) if m else default
 
 
 def _command_defs_and_uses(texts: Dict[str, str]) -> Tuple[Dict[str, List[str]], Dict[str, List[str]]]:
@@ -152,7 +87,7 @@ def _state_defs_targets_and_anims(texts: Dict[str, str]) -> Tuple[Dict[int, List
         for st in scan.states:
             defs.setdefault(st.number, []).append(rel)
             if 'anim' in st.values:
-                anim_refs.setdefault(_first_int(st.values.get('anim', '')), []).append(f'{rel}:StateDef {st.number}')
+                anim_refs.setdefault(parse_first_int(st.values.get('anim', '')), []).append(f'{rel}:StateDef {st.number}')
             for ctrl in st.controllers:
                 stype = (ctrl.stype or ctrl.values.get('type', '')).lower()
                 if stype == 'changestate' and 'value' in ctrl.values:
@@ -180,7 +115,7 @@ def _hitdef_rows(texts: Dict[str, str]) -> List[Dict[str, object]]:
                 data[kv.group(1).strip().lower()] = kv.group(2).strip()
             rows.append({
                 'file': rel,
-                'damage': _first_int(data.get('damage', '0')),
+                'damage': parse_first_int(data.get('damage', '0')),
                 'attr': data.get('attr', ''),
                 'hitflag': data.get('hitflag', ''),
                 'guardflag': data.get('guardflag', ''),
@@ -195,14 +130,13 @@ def _hitdef_rows(texts: Dict[str, str]) -> List[Dict[str, object]]:
 def _playsnd_refs(texts: Dict[str, str]) -> List[Dict[str, object]]:
     refs: List[Dict[str, object]] = []
     block_re = re.compile(r'^\s*\[\s*State\s+[^\]]+\]\s*$(.*?)(?=^\s*\[|\Z)', re.I | re.M | re.S)
-    kv_re = re.compile(r'^\s*([^;=]+?)\s*=\s*(.*?)\s*(?:;.*)?$', re.M)
     for rel, text in texts.items():
         for block in block_re.finditer(text):
             body = block.group(1)
             if not re.search(r'^\s*type\s*=\s*PlaySnd\b', body, re.I | re.M):
                 continue
             data: Dict[str, str] = {}
-            for kv in kv_re.finditer(body):
+            for kv in re.finditer(r'^\s*([^;=]+?)\s*=\s*(.*?)\s*(?:;.*)?$', body, re.M):
                 data[kv.group(1).strip().lower()] = kv.group(2).strip()
             value = data.get('value', '')
             nums = re.findall(r'-?\d+', value)
@@ -233,7 +167,6 @@ def _def_file_references(root: Path) -> Tuple[Dict[str, str], List[str]]:
 def build_reference_matrix(root: Path) -> Dict[str, object]:
     root = Path(root)
     texts = _read_code(root)
-    all_code = '\n'.join(texts.values())
     cmd_defs, cmd_uses = _command_defs_and_uses(texts)
     statedefs, targets, anim_refs = _state_defs_targets_and_anims(texts)
     def_refs, missing_def_refs = _def_file_references(root)
@@ -436,9 +369,8 @@ def write_searchable_html_index(root: Path) -> QualityLabResult:
         except Exception:
             pass
     css = 'body{font-family:Arial,sans-serif;margin:20px;line-height:1.4} input{font-size:16px;padding:8px;width:100%;max-width:900px} table{border-collapse:collapse;width:100%;margin:12px 0} th,td{border:1px solid #ccc;padding:5px;text-align:left;font-size:13px} th{background:#eee} .warn{background:#fff1d6}.bad{background:#ffdede}.ok{background:#eaffea} code{background:#eee;padding:2px 4px}'
-    js = """
-function q(){let s=document.getElementById('search').value.toLowerCase();document.querySelectorAll('tr[data-search]').forEach(r=>{r.style.display=r.dataset.search.includes(s)?'':'none'});}
-"""
+    js = "function q(){let s=document.getElementById('search').value.toLowerCase();document.querySelectorAll('tr[data-search]').forEach(r=>{r.style.display=r.dataset.search.includes(s)?'':'none'});}"
+
     def table(title: str, rows: List[Dict[str, object]], cols: Sequence[str]) -> str:
         out = [f'<h2>{html.escape(title)}</h2>', '<table>', '<tr>' + ''.join(f'<th>{html.escape(c)}</th>' for c in cols) + '</tr>']
         for row in rows:
@@ -456,7 +388,7 @@ function q(){let s=document.getElementById('search').value.toLowerCase();documen
         scan = parse_code(text)
         for st in scan.states:
             state_rows.append({'file': rel, 'line': st.line, 'state': st.number, 'anim': st.values.get('anim',''), 'type': st.values.get('type',''), 'controllers': len(st.controllers)})
-    action_rows = [{'action': a.number, 'label': a.label or COMMON_ANIMS.get(a.number,''), 'frames': len(a.frames), 'ticks': sum(max(0, f.ticks) for f in a.frames), 'sprites': ', '.join(_uniq([f'{f.group},{f.image}' for f in a.frames])[:10])} for a in actions]
+    action_rows = [{'action': a.number, 'label': a.label or COMMON_ANIMS.get(a.number,''), 'frames': len(a.frames), 'ticks': sum(max(0, f.ticks) for f in a.frames), 'sprites': ', '.join(uniq([f'{f.group},{f.image}' for f in a.frames])[:10])} for a in actions]
     hit_rows = [{k: (v if k != 'raw' else '') for k, v in row.items()} for row in hitdefs]
     score, _ = _matrix_score(matrix)
     html_text = f"""<!doctype html><html><head><meta charset='utf-8'><title>MugenForge Quality Index - {html.escape(root.name)}</title><style>{css}</style><script>{js}</script></head><body>
@@ -539,7 +471,6 @@ def _decode_sprite_image(sff_path: Path, sprite) -> Optional[Tuple[object, int, 
 
 
 def _alpha_bbox(img) -> Optional[Tuple[int, int, int, int]]:
-    # Prefer true alpha. If every pixel is opaque, treat the top-left color as background.
     alpha = img.getchannel('A')
     bbox = alpha.getbbox()
     if bbox and bbox != (0, 0, img.width, img.height):
@@ -600,7 +531,6 @@ def build_alpha_clsn_suggestions(root: Path, *, padding: int = 2) -> QualityLabR
                 y1 = t - spr.y + frame.y - int(padding)
                 x2 = r - spr.x + frame.x + int(padding)
                 y2 = b - spr.y + frame.y + int(padding)
-                # Avoid absurd full-screen boxes from odd palettes.
                 if x2 > x1 and y2 > y1 and (x2 - x1) <= 500 and (y2 - y1) <= 500:
                     suggestions.append({'action': action.number, 'frame_index': frame_index, 'sprite': f'{frame.group},{frame.image}', 'clsn2': [x1, y1, x2, y2], 'ticks': frame.ticks})
                     air_lines += ['Clsn2: 1', f'Clsn2[0] = {x1},{y1},{x2},{y2}']
@@ -705,7 +635,7 @@ def create_asset_swap_pack(root: Path) -> QualityLabResult:
     }
     manifest_path = outdir / 'asset_swap_manifest.json'
     manifest_path.write_text(json.dumps(manifest, indent=2), encoding='utf-8')
-    readme = _write(outdir / 'README_ASSET_SWAP.md', f'''# Asset Swap Pack
+    readme = _write(outdir / 'README_ASSET_SWAP.md', '''# Asset Swap Pack
 
 This folder lets a non-coder replace art and sound files outside the raw M.U.G.E.N formats.
 
