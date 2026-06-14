@@ -1,0 +1,10 @@
+file,kind,severity,line,message
+evidence_core/runtime_runs/20260614_002144_boot_character_smoke/runtime_result.json,result_json,ok,,runtime status=pass returncode=0
+evidence_core/runtime_runs/20260614_002144_boot_character_smoke/stderr.txt,text_log,warning,4,WARNING: Duplicate action key in data/fight.def: 510 (ignored)
+evidence_core/runtime_runs/20260614_002144_boot_character_smoke/stderr.txt,text_log,warning,5,"WARNING: Kung Fu Man's state 1027 in kfm.cns, line 1476: Unknown state controller parameter(s): x, y"
+evidence_core/runtime_runs/20260614_002144_boot_character_smoke/stderr.txt,text_log,warning,6,"WARNING: Kung Fu Man's state 1027 in kfm.cns, line 1476: Unknown state controller parameter(s): x, y"
+evidence_core/runtime_runs/20260614_002144_boot_character_smoke/stderr.txt,text_log,error,7,Failed to open BGM: open sound/kfm.mid: The system cannot find the file specified.
+evidence_core/evidence/archive/runtime_runs_stderr.txt,text_log,warning,4,WARNING: Duplicate action key in data/fight.def: 510 (ignored)
+evidence_core/evidence/archive/runtime_runs_stderr.txt,text_log,warning,5,"WARNING: Kung Fu Man's state 1027 in kfm.cns, line 1476: Unknown state controller parameter(s): x, y"
+evidence_core/evidence/archive/runtime_runs_stderr.txt,text_log,warning,6,"WARNING: Kung Fu Man's state 1027 in kfm.cns, line 1476: Unknown state controller parameter(s): x, y"
+evidence_core/evidence/archive/runtime_runs_stderr.txt,text_log,error,7,Failed to open BGM: open sound/kfm.mid: The system cannot find the file specified.

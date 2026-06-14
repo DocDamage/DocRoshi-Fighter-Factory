@@ -1,0 +1,129 @@
+table: 0xc0009e6e40 {
+  ["MatchTime"] => 120
+  ["RoundTime"] => 60
+  ["WinSide"] => 0
+  ["LastRound"] => 2
+  ["Draws"] => 1
+  ["Wins"] => table: 0xc0009e6ea0 {
+                [1] => 1
+                [2] => 0
+              }
+  ["TeamModes"] => table: 0xc0009e6fc0 {
+                     [1] => 0
+                     [2] => 0
+                   }
+  ["TotalScore"] => table: 0xc0009e7020 {
+                      [1] => 27700
+                      [2] => 0
+                    }
+  ["Rounds"] => table: 0xc0009e7080 {
+                  [1] => table: 0xc0009e70e0 {
+                           ["Index"] => 1
+                           ["Timer"] => 60
+                           ["Score"] => table: 0xc0009e7140 {
+                                          [1] => 0
+                                          [2] => 0
+                                        }
+                           ["Fighters"] => table: 0xc0009e71a0 {
+                                             [1] => table: 0xc0009e7200 {
+                                                      [1] => table: 0xc0009e7260 {
+                                                               ["Name"] => "Kung Fu Man"
+                                                               ["ID"] => 56
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 0
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1000
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                             [2] => table: 0xc0009e72c0 {
+                                                      [1] => table: 0xc0009e7320 {
+                                                               ["Name"] => "Kung Fu Man"
+                                                               ["ID"] => 57
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 0
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 2
+                                                               ["Life"] => 1000
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                           }
+                         }
+                  [2] => table: 0xc0009e7380 {
+                           ["Index"] => 2
+                           ["Timer"] => 60
+                           ["Score"] => table: 0xc0009e73e0 {
+                                          [1] => 27700
+                                          [2] => 0
+                                        }
+                           ["Fighters"] => table: 0xc0009e7440 {
+                                             [1] => table: 0xc0009e74a0 {
+                                                      [1] => table: 0xc0009e7500 {
+                                                               ["Name"] => "Kung Fu Man"
+                                                               ["ID"] => 56
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 0
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1000
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => true
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => true
+                                                               ["WinPerfect"] => true
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => false
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                             [2] => table: 0xc0009e7560 {
+                                                      [1] => table: 0xc0009e75c0 {
+                                                               ["Name"] => "Kung Fu Man"
+                                                               ["ID"] => 57
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 0
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 2
+                                                               ["Life"] => 875
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => false
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                           }
+                         }
+                }
+}

@@ -1,0 +1,31 @@
+{
+  "profile": "live",
+  "command": [
+    "C:\\Users\\dferr\\tools\\Ikemen-GO\\Ikemen_GO.exe",
+    "-windowed",
+    "-nosound",
+    "-nojoy",
+    "-log",
+    "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\live_Adachi_vs_Yang_20260614_143726.log",
+    "-p1",
+    "Adachi",
+    "-p1.ai",
+    "8",
+    "-p2",
+    "Yang",
+    "-p2.ai",
+    "8",
+    "-s",
+    "stages/TrainingGrid.def",
+    "-rounds",
+    "1",
+    "-time",
+    "1"
+  ],
+  "cwd": "C:\\Users\\dferr\\tools\\Ikemen-GO",
+  "returncode": 0,
+  "status": "pass",
+  "log": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\live_Adachi_vs_Yang_20260614_143726.log",
+  "stdout_tail": "Check A: Selecting Renderer\nCheck B: Initializing GFX\nCheck C: Initializing GFX Font\nCheck D: We are GOOD\n",
+  "stderr_tail": "e 8060 in Yang.cns, line 13129: Unknown state controller parameter(s): persisent\nWARNING: Yang Xiao Long's state 1385 in Helpers.cns, line 773: Duplicate 'givepower' parameter\nWARNING: Yang Xiao Long's state 3959 in Helpers.cns, line 1693: Duplicate 'ignorehitpause' parameter\nWARNING: Yang Xiao Long's state 3959 in Helpers.cns, line 1708: Duplicate 'ignorehitpause' parameter\nWARNING: Yang Xiao Long's state 3959 in Helpers.cns, line 1715: Duplicate 'ignorehitpause' parameter\nWARNING: Yang Xiao Long's state 3959 in Helpers.cns, line 1729: Duplicate 'ignorehitpause' parameter\nWARNING: Yang Xiao Long's state 3959 in Helpers.cns, line 1736: Duplicate 'ignorehitpause' parameter\nWARNING: Yang Xiao Long's state 3959 in Helpers.cns, line 1749: Duplicate 'ignorehitpause' parameter\nWARNING: Yang Xiao Long's state 3959 in Helpers.cns, line 1756: Duplicate 'ignorehitpause' parameter\nWARNING: Yang Xiao Long's state 9877 in Helpers.cns, line 2328: Unknown state controller parameter(s): sprpriority\nWARNING: Yang Xiao Long's state 9878 in Helpers.cns, line 2381: Duplicate 'sprpriority' parameter\nWARNING: Yang Xiao Long's state 9878 in Helpers.cns, line 2406: Duplicate 'sprpriority' parameter\nWARNING: Yang Xiao Long's state 9878 in Helpers.cns, line 2429: Duplicate 'sprpriority' parameter\nWARNING: Yang Xiao Long's state 9878 in Helpers.cns, line 2454: Duplicate 'sprpriority' parameter\nWARNING: Yang Xiao Long's state 9878 in Helpers.cns, line 2483: Duplicate 'sprpriority' parameter\nWARNING: Yang Xiao Long's state 9878 in Helpers.cns, line 2505: Duplicate 'sprpriority' parameter\nWARNING: Yang Xiao Long's state 9883 in Helpers.cns, line 2667: Duplicate 'ignorehitpause' parameter\nWARNING: Yang Xiao Long's state 9883 in Helpers.cns, line 2682: Duplicate 'ignorehitpause' parameter\nWARNING: Yang Xiao Long's state 9883 in Helpers.cns, line 2689: Duplicate 'ignorehitpause' parameter\nWARNING: Yang Xiao Long's state 9883 in Helpers.cns, line 2703: Duplicate 'ignorehitpause' parameter\nWARNING: Yang Xiao Long's state 9883 in Helpers.cns, line 2710: Duplicate 'ignorehitpause' parameter\nWARNING: Yang Xiao Long's state 9883 in Helpers.cns, line 2723: Duplicate 'ignorehitpause' parameter\nWARNING: Yang Xiao Long's state 9883 in Helpers.cns, line 2730: Duplicate 'ignorehitpause' parameter\nWARNING: Yang Xiao Long's state 9884 in Helpers.cns, line 2834: Unknown state controller parameter(s): persisent\nWARNING: Yang Xiao Long's state 9884 in Helpers.cns, line 2854: Unknown state controller parameter(s): persisent\nWARNING: Yang Xiao Long's state 9884 in Helpers.cns, line 2873: Unknown state controller parameter(s): persisent\nWARNING: Yang Xiao Long's state -2 in -2-3.cns, line 136: Duplicate 'sprpriority' parameter\nWARNING: Yang Xiao Long's state -2 in -2-3.cns, line 159: Duplicate 'sprpriority' parameter\nWARNING: Yang Xiao Long's state -2 in -2-3.cns, line 182: Duplicate 'sprpriority' parameter\nWARNING: Yang Xiao Long's state -2 in -2-3.cns, line 205: Duplicate 'sprpriority' parameter\n"
+}

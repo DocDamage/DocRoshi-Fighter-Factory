@@ -1,0 +1,62 @@
+{
+  "generated": "2026-06-14T00:22:04",
+  "count": 7,
+  "evidence": [
+    {
+      "file": "evidence_core/evidence/archive/runtime_runs_runtime_command_preview.json",
+      "source": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\20260614_001438_boot_character_smoke\\runtime_command_preview.json",
+      "bytes": 333,
+      "sha256": "ceaa39c2154a407e6403d62813ade9fd16fc4c624fc4d717b0b76053903028c6",
+      "modified": "2026-06-14T00:14:38",
+      "kind": "json"
+    },
+    {
+      "file": "evidence_core/evidence/archive/runtime_runs_runtime_command_preview_1.json",
+      "source": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\20260614_001620_boot_character_smoke\\runtime_command_preview.json",
+      "bytes": 333,
+      "sha256": "6542ef602271c527a2e44016c817ebdb785bc9313321372eee7b815253efd53f",
+      "modified": "2026-06-14T00:16:20",
+      "kind": "json"
+    },
+    {
+      "file": "evidence_core/evidence/archive/runtime_runs_runtime_command_preview_2.json",
+      "source": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\20260614_002144_boot_character_smoke\\runtime_command_preview.json",
+      "bytes": 633,
+      "sha256": "881ef50f477bbc9d181451f3cbf736a2f3d55c1566d4889717d3c44c7955d770",
+      "modified": "2026-06-14T00:21:44",
+      "kind": "json"
+    },
+    {
+      "file": "evidence_core/evidence/archive/runtime_runs_runtime_result.json",
+      "source": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\20260614_002144_boot_character_smoke\\runtime_result.json",
+      "bytes": 908,
+      "sha256": "6feb7183f48bfdedcf2d528ccb49a0135f9fb9558eae8df79b40ed39abe1b874",
+      "modified": "2026-06-14T00:22:04",
+      "kind": "json"
+    },
+    {
+      "file": "evidence_core/evidence/archive/runtime_runs_stderr.txt",
+      "source": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\20260614_002144_boot_character_smoke\\stderr.txt",
+      "bytes": 476,
+      "sha256": "125d171c696d18ec213362e0e6471099b112c004a0d6142702ebde653d721b90",
+      "modified": "2026-06-14T00:22:04",
+      "kind": "txt"
+    },
+    {
+      "file": "evidence_core/evidence/archive/runtime_runs_stdout.txt",
+      "source": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\20260614_002144_boot_character_smoke\\stdout.txt",
+      "bytes": 110,
+      "sha256": "d190b701fee8f05398f07dbb5a93a208d98add7e126d8a38ac1f2ce62c90905c",
+      "modified": "2026-06-14T00:22:04",
+      "kind": "txt"
+    },
+    {
+      "file": "evidence_core/evidence/archive/runtime_runs_ikemen_quick_vs_latest.log",
+      "source": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\ikemen_quick_vs_latest.log",
+      "bytes": 8508,
+      "sha256": "8a51a56e231711017170c290ab42be28fd77bf37fffc02d9cc94b3b10299874f",
+      "modified": "2026-06-14T00:22:04",
+      "kind": "log"
+    }
+  ]
+}

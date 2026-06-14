@@ -1,0 +1,13 @@
+{
+  "generated": "2026-06-14T00:16:20",
+  "dry_run": true,
+  "profile_name": "boot_character_smoke",
+  "command": [
+    "C:\\Users\\dferr\\tools\\Ikemen-GO\\Ikemen_GO.exe",
+    "DocRoshi-Fighter-Factory",
+    "kfm",
+    "stages/training.def"
+  ],
+  "cwd": "C:\\Users\\dferr\\tools\\Ikemen-GO",
+  "timeout_seconds": 12
+}

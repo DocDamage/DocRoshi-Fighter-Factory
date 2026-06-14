@@ -1,0 +1,31 @@
+{
+  "profile": "live",
+  "command": [
+    "C:\\Users\\dferr\\tools\\Ikemen-GO\\Ikemen_GO.exe",
+    "-windowed",
+    "-nosound",
+    "-nojoy",
+    "-log",
+    "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\live_kfm_zss_vs_kfm_zss_20260614_153830.log",
+    "-p1",
+    "kfm_zss",
+    "-p1.ai",
+    "8",
+    "-p2",
+    "kfm_zss",
+    "-p2.ai",
+    "8",
+    "-s",
+    "stages/TrainingGrid.def",
+    "-rounds",
+    "1",
+    "-time",
+    "1"
+  ],
+  "cwd": "C:\\Users\\dferr\\tools\\Ikemen-GO",
+  "returncode": 0,
+  "status": "pass",
+  "log": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\live_kfm_zss_vs_kfm_zss_20260614_153830.log",
+  "stdout_tail": "Check A: Selecting Renderer\nCheck B: Initializing GFX\nCheck C: Initializing GFX Font\nCheck D: We are GOOD\n",
+  "stderr_tail": "Ikemen, GO!\nVersion: nightly Build Time: 2026.06.13\nUsing OpenGL 3.3.0 NVIDIA 596.49 (NVIDIA GeForce RTX 3060/PCIe/SSE2)\nWARNING: Duplicate action key in data/fight.def: 510 (ignored)\n"
+}

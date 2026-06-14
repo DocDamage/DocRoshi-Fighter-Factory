@@ -1,0 +1,180 @@
+{
+  "generated": "2026-06-14T14:40:38",
+  "live_build": {
+    "path": "C:\\Users\\dferr\\tools\\Ikemen-GO",
+    "exe": "C:\\Users\\dferr\\tools\\Ikemen-GO\\Ikemen_GO.exe",
+    "role": "stable large roster build",
+    "characters_in_select": 103,
+    "stages_in_select": 255,
+    "active_common_modules": [
+      "activetag",
+      "autostagecamera",
+      "dashcancel",
+      "clashing",
+      "dramaticzoom",
+      "attackdata",
+      "shadowassist"
+    ],
+    "static_validation": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\scratch\\next_pass_static_validation.json",
+    "final_smoke": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\scratch\\final_next_pass_live_20260614_143214\\live_final_report.json",
+    "compatibility_scan": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\operator_console\\compatibility\\live_roster_reference_scan.json",
+    "last_profile_smokes": [
+      "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\live_runtime_result_20260614_143726.json",
+      "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\vpfg_runtime_result_20260614_143726.json",
+      "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\live_runtime_result_20260614_144017.json"
+    ],
+    "latest_fix": "Fixed SF2_evilryu pal1 from missing SF2_eryu_00.act to existing SF2_ryu_01.act; post-fix smoke passed."
+  },
+  "vpfg_alt_build": {
+    "path": "C:\\Users\\dferr\\tools\\Ikemen-GO-VPFG-2.6",
+    "exe": "C:\\Users\\dferr\\tools\\Ikemen-GO-VPFG-2.6\\Ikemen_GO.exe",
+    "role": "alternate VPFG mechanics lab build",
+    "status": "native one-on-one and corrected tag smoke passed; do not replace live build with VPFG screenpack blindly",
+    "corrected_tag_smoke": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\scratch\\vpfg_corrected_tag_20260614_143102\\vpfg_corrected_tag_report.json"
+  },
+  "vpfg_mechanics_candidate": {
+    "path": "C:\\Users\\dferr\\tools\\Ikemen-GO-live-vpfg-merge-candidate",
+    "exe": "C:\\Users\\dferr\\tools\\Ikemen-GO-live-vpfg-merge-candidate\\Ikemen_GO.exe",
+    "role": "merged roster candidate with VPFG fight assets and selected mechanics modules enabled",
+    "status": "candidate-only branch; live build remains untouched",
+    "config": "C:\\Users\\dferr\\tools\\Ikemen-GO-live-vpfg-merge-candidate\\save\\config.ini",
+    "fight_def": "C:\\Users\\dferr\\tools\\Ikemen-GO-live-vpfg-merge-candidate\\data\\VPFG_2.0\\VP_Fight.def",
+    "enabled_modules": [
+      "VP_Functions",
+      "VP_Break",
+      "guardbreak",
+      "score",
+      "training",
+      "VPFG attackdata",
+      "VPFG autostagecamera",
+      "VP_Roman",
+      "VP_Parry",
+      "VP_Clash",
+      "VP_RushCancel",
+      "VP_ComboBreaker",
+      "VP_Support"
+    ],
+    "merge_reports": [
+      "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\operator_console\\runtime_profiles\\vpfg_merge_candidate_report_20260614_145923.json",
+      "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\operator_console\\runtime_profiles\\vpfg_fx_candidate_report_20260614_150401.json",
+      "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\operator_console\\runtime_profiles\\vpfg_fight_candidate_report_20260614_150552.json"
+    ]
+  },
+  "ikegen_screenpack_branch": {
+    "path": "C:\\Users\\dferr\\tools\\Ikemen-GO-Ikemen-Generations",
+    "exe": "C:\\Users\\dferr\\tools\\Ikemen-GO-Ikemen-Generations\\Ikemen_GO.exe",
+    "role": "IKEMEN Generations theme branch with custom menu, screenpack sounds, and lifebars",
+    "status": "installed and smoke-tested; live build remains untouched",
+    "motif": "data/ikegen/system.def",
+    "select": "C:\\Users\\dferr\\tools\\Ikemen-GO-Ikemen-Generations\\data\\ikegen\\select.def",
+    "characters_in_select": 103,
+    "stages_in_select": 255,
+    "roster_layout": "categorized into IKEMEN Generations slots; DC and Misc are hidden placeholder categories",
+    "category_report": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\operator_console\\runtime_profiles\\ikegen_category_pass_20260614_1540.json",
+    "smoke_result": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\ikegen_runtime_result_20260614_153029.json",
+    "additional_smoke_results": [
+      "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\ikegen_runtime_result_20260614_154921_635478.json",
+      "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\ikegen_runtime_result_20260614_154921_635979.json"
+    ],
+    "menu_boot_result": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\ikegen_menu_boot_result_20260614_153055.json",
+    "note": "Menu boot stayed open without crash; older motif keys produce warnings on the 2026 nightly build."
+  },
+  "swr_lifebar_branch": {
+    "path": "C:\\Users\\dferr\\tools\\Ikemen-GO-SWR-Lifebar",
+    "exe": "C:\\Users\\dferr\\tools\\Ikemen-GO-SWR-Lifebar\\Ikemen_GO.exe",
+    "role": "stable live roster with Scarlet Weather Rhapsody Arranged lifebars",
+    "status": "installed and smoke-tested; live build remains untouched",
+    "fight_def": "data/SWR_Arranged/fight.def",
+    "smoke_result": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\swr_runtime_result_20260614_153726.json",
+    "additional_smoke_results": [
+      "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\swr_runtime_result_20260614_154921_719482.json",
+      "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\swr_runtime_result_20260614_154921_663482.json"
+    ]
+  },
+  "mbevo_swr_branch": {
+    "path": "C:\\Users\\dferr\\tools\\Ikemen-GO-MBEVO",
+    "exe": "C:\\Users\\dferr\\tools\\Ikemen-GO-MBEVO\\Ikemen_GO.exe",
+    "role": "Melty Blood EVO Normal600 character select screen with Scarlet Weather Rhapsody Arranged lifebars",
+    "status": "installed and smoke-tested in a separate branch; live build remains untouched",
+    "motif": "data/Normal600/system.def",
+    "select": "C:\\Users\\dferr\\tools\\Ikemen-GO-MBEVO\\data\\Normal600\\select.def",
+    "fight_def": "data/SWR_Arranged/fight.def",
+    "characters_in_select": 103,
+    "stages_in_select": 255,
+    "launcher": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\launch_mbevo_swr.bat",
+    "smoke_results": [
+      "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\mbevo_runtime_result_20260614_160405_973586.json",
+      "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\mbevo_runtime_result_20260614_160550_411727.json"
+    ],
+    "menu_boot_result": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\mbevo_menu_boot_result_20260614_160635_481917.json",
+    "notes": [
+      "MBEVO archive did not include dedicated lifebars, so this branch intentionally uses SWR_Arranged/fight.def for lifebars.",
+      "Old WinMUGEN plugin DLLs from the MBEVO archive were not copied.",
+      "Yukiko.sff and Yumi.sff were restored from the downloaded character zips so MBEVO's full-roster menu preload can complete."
+    ]
+  },
+  "ui_lifebar_reference_assets": {
+    "staging_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\scratch\\ui_lifebar_staging_20260614_1526",
+    "skipped_for_now": [
+      {
+        "archive": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\game mechanics\\MBEVO.rar",
+        "reason": "readme says WinMUGEN Plus only and archive contains old plugin DLLs; keep as reference, not an IKEMEN branch"
+      }
+    ]
+  },
+  "staged_reference_systems": {
+    "live_reference_path": "C:\\Users\\dferr\\tools\\Ikemen-GO\\data\\_mechanics_reference",
+    "systems": [
+      "orochi_kyo_tag",
+      "add004ikemen20200830a62"
+    ],
+    "status": "available for merge/reference, not active in live config"
+  },
+  "controller_setup": {
+    "status": "configured for modern gamepads; physical detection requires the controllers to be connected before launch",
+    "supported_targets_checked": [
+      "PS5 DualSense / PS5 Controller mappings exist in external/gamecontrollerdb.txt",
+      "Xbox One Controller mappings exist in external/gamecontrollerdb.txt"
+    ],
+    "joystick_slots": {
+      "p1": 0,
+      "p2": 1,
+      "p3": 2,
+      "p4": 3
+    },
+    "default_mapping": {
+      "movement": "D-pad",
+      "a": "A / Cross",
+      "b": "B / Circle",
+      "c": "Right Trigger / R2",
+      "x": "X / Square",
+      "y": "Y / Triangle",
+      "z": "Right Bumper / R1",
+      "d": "Left Bumper / L1",
+      "w": "Left Trigger / L2",
+      "start": "Start / Options",
+      "menu": "Back / Share"
+    },
+    "latest_detection_report": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\operator_console\\controller_reports\\controller_detection_20260614_151206.json",
+    "note": "The 2026-06-14 detection pass did not see either controller connected. Plug both in or pair them before launch, then rerun tools\\check_controllers.ps1."
+  },
+  "notes": [
+    "Live build is the stable play/build target.",
+    "VPFG is installed as a separate mechanics lab because its screenpack/modules are tightly coupled.",
+    "Orochi/Add004 overlap with active tag systems and need a deliberate merge pass before activation.",
+    "OHMSBY chars emit duplicate/unknown parameter warnings but smoke tests return success."
+  ],
+  "launch_helpers": {
+    "mugenforge_app": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\run_windows.bat",
+    "live_ikemen": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\launch_live_ikemen.bat",
+    "vpfg_ikemen": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\launch_vpfg_ikemen.bat",
+    "candidate_vpfg_mechanics": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\launch_candidate_vpfg_mechanics.bat",
+    "ikegen_screenpack": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\launch_ikemen_generations.bat",
+    "swr_lifebar": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\launch_swr_lifebar.bat",
+    "mbevo_swr": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\launch_mbevo_swr.bat",
+    "controller_test_live": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\launch_controller_test_live.bat",
+    "controller_test_candidate": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\launch_controller_test_candidate.bat",
+    "controller_detector": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\tools\\check_controllers.ps1",
+    "profile_smoke_runner": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\tools\\run_ikemen_profile.py"
+  }
+}

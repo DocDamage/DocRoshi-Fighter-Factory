@@ -1,0 +1,98 @@
+{
+  "tool": "MugenForge Studio",
+  "operator_console_version": "7.5.0",
+  "generated_at": "2026-06-14T00:22:49",
+  "project_root": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory",
+  "project_name": "DocRoshi-Fighter-Factory",
+  "main_files": {
+    "def": "",
+    "air": "",
+    "cmd": "",
+    "cns": "",
+    "sff": "",
+    "snd": ""
+  },
+  "file_counts_by_extension": {
+    ".bat": 1,
+    ".csv": 12,
+    ".html": 1,
+    ".json": 23,
+    ".log": 3,
+    ".md": 48,
+    ".py": 114,
+    ".txt": 19,
+    ".zip": 5,
+    "[none]": 1
+  },
+  "missing_required": [
+    ".def",
+    ".air",
+    ".cmd",
+    ".cns",
+    ".sff",
+    ".snd"
+  ],
+  "air": {
+    "action_count": 0,
+    "frame_count": 0,
+    "actions": [],
+    "missing_common_actions": []
+  },
+  "code": {
+    "command_count": 0,
+    "commands": [],
+    "state_count": 0,
+    "states": [],
+    "hitdef_count": 0,
+    "missing_state_targets": [],
+    "issues": []
+  },
+  "sff": {
+    "present": false
+  },
+  "snd": {
+    "present": false
+  },
+  "report_dirs": {
+    "evidence_core": {
+      "path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core",
+      "file_count": 30,
+      "total_bytes": 78561,
+      "latest_mtime": 1781410959.5789394
+    },
+    "operator_console": {
+      "path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\operator_console",
+      "file_count": 13,
+      "total_bytes": 101103,
+      "latest_mtime": 1781410969.3610077
+    },
+    "docs": {
+      "path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\docs",
+      "file_count": 30,
+      "total_bytes": 88126,
+      "latest_mtime": 1781410592.6733544
+    }
+  },
+  "recent_report_dirs": [
+    {
+      "name": "operator_console",
+      "file_count": 13,
+      "total_bytes": 101103,
+      "latest_mtime": "2026-06-14T00:22:49"
+    },
+    {
+      "name": "evidence_core",
+      "file_count": 30,
+      "total_bytes": 78561,
+      "latest_mtime": "2026-06-14T00:22:39"
+    },
+    {
+      "name": "docs",
+      "file_count": 30,
+      "total_bytes": 88126,
+      "latest_mtime": "2026-06-14T00:16:32"
+    }
+  ],
+  "blocker_count": 6,
+  "operator_score": 52
+}

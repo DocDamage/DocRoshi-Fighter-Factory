@@ -1,0 +1,29 @@
+== compileall ==
+compileall: PASS
+
+== backend smoke ==
+Import/version smoke
+mugenforge.__version__ = 4.5.0
+APP_TITLE = MugenForge Studio 4.5 Timeline Core
+FORGE_TIMELINE_VERSION = 4.5.0
+Forge Timeline dashboard: PASS created=2 changed=0 warnings=0
+Integrated move timeline: PASS created=4 changed=0 warnings=0
+Move timeline sheet export: PASS created=2 changed=3 warnings=0
+CLSN track sheet export: PASS created=1 changed=0 warnings=0
+HitDef track sheet export: PASS created=1 changed=0 warnings=0
+Editable StateDef graph: PASS created=6 changed=0 warnings=0
+Palette Studio: PASS created=3 changed=0 warnings=0
+Stage Live Preview: PASS created=3 changed=0 warnings=1
+Forge Timeline bundle: PASS created=1 changed=0 warnings=0
+Move timeline sheet apply: PASS changed=2 warnings=0
+CLSN track sheet apply: PASS changed=1 warnings=0
+HitDef track sheet apply: PASS changed=1 warnings=0
+State graph sheet apply: PASS changed=1 warnings=0
+Palette sheet apply: PASS created=2 warnings=0
+One-Click Timeline Pass: PASS created=8 changed=20 warnings=1
+
+== tkinter xvfb smoke ==
+APP_TITLE = MugenForge Studio 4.5 Timeline Core
+tab_count = 40
+Forge Timeline tab present = True
+Tkinter UI smoke: PASS

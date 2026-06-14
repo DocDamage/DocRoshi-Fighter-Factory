@@ -1,0 +1,129 @@
+table: 0xc0023ced80 {
+  ["MatchTime"] => 12
+  ["RoundTime"] => 6
+  ["WinSide"] => 1
+  ["LastRound"] => 2
+  ["Draws"] => 1
+  ["Wins"] => table: 0xc0023cede0 {
+                [1] => 0
+                [2] => 1
+              }
+  ["TeamModes"] => table: 0xc0023cee40 {
+                     [1] => 0
+                     [2] => 0
+                   }
+  ["TotalScore"] => table: 0xc0023ceea0 {
+                      [1] => 2200
+                      [2] => 27100
+                    }
+  ["Rounds"] => table: 0xc0023cef00 {
+                  [1] => table: 0xc0023cef60 {
+                           ["Index"] => 1
+                           ["Timer"] => 6
+                           ["Score"] => table: 0xc0023cefc0 {
+                                          [1] => 2200
+                                          [2] => 0
+                                        }
+                           ["Fighters"] => table: 0xc0023cf020 {
+                                             [1] => table: 0xc0023cf080 {
+                                                      [1] => table: 0xc0023cf0e0 {
+                                                               ["Name"] => "Jenifer Walters"
+                                                               ["ID"] => 56
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 0
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1075
+                                                               ["LifeMax"] => 1075
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                             [2] => table: 0xc0023cf140 {
+                                                      [1] => table: 0xc0023cf1a0 {
+                                                               ["Name"] => "T.Hawk"
+                                                               ["ID"] => 57
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 1
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1000
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => true
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                           }
+                         }
+                  [2] => table: 0xc0023cf200 {
+                           ["Index"] => 2
+                           ["Timer"] => 6
+                           ["Score"] => table: 0xc0023cf260 {
+                                          [1] => 0
+                                          [2] => 27100
+                                        }
+                           ["Fighters"] => table: 0xc0023cf2c0 {
+                                             [1] => table: 0xc0023cf320 {
+                                                      [1] => table: 0xc0023cf380 {
+                                                               ["Name"] => "Jenifer Walters"
+                                                               ["ID"] => 56
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 0
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 999
+                                                               ["LifeMax"] => 1075
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => false
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                             [2] => table: 0xc0023cf3e0 {
+                                                      [1] => table: 0xc0023cf440 {
+                                                               ["Name"] => "T.Hawk"
+                                                               ["ID"] => 57
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 1
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1000
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => 6
+                                                               ["Win"] => true
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => true
+                                                               ["WinPerfect"] => true
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => false
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                           }
+                         }
+                }
+}

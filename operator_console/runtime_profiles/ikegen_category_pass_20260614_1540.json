@@ -1,0 +1,22 @@
+{
+  "select": "C:\\Users\\dferr\\tools\\Ikemen-GO-Ikemen-Generations\\data\\ikegen\\select.def",
+  "backup": "C:\\Users\\dferr\\tools\\Ikemen-GO-Ikemen-Generations\\data\\ikegen\\select.def.bak-categorized-20260614_154822",
+  "total": 103,
+  "stages": 255,
+  "categories": {
+    "STREET FIGHTER": 17,
+    "KING OF FIGHTERS": 4,
+    "DARKSTALKERS": 1,
+    "CAPCOM": 6,
+    "SNK": 4,
+    "MARVEL": 1,
+    "DC": 0,
+    "NINTENDO": 12,
+    "ARC SYSTEM WORKS": 28,
+    "MELTY BLOOD": 4,
+    "ANIME": 13,
+    "CARTOON": 2,
+    "MUGEN": 11,
+    "MISC": 0
+  }
+}

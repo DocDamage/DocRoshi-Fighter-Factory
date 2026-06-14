@@ -1,0 +1,3804 @@
+{
+  "summary": {
+    "generated": "2026-06-14T14:05:35",
+    "project_root": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory",
+    "ikemen_build": "C:\\Users\\dferr\\tools\\Ikemen-GO",
+    "asset_counts": {
+      "game_mechanics": 16,
+      "third_party_characters": 57,
+      "stages": 25,
+      "resource_downloads": 253,
+      "ohmsby_pack": 69
+    },
+    "asset_bytes": {
+      "game_mechanics": 170534867,
+      "third_party_characters": 995724498,
+      "stages": 286780223,
+      "resource_downloads": 3172705681,
+      "ohmsby_pack": 2451508494
+    },
+    "inventory_csv": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\operator_console\\asset_inventory\\fighter_factory_asset_inventory.csv"
+  },
+  "assets": [
+    {
+      "category": "game_mechanics",
+      "name": "activetag.zip",
+      "relative_path": "game mechanics\\activetag.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\game mechanics\\activetag.zip",
+      "extension": ".zip",
+      "bytes": 17083,
+      "last_write_time": "2026-06-14T08:45:22"
+    },
+    {
+      "category": "game_mechanics",
+      "name": "add004ikemen20200830a62.zip",
+      "relative_path": "game mechanics\\add004ikemen20200830a62.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\game mechanics\\add004ikemen20200830a62.zip",
+      "extension": ".zip",
+      "bytes": 3426381,
+      "last_write_time": "2026-06-14T13:46:53"
+    },
+    {
+      "category": "game_mechanics",
+      "name": "Alice.rar",
+      "relative_path": "game mechanics\\Alice.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\game mechanics\\Alice.rar",
+      "extension": ".rar",
+      "bytes": 7185146,
+      "last_write_time": "2026-06-14T13:47:15"
+    },
+    {
+      "category": "game_mechanics",
+      "name": "alice_kof_AI(mugen1.1).zip",
+      "relative_path": "game mechanics\\alice_kof_AI(mugen1.1).zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\game mechanics\\alice_kof_AI(mugen1.1).zip",
+      "extension": ".zip",
+      "bytes": 78261,
+      "last_write_time": "2026-06-14T13:47:20"
+    },
+    {
+      "category": "game_mechanics",
+      "name": "attackdata.zip",
+      "relative_path": "game mechanics\\attackdata.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\game mechanics\\attackdata.zip",
+      "extension": ".zip",
+      "bytes": 6919,
+      "last_write_time": "2026-06-14T08:45:32"
+    },
+    {
+      "category": "game_mechanics",
+      "name": "autostagecamera.zip",
+      "relative_path": "game mechanics\\autostagecamera.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\game mechanics\\autostagecamera.zip",
+      "extension": ".zip",
+      "bytes": 4348,
+      "last_write_time": "2026-06-14T08:46:15"
+    },
+    {
+      "category": "game_mechanics",
+      "name": "clashing.zip",
+      "relative_path": "game mechanics\\clashing.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\game mechanics\\clashing.zip",
+      "extension": ".zip",
+      "bytes": 4043,
+      "last_write_time": "2026-06-14T08:46:40"
+    },
+    {
+      "category": "game_mechanics",
+      "name": "dashcancel.zip",
+      "relative_path": "game mechanics\\dashcancel.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\game mechanics\\dashcancel.zip",
+      "extension": ".zip",
+      "bytes": 6771,
+      "last_write_time": "2026-06-14T08:45:54"
+    },
+    {
+      "category": "game_mechanics",
+      "name": "dramaticzoom.zip",
+      "relative_path": "game mechanics\\dramaticzoom.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\game mechanics\\dramaticzoom.zip",
+      "extension": ".zip",
+      "bytes": 3671,
+      "last_write_time": "2026-06-14T08:45:42"
+    },
+    {
+      "category": "game_mechanics",
+      "name": "Link.rar",
+      "relative_path": "game mechanics\\Link.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\game mechanics\\Link.rar",
+      "extension": ".rar",
+      "bytes": 7552808,
+      "last_write_time": "2026-06-14T13:48:49"
+    },
+    {
+      "category": "game_mechanics",
+      "name": "MvC2 Mouser Style Template.zip",
+      "relative_path": "game mechanics\\MvC2 Mouser Style Template.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\game mechanics\\MvC2 Mouser Style Template.zip",
+      "extension": ".zip",
+      "bytes": 10658425,
+      "last_write_time": "2026-06-14T13:49:39"
+    },
+    {
+      "category": "game_mechanics",
+      "name": "orochi-kyotag-13-02-26.7z",
+      "relative_path": "game mechanics\\orochi-kyotag-13-02-26.7z",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\game mechanics\\orochi-kyotag-13-02-26.7z",
+      "extension": ".7z",
+      "bytes": 189292,
+      "last_write_time": "2026-06-14T13:45:15"
+    },
+    {
+      "category": "game_mechanics",
+      "name": "shadowassist.zip",
+      "relative_path": "game mechanics\\shadowassist.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\game mechanics\\shadowassist.zip",
+      "extension": ".zip",
+      "bytes": 6933,
+      "last_write_time": "2026-06-14T08:46:07"
+    },
+    {
+      "category": "game_mechanics",
+      "name": "SheHulkMVC.rar",
+      "relative_path": "game mechanics\\SheHulkMVC.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\game mechanics\\SheHulkMVC.rar",
+      "extension": ".rar",
+      "bytes": 8631289,
+      "last_write_time": "2026-06-14T13:47:47"
+    },
+    {
+      "category": "game_mechanics",
+      "name": "Vanessa.rar",
+      "relative_path": "game mechanics\\Vanessa.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\game mechanics\\Vanessa.rar",
+      "extension": ".rar",
+      "bytes": 1783550,
+      "last_write_time": "2026-06-14T13:49:29"
+    },
+    {
+      "category": "game_mechanics",
+      "name": "VPFG_2.6.rar",
+      "relative_path": "game mechanics\\VPFG_2.6.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\game mechanics\\VPFG_2.6.rar",
+      "extension": ".rar",
+      "bytes": 130979947,
+      "last_write_time": "2026-06-14T13:46:13"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Alucard.rar",
+      "relative_path": "third_party_characters\\Alucard.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Alucard.rar",
+      "extension": ".rar",
+      "bytes": 13982320,
+      "last_write_time": "2026-06-14T09:53:01"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "ananzi.zip",
+      "relative_path": "third_party_characters\\ananzi.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\ananzi.zip",
+      "extension": ".zip",
+      "bytes": 7002611,
+      "last_write_time": "2026-06-14T08:50:19"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "animus.zip",
+      "relative_path": "third_party_characters\\animus.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\animus.zip",
+      "extension": ".zip",
+      "bytes": 12544846,
+      "last_write_time": "2026-06-14T08:50:29"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Balrog.zip",
+      "relative_path": "third_party_characters\\Balrog.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Balrog.zip",
+      "extension": ".zip",
+      "bytes": 68492412,
+      "last_write_time": "2026-06-14T00:43:54"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Blanka HD.rar",
+      "relative_path": "third_party_characters\\Blanka HD.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Blanka HD.rar",
+      "extension": ".rar",
+      "bytes": 19055586,
+      "last_write_time": "2026-06-14T00:42:36"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Cammy HD.zip",
+      "relative_path": "third_party_characters\\Cammy HD.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Cammy HD.zip",
+      "extension": ".zip",
+      "bytes": 10199766,
+      "last_write_time": "2026-06-14T00:44:34"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Cervantes.zip",
+      "relative_path": "third_party_characters\\Cervantes.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Cervantes.zip",
+      "extension": ".zip",
+      "bytes": 12487240,
+      "last_write_time": "2026-06-14T09:44:02"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "CFJ_Cham_Cham.rar",
+      "relative_path": "third_party_characters\\CFJ_Cham_Cham.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\CFJ_Cham_Cham.rar",
+      "extension": ".rar",
+      "bytes": 8723666,
+      "last_write_time": "2026-06-14T09:48:33"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Chun-Li HD.rar",
+      "relative_path": "third_party_characters\\Chun-Li HD.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Chun-Li HD.rar",
+      "extension": ".rar",
+      "bytes": 22401776,
+      "last_write_time": "2026-06-14T00:42:51"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "CvS_Edward.rar",
+      "relative_path": "third_party_characters\\CvS_Edward.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\CvS_Edward.rar",
+      "extension": ".rar",
+      "bytes": 15867296,
+      "last_write_time": "2026-06-14T09:50:28"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "CvS_Inferno.rar",
+      "relative_path": "third_party_characters\\CvS_Inferno.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\CvS_Inferno.rar",
+      "extension": ".rar",
+      "bytes": 6802180,
+      "last_write_time": "2026-06-14T09:50:17"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Dante_AI.zip",
+      "relative_path": "third_party_characters\\Dante_AI.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Dante_AI.zip",
+      "extension": ".zip",
+      "bytes": 12441523,
+      "last_write_time": "2026-06-14T09:56:48"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Deadpool.rar",
+      "relative_path": "third_party_characters\\Deadpool.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Deadpool.rar",
+      "extension": ".rar",
+      "bytes": 16732287,
+      "last_write_time": "2026-06-14T09:48:47"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Death Adder.zip",
+      "relative_path": "third_party_characters\\Death Adder.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Death Adder.zip",
+      "extension": ".zip",
+      "bytes": 5435146,
+      "last_write_time": "2026-06-14T09:43:05"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Deejay HD.zip",
+      "relative_path": "third_party_characters\\Deejay HD.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Deejay HD.zip",
+      "extension": ".zip",
+      "bytes": 12969139,
+      "last_write_time": "2026-06-14T00:44:11"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Dr.Doom.rar",
+      "relative_path": "third_party_characters\\Dr.Doom.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Dr.Doom.rar",
+      "extension": ".rar",
+      "bytes": 14804947,
+      "last_write_time": "2026-06-14T09:48:54"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "E. Honda HD.zip",
+      "relative_path": "third_party_characters\\E. Honda HD.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\E. Honda HD.zip",
+      "extension": ".zip",
+      "bytes": 10413213,
+      "last_write_time": "2026-06-14T00:46:10"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Electro.rar",
+      "relative_path": "third_party_characters\\Electro.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Electro.rar",
+      "extension": ".rar",
+      "bytes": 29619345,
+      "last_write_time": "2026-06-14T09:42:04"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Elena.rar",
+      "relative_path": "third_party_characters\\Elena.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Elena.rar",
+      "extension": ".rar",
+      "bytes": 7716734,
+      "last_write_time": "2026-06-14T09:45:33"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Evil Ken HD.rar",
+      "relative_path": "third_party_characters\\Evil Ken HD.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Evil Ken HD.rar",
+      "extension": ".rar",
+      "bytes": 12597661,
+      "last_write_time": "2026-06-14T00:45:43"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Evil Ryu HD.zip",
+      "relative_path": "third_party_characters\\Evil Ryu HD.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Evil Ryu HD.zip",
+      "extension": ".zip",
+      "bytes": 15094194,
+      "last_write_time": "2026-06-14T00:45:05"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Fei-Long HD.rar",
+      "relative_path": "third_party_characters\\Fei-Long HD.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Fei-Long HD.rar",
+      "extension": ".rar",
+      "bytes": 21365745,
+      "last_write_time": "2026-06-14T00:42:19"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Felicia 01.rar",
+      "relative_path": "third_party_characters\\Felicia 01.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Felicia 01.rar",
+      "extension": ".rar",
+      "bytes": 7555444,
+      "last_write_time": "2026-06-14T09:49:00"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "final.zip",
+      "relative_path": "third_party_characters\\final.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\final.zip",
+      "extension": ".zip",
+      "bytes": 16150443,
+      "last_write_time": "2026-06-14T08:50:34"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Golbez.rar",
+      "relative_path": "third_party_characters\\Golbez.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Golbez.rar",
+      "extension": ".rar",
+      "bytes": 108187103,
+      "last_write_time": "2026-06-14T09:54:02"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Gouki HD.zip",
+      "relative_path": "third_party_characters\\Gouki HD.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Gouki HD.zip",
+      "extension": ".zip",
+      "bytes": 11574286,
+      "last_write_time": "2026-06-14T00:44:50"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "guy_pots.zip",
+      "relative_path": "third_party_characters\\guy_pots.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\guy_pots.zip",
+      "extension": ".zip",
+      "bytes": 5360176,
+      "last_write_time": "2026-06-14T08:40:26"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "hashi.zip",
+      "relative_path": "third_party_characters\\hashi.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\hashi.zip",
+      "extension": ".zip",
+      "bytes": 11205048,
+      "last_write_time": "2026-06-14T08:50:15"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "irohapots.rar",
+      "relative_path": "third_party_characters\\irohapots.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\irohapots.rar",
+      "extension": ".rar",
+      "bytes": 8041297,
+      "last_write_time": "2026-06-14T09:48:20"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "janos.zip",
+      "relative_path": "third_party_characters\\janos.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\janos.zip",
+      "extension": ".zip",
+      "bytes": 18016050,
+      "last_write_time": "2026-06-14T08:50:37"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Jin Saotome.rar",
+      "relative_path": "third_party_characters\\Jin Saotome.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Jin Saotome.rar",
+      "extension": ".rar",
+      "bytes": 8608894,
+      "last_write_time": "2026-06-14T09:45:44"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Ken HD.rar",
+      "relative_path": "third_party_characters\\Ken HD.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Ken HD.rar",
+      "extension": ".rar",
+      "bytes": 26672220,
+      "last_write_time": "2026-06-14T00:43:24"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "lei-lei_pots.zip",
+      "relative_path": "third_party_characters\\lei-lei_pots.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\lei-lei_pots.zip",
+      "extension": ".zip",
+      "bytes": 6843718,
+      "last_write_time": "2026-06-14T08:40:45"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Linkv1.5.rar",
+      "relative_path": "third_party_characters\\Linkv1.5.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Linkv1.5.rar",
+      "extension": ".rar",
+      "bytes": 6621701,
+      "last_write_time": "2026-06-14T09:50:47"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "M.Bison (dictator) HD.rar",
+      "relative_path": "third_party_characters\\M.Bison (dictator) HD.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\M.Bison (dictator) HD.rar",
+      "extension": ".rar",
+      "bytes": 16374539,
+      "last_write_time": "2026-06-14T00:41:29"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "magus.zip",
+      "relative_path": "third_party_characters\\magus.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\magus.zip",
+      "extension": ".zip",
+      "bytes": 2309941,
+      "last_write_time": "2026-06-14T09:55:18"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Megaman.rar",
+      "relative_path": "third_party_characters\\Megaman.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Megaman.rar",
+      "extension": ".rar",
+      "bytes": 11263250,
+      "last_write_time": "2026-06-14T09:49:07"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "noroko.zip",
+      "relative_path": "third_party_characters\\noroko.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\noroko.zip",
+      "extension": ".zip",
+      "bytes": 16212573,
+      "last_write_time": "2026-06-14T08:50:24"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "peketo.zip",
+      "relative_path": "third_party_characters\\peketo.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\peketo.zip",
+      "extension": ".zip",
+      "bytes": 8196847,
+      "last_write_time": "2026-06-14T08:50:05"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Psylocke.rar",
+      "relative_path": "third_party_characters\\Psylocke.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Psylocke.rar",
+      "extension": ".rar",
+      "bytes": 6301997,
+      "last_write_time": "2026-06-14T09:48:38"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Rogue.rar",
+      "relative_path": "third_party_characters\\Rogue.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Rogue.rar",
+      "extension": ".rar",
+      "bytes": 22714543,
+      "last_write_time": "2026-06-14T09:49:13"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Ryu HD.rar",
+      "relative_path": "third_party_characters\\Ryu HD.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Ryu HD.rar",
+      "extension": ".rar",
+      "bytes": 28278932,
+      "last_write_time": "2026-06-14T00:43:10"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Samus_CvS.rar",
+      "relative_path": "third_party_characters\\Samus_CvS.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Samus_CvS.rar",
+      "extension": ".rar",
+      "bytes": 5263383,
+      "last_write_time": "2026-06-14T09:42:51"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "SimonBelmont(CvS).rar",
+      "relative_path": "third_party_characters\\SimonBelmont(CvS).rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\SimonBelmont(CvS).rar",
+      "extension": ".rar",
+      "bytes": 3371297,
+      "last_write_time": "2026-06-14T09:53:29"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Solid Snake.zip",
+      "relative_path": "third_party_characters\\Solid Snake.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Solid Snake.zip",
+      "extension": ".zip",
+      "bytes": 14094552,
+      "last_write_time": "2026-06-14T09:43:34"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "T. Hawk HD.zip",
+      "relative_path": "third_party_characters\\T. Hawk HD.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\T. Hawk HD.zip",
+      "extension": ".zip",
+      "bytes": 11789603,
+      "last_write_time": "2026-06-14T00:45:56"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "VegetaZ2.rar",
+      "relative_path": "third_party_characters\\VegetaZ2.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\VegetaZ2.rar",
+      "extension": ".rar",
+      "bytes": 43953463,
+      "last_write_time": "2026-06-14T09:48:26"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Venom 01.rar",
+      "relative_path": "third_party_characters\\Venom 01.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Venom 01.rar",
+      "extension": ".rar",
+      "bytes": 8232630,
+      "last_write_time": "2026-06-14T09:49:33"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Vergil_AI.zip",
+      "relative_path": "third_party_characters\\Vergil_AI.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Vergil_AI.zip",
+      "extension": ".zip",
+      "bytes": 10709346,
+      "last_write_time": "2026-06-14T09:56:42"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Voldo.zip",
+      "relative_path": "third_party_characters\\Voldo.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Voldo.zip",
+      "extension": ".zip",
+      "bytes": 5139719,
+      "last_write_time": "2026-06-14T09:43:40"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Yang.zip",
+      "relative_path": "third_party_characters\\Yang.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Yang.zip",
+      "extension": ".zip",
+      "bytes": 36710114,
+      "last_write_time": "2026-06-14T14:00:27"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Yu.zip",
+      "relative_path": "third_party_characters\\Yu.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Yu.zip",
+      "extension": ".zip",
+      "bytes": 35521051,
+      "last_write_time": "2026-06-14T14:00:38"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Yukiko.zip",
+      "relative_path": "third_party_characters\\Yukiko.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Yukiko.zip",
+      "extension": ".zip",
+      "bytes": 34773255,
+      "last_write_time": "2026-06-14T14:00:52"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Yumi.zip",
+      "relative_path": "third_party_characters\\Yumi.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Yumi.zip",
+      "extension": ".zip",
+      "bytes": 38883137,
+      "last_write_time": "2026-06-14T14:01:00"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Zangief HD.rar",
+      "relative_path": "third_party_characters\\Zangief HD.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Zangief HD.rar",
+      "extension": ".rar",
+      "bytes": 15354292,
+      "last_write_time": "2026-06-14T00:43:37"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "Zero.rar",
+      "relative_path": "third_party_characters\\Zero.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\Zero.rar",
+      "extension": ".rar",
+      "bytes": 24351482,
+      "last_write_time": "2026-06-14T09:49:22"
+    },
+    {
+      "category": "third_party_characters",
+      "name": "ZeroSuitSamus_CvS.rar",
+      "relative_path": "third_party_characters\\ZeroSuitSamus_CvS.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\third_party_characters\\ZeroSuitSamus_CvS.rar",
+      "extension": ".rar",
+      "bytes": 4338539,
+      "last_write_time": "2026-06-14T09:42:27"
+    },
+    {
+      "category": "stages",
+      "name": "Astral Birth Void Stage.zip",
+      "relative_path": "stages\\Astral Birth Void Stage.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\Astral Birth Void Stage.zip",
+      "extension": ".zip",
+      "bytes": 4296568,
+      "last_write_time": "2026-06-14T13:53:47"
+    },
+    {
+      "category": "stages",
+      "name": "Bowser 64 Stages.zip",
+      "relative_path": "stages\\Bowser 64 Stages.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\Bowser 64 Stages.zip",
+      "extension": ".zip",
+      "bytes": 11202821,
+      "last_write_time": "2026-06-14T13:53:32"
+    },
+    {
+      "category": "stages",
+      "name": "Dracula's Throne Room.zip",
+      "relative_path": "stages\\Dracula's Throne Room.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\Dracula's Throne Room.zip",
+      "extension": ".zip",
+      "bytes": 11111340,
+      "last_write_time": "2026-06-14T13:53:24"
+    },
+    {
+      "category": "stages",
+      "name": "England_sky.rar",
+      "relative_path": "stages\\England_sky.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\England_sky.rar",
+      "extension": ".rar",
+      "bytes": 6024322,
+      "last_write_time": "2026-06-14T00:54:25"
+    },
+    {
+      "category": "stages",
+      "name": "IpsenCastleOutside.zip",
+      "relative_path": "stages\\IpsenCastleOutside.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\IpsenCastleOutside.zip",
+      "extension": ".zip",
+      "bytes": 7612829,
+      "last_write_time": "2026-06-14T08:42:03"
+    },
+    {
+      "category": "stages",
+      "name": "KhuulJudgment.zip",
+      "relative_path": "stages\\KhuulJudgment.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\KhuulJudgment.zip",
+      "extension": ".zip",
+      "bytes": 3185605,
+      "last_write_time": "2026-06-14T08:44:19"
+    },
+    {
+      "category": "stages",
+      "name": "Marx Stage.zip",
+      "relative_path": "stages\\Marx Stage.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\Marx Stage.zip",
+      "extension": ".zip",
+      "bytes": 10630084,
+      "last_write_time": "2026-06-14T13:53:40"
+    },
+    {
+      "category": "stages",
+      "name": "NarukamiShrine.zip",
+      "relative_path": "stages\\NarukamiShrine.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\NarukamiShrine.zip",
+      "extension": ".zip",
+      "bytes": 12703818,
+      "last_write_time": "2026-06-14T08:42:22"
+    },
+    {
+      "category": "stages",
+      "name": "SSF2THDR_Blanka_Stage_1_1_720.zip",
+      "relative_path": "stages\\SSF2THDR_Blanka_Stage_1_1_720.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\SSF2THDR_Blanka_Stage_1_1_720.zip",
+      "extension": ".zip",
+      "bytes": 16223114,
+      "last_write_time": "2026-06-14T00:57:02"
+    },
+    {
+      "category": "stages",
+      "name": "SSF2THDR_DeeJay_Stage_1_1_720.zip",
+      "relative_path": "stages\\SSF2THDR_DeeJay_Stage_1_1_720.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\SSF2THDR_DeeJay_Stage_1_1_720.zip",
+      "extension": ".zip",
+      "bytes": 14655816,
+      "last_write_time": "2026-06-14T00:56:52"
+    },
+    {
+      "category": "stages",
+      "name": "SSF2THDR_Dhalsim_Stage_1_1_16.zip",
+      "relative_path": "stages\\SSF2THDR_Dhalsim_Stage_1_1_16.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\SSF2THDR_Dhalsim_Stage_1_1_16.zip",
+      "extension": ".zip",
+      "bytes": 15639420,
+      "last_write_time": "2026-06-14T00:56:45"
+    },
+    {
+      "category": "stages",
+      "name": "SSF2THDR_EHonda_Stage_SF2_1_1.zip",
+      "relative_path": "stages\\SSF2THDR_EHonda_Stage_SF2_1_1.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\SSF2THDR_EHonda_Stage_SF2_1_1.zip",
+      "extension": ".zip",
+      "bytes": 14380077,
+      "last_write_time": "2026-06-14T00:56:19"
+    },
+    {
+      "category": "stages",
+      "name": "SSF2THDR_Fei_Long_Stage_1_1_1.zip",
+      "relative_path": "stages\\SSF2THDR_Fei_Long_Stage_1_1_1.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\SSF2THDR_Fei_Long_Stage_1_1_1.zip",
+      "extension": ".zip",
+      "bytes": 11966473,
+      "last_write_time": "2026-06-14T00:56:37"
+    },
+    {
+      "category": "stages",
+      "name": "SSF2THDR_Guile_Stage_SF2CE_1_.zip",
+      "relative_path": "stages\\SSF2THDR_Guile_Stage_SF2CE_1_.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\SSF2THDR_Guile_Stage_SF2CE_1_.zip",
+      "extension": ".zip",
+      "bytes": 16331318,
+      "last_write_time": "2026-06-14T00:56:12"
+    },
+    {
+      "category": "stages",
+      "name": "SSF2THDR_Ken_Stage_1_1_9.zip",
+      "relative_path": "stages\\SSF2THDR_Ken_Stage_1_1_9.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\SSF2THDR_Ken_Stage_1_1_9.zip",
+      "extension": ".zip",
+      "bytes": 15501608,
+      "last_write_time": "2026-06-14T00:56:03"
+    },
+    {
+      "category": "stages",
+      "name": "SSF2THDR_M_Bison_Stage_1_1_16.zip",
+      "relative_path": "stages\\SSF2THDR_M_Bison_Stage_1_1_16.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\SSF2THDR_M_Bison_Stage_1_1_16.zip",
+      "extension": ".zip",
+      "bytes": 4079094,
+      "last_write_time": "2026-06-14T00:55:05"
+    },
+    {
+      "category": "stages",
+      "name": "SSF2THDR_Ryu_SF2_Stage_1_1_16.zip",
+      "relative_path": "stages\\SSF2THDR_Ryu_SF2_Stage_1_1_16.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\SSF2THDR_Ryu_SF2_Stage_1_1_16.zip",
+      "extension": ".zip",
+      "bytes": 12689287,
+      "last_write_time": "2026-06-14T00:55:16"
+    },
+    {
+      "category": "stages",
+      "name": "SSF2THDR_Ryu_Stage_1_1_9.zip",
+      "relative_path": "stages\\SSF2THDR_Ryu_Stage_1_1_9.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\SSF2THDR_Ryu_Stage_1_1_9.zip",
+      "extension": ".zip",
+      "bytes": 13503452,
+      "last_write_time": "2026-06-14T00:55:47"
+    },
+    {
+      "category": "stages",
+      "name": "SSF2THDR_Sagat_Stage_SF2_1_1_.zip",
+      "relative_path": "stages\\SSF2THDR_Sagat_Stage_SF2_1_1_.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\SSF2THDR_Sagat_Stage_SF2_1_1_.zip",
+      "extension": ".zip",
+      "bytes": 8945150,
+      "last_write_time": "2026-06-14T00:55:11"
+    },
+    {
+      "category": "stages",
+      "name": "SSF2THDR_THawk_Stage_1_1_9.zip",
+      "relative_path": "stages\\SSF2THDR_THawk_Stage_1_1_9.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\SSF2THDR_THawk_Stage_1_1_9.zip",
+      "extension": ".zip",
+      "bytes": 15082885,
+      "last_write_time": "2026-06-14T00:54:54"
+    },
+    {
+      "category": "stages",
+      "name": "SSF2THDR_Zangief_SF2_Stage_1_.zip",
+      "relative_path": "stages\\SSF2THDR_Zangief_SF2_Stage_1_.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\SSF2THDR_Zangief_SF2_Stage_1_.zip",
+      "extension": ".zip",
+      "bytes": 15428513,
+      "last_write_time": "2026-06-14T00:54:59"
+    },
+    {
+      "category": "stages",
+      "name": "SSF2THDR_Zangief_Stage.zip",
+      "relative_path": "stages\\SSF2THDR_Zangief_Stage.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\SSF2THDR_Zangief_Stage.zip",
+      "extension": ".zip",
+      "bytes": 26885029,
+      "last_write_time": "2026-06-14T00:54:45"
+    },
+    {
+      "category": "stages",
+      "name": "VacantLot.zip",
+      "relative_path": "stages\\VacantLot.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\VacantLot.zip",
+      "extension": ".zip",
+      "bytes": 9650682,
+      "last_write_time": "2026-06-14T08:44:03"
+    },
+    {
+      "category": "stages",
+      "name": "VinesweptMarket.zip",
+      "relative_path": "stages\\VinesweptMarket.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\VinesweptMarket.zip",
+      "extension": ".zip",
+      "bytes": 4082608,
+      "last_write_time": "2026-06-14T08:44:34"
+    },
+    {
+      "category": "stages",
+      "name": "VP_Ringout_Stages.rar",
+      "relative_path": "stages\\VP_Ringout_Stages.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\stages\\VP_Ringout_Stages.rar",
+      "extension": ".rar",
+      "bytes": 4968310,
+      "last_write_time": "2026-06-14T10:05:04"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "archive_risk_scan.csv",
+      "relative_path": "resource_downloads\\archive_risk_scan.csv",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\archive_risk_scan.csv",
+      "extension": ".csv",
+      "bytes": 0,
+      "last_write_time": "2026-06-14T13:32:42"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "fightPatched.def",
+      "relative_path": "resource_downloads\\character_references\\fightPatched.def",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\character_references\\fightPatched.def",
+      "extension": ".def",
+      "bytes": 10245,
+      "last_write_time": "2026-06-14T13:32:22"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "MvC2_Mouser_Style_Template.zip",
+      "relative_path": "resource_downloads\\character_references\\MvC2_Mouser_Style_Template.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\character_references\\MvC2_Mouser_Style_Template.zip",
+      "extension": ".zip",
+      "bytes": 10658425,
+      "last_write_time": "2026-06-14T13:32:23"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SheHulkMVC.rar",
+      "relative_path": "resource_downloads\\character_references\\SheHulkMVC.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\character_references\\SheHulkMVC.rar",
+      "extension": ".rar",
+      "bytes": 8631289,
+      "last_write_time": "2026-06-14T13:24:26"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "T.Hawk.rar",
+      "relative_path": "resource_downloads\\character_references\\T.Hawk.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\character_references\\T.Hawk.rar",
+      "extension": ".rar",
+      "bytes": 7324278,
+      "last_write_time": "2026-06-14T13:32:22"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "download_manifest.json",
+      "relative_path": "resource_downloads\\download_manifest.json",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\download_manifest.json",
+      "extension": ".json",
+      "bytes": 142481,
+      "last_write_time": "2026-06-14T13:32:24"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "download_summary.json",
+      "relative_path": "resource_downloads\\download_summary.json",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\download_summary.json",
+      "extension": ".json",
+      "bytes": 4844,
+      "last_write_time": "2026-06-14T13:32:56"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Adachi.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Adachi.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Adachi.zip",
+      "extension": ".zip",
+      "bytes": 45580882,
+      "last_write_time": "2024-08-24T22:32:18"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Akame.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Akame.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Akame.zip",
+      "extension": ".zip",
+      "bytes": 16753587,
+      "last_write_time": "2024-08-24T22:32:23"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Akatsuki.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Akatsuki.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Akatsuki.zip",
+      "extension": ".zip",
+      "bytes": 26199306,
+      "last_write_time": "2024-08-24T22:32:27"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Aoko.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Aoko.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Aoko.zip",
+      "extension": ".zip",
+      "bytes": 37819531,
+      "last_write_time": "2024-08-24T22:32:32"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Asuna.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Asuna.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Asuna.zip",
+      "extension": ".zip",
+      "bytes": 15449303,
+      "last_write_time": "2024-08-24T22:32:35"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Azrael.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Azrael.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Azrael.zip",
+      "extension": ".zip",
+      "bytes": 41007244,
+      "last_write_time": "2024-09-08T12:12:31"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Bisclavret.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Bisclavret.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Bisclavret.zip",
+      "extension": ".zip",
+      "bytes": 44799076,
+      "last_write_time": "2024-08-24T22:32:43"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Blitztank.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Blitztank.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Blitztank.zip",
+      "extension": ".zip",
+      "bytes": 32928532,
+      "last_write_time": "2024-08-24T22:32:47"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Bowser.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Bowser.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Bowser.zip",
+      "extension": ".zip",
+      "bytes": 96870033,
+      "last_write_time": "2024-08-24T22:32:53"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Byleth.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Byleth.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Byleth.zip",
+      "extension": ".zip",
+      "bytes": 91582741,
+      "last_write_time": "2024-08-24T22:32:58"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Carmine.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Carmine.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Carmine.zip",
+      "extension": ".zip",
+      "bytes": 25523691,
+      "last_write_time": "2024-08-24T22:33:01"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Charlotte.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Charlotte.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Charlotte.zip",
+      "extension": ".zip",
+      "bytes": 12197810,
+      "last_write_time": "2024-08-24T22:33:05"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Coco.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Coco.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Coco.zip",
+      "extension": ".zip",
+      "bytes": 21553087,
+      "last_write_time": "2024-09-20T22:24:14"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "DANoel.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\DANoel.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\DANoel.zip",
+      "extension": ".zip",
+      "bytes": 39149954,
+      "last_write_time": "2024-08-24T22:33:08"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Dedede.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Dedede.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Dedede.zip",
+      "extension": ".zip",
+      "bytes": 45704413,
+      "last_write_time": "2024-08-24T22:33:13"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Es.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Es.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Es.zip",
+      "extension": ".zip",
+      "bytes": 32280599,
+      "last_write_time": "2024-08-24T22:33:17"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Faust.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Faust.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Faust.zip",
+      "extension": ".zip",
+      "bytes": 28029056,
+      "last_write_time": "2024-08-24T22:33:22"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Gordeau.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Gordeau.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Gordeau.zip",
+      "extension": ".zip",
+      "bytes": 24938898,
+      "last_write_time": "2024-09-08T12:12:41"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Heart.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Heart.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Heart.zip",
+      "extension": ".zip",
+      "bytes": 30510742,
+      "last_write_time": "2024-08-24T22:33:31"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Hilda.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Hilda.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Hilda.zip",
+      "extension": ".zip",
+      "bytes": 30329265,
+      "last_write_time": "2024-08-24T22:33:36"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Homura.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Homura.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Homura.zip",
+      "extension": ".zip",
+      "bytes": 37586905,
+      "last_write_time": "2024-08-24T22:33:40"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Hyde.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Hyde.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Hyde.zip",
+      "extension": ".zip",
+      "bytes": 27282509,
+      "last_write_time": "2024-08-24T22:33:44"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Iori.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Iori.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Iori.zip",
+      "extension": ".zip",
+      "bytes": 41996876,
+      "last_write_time": "2024-08-24T22:33:49"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Isaac.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Isaac.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Isaac.zip",
+      "extension": ".zip",
+      "bytes": 17329108,
+      "last_write_time": "2024-08-24T22:33:53"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Jin.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Jin.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Jin.zip",
+      "extension": ".zip",
+      "bytes": 33268324,
+      "last_write_time": "2024-09-12T18:56:13"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Joker.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Joker.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Joker.zip",
+      "extension": ".zip",
+      "bytes": 65824219,
+      "last_write_time": "2024-08-24T22:34:04"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Kirby.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kirby.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kirby.zip",
+      "extension": ".zip",
+      "bytes": 33766316,
+      "last_write_time": "2024-08-24T22:34:08"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Kirito.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kirito.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kirito.zip",
+      "extension": ".zip",
+      "bytes": 19113415,
+      "last_write_time": "2024-08-24T22:34:13"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Kohaku.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kohaku.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kohaku.zip",
+      "extension": ".zip",
+      "bytes": 30118546,
+      "last_write_time": "2024-08-24T22:34:17"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Kokonoe.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kokonoe.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kokonoe.zip",
+      "extension": ".zip",
+      "bytes": 43492698,
+      "last_write_time": "2024-08-24T22:34:21"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "KRool.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\KRool.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\KRool.zip",
+      "extension": ".zip",
+      "bytes": 62843512,
+      "last_write_time": "2024-08-24T22:34:27"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Kuroko.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kuroko.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kuroko.zip",
+      "extension": ".zip",
+      "bytes": 17563360,
+      "last_write_time": "2024-09-08T12:12:47"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Ky.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Ky.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Ky.zip",
+      "extension": ".zip",
+      "bytes": 21825814,
+      "last_write_time": "2024-08-24T22:34:34"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Lambda-11.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Lambda-11.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Lambda-11.zip",
+      "extension": ".zip",
+      "bytes": 48157781,
+      "last_write_time": "2024-08-24T22:34:41"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Lina.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Lina.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Lina.zip",
+      "extension": ".zip",
+      "bytes": 36896490,
+      "last_write_time": "2024-09-08T12:12:57"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Mai.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Mai.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Mai.zip",
+      "extension": ".zip",
+      "bytes": 36457098,
+      "last_write_time": "2024-08-24T22:34:48"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Merkava.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Merkava.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Merkava.zip",
+      "extension": ".zip",
+      "bytes": 29310669,
+      "last_write_time": "2024-08-24T22:34:54"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Metaknight.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Metaknight.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Metaknight.zip",
+      "extension": ".zip",
+      "bytes": 28136989,
+      "last_write_time": "2024-08-24T22:34:58"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Mika.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Mika.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Mika.zip",
+      "extension": ".zip",
+      "bytes": 32600687,
+      "last_write_time": "2024-08-24T22:35:02"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Misaka.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Misaka.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Misaka.zip",
+      "extension": ".zip",
+      "bytes": 15349295,
+      "last_write_time": "2024-08-24T22:35:07"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Mitsuru.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Mitsuru.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Mitsuru.zip",
+      "extension": ".zip",
+      "bytes": 30856886,
+      "last_write_time": "2024-08-24T22:35:12"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Nanase.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Nanase.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Nanase.zip",
+      "extension": ".zip",
+      "bytes": 23324515,
+      "last_write_time": "2024-08-24T22:35:16"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "PCiel.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\PCiel.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\PCiel.zip",
+      "extension": ".zip",
+      "bytes": 33680222,
+      "last_write_time": "2024-08-24T22:35:21"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Pistrix.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Pistrix.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Pistrix.zip",
+      "extension": ".zip",
+      "bytes": 25836516,
+      "last_write_time": "2024-08-24T22:35:24"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Plant.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Plant.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Plant.zip",
+      "extension": ".zip",
+      "bytes": 35653404,
+      "last_write_time": "2024-08-24T22:35:27"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Pyra.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Pyra.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Pyra.zip",
+      "extension": ".zip",
+      "bytes": 74362736,
+      "last_write_time": "2024-08-24T22:35:32"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Quote.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Quote.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Quote.zip",
+      "extension": ".zip",
+      "bytes": 14161363,
+      "last_write_time": "2024-09-08T12:12:52"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Ragna.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Ragna.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Ragna.zip",
+      "extension": ".zip",
+      "bytes": 31261176,
+      "last_write_time": "2024-08-24T22:46:59"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Ridley.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Ridley.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Ridley.zip",
+      "extension": ".zip",
+      "bytes": 100684095,
+      "last_write_time": "2024-08-24T22:35:48"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Robo_Weiss.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Robo_Weiss.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Robo_Weiss.zip",
+      "extension": ".zip",
+      "bytes": 38902252,
+      "last_write_time": "2024-08-24T22:35:51"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Ruby.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Ruby.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Ruby.zip",
+      "extension": ".zip",
+      "bytes": 31755564,
+      "last_write_time": "2024-08-24T22:35:55"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Samus.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Samus.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Samus.zip",
+      "extension": ".zip",
+      "bytes": 41388114,
+      "last_write_time": "2024-08-24T22:31:34"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Saya.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Saya.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Saya.zip",
+      "extension": ".zip",
+      "bytes": 19745480,
+      "last_write_time": "2024-08-24T22:31:40"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Shana.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Shana.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Shana.zip",
+      "extension": ".zip",
+      "bytes": 24566897,
+      "last_write_time": "2024-08-24T22:31:44"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Shantae.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Shantae.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Shantae.zip",
+      "extension": ".zip",
+      "bytes": 28705015,
+      "last_write_time": "2024-08-25T15:18:34"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Sol.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Sol.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Sol.zip",
+      "extension": ".zip",
+      "bytes": 32746556,
+      "last_write_time": "2024-08-24T22:31:53"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Susanoo.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Susanoo.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Susanoo.zip",
+      "extension": ".zip",
+      "bytes": 48528525,
+      "last_write_time": "2024-08-24T22:31:56"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Tager.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Tager.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Tager.zip",
+      "extension": ".zip",
+      "bytes": 39324446,
+      "last_write_time": "2024-08-24T22:32:01"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Taiga.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Taiga.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Taiga.zip",
+      "extension": ".zip",
+      "bytes": 18588086,
+      "last_write_time": "2024-09-08T12:12:37"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Terumi.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Terumi.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Terumi.zip",
+      "extension": ".zip",
+      "bytes": 36223578,
+      "last_write_time": "2024-08-24T22:32:09"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Thief.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Thief.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Thief.zip",
+      "extension": ".zip",
+      "bytes": 26204083,
+      "last_write_time": "2024-08-24T22:32:14"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Vlov.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Vlov.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Vlov.zip",
+      "extension": ".zip",
+      "bytes": 41040095,
+      "last_write_time": "2024-08-24T22:36:04"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "WaddleDee.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\WaddleDee.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\WaddleDee.zip",
+      "extension": ".zip",
+      "bytes": 22801510,
+      "last_write_time": "2024-08-24T22:36:07"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Wagner.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Wagner.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Wagner.zip",
+      "extension": ".zip",
+      "bytes": 27790411,
+      "last_write_time": "2024-08-24T22:36:10"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Waldstein.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Waldstein.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Waldstein.zip",
+      "extension": ".zip",
+      "bytes": 39361051,
+      "last_write_time": "2024-08-24T22:36:15"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Yang.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Yang.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Yang.zip",
+      "extension": ".zip",
+      "bytes": 36710114,
+      "last_write_time": "2026-06-14T14:00:27"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Yu.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Yu.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Yu.zip",
+      "extension": ".zip",
+      "bytes": 35521051,
+      "last_write_time": "2026-06-14T14:00:38"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Yukiko.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Yukiko.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Yukiko.zip",
+      "extension": ".zip",
+      "bytes": 34773255,
+      "last_write_time": "2026-06-14T14:00:52"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Yumi.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Yumi.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Yumi.zip",
+      "extension": ".zip",
+      "bytes": 38883137,
+      "last_write_time": "2026-06-14T14:01:00"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi_files.csv",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi_files.csv",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi_files.csv",
+      "extension": ".csv",
+      "bytes": 3377,
+      "last_write_time": "2026-06-14T14:01:40"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi_manifest.json",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi_manifest.json",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi_manifest.json",
+      "extension": ".json",
+      "bytes": 2595,
+      "last_write_time": "2026-06-14T13:59:44"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi_risk_scan.csv",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi_risk_scan.csv",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi_risk_scan.csv",
+      "extension": ".csv",
+      "bytes": 0,
+      "last_write_time": "2026-06-14T14:01:40"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "activetag.zip",
+      "relative_path": "resource_downloads\\pots_addons\\activetag.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_addons\\activetag.zip",
+      "extension": ".zip",
+      "bytes": 17083,
+      "last_write_time": "2026-06-14T13:24:08"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "attackdata.zip",
+      "relative_path": "resource_downloads\\pots_addons\\attackdata.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_addons\\attackdata.zip",
+      "extension": ".zip",
+      "bytes": 6919,
+      "last_write_time": "2026-06-14T13:24:09"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "autostagecamera.zip",
+      "relative_path": "resource_downloads\\pots_addons\\autostagecamera.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_addons\\autostagecamera.zip",
+      "extension": ".zip",
+      "bytes": 4348,
+      "last_write_time": "2026-06-14T13:24:12"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "clashing.zip",
+      "relative_path": "resource_downloads\\pots_addons\\clashing.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_addons\\clashing.zip",
+      "extension": ".zip",
+      "bytes": 4043,
+      "last_write_time": "2026-06-14T13:24:12"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "commentator_cvs2.zip",
+      "relative_path": "resource_downloads\\pots_addons\\commentator_cvs2.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_addons\\commentator_cvs2.zip",
+      "extension": ".zip",
+      "bytes": 281620,
+      "last_write_time": "2026-06-14T13:24:19"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "commentator_jr.zip",
+      "relative_path": "resource_downloads\\pots_addons\\commentator_jr.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_addons\\commentator_jr.zip",
+      "extension": ".zip",
+      "bytes": 21011766,
+      "last_write_time": "2026-06-14T13:24:20"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "cosmic_drift.zip",
+      "relative_path": "resource_downloads\\pots_addons\\cosmic_drift.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_addons\\cosmic_drift.zip",
+      "extension": ".zip",
+      "bytes": 20392935,
+      "last_write_time": "2026-06-14T13:24:17"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "dashcancel.zip",
+      "relative_path": "resource_downloads\\pots_addons\\dashcancel.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_addons\\dashcancel.zip",
+      "extension": ".zip",
+      "bytes": 6771,
+      "last_write_time": "2026-06-14T13:24:10"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "dramaticzoom.zip",
+      "relative_path": "resource_downloads\\pots_addons\\dramaticzoom.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_addons\\dramaticzoom.zip",
+      "extension": ".zip",
+      "bytes": 3671,
+      "last_write_time": "2026-06-14T13:24:09"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "mugen1_lifebar_double_remix.zip",
+      "relative_path": "resource_downloads\\pots_addons\\mugen1_lifebar_double_remix.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_addons\\mugen1_lifebar_double_remix.zip",
+      "extension": ".zip",
+      "bytes": 6693985,
+      "last_write_time": "2026-06-14T13:24:16"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "mugen1_lifebar_remix.zip",
+      "relative_path": "resource_downloads\\pots_addons\\mugen1_lifebar_remix.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_addons\\mugen1_lifebar_remix.zip",
+      "extension": ".zip",
+      "bytes": 1916833,
+      "last_write_time": "2026-06-14T13:24:14"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "mugen1_screenpack_remix.zip",
+      "relative_path": "resource_downloads\\pots_addons\\mugen1_screenpack_remix.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_addons\\mugen1_screenpack_remix.zip",
+      "extension": ".zip",
+      "bytes": 5755374,
+      "last_write_time": "2026-06-14T13:24:15"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "MvCcommon.rar",
+      "relative_path": "resource_downloads\\pots_addons\\MvCcommon.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_addons\\MvCcommon.rar",
+      "extension": ".rar",
+      "bytes": 11614,
+      "last_write_time": "2026-06-14T13:22:11"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "rainbowedition.zip",
+      "relative_path": "resource_downloads\\pots_addons\\rainbowedition.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_addons\\rainbowedition.zip",
+      "extension": ".zip",
+      "bytes": 5999,
+      "last_write_time": "2026-06-14T13:24:18"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SFcommon.rar",
+      "relative_path": "resource_downloads\\pots_addons\\SFcommon.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_addons\\SFcommon.rar",
+      "extension": ".rar",
+      "bytes": 11091,
+      "last_write_time": "2026-06-14T13:22:11"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "shadowassist.zip",
+      "relative_path": "resource_downloads\\pots_addons\\shadowassist.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_addons\\shadowassist.zip",
+      "extension": ".zip",
+      "bytes": 6933,
+      "last_write_time": "2026-06-14T13:24:11"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "AbarayaVS2.zip",
+      "relative_path": "resource_downloads\\pots_stages\\AbarayaVS2.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\AbarayaVS2.zip",
+      "extension": ".zip",
+      "bytes": 2911650,
+      "last_write_time": "2026-06-14T13:32:02"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "AengmoreSkies.zip",
+      "relative_path": "resource_downloads\\pots_stages\\AengmoreSkies.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\AengmoreSkies.zip",
+      "extension": ".zip",
+      "bytes": 422018,
+      "last_write_time": "2026-06-14T13:30:32"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Aethersporia.zip",
+      "relative_path": "resource_downloads\\pots_stages\\Aethersporia.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\Aethersporia.zip",
+      "extension": ".zip",
+      "bytes": 2640159,
+      "last_write_time": "2026-06-14T13:32:10"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "AlexandriaDuel.zip",
+      "relative_path": "resource_downloads\\pots_stages\\AlexandriaDuel.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\AlexandriaDuel.zip",
+      "extension": ".zip",
+      "bytes": 3290984,
+      "last_write_time": "2026-06-14T13:29:24"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "AlexandriaMainStreet.zip",
+      "relative_path": "resource_downloads\\pots_stages\\AlexandriaMainStreet.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\AlexandriaMainStreet.zip",
+      "extension": ".zip",
+      "bytes": 3787977,
+      "last_write_time": "2026-06-14T13:30:20"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "AncientTowerChasm.zip",
+      "relative_path": "resource_downloads\\pots_stages\\AncientTowerChasm.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\AncientTowerChasm.zip",
+      "extension": ".zip",
+      "bytes": 7232590,
+      "last_write_time": "2026-06-14T13:29:40"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "BarricadedStation.zip",
+      "relative_path": "resource_downloads\\pots_stages\\BarricadedStation.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\BarricadedStation.zip",
+      "extension": ".zip",
+      "bytes": 6973589,
+      "last_write_time": "2026-06-14T13:30:39"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "BeloshDen.zip",
+      "relative_path": "resource_downloads\\pots_stages\\BeloshDen.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\BeloshDen.zip",
+      "extension": ".zip",
+      "bytes": 3869270,
+      "last_write_time": "2026-06-14T13:31:44"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "BlightstoneCrypt.zip",
+      "relative_path": "resource_downloads\\pots_stages\\BlightstoneCrypt.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\BlightstoneCrypt.zip",
+      "extension": ".zip",
+      "bytes": 4540604,
+      "last_write_time": "2026-06-14T13:31:53"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "BoneTheCook.zip",
+      "relative_path": "resource_downloads\\pots_stages\\BoneTheCook.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\BoneTheCook.zip",
+      "extension": ".zip",
+      "bytes": 7932743,
+      "last_write_time": "2026-06-14T13:30:31"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "BurmeciaThrone.zip",
+      "relative_path": "resource_downloads\\pots_stages\\BurmeciaThrone.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\BurmeciaThrone.zip",
+      "extension": ".zip",
+      "bytes": 4594249,
+      "last_write_time": "2026-06-14T13:32:06"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "BurmeciaThroneHR.zip",
+      "relative_path": "resource_downloads\\pots_stages\\BurmeciaThroneHR.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\BurmeciaThroneHR.zip",
+      "extension": ".zip",
+      "bytes": 10792153,
+      "last_write_time": "2026-06-14T13:30:53"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "CargoShipDeck.zip",
+      "relative_path": "resource_downloads\\pots_stages\\CargoShipDeck.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\CargoShipDeck.zip",
+      "extension": ".zip",
+      "bytes": 3134654,
+      "last_write_time": "2026-06-14T13:32:16"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "ChaosDimension.zip",
+      "relative_path": "resource_downloads\\pots_stages\\ChaosDimension.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\ChaosDimension.zip",
+      "extension": ".zip",
+      "bytes": 1304447,
+      "last_write_time": "2026-06-14T13:31:50"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "ChaosDimensionAlt.zip",
+      "relative_path": "resource_downloads\\pots_stages\\ChaosDimensionAlt.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\ChaosDimensionAlt.zip",
+      "extension": ".zip",
+      "bytes": 1304472,
+      "last_write_time": "2026-06-14T13:30:56"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "ChessBattle.zip",
+      "relative_path": "resource_downloads\\pots_stages\\ChessBattle.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\ChessBattle.zip",
+      "extension": ".zip",
+      "bytes": 2567908,
+      "last_write_time": "2026-06-14T13:32:01"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "ClawedCitadel.zip",
+      "relative_path": "resource_downloads\\pots_stages\\ClawedCitadel.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\ClawedCitadel.zip",
+      "extension": ".zip",
+      "bytes": 3057556,
+      "last_write_time": "2026-06-14T13:32:15"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "CleyraObservationPost.zip",
+      "relative_path": "resource_downloads\\pots_stages\\CleyraObservationPost.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\CleyraObservationPost.zip",
+      "extension": ".zip",
+      "bytes": 3806801,
+      "last_write_time": "2026-06-14T13:32:21"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "CleyraTrunk.zip",
+      "relative_path": "resource_downloads\\pots_stages\\CleyraTrunk.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\CleyraTrunk.zip",
+      "extension": ".zip",
+      "bytes": 11445742,
+      "last_write_time": "2026-06-14T13:30:26"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "ComixZone.zip",
+      "relative_path": "resource_downloads\\pots_stages\\ComixZone.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\ComixZone.zip",
+      "extension": ".zip",
+      "bytes": 2111110,
+      "last_write_time": "2026-06-14T13:31:54"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "CosmicClearing.zip",
+      "relative_path": "resource_downloads\\pots_stages\\CosmicClearing.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\CosmicClearing.zip",
+      "extension": ".zip",
+      "bytes": 3200619,
+      "last_write_time": "2026-06-14T13:31:45"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "CrimsonProgeny.zip",
+      "relative_path": "resource_downloads\\pots_stages\\CrimsonProgeny.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\CrimsonProgeny.zip",
+      "extension": ".zip",
+      "bytes": 3725998,
+      "last_write_time": "2026-06-14T13:31:38"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "CrystalBloomCavern.zip",
+      "relative_path": "resource_downloads\\pots_stages\\CrystalBloomCavern.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\CrystalBloomCavern.zip",
+      "extension": ".zip",
+      "bytes": 3360902,
+      "last_write_time": "2026-06-14T13:32:19"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "CursedCapGrove.zip",
+      "relative_path": "resource_downloads\\pots_stages\\CursedCapGrove.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\CursedCapGrove.zip",
+      "extension": ".zip",
+      "bytes": 2933317,
+      "last_write_time": "2026-06-14T13:30:40"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "DaliLandingGround.zip",
+      "relative_path": "resource_downloads\\pots_stages\\DaliLandingGround.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\DaliLandingGround.zip",
+      "extension": ".zip",
+      "bytes": 2635807,
+      "last_write_time": "2026-06-14T13:31:24"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "DaobanTemple.zip",
+      "relative_path": "resource_downloads\\pots_stages\\DaobanTemple.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\DaobanTemple.zip",
+      "extension": ".zip",
+      "bytes": 3272430,
+      "last_write_time": "2026-06-14T13:32:07"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "DD-Amon.zip",
+      "relative_path": "resource_downloads\\pots_stages\\DD-Amon.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\DD-Amon.zip",
+      "extension": ".zip",
+      "bytes": 1181252,
+      "last_write_time": "2026-06-14T13:29:20"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "DDArena.zip",
+      "relative_path": "resource_downloads\\pots_stages\\DDArena.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\DDArena.zip",
+      "extension": ".zip",
+      "bytes": 988717,
+      "last_write_time": "2026-06-14T13:30:17"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "DDArena2.zip",
+      "relative_path": "resource_downloads\\pots_stages\\DDArena2.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\DDArena2.zip",
+      "extension": ".zip",
+      "bytes": 988664,
+      "last_write_time": "2026-06-14T13:32:04"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "DeadForest.zip",
+      "relative_path": "resource_downloads\\pots_stages\\DeadForest.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\DeadForest.zip",
+      "extension": ".zip",
+      "bytes": 4443024,
+      "last_write_time": "2026-06-14T13:32:05"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "DeathValleyStarry.zip",
+      "relative_path": "resource_downloads\\pots_stages\\DeathValleyStarry.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\DeathValleyStarry.zip",
+      "extension": ".zip",
+      "bytes": 123086,
+      "last_write_time": "2026-06-14T13:29:16"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "DeathValleyXvSF.zip",
+      "relative_path": "resource_downloads\\pots_stages\\DeathValleyXvSF.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\DeathValleyXvSF.zip",
+      "extension": ".zip",
+      "bytes": 63152,
+      "last_write_time": "2026-06-14T13:30:24"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "DeepSeaDeposit.zip",
+      "relative_path": "resource_downloads\\pots_stages\\DeepSeaDeposit.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\DeepSeaDeposit.zip",
+      "extension": ".zip",
+      "bytes": 2195562,
+      "last_write_time": "2026-06-14T13:29:31"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "DeepVioletHaze.zip",
+      "relative_path": "resource_downloads\\pots_stages\\DeepVioletHaze.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\DeepVioletHaze.zip",
+      "extension": ".zip",
+      "bytes": 3552058,
+      "last_write_time": "2026-06-14T13:29:28"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "DerelictChurch.zip",
+      "relative_path": "resource_downloads\\pots_stages\\DerelictChurch.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\DerelictChurch.zip",
+      "extension": ".zip",
+      "bytes": 3882300,
+      "last_write_time": "2026-06-14T13:31:26"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "DesertedChateauVS2.zip",
+      "relative_path": "resource_downloads\\pots_stages\\DesertedChateauVS2.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\DesertedChateauVS2.zip",
+      "extension": ".zip",
+      "bytes": 2989764,
+      "last_write_time": "2026-06-14T13:31:05"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "DesertRose.zip",
+      "relative_path": "resource_downloads\\pots_stages\\DesertRose.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\DesertRose.zip",
+      "extension": ".zip",
+      "bytes": 2935937,
+      "last_write_time": "2026-06-14T13:30:45"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "DreamsGodlyVoyeur.zip",
+      "relative_path": "resource_downloads\\pots_stages\\DreamsGodlyVoyeur.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\DreamsGodlyVoyeur.zip",
+      "extension": ".zip",
+      "bytes": 3233633,
+      "last_write_time": "2026-06-14T13:32:17"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "EarthHarp.zip",
+      "relative_path": "resource_downloads\\pots_stages\\EarthHarp.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\EarthHarp.zip",
+      "extension": ".zip",
+      "bytes": 3458542,
+      "last_write_time": "2026-06-14T13:30:43"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "EidolonWall.zip",
+      "relative_path": "resource_downloads\\pots_stages\\EidolonWall.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\EidolonWall.zip",
+      "extension": ".zip",
+      "bytes": 3675851,
+      "last_write_time": "2026-06-14T13:30:14"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "EntangledSanctuary.zip",
+      "relative_path": "resource_downloads\\pots_stages\\EntangledSanctuary.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\EntangledSanctuary.zip",
+      "extension": ".zip",
+      "bytes": 5890380,
+      "last_write_time": "2026-06-14T13:29:39"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "EvilForestLightClearing.zip",
+      "relative_path": "resource_downloads\\pots_stages\\EvilForestLightClearing.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\EvilForestLightClearing.zip",
+      "extension": ".zip",
+      "bytes": 3868169,
+      "last_write_time": "2026-06-14T13:30:59"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "FadingWraith.zip",
+      "relative_path": "resource_downloads\\pots_stages\\FadingWraith.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\FadingWraith.zip",
+      "extension": ".zip",
+      "bytes": 2786613,
+      "last_write_time": "2026-06-14T13:29:48"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "FF7Arena.zip",
+      "relative_path": "resource_downloads\\pots_stages\\FF7Arena.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\FF7Arena.zip",
+      "extension": ".zip",
+      "bytes": 1380699,
+      "last_write_time": "2026-06-14T13:30:34"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "ForsakenPlayground.zip",
+      "relative_path": "resource_downloads\\pots_stages\\ForsakenPlayground.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\ForsakenPlayground.zip",
+      "extension": ".zip",
+      "bytes": 2796985,
+      "last_write_time": "2026-06-14T13:31:34"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "GardenOfSorrow.zip",
+      "relative_path": "resource_downloads\\pots_stages\\GardenOfSorrow.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\GardenOfSorrow.zip",
+      "extension": ".zip",
+      "bytes": 736076,
+      "last_write_time": "2026-06-14T13:31:49"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "GardenOfSorrowBlue.zip",
+      "relative_path": "resource_downloads\\pots_stages\\GardenOfSorrowBlue.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\GardenOfSorrowBlue.zip",
+      "extension": ".zip",
+      "bytes": 735979,
+      "last_write_time": "2026-06-14T13:30:57"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "GardenOfSorrowGreen.zip",
+      "relative_path": "resource_downloads\\pots_stages\\GardenOfSorrowGreen.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\GardenOfSorrowGreen.zip",
+      "extension": ".zip",
+      "bytes": 735982,
+      "last_write_time": "2026-06-14T13:31:00"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "GeeseTower.zip",
+      "relative_path": "resource_downloads\\pots_stages\\GeeseTower.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\GeeseTower.zip",
+      "extension": ".zip",
+      "bytes": 1510445,
+      "last_write_time": "2026-06-14T13:29:18"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "GenbuTempleNight.zip",
+      "relative_path": "resource_downloads\\pots_stages\\GenbuTempleNight.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\GenbuTempleNight.zip",
+      "extension": ".zip",
+      "bytes": 7255792,
+      "last_write_time": "2026-06-14T13:29:47"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "GiantLastStand.zip",
+      "relative_path": "resource_downloads\\pots_stages\\GiantLastStand.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\GiantLastStand.zip",
+      "extension": ".zip",
+      "bytes": 3161824,
+      "last_write_time": "2026-06-14T13:29:37"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Gokuentou.zip",
+      "relative_path": "resource_downloads\\pots_stages\\Gokuentou.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\Gokuentou.zip",
+      "extension": ".zip",
+      "bytes": 1016815,
+      "last_write_time": "2026-06-14T13:30:19"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "GoukenTempleAlt.zip",
+      "relative_path": "resource_downloads\\pots_stages\\GoukenTempleAlt.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\GoukenTempleAlt.zip",
+      "extension": ".zip",
+      "bytes": 2359767,
+      "last_write_time": "2026-06-14T13:31:09"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "GoukenTempleNight.zip",
+      "relative_path": "resource_downloads\\pots_stages\\GoukenTempleNight.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\GoukenTempleNight.zip",
+      "extension": ".zip",
+      "bytes": 2356347,
+      "last_write_time": "2026-06-14T13:29:49"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "GroveFallenHeroes.zip",
+      "relative_path": "resource_downloads\\pots_stages\\GroveFallenHeroes.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\GroveFallenHeroes.zip",
+      "extension": ".zip",
+      "bytes": 3130688,
+      "last_write_time": "2026-06-14T13:29:15"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "HadesDimension.zip",
+      "relative_path": "resource_downloads\\pots_stages\\HadesDimension.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\HadesDimension.zip",
+      "extension": ".zip",
+      "bytes": 8841521,
+      "last_write_time": "2026-06-14T13:29:54"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "HaHaciendaIsland.zip",
+      "relative_path": "resource_downloads\\pots_stages\\HaHaciendaIsland.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\HaHaciendaIsland.zip",
+      "extension": ".zip",
+      "bytes": 14500037,
+      "last_write_time": "2026-06-14T13:29:51"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "HelvetianLake.zip",
+      "relative_path": "resource_downloads\\pots_stages\\HelvetianLake.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\HelvetianLake.zip",
+      "extension": ".zip",
+      "bytes": 2270444,
+      "last_write_time": "2026-06-14T13:29:38"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Hilltop.zip",
+      "relative_path": "resource_downloads\\pots_stages\\Hilltop.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\Hilltop.zip",
+      "extension": ".zip",
+      "bytes": 98668,
+      "last_write_time": "2026-06-14T13:31:13"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "HilltopNight.zip",
+      "relative_path": "resource_downloads\\pots_stages\\HilltopNight.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\HilltopNight.zip",
+      "extension": ".zip",
+      "bytes": 1781165,
+      "last_write_time": "2026-06-14T13:32:03"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "HilltopNightAlt.zip",
+      "relative_path": "resource_downloads\\pots_stages\\HilltopNightAlt.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\HilltopNightAlt.zip",
+      "extension": ".zip",
+      "bytes": 1782231,
+      "last_write_time": "2026-06-14T13:32:08"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "HollowHarmony.zip",
+      "relative_path": "resource_downloads\\pots_stages\\HollowHarmony.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\HollowHarmony.zip",
+      "extension": ".zip",
+      "bytes": 3883272,
+      "last_write_time": "2026-06-14T13:29:55"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "IceCavernIcicleFields.zip",
+      "relative_path": "resource_downloads\\pots_stages\\IceCavernIcicleFields.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\IceCavernIcicleFields.zip",
+      "extension": ".zip",
+      "bytes": 3101768,
+      "last_write_time": "2026-06-14T13:30:03"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "InfernoEdge.zip",
+      "relative_path": "resource_downloads\\pots_stages\\InfernoEdge.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\InfernoEdge.zip",
+      "extension": ".zip",
+      "bytes": 3626314,
+      "last_write_time": "2026-06-14T13:31:59"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "InnerHeart.zip",
+      "relative_path": "resource_downloads\\pots_stages\\InnerHeart.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\InnerHeart.zip",
+      "extension": ".zip",
+      "bytes": 496333,
+      "last_write_time": "2026-06-14T13:29:36"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "InnerHeartBlue.zip",
+      "relative_path": "resource_downloads\\pots_stages\\InnerHeartBlue.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\InnerHeartBlue.zip",
+      "extension": ".zip",
+      "bytes": 496935,
+      "last_write_time": "2026-06-14T13:31:43"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "IridiaValley.zip",
+      "relative_path": "resource_downloads\\pots_stages\\IridiaValley.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\IridiaValley.zip",
+      "extension": ".zip",
+      "bytes": 3586748,
+      "last_write_time": "2026-06-14T13:31:57"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "IronHorse.zip",
+      "relative_path": "resource_downloads\\pots_stages\\IronHorse.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\IronHorse.zip",
+      "extension": ".zip",
+      "bytes": 1932562,
+      "last_write_time": "2026-06-14T13:30:06"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Jakunamura.zip",
+      "relative_path": "resource_downloads\\pots_stages\\Jakunamura.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\Jakunamura.zip",
+      "extension": ".zip",
+      "bytes": 3766866,
+      "last_write_time": "2026-06-14T13:31:08"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "JenovaConfinement.zip",
+      "relative_path": "resource_downloads\\pots_stages\\JenovaConfinement.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\JenovaConfinement.zip",
+      "extension": ".zip",
+      "bytes": 135427,
+      "last_write_time": "2026-06-14T13:31:51"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Juggernaut.zip",
+      "relative_path": "resource_downloads\\pots_stages\\Juggernaut.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\Juggernaut.zip",
+      "extension": ".zip",
+      "bytes": 818545,
+      "last_write_time": "2026-06-14T13:30:04"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "KaibitoRoad.zip",
+      "relative_path": "resource_downloads\\pots_stages\\KaibitoRoad.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\KaibitoRoad.zip",
+      "extension": ".zip",
+      "bytes": 1079664,
+      "last_write_time": "2026-06-14T13:30:05"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "KasuganoBackyard.zip",
+      "relative_path": "resource_downloads\\pots_stages\\KasuganoBackyard.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\KasuganoBackyard.zip",
+      "extension": ".zip",
+      "bytes": 876193,
+      "last_write_time": "2026-06-14T13:29:41"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "KeepersImmortalDreams.zip",
+      "relative_path": "resource_downloads\\pots_stages\\KeepersImmortalDreams.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\KeepersImmortalDreams.zip",
+      "extension": ".zip",
+      "bytes": 3712905,
+      "last_write_time": "2026-06-14T13:31:32"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "KhuulJudgment.zip",
+      "relative_path": "resource_downloads\\pots_stages\\KhuulJudgment.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\KhuulJudgment.zip",
+      "extension": ".zip",
+      "bytes": 3185605,
+      "last_write_time": "2026-06-14T13:30:00"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "KOF98-China.zip",
+      "relative_path": "resource_downloads\\pots_stages\\KOF98-China.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\KOF98-China.zip",
+      "extension": ".zip",
+      "bytes": 1492903,
+      "last_write_time": "2026-06-14T13:30:01"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "KungSusserTod.zip",
+      "relative_path": "resource_downloads\\pots_stages\\KungSusserTod.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\KungSusserTod.zip",
+      "extension": ".zip",
+      "bytes": 3328309,
+      "last_write_time": "2026-06-14T13:31:56"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "LiveHouse.zip",
+      "relative_path": "resource_downloads\\pots_stages\\LiveHouse.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\LiveHouse.zip",
+      "extension": ".zip",
+      "bytes": 896243,
+      "last_write_time": "2026-06-14T13:29:32"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "LiveHousePurple.zip",
+      "relative_path": "resource_downloads\\pots_stages\\LiveHousePurple.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\LiveHousePurple.zip",
+      "extension": ".zip",
+      "bytes": 896808,
+      "last_write_time": "2026-06-14T13:29:29"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Londinium.zip",
+      "relative_path": "resource_downloads\\pots_stages\\Londinium.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\Londinium.zip",
+      "extension": ".zip",
+      "bytes": 2420780,
+      "last_write_time": "2026-06-14T13:30:23"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "MemoriaGateSpace.zip",
+      "relative_path": "resource_downloads\\pots_stages\\MemoriaGateSpace.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\MemoriaGateSpace.zip",
+      "extension": ".zip",
+      "bytes": 7877359,
+      "last_write_time": "2026-06-14T13:32:18"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "MemoriaTimeInterval.zip",
+      "relative_path": "resource_downloads\\pots_stages\\MemoriaTimeInterval.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\MemoriaTimeInterval.zip",
+      "extension": ".zip",
+      "bytes": 2867605,
+      "last_write_time": "2026-06-14T13:30:33"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "MemoriaWorldFusion.zip",
+      "relative_path": "resource_downloads\\pots_stages\\MemoriaWorldFusion.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\MemoriaWorldFusion.zip",
+      "extension": ".zip",
+      "bytes": 3178666,
+      "last_write_time": "2026-06-14T13:30:30"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "MentalDrift.zip",
+      "relative_path": "resource_downloads\\pots_stages\\MentalDrift.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\MentalDrift.zip",
+      "extension": ".zip",
+      "bytes": 2774524,
+      "last_write_time": "2026-06-14T13:31:52"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "MikonosIsland.zip",
+      "relative_path": "resource_downloads\\pots_stages\\MikonosIsland.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\MikonosIsland.zip",
+      "extension": ".zip",
+      "bytes": 1568458,
+      "last_write_time": "2026-06-14T13:31:02"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "MindmeldAstralPlane.zip",
+      "relative_path": "resource_downloads\\pots_stages\\MindmeldAstralPlane.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\MindmeldAstralPlane.zip",
+      "extension": ".zip",
+      "bytes": 3247553,
+      "last_write_time": "2026-06-14T13:32:12"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Mittelbirge.zip",
+      "relative_path": "resource_downloads\\pots_stages\\Mittelbirge.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\Mittelbirge.zip",
+      "extension": ".zip",
+      "bytes": 4077461,
+      "last_write_time": "2026-06-14T13:29:25"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "MitulerShrine.zip",
+      "relative_path": "resource_downloads\\pots_stages\\MitulerShrine.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\MitulerShrine.zip",
+      "extension": ".zip",
+      "bytes": 3522851,
+      "last_write_time": "2026-06-14T13:31:55"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "MoaiDreams.zip",
+      "relative_path": "resource_downloads\\pots_stages\\MoaiDreams.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\MoaiDreams.zip",
+      "extension": ".zip",
+      "bytes": 3499556,
+      "last_write_time": "2026-06-14T13:30:37"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "MystwoodVale.zip",
+      "relative_path": "resource_downloads\\pots_stages\\MystwoodVale.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\MystwoodVale.zip",
+      "extension": ".zip",
+      "bytes": 3026848,
+      "last_write_time": "2026-06-14T13:30:09"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "NarukamiShrine.zip",
+      "relative_path": "resource_downloads\\pots_stages\\NarukamiShrine.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\NarukamiShrine.zip",
+      "extension": ".zip",
+      "bytes": 12703818,
+      "last_write_time": "2026-06-14T13:30:52"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "NibelReactor.zip",
+      "relative_path": "resource_downloads\\pots_stages\\NibelReactor.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\NibelReactor.zip",
+      "extension": ".zip",
+      "bytes": 3329290,
+      "last_write_time": "2026-06-14T13:31:47"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "NibelReactorHR.zip",
+      "relative_path": "resource_downloads\\pots_stages\\NibelReactorHR.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\NibelReactorHR.zip",
+      "extension": ".zip",
+      "bytes": 4652209,
+      "last_write_time": "2026-06-14T13:31:01"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "NiseppCastle.zip",
+      "relative_path": "resource_downloads\\pots_stages\\NiseppCastle.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\NiseppCastle.zip",
+      "extension": ".zip",
+      "bytes": 2938374,
+      "last_write_time": "2026-06-14T13:31:42"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "OdinThroneRoom.zip",
+      "relative_path": "resource_downloads\\pots_stages\\OdinThroneRoom.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\OdinThroneRoom.zip",
+      "extension": ".zip",
+      "bytes": 5778892,
+      "last_write_time": "2026-06-14T13:31:23"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "OeilvertArk.zip",
+      "relative_path": "resource_downloads\\pots_stages\\OeilvertArk.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\OeilvertArk.zip",
+      "extension": ".zip",
+      "bytes": 3210126,
+      "last_write_time": "2026-06-14T13:31:12"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Onslaught.zip",
+      "relative_path": "resource_downloads\\pots_stages\\Onslaught.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\Onslaught.zip",
+      "extension": ".zip",
+      "bytes": 760481,
+      "last_write_time": "2026-06-14T13:29:44"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Ooeyama.zip",
+      "relative_path": "resource_downloads\\pots_stages\\Ooeyama.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\Ooeyama.zip",
+      "extension": ".zip",
+      "bytes": 983751,
+      "last_write_time": "2026-06-14T13:32:00"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "OoeyamaCrazy.zip",
+      "relative_path": "resource_downloads\\pots_stages\\OoeyamaCrazy.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\OoeyamaCrazy.zip",
+      "extension": ".zip",
+      "bytes": 982602,
+      "last_write_time": "2026-06-14T13:31:15"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "PhantomPots.zip",
+      "relative_path": "resource_downloads\\pots_stages\\PhantomPots.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\PhantomPots.zip",
+      "extension": ".zip",
+      "bytes": 3194292,
+      "last_write_time": "2026-06-14T13:31:33"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "PinnacleRocks.zip",
+      "relative_path": "resource_downloads\\pots_stages\\PinnacleRocks.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\PinnacleRocks.zip",
+      "extension": ".zip",
+      "bytes": 5427980,
+      "last_write_time": "2026-06-14T13:29:46"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "QuMarsh.zip",
+      "relative_path": "resource_downloads\\pots_stages\\QuMarsh.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\QuMarsh.zip",
+      "extension": ".zip",
+      "bytes": 4905025,
+      "last_write_time": "2026-06-14T13:31:11"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "RaidedShipwreck.zip",
+      "relative_path": "resource_downloads\\pots_stages\\RaidedShipwreck.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\RaidedShipwreck.zip",
+      "extension": ".zip",
+      "bytes": 3125671,
+      "last_write_time": "2026-06-14T13:30:16"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "RarityPull.zip",
+      "relative_path": "resource_downloads\\pots_stages\\RarityPull.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\RarityPull.zip",
+      "extension": ".zip",
+      "bytes": 3651021,
+      "last_write_time": "2026-06-14T13:29:22"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "RedDragonLair.zip",
+      "relative_path": "resource_downloads\\pots_stages\\RedDragonLair.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\RedDragonLair.zip",
+      "extension": ".zip",
+      "bytes": 751179,
+      "last_write_time": "2026-06-14T13:31:41"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "RiversideLookout.zip",
+      "relative_path": "resource_downloads\\pots_stages\\RiversideLookout.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\RiversideLookout.zip",
+      "extension": ".zip",
+      "bytes": 2778712,
+      "last_write_time": "2026-06-14T13:29:26"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SalvageArchipelago.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SalvageArchipelago.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SalvageArchipelago.zip",
+      "extension": ".zip",
+      "bytes": 4134258,
+      "last_write_time": "2026-06-14T13:31:19"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SDK-Garden.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SDK-Garden.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SDK-Garden.zip",
+      "extension": ".zip",
+      "bytes": 86726,
+      "last_write_time": "2026-06-14T13:30:08"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SDK-PurpleCrystals.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SDK-PurpleCrystals.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SDK-PurpleCrystals.zip",
+      "extension": ".zip",
+      "bytes": 65971,
+      "last_write_time": "2026-06-14T13:30:13"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SDK-Statues.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SDK-Statues.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SDK-Statues.zip",
+      "extension": ".zip",
+      "bytes": 81861,
+      "last_write_time": "2026-06-14T13:31:21"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SDK-StreetNight.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SDK-StreetNight.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SDK-StreetNight.zip",
+      "extension": ".zip",
+      "bytes": 69043,
+      "last_write_time": "2026-06-14T13:29:59"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SDK-Yard.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SDK-Yard.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SDK-Yard.zip",
+      "extension": ".zip",
+      "bytes": 66845,
+      "last_write_time": "2026-06-14T13:30:07"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SDK-YardNight.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SDK-YardNight.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SDK-YardNight.zip",
+      "extension": ".zip",
+      "bytes": 107222,
+      "last_write_time": "2026-06-14T13:29:58"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SecretPoint1.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SecretPoint1.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SecretPoint1.zip",
+      "extension": ".zip",
+      "bytes": 974654,
+      "last_write_time": "2026-06-14T13:30:10"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "ServersPots.zip",
+      "relative_path": "resource_downloads\\pots_stages\\ServersPots.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\ServersPots.zip",
+      "extension": ".zip",
+      "bytes": 3241366,
+      "last_write_time": "2026-06-14T13:31:31"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "ShadalooVTOL.zip",
+      "relative_path": "resource_downloads\\pots_stages\\ShadalooVTOL.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\ShadalooVTOL.zip",
+      "extension": ".zip",
+      "bytes": 1442759,
+      "last_write_time": "2026-06-14T13:32:13"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "ShimmeringRealm.zip",
+      "relative_path": "resource_downloads\\pots_stages\\ShimmeringRealm.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\ShimmeringRealm.zip",
+      "extension": ".zip",
+      "bytes": 3460962,
+      "last_write_time": "2026-06-14T13:30:54"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SilverSeafloor.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SilverSeafloor.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SilverSeafloor.zip",
+      "extension": ".zip",
+      "bytes": 3600125,
+      "last_write_time": "2026-06-14T13:30:41"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SodomRing.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SodomRing.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SodomRing.zip",
+      "extension": ".zip",
+      "bytes": 634695,
+      "last_write_time": "2026-06-14T13:31:27"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Sparta.zip",
+      "relative_path": "resource_downloads\\pots_stages\\Sparta.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\Sparta.zip",
+      "extension": ".zip",
+      "bytes": 2298339,
+      "last_write_time": "2026-06-14T13:32:14"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SporeSanctum.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SporeSanctum.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SporeSanctum.zip",
+      "extension": ".zip",
+      "bytes": 2934798,
+      "last_write_time": "2026-06-14T13:31:48"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SS2-Kuroko.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SS2-Kuroko.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SS2-Kuroko.zip",
+      "extension": ".zip",
+      "bytes": 2406115,
+      "last_write_time": "2026-06-14T13:29:57"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SS3-Kuroko.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SS3-Kuroko.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SS3-Kuroko.zip",
+      "extension": ".zip",
+      "bytes": 1497961,
+      "last_write_time": "2026-06-14T13:29:33"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "StadiumRuins.zip",
+      "relative_path": "resource_downloads\\pots_stages\\StadiumRuins.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\StadiumRuins.zip",
+      "extension": ".zip",
+      "bytes": 27953,
+      "last_write_time": "2026-06-14T13:29:44"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "StageZero.zip",
+      "relative_path": "resource_downloads\\pots_stages\\StageZero.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\StageZero.zip",
+      "extension": ".zip",
+      "bytes": 18533,
+      "last_write_time": "2026-06-14T13:31:20"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "StarlitIcefield.zip",
+      "relative_path": "resource_downloads\\pots_stages\\StarlitIcefield.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\StarlitIcefield.zip",
+      "extension": ".zip",
+      "bytes": 9681150,
+      "last_write_time": "2026-06-14T13:29:21"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SunrisePark.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SunrisePark.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SunrisePark.zip",
+      "extension": ".zip",
+      "bytes": 683525,
+      "last_write_time": "2026-06-14T13:31:40"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SuzakuCastleCE.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SuzakuCastleCE.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SuzakuCastleCE.zip",
+      "extension": ".zip",
+      "bytes": 1249189,
+      "last_write_time": "2026-06-14T13:30:18"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SuzakuCastleWW.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SuzakuCastleWW.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SuzakuCastleWW.zip",
+      "extension": ".zip",
+      "bytes": 1245293,
+      "last_write_time": "2026-06-14T13:29:23"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SuzakujoCountryside.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SuzakujoCountryside.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SuzakujoCountryside.zip",
+      "extension": ".zip",
+      "bytes": 1383034,
+      "last_write_time": "2026-06-14T13:29:52"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "SuzakujoCountrysideOrange.zip",
+      "relative_path": "resource_downloads\\pots_stages\\SuzakujoCountrysideOrange.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\SuzakujoCountrysideOrange.zip",
+      "extension": ".zip",
+      "bytes": 1383344,
+      "last_write_time": "2026-06-14T13:30:02"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "TemporalOasis.zip",
+      "relative_path": "resource_downloads\\pots_stages\\TemporalOasis.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\TemporalOasis.zip",
+      "extension": ".zip",
+      "bytes": 3899819,
+      "last_write_time": "2026-06-14T13:29:50"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "TengokuouCavern.zip",
+      "relative_path": "resource_downloads\\pots_stages\\TengokuouCavern.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\TengokuouCavern.zip",
+      "extension": ".zip",
+      "bytes": 4483559,
+      "last_write_time": "2026-06-14T13:30:38"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "TerraPath.zip",
+      "relative_path": "resource_downloads\\pots_stages\\TerraPath.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\TerraPath.zip",
+      "extension": ".zip",
+      "bytes": 5091932,
+      "last_write_time": "2026-06-14T13:29:43"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "TimelessChamber.zip",
+      "relative_path": "resource_downloads\\pots_stages\\TimelessChamber.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\TimelessChamber.zip",
+      "extension": ".zip",
+      "bytes": 4923394,
+      "last_write_time": "2026-06-14T13:30:36"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "TimelessFrozenSea.zip",
+      "relative_path": "resource_downloads\\pots_stages\\TimelessFrozenSea.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\TimelessFrozenSea.zip",
+      "extension": ".zip",
+      "bytes": 3073377,
+      "last_write_time": "2026-06-14T13:29:17"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "TMNTbridge.zip",
+      "relative_path": "resource_downloads\\pots_stages\\TMNTbridge.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\TMNTbridge.zip",
+      "extension": ".zip",
+      "bytes": 18003,
+      "last_write_time": "2026-06-14T13:32:10"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "Togakushi.zip",
+      "relative_path": "resource_downloads\\pots_stages\\Togakushi.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\Togakushi.zip",
+      "extension": ".zip",
+      "bytes": 1022734,
+      "last_write_time": "2026-06-14T13:31:37"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "TowerOfShogun.zip",
+      "relative_path": "resource_downloads\\pots_stages\\TowerOfShogun.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\TowerOfShogun.zip",
+      "extension": ".zip",
+      "bytes": 1219519,
+      "last_write_time": "2026-06-14T13:29:27"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "TrainingGrid.zip",
+      "relative_path": "resource_downloads\\pots_stages\\TrainingGrid.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\TrainingGrid.zip",
+      "extension": ".zip",
+      "bytes": 69036,
+      "last_write_time": "2026-06-14T13:30:25"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "TrainingRoomSF6.zip",
+      "relative_path": "resource_downloads\\pots_stages\\TrainingRoomSF6.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\TrainingRoomSF6.zip",
+      "extension": ".zip",
+      "bytes": 2238654,
+      "last_write_time": "2026-06-14T13:31:25"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "TrenoBattleArena.zip",
+      "relative_path": "resource_downloads\\pots_stages\\TrenoBattleArena.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\TrenoBattleArena.zip",
+      "extension": ".zip",
+      "bytes": 3564036,
+      "last_write_time": "2026-06-14T13:30:12"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "VacantLot.zip",
+      "relative_path": "resource_downloads\\pots_stages\\VacantLot.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\VacantLot.zip",
+      "extension": ".zip",
+      "bytes": 9650682,
+      "last_write_time": "2026-06-14T13:31:10"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "VanityParadiseVS2.zip",
+      "relative_path": "resource_downloads\\pots_stages\\VanityParadiseVS2.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\VanityParadiseVS2.zip",
+      "extension": ".zip",
+      "bytes": 988721,
+      "last_write_time": "2026-06-14T13:31:04"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "VertigoPointTower.zip",
+      "relative_path": "resource_downloads\\pots_stages\\VertigoPointTower.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\VertigoPointTower.zip",
+      "extension": ".zip",
+      "bytes": 11227167,
+      "last_write_time": "2026-06-14T13:31:07"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "VFG-Fudomaru.zip",
+      "relative_path": "resource_downloads\\pots_stages\\VFG-Fudomaru.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\VFG-Fudomaru.zip",
+      "extension": ".zip",
+      "bytes": 1334965,
+      "last_write_time": "2026-06-14T13:31:21"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "VFG-Marion.zip",
+      "relative_path": "resource_downloads\\pots_stages\\VFG-Marion.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\VFG-Marion.zip",
+      "extension": ".zip",
+      "bytes": 1173932,
+      "last_write_time": "2026-06-14T13:30:29"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "VinesweptMarket.zip",
+      "relative_path": "resource_downloads\\pots_stages\\VinesweptMarket.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\VinesweptMarket.zip",
+      "extension": ".zip",
+      "bytes": 4082608,
+      "last_write_time": "2026-06-14T13:30:44"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "VRTraining.zip",
+      "relative_path": "resource_downloads\\pots_stages\\VRTraining.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\VRTraining.zip",
+      "extension": ".zip",
+      "bytes": 1943934,
+      "last_write_time": "2026-06-14T13:31:16"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "WaterfallDojo.zip",
+      "relative_path": "resource_downloads\\pots_stages\\WaterfallDojo.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\WaterfallDojo.zip",
+      "extension": ".zip",
+      "bytes": 1971763,
+      "last_write_time": "2026-06-14T13:30:15"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "WellConsecration.zip",
+      "relative_path": "resource_downloads\\pots_stages\\WellConsecration.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\WellConsecration.zip",
+      "extension": ".zip",
+      "bytes": 3083161,
+      "last_write_time": "2026-06-14T13:31:36"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "WhisperingChateau.zip",
+      "relative_path": "resource_downloads\\pots_stages\\WhisperingChateau.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\WhisperingChateau.zip",
+      "extension": ".zip",
+      "bytes": 4234965,
+      "last_write_time": "2026-06-14T13:30:55"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "WildernessWithin.zip",
+      "relative_path": "resource_downloads\\pots_stages\\WildernessWithin.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\WildernessWithin.zip",
+      "extension": ".zip",
+      "bytes": 13807795,
+      "last_write_time": "2026-06-14T13:29:35"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "YieArTemple.zip",
+      "relative_path": "resource_downloads\\pots_stages\\YieArTemple.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\YieArTemple.zip",
+      "extension": ".zip",
+      "bytes": 10498321,
+      "last_write_time": "2026-06-14T13:31:18"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "YozoraDuelGrounds.zip",
+      "relative_path": "resource_downloads\\pots_stages\\YozoraDuelGrounds.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\YozoraDuelGrounds.zip",
+      "extension": ".zip",
+      "bytes": 2884668,
+      "last_write_time": "2026-06-14T13:31:14"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "ZhidanPlaza.zip",
+      "relative_path": "resource_downloads\\pots_stages\\ZhidanPlaza.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\pots_stages\\ZhidanPlaza.zip",
+      "extension": ".zip",
+      "bytes": 1266420,
+      "last_write_time": "2026-06-14T13:29:56"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "VPFG_2.6.rar",
+      "relative_path": "resource_downloads\\v_ikemen\\VPFG_2.6.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\v_ikemen\\VPFG_2.6.rar",
+      "extension": ".rar",
+      "bytes": 130979947,
+      "last_write_time": "2026-06-14T13:24:25"
+    },
+    {
+      "category": "resource_downloads",
+      "name": "VPHD_Bars.rar",
+      "relative_path": "resource_downloads\\v_ikemen\\VPHD_Bars.rar",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\v_ikemen\\VPHD_Bars.rar",
+      "extension": ".rar",
+      "bytes": 22673433,
+      "last_write_time": "2026-06-14T13:32:24"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Adachi.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Adachi.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Adachi.zip",
+      "extension": ".zip",
+      "bytes": 45580882,
+      "last_write_time": "2024-08-24T22:32:18"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Akame.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Akame.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Akame.zip",
+      "extension": ".zip",
+      "bytes": 16753587,
+      "last_write_time": "2024-08-24T22:32:23"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Akatsuki.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Akatsuki.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Akatsuki.zip",
+      "extension": ".zip",
+      "bytes": 26199306,
+      "last_write_time": "2024-08-24T22:32:27"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Aoko.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Aoko.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Aoko.zip",
+      "extension": ".zip",
+      "bytes": 37819531,
+      "last_write_time": "2024-08-24T22:32:32"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Asuna.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Asuna.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Asuna.zip",
+      "extension": ".zip",
+      "bytes": 15449303,
+      "last_write_time": "2024-08-24T22:32:35"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Azrael.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Azrael.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Azrael.zip",
+      "extension": ".zip",
+      "bytes": 41007244,
+      "last_write_time": "2024-09-08T12:12:31"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Bisclavret.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Bisclavret.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Bisclavret.zip",
+      "extension": ".zip",
+      "bytes": 44799076,
+      "last_write_time": "2024-08-24T22:32:43"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Blitztank.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Blitztank.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Blitztank.zip",
+      "extension": ".zip",
+      "bytes": 32928532,
+      "last_write_time": "2024-08-24T22:32:47"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Bowser.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Bowser.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Bowser.zip",
+      "extension": ".zip",
+      "bytes": 96870033,
+      "last_write_time": "2024-08-24T22:32:53"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Byleth.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Byleth.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Byleth.zip",
+      "extension": ".zip",
+      "bytes": 91582741,
+      "last_write_time": "2024-08-24T22:32:58"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Carmine.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Carmine.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Carmine.zip",
+      "extension": ".zip",
+      "bytes": 25523691,
+      "last_write_time": "2024-08-24T22:33:01"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Charlotte.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Charlotte.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Charlotte.zip",
+      "extension": ".zip",
+      "bytes": 12197810,
+      "last_write_time": "2024-08-24T22:33:05"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Coco.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Coco.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Coco.zip",
+      "extension": ".zip",
+      "bytes": 21553087,
+      "last_write_time": "2024-09-20T22:24:14"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "DANoel.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\DANoel.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\DANoel.zip",
+      "extension": ".zip",
+      "bytes": 39149954,
+      "last_write_time": "2024-08-24T22:33:08"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Dedede.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Dedede.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Dedede.zip",
+      "extension": ".zip",
+      "bytes": 45704413,
+      "last_write_time": "2024-08-24T22:33:13"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Es.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Es.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Es.zip",
+      "extension": ".zip",
+      "bytes": 32280599,
+      "last_write_time": "2024-08-24T22:33:17"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Faust.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Faust.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Faust.zip",
+      "extension": ".zip",
+      "bytes": 28029056,
+      "last_write_time": "2024-08-24T22:33:22"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Gordeau.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Gordeau.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Gordeau.zip",
+      "extension": ".zip",
+      "bytes": 24938898,
+      "last_write_time": "2024-09-08T12:12:41"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Heart.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Heart.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Heart.zip",
+      "extension": ".zip",
+      "bytes": 30510742,
+      "last_write_time": "2024-08-24T22:33:31"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Hilda.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Hilda.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Hilda.zip",
+      "extension": ".zip",
+      "bytes": 30329265,
+      "last_write_time": "2024-08-24T22:33:36"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Homura.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Homura.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Homura.zip",
+      "extension": ".zip",
+      "bytes": 37586905,
+      "last_write_time": "2024-08-24T22:33:40"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Hyde.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Hyde.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Hyde.zip",
+      "extension": ".zip",
+      "bytes": 27282509,
+      "last_write_time": "2024-08-24T22:33:44"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Iori.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Iori.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Iori.zip",
+      "extension": ".zip",
+      "bytes": 41996876,
+      "last_write_time": "2024-08-24T22:33:49"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Isaac.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Isaac.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Isaac.zip",
+      "extension": ".zip",
+      "bytes": 17329108,
+      "last_write_time": "2024-08-24T22:33:53"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Jin.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Jin.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Jin.zip",
+      "extension": ".zip",
+      "bytes": 33268324,
+      "last_write_time": "2024-09-12T18:56:13"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Joker.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Joker.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Joker.zip",
+      "extension": ".zip",
+      "bytes": 65824219,
+      "last_write_time": "2024-08-24T22:34:04"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Kirby.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kirby.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kirby.zip",
+      "extension": ".zip",
+      "bytes": 33766316,
+      "last_write_time": "2024-08-24T22:34:08"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Kirito.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kirito.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kirito.zip",
+      "extension": ".zip",
+      "bytes": 19113415,
+      "last_write_time": "2024-08-24T22:34:13"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Kohaku.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kohaku.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kohaku.zip",
+      "extension": ".zip",
+      "bytes": 30118546,
+      "last_write_time": "2024-08-24T22:34:17"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Kokonoe.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kokonoe.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kokonoe.zip",
+      "extension": ".zip",
+      "bytes": 43492698,
+      "last_write_time": "2024-08-24T22:34:21"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "KRool.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\KRool.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\KRool.zip",
+      "extension": ".zip",
+      "bytes": 62843512,
+      "last_write_time": "2024-08-24T22:34:27"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Kuroko.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kuroko.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Kuroko.zip",
+      "extension": ".zip",
+      "bytes": 17563360,
+      "last_write_time": "2024-09-08T12:12:47"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Ky.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Ky.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Ky.zip",
+      "extension": ".zip",
+      "bytes": 21825814,
+      "last_write_time": "2024-08-24T22:34:34"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Lambda-11.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Lambda-11.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Lambda-11.zip",
+      "extension": ".zip",
+      "bytes": 48157781,
+      "last_write_time": "2024-08-24T22:34:41"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Lina.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Lina.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Lina.zip",
+      "extension": ".zip",
+      "bytes": 36896490,
+      "last_write_time": "2024-09-08T12:12:57"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Mai.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Mai.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Mai.zip",
+      "extension": ".zip",
+      "bytes": 36457098,
+      "last_write_time": "2024-08-24T22:34:48"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Merkava.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Merkava.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Merkava.zip",
+      "extension": ".zip",
+      "bytes": 29310669,
+      "last_write_time": "2024-08-24T22:34:54"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Metaknight.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Metaknight.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Metaknight.zip",
+      "extension": ".zip",
+      "bytes": 28136989,
+      "last_write_time": "2024-08-24T22:34:58"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Mika.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Mika.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Mika.zip",
+      "extension": ".zip",
+      "bytes": 32600687,
+      "last_write_time": "2024-08-24T22:35:02"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Misaka.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Misaka.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Misaka.zip",
+      "extension": ".zip",
+      "bytes": 15349295,
+      "last_write_time": "2024-08-24T22:35:07"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Mitsuru.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Mitsuru.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Mitsuru.zip",
+      "extension": ".zip",
+      "bytes": 30856886,
+      "last_write_time": "2024-08-24T22:35:12"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Nanase.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Nanase.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Nanase.zip",
+      "extension": ".zip",
+      "bytes": 23324515,
+      "last_write_time": "2024-08-24T22:35:16"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "PCiel.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\PCiel.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\PCiel.zip",
+      "extension": ".zip",
+      "bytes": 33680222,
+      "last_write_time": "2024-08-24T22:35:21"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Pistrix.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Pistrix.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Pistrix.zip",
+      "extension": ".zip",
+      "bytes": 25836516,
+      "last_write_time": "2024-08-24T22:35:24"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Plant.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Plant.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Plant.zip",
+      "extension": ".zip",
+      "bytes": 35653404,
+      "last_write_time": "2024-08-24T22:35:27"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Pyra.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Pyra.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Pyra.zip",
+      "extension": ".zip",
+      "bytes": 74362736,
+      "last_write_time": "2024-08-24T22:35:32"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Quote.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Quote.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Quote.zip",
+      "extension": ".zip",
+      "bytes": 14161363,
+      "last_write_time": "2024-09-08T12:12:52"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Ragna.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Ragna.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Ragna.zip",
+      "extension": ".zip",
+      "bytes": 31261176,
+      "last_write_time": "2024-08-24T22:46:59"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Ridley.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Ridley.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Ridley.zip",
+      "extension": ".zip",
+      "bytes": 100684095,
+      "last_write_time": "2024-08-24T22:35:48"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Robo_Weiss.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Robo_Weiss.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Robo_Weiss.zip",
+      "extension": ".zip",
+      "bytes": 38902252,
+      "last_write_time": "2024-08-24T22:35:51"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Ruby.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Ruby.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Ruby.zip",
+      "extension": ".zip",
+      "bytes": 31755564,
+      "last_write_time": "2024-08-24T22:35:55"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Samus.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Samus.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Samus.zip",
+      "extension": ".zip",
+      "bytes": 41388114,
+      "last_write_time": "2024-08-24T22:31:34"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Saya.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Saya.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Saya.zip",
+      "extension": ".zip",
+      "bytes": 19745480,
+      "last_write_time": "2024-08-24T22:31:40"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Shana.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Shana.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Shana.zip",
+      "extension": ".zip",
+      "bytes": 24566897,
+      "last_write_time": "2024-08-24T22:31:44"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Shantae.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Shantae.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Shantae.zip",
+      "extension": ".zip",
+      "bytes": 28705015,
+      "last_write_time": "2024-08-25T15:18:34"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Sol.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Sol.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Sol.zip",
+      "extension": ".zip",
+      "bytes": 32746556,
+      "last_write_time": "2024-08-24T22:31:53"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Susanoo.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Susanoo.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Susanoo.zip",
+      "extension": ".zip",
+      "bytes": 48528525,
+      "last_write_time": "2024-08-24T22:31:56"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Tager.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Tager.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Tager.zip",
+      "extension": ".zip",
+      "bytes": 39324446,
+      "last_write_time": "2024-08-24T22:32:01"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Taiga.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Taiga.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Taiga.zip",
+      "extension": ".zip",
+      "bytes": 18588086,
+      "last_write_time": "2024-09-08T12:12:37"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Terumi.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Terumi.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Terumi.zip",
+      "extension": ".zip",
+      "bytes": 36223578,
+      "last_write_time": "2024-08-24T22:32:09"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Thief.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Thief.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Thief.zip",
+      "extension": ".zip",
+      "bytes": 26204083,
+      "last_write_time": "2024-08-24T22:32:14"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Vlov.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Vlov.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Vlov.zip",
+      "extension": ".zip",
+      "bytes": 41040095,
+      "last_write_time": "2024-08-24T22:36:04"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "WaddleDee.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\WaddleDee.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\WaddleDee.zip",
+      "extension": ".zip",
+      "bytes": 22801510,
+      "last_write_time": "2024-08-24T22:36:07"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Wagner.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Wagner.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Wagner.zip",
+      "extension": ".zip",
+      "bytes": 27790411,
+      "last_write_time": "2024-08-24T22:36:10"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Waldstein.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Waldstein.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Waldstein.zip",
+      "extension": ".zip",
+      "bytes": 39361051,
+      "last_write_time": "2024-08-24T22:36:15"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Yang.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Yang.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Yang.zip",
+      "extension": ".zip",
+      "bytes": 36710114,
+      "last_write_time": "2026-06-14T14:00:27"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Yu.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Yu.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Yu.zip",
+      "extension": ".zip",
+      "bytes": 35521051,
+      "last_write_time": "2026-06-14T14:00:38"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Yukiko.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Yukiko.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Yukiko.zip",
+      "extension": ".zip",
+      "bytes": 34773255,
+      "last_write_time": "2026-06-14T14:00:52"
+    },
+    {
+      "category": "ohmsby_pack",
+      "name": "Yumi.zip",
+      "relative_path": "resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Yumi.zip",
+      "absolute_path": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\resource_downloads\\ohmsby_drive_1p2lbejwkzXsMxxaRDtsQ-YISPxHXsEAi\\Yumi.zip",
+      "extension": ".zip",
+      "bytes": 38883137,
+      "last_write_time": "2026-06-14T14:01:00"
+    }
+  ]
+}

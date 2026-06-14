@@ -1,0 +1,31 @@
+{
+  "profile": "ikegen",
+  "command": [
+    "C:\\Users\\dferr\\tools\\Ikemen-GO-Ikemen-Generations\\Ikemen_GO.exe",
+    "-windowed",
+    "-nosound",
+    "-nojoy",
+    "-log",
+    "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\ikegen_SSF2HD_Ryu_vs_SF2_cammy_20260614_154921_635478.log",
+    "-p1",
+    "SSF2HD_Ryu",
+    "-p1.ai",
+    "8",
+    "-p2",
+    "SF2_cammy",
+    "-p2.ai",
+    "8",
+    "-s",
+    "stages/TrainingGrid.def",
+    "-rounds",
+    "1",
+    "-time",
+    "1"
+  ],
+  "cwd": "C:\\Users\\dferr\\tools\\Ikemen-GO-Ikemen-Generations",
+  "returncode": 0,
+  "status": "pass",
+  "log": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\ikegen_SSF2HD_Ryu_vs_SF2_cammy_20260614_154921_635478.log",
+  "stdout_tail": "Check A: Selecting Renderer\nCheck B: Initializing GFX\nCheck C: Initializing GFX Font\nCheck D: We are GOOD\n",
+  "stderr_tail": "state controller parameter(s): juggle\nWARNING: Cammy's state 405 in SF2_normal.st, line 1967: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 2992 in SF2_normal.st, line 2049: Unknown state controller parameter(s): ontop\nWARNING: Cammy's state -2 in SF2_normal.st, line 3228: Unknown state controller parameter(s): sprpriority\nWARNING: Cammy's state 1402 in SF2_special.cns, line 151: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1412 in SF2_special.cns, line 349: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1422 in SF2_special.cns, line 527: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1000 in SF2_special.cns, line 1110: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1001 in SF2_special.cns, line 1203: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1010 in SF2_special.cns, line 1376: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1011 in SF2_special.cns, line 1477: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1020 in SF2_special.cns, line 1606: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1021 in SF2_special.cns, line 1711: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1200 in SF2_special.cns, line 1857: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1210 in SF2_special.cns, line 1975: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1220 in SF2_special.cns, line 2096: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1220 in SF2_special.cns, line 2144: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1100 in SF2_special.cns, line 2269: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1100 in SF2_special.cns, line 2316: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1110 in SF2_special.cns, line 2415: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1110 in SF2_special.cns, line 2462: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1120 in SF2_special.cns, line 2561: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1120 in SF2_special.cns, line 2608: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 1300 in SF2_special.cns, line 2822: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 2000 in SF2_super.cns, line 116: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 2000 in SF2_super.cns, line 164: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 2002 in SF2_super.cns, line 237: Unknown state controller parameter(s): juggle\nWARNING: Cammy's state 2003 in SF2_super.cns, line 331: Unknown state controller parameter(s): juggle\nWARNING: Animation missing sprite 90,11 from data/ikegen/fight/fight.sff\nWARNING: Animation missing sprite 220,16 from data/ikegen/fight/fight.sff\n"
+}

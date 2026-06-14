@@ -1,0 +1,31 @@
+{
+  "profile": "vpfg",
+  "command": [
+    "C:\\Users\\dferr\\tools\\Ikemen-GO-VPFG-2.6\\Ikemen_GO.exe",
+    "-windowed",
+    "-nosound",
+    "-nojoy",
+    "-log",
+    "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\vpfg_kfm_zss_vs_VP_Allen_20260614_143726.log",
+    "-p1",
+    "kfm_zss",
+    "-p1.ai",
+    "8",
+    "-p2",
+    "VP_Allen",
+    "-p2.ai",
+    "8",
+    "-s",
+    "stages/VP_Training_Room.def",
+    "-rounds",
+    "1",
+    "-time",
+    "1"
+  ],
+  "cwd": "C:\\Users\\dferr\\tools\\Ikemen-GO-VPFG-2.6",
+  "returncode": 0,
+  "status": "pass",
+  "log": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\vpfg_kfm_zss_vs_VP_Allen_20260614_143726.log",
+  "stdout_tail": "Warning: Failed to assign key [Options.Ratio.Recovery.Base]: field 'Ratio' not found as struct or map field\nWarning: Failed to assign key [Options.Ratio.Recovery.Bonus]: field 'Ratio' not found as struct or map field\nWarning: Failed to assign key [Options.Ratio.Level1.Attack]: field 'Ratio' not found as struct or map field\nWarning: Failed to assign key [Options.Ratio.Level1.Life]: field 'Ratio' not found as struct or map field\nWarning: Failed to assign key [Options.Ratio.Level2.Attack]: field 'Ratio' not found as struct or map field\nWarning: Failed to assign key [Options.Ratio.Level2.Life]: field 'Ratio' not found as struct or map field\nWarning: Failed to assign key [Options.Ratio.Level3.Attack]: field 'Ratio' not found as struct or map field\nWarning: Failed to assign key [Options.Ratio.Level3.Life]: field 'Ratio' not found as struct or map field\nWarning: Failed to assign key [Options.Ratio.Level4.Attack]: field 'Ratio' not found as struct or map field\nWarning: Failed to assign key [Options.Ratio.Level4.Life]: field 'Ratio' not found as struct or map field\nWarning: Failed to assign key [Config.Framerate]: field 'Framerate' not found in struct or pattern map field\nWarning: Failed to assign key [Config.PlayerProjectileMax]: field 'PlayerProjectileMax' not found in struct or pattern map field\nWarning: Failed to assign key [Video.StageFit]: field 'StageFit' not found in struct or pattern map field\nWarning: Failed to assign key [Video.XyTruncate]: field 'XyTruncate' not found in struct or pattern map field\nWarning: Failed to assign key [Arcade.ratio.AIramp.start]: field 'ratio' not found as struct or map field\nWarning: Failed to assign key [Arcade.ratio.AIramp.end]: field 'ratio' not found as struct or map field\nCheck A: Selecting Renderer\nError: Invalid RenderMode 'OpenGL 3.2'. Defaulting to OpenGL 3.3.\nCheck B: Initializing GFX\nCheck C: Initializing GFX Font\nCheck D: We are GOOD\n",
+  "stderr_tail": "Ikemen, GO!\nVersion: nightly Build Time: 2026.05.27\nUsing OpenGL 3.3.0 NVIDIA 596.49 (NVIDIA GeForce RTX 3060/PCIe/SSE2)\nWARNING: Duplicate sprite key in data/VPFG_2.0/VP_FightFX.sff: 42,0 (index 34 ignored)\nWARNING: Duplicate action key in data/VPFG_2.0/VP_FX.air: 20107 (ignored)\nAtoi conversion outside int32 range: 2615201950\nWARNING: Allen's state 1010 in Helpers.cns, line 310: Duplicate 'getpower' parameter\nWARNING: Allen's state 1010 in Helpers.cns, line 311: Duplicate 'givepower' parameter\nWARNING: Allen's state 3010 in Helpers.cns, line 794: Duplicate 'forcestand' parameter\nWARNING: Allen's state 3110 in Helpers.cns, line 994: Duplicate 'forcestand' parameter\nAtoi conversion outside int32 range: 2615201950\nAtoi conversion outside int32 range: 2615201950\nWARNING: Animation missing sprite 303,0 from data/VPFG_2.0/VP_Fight.sff\n"
+}

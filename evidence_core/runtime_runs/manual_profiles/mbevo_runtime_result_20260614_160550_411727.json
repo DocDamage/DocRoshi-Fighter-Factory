@@ -1,0 +1,31 @@
+{
+  "profile": "mbevo",
+  "command": [
+    "C:\\Users\\dferr\\tools\\Ikemen-GO-MBEVO\\Ikemen_GO.exe",
+    "-windowed",
+    "-nosound",
+    "-nojoy",
+    "-log",
+    "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\mbevo_Yukiko_vs_Yumi_20260614_160550_411727.log",
+    "-p1",
+    "Yukiko",
+    "-p1.ai",
+    "8",
+    "-p2",
+    "Yumi",
+    "-p2.ai",
+    "8",
+    "-s",
+    "stages/TrainingGrid.def",
+    "-rounds",
+    "1",
+    "-time",
+    "1"
+  ],
+  "cwd": "C:\\Users\\dferr\\tools\\Ikemen-GO-MBEVO",
+  "returncode": 0,
+  "status": "pass",
+  "log": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\mbevo_Yukiko_vs_Yumi_20260614_160550_411727.log",
+  "stdout_tail": "Check A: Selecting Renderer\nCheck B: Initializing GFX\nCheck C: Initializing GFX Font\nCheck D: We are GOOD\n",
+  "stderr_tail": "hitpause' parameter\nWARNING: Yumi's state 7015 in Helpers.cns, line 4044: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 7015 in Helpers.cns, line 4051: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 7015 in Helpers.cns, line 4064: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 7015 in Helpers.cns, line 4071: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 3959 in Helpers.cns, line 4131: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 3959 in Helpers.cns, line 4146: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 3959 in Helpers.cns, line 4153: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 3959 in Helpers.cns, line 4167: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 3959 in Helpers.cns, line 4174: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 3959 in Helpers.cns, line 4187: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 3959 in Helpers.cns, line 4194: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 9877 in Helpers.cns, line 4743: Unknown state controller parameter(s): sprpriority\nWARNING: Yumi's state 9878 in Helpers.cns, line 4796: Duplicate 'sprpriority' parameter\nWARNING: Yumi's state 9878 in Helpers.cns, line 4821: Duplicate 'sprpriority' parameter\nWARNING: Yumi's state 9878 in Helpers.cns, line 4844: Duplicate 'sprpriority' parameter\nWARNING: Yumi's state 9878 in Helpers.cns, line 4869: Duplicate 'sprpriority' parameter\nWARNING: Yumi's state 9878 in Helpers.cns, line 4898: Duplicate 'sprpriority' parameter\nWARNING: Yumi's state 9878 in Helpers.cns, line 4920: Duplicate 'sprpriority' parameter\nWARNING: Yumi's state 9883 in Helpers.cns, line 5082: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 9883 in Helpers.cns, line 5097: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 9883 in Helpers.cns, line 5104: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 9883 in Helpers.cns, line 5118: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 9883 in Helpers.cns, line 5125: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 9883 in Helpers.cns, line 5138: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 9883 in Helpers.cns, line 5145: Duplicate 'ignorehitpause' parameter\nWARNING: Yumi's state 9884 in Helpers.cns, line 5247: Unknown state controller parameter(s): persisent\nWARNING: Yumi's state 9884 in Helpers.cns, line 5266: Unknown state controller parameter(s): persisent\nWARNING: Yumi's state 9884 in Helpers.cns, line 5285: Unknown state controller parameter(s): persisent\nWARNING: Yumi's state -2 in -2-3.cns, line 136: Duplicate 'sprpriority' parameter\nWARNING: Yumi's state -2 in -2-3.cns, line 159: Duplicate 'sprpriority' parameter\nWARNING: Yumi's state -2 in -2-3.cns, line 182: Duplicate 'sprpriority' parameter\nWARNING: Yumi's state -2 in -2-3.cns, line 205: Duplicate 'sprpriority' parameter\nWARNING: Animation missing sprite 50,0 from data/SWR_Arranged/fight.sff\n"
+}

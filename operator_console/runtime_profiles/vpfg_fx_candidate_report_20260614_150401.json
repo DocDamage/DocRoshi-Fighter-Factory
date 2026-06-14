@@ -1,0 +1,78 @@
+{
+  "candidate": "C:\\Users\\dferr\\tools\\Ikemen-GO-live-vpfg-merge-candidate",
+  "configBackup": "C:\\Users\\dferr\\tools\\Ikemen-GO-live-vpfg-merge-candidate\\save\\config.ini.bak-vpfx-test-20260614_150019",
+  "restoredOriginalConfig": true,
+  "tests": [
+    {
+      "test": "vpfx_functions_roman",
+      "fx": "data/VPFG_2.0/VP_FX.def",
+      "air": null,
+      "cmd": null,
+      "modules": [
+        "data/VPFG_2.0/module/VP_Functions.zss",
+        "data/VPFG_2.0/module/VP_Roman.zss"
+      ],
+      "exitCode": 1,
+      "status": "fail",
+      "result": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\candidate_runtime_result_20260614_150019.json",
+      "output": "{\n  \"status\": \"timeout\",\n  \"result\": \"C:\\\\Users\\\\dferr\\\\OneDrive\\\\Desktop\\\\DocRoshi-Fighter-Factory\\\\evidence_core\\\\runtime_runs\\\\manual_profiles\\\\candidate_runtime_result_20260614_150019.json\"\n}"
+    },
+    {
+      "test": "vpfx_functions_parry",
+      "fx": "data/VPFG_2.0/VP_FX.def",
+      "air": null,
+      "cmd": null,
+      "modules": [
+        "data/VPFG_2.0/module/VP_Functions.zss",
+        "data/VPFG_2.0/module/VP_Parry.zss"
+      ],
+      "exitCode": 1,
+      "status": "fail",
+      "result": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\candidate_runtime_result_20260614_150149.json",
+      "output": "{\n  \"status\": \"fail\",\n  \"result\": \"C:\\\\Users\\\\dferr\\\\OneDrive\\\\Desktop\\\\DocRoshi-Fighter-Factory\\\\evidence_core\\\\runtime_runs\\\\manual_profiles\\\\candidate_runtime_result_20260614_150149.json\"\n}"
+    },
+    {
+      "test": "vpfx_functions_clash",
+      "fx": "data/VPFG_2.0/VP_FX.def",
+      "air": null,
+      "cmd": null,
+      "modules": [
+        "data/VPFG_2.0/module/VP_Functions.zss",
+        "data/VPFG_2.0/module/VP_Clash.zss"
+      ],
+      "exitCode": 1,
+      "status": "fail",
+      "result": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\candidate_runtime_result_20260614_150157.json",
+      "output": "{\n  \"status\": \"timeout\",\n  \"result\": \"C:\\\\Users\\\\dferr\\\\OneDrive\\\\Desktop\\\\DocRoshi-Fighter-Factory\\\\evidence_core\\\\runtime_runs\\\\manual_profiles\\\\candidate_runtime_result_20260614_150157.json\"\n}"
+    },
+    {
+      "test": "vpfx_functions_support",
+      "fx": "data/VPFG_2.0/VP_FX.def",
+      "air": null,
+      "cmd": null,
+      "modules": [
+        "data/VPFG_2.0/module/VP_Functions.zss",
+        "data/VPFG_2.0/module/VP_Support.zss"
+      ],
+      "exitCode": 1,
+      "status": "fail",
+      "result": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\candidate_runtime_result_20260614_150327.json",
+      "output": "{\n  \"status\": \"fail\",\n  \"result\": \"C:\\\\Users\\\\dferr\\\\OneDrive\\\\Desktop\\\\DocRoshi-Fighter-Factory\\\\evidence_core\\\\runtime_runs\\\\manual_profiles\\\\candidate_runtime_result_20260614_150327.json\"\n}"
+    },
+    {
+      "test": "vpfg_common_roman_parry",
+      "fx": "data/VPFG_2.0/VP_FX.def",
+      "air": "data/VPFG_2.0/VP_Common.air",
+      "cmd": "data/VPFG_2.0/VP_Common.cmd",
+      "modules": [
+        "data/VPFG_2.0/module/VP_Functions.zss",
+        "data/VPFG_2.0/module/VP_Roman.zss",
+        "data/VPFG_2.0/module/VP_Parry.zss"
+      ],
+      "exitCode": 1,
+      "status": "fail",
+      "result": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\candidate_runtime_result_20260614_150356.json",
+      "output": "{\n  \"status\": \"fail\",\n  \"result\": \"C:\\\\Users\\\\dferr\\\\OneDrive\\\\Desktop\\\\DocRoshi-Fighter-Factory\\\\evidence_core\\\\runtime_runs\\\\manual_profiles\\\\candidate_runtime_result_20260614_150356.json\"\n}"
+    }
+  ]
+}

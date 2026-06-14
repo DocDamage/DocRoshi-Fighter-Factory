@@ -1,0 +1,14 @@
+version: 3.5.0
+title: MugenForge Studio 3.5 Visual Forge
+project_exists: True
+home_json: True
+timeline_actions: 36
+tick_update_warning_count: 0
+offset_update_warning_count: 0
+sound_manifest_created: True
+sound_cue_warnings: 0
+composer_created: True
+training_created: True
+templates_created: True
+backup_created: True
+migration_created: True

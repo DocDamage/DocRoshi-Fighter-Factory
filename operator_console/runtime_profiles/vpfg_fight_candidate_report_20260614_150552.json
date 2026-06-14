@@ -1,0 +1,12 @@
+{
+  "candidate": "C:\\Users\\dferr\\tools\\Ikemen-GO-live-vpfg-merge-candidate",
+  "configBackup": "C:\\Users\\dferr\\tools\\Ikemen-GO-live-vpfg-merge-candidate\\save\\config.ini.bak-vpfgfight-test-20260614_150536",
+  "systemBackup": "C:\\Users\\dferr\\tools\\Ikemen-GO-live-vpfg-merge-candidate\\data\\ikemen1\\system.def.bak-vpfgfight-test-20260614_150536",
+  "restoredOriginalFiles": true,
+  "status": "pass",
+  "exitCode": 0,
+  "result": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\candidate_runtime_result_20260614_150536.json",
+  "states": "data/VPFG_2.0/module/VP_Functions.zss, data/VPFG_2.0/module/VP_Break.zss, data/guardbreak.zss, data/score.zss, data/training.zss, data/VPFG_2.0/attackdata.zss, data/VPFG_2.0/autostagecamera.zss, data/VPFG_2.0/module/VP_Roman.zss, data/VPFG_2.0/module/VP_Parry.zss, data/VPFG_2.0/module/VP_Clash.zss, data/VPFG_2.0/module/VP_RushCancel.zss, data/VPFG_2.0/module/VP_ComboBreaker.zss, data/VPFG_2.0/module/VP_Support.zss",
+  "systemFight": "../VPFG_2.0/VP_Fight.def",
+  "output": "{\n  \"status\": \"pass\",\n  \"result\": \"C:\\\\Users\\\\dferr\\\\OneDrive\\\\Desktop\\\\DocRoshi-Fighter-Factory\\\\evidence_core\\\\runtime_runs\\\\manual_profiles\\\\candidate_runtime_result_20260614_150536.json\"\n}"
+}

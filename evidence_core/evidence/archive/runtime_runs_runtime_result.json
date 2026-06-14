@@ -1,0 +1,36 @@
+{
+  "generated": "2026-06-14T00:21:44",
+  "dry_run": false,
+  "profile_name": "boot_character_smoke",
+  "command": [
+    "C:\\Users\\dferr\\tools\\Ikemen-GO\\Ikemen_GO.exe",
+    "-windowed",
+    "-nosound",
+    "-nojoy",
+    "-log",
+    "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\ikemen_quick_vs_latest.log",
+    "-p1",
+    "kfm",
+    "-p1.ai",
+    "8",
+    "-p2",
+    "kfm",
+    "-p2.ai",
+    "8",
+    "-s",
+    "stages/kfm.def",
+    "-rounds",
+    "1",
+    "-time",
+    "1"
+  ],
+  "cwd": "C:\\Users\\dferr\\tools\\Ikemen-GO",
+  "timeout_seconds": 35,
+  "status": "pass",
+  "returncode": 0,
+  "expected_returncodes": [
+    0
+  ],
+  "stdout_file": "evidence_core/runtime_runs/20260614_002144_boot_character_smoke/stdout.txt",
+  "stderr_file": "evidence_core/runtime_runs/20260614_002144_boot_character_smoke/stderr.txt"
+}

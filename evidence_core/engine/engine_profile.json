@@ -1,0 +1,74 @@
+{
+  "tool": "MugenForge Studio Evidence Core",
+  "version": "7.0.0",
+  "profile_version": 2,
+  "engine_kind": "ikemen",
+  "engine_executable": "C:\\Users\\dferr\\tools\\Ikemen-GO\\Ikemen_GO.exe",
+  "working_directory": "C:\\Users\\dferr\\tools\\Ikemen-GO",
+  "timeout_seconds": 35,
+  "variables": {
+    "character": "kfm",
+    "project_root": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory",
+    "main_def": "",
+    "opponent": "kfm",
+    "stage": "stages/kfm.def",
+    "evidence_log": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\ikemen_quick_vs_latest.log"
+  },
+  "launch_profiles": [
+    {
+      "name": "boot_character_smoke",
+      "enabled": true,
+      "description": "Default IKEMEN quick-VS evidence run: one short AI round with sound and joystick disabled.",
+      "arguments": [
+        "-windowed",
+        "-nosound",
+        "-nojoy",
+        "-log",
+        "{evidence_log}",
+        "-p1",
+        "{character}",
+        "-p1.ai",
+        "8",
+        "-p2",
+        "{opponent}",
+        "-p2.ai",
+        "8",
+        "-s",
+        "{stage}",
+        "-rounds",
+        "1",
+        "-time",
+        "1"
+      ],
+      "expected_returncodes": [
+        0
+      ],
+      "log_globs": [
+        "*.log",
+        "Logs/*.txt",
+        "logs/*.txt"
+      ]
+    },
+    {
+      "name": "custom_profile_1",
+      "enabled": false,
+      "description": "Edit arguments for your local engine/build. Variables like {character} are expanded.",
+      "arguments": [
+        "{character}"
+      ],
+      "expected_returncodes": [
+        0
+      ],
+      "log_globs": [
+        "*.log",
+        "Logs/*.txt",
+        "logs/*.txt"
+      ]
+    }
+  ],
+  "notes": [
+    "Set engine_executable to your local mugen.exe, ikemen_go executable, or wrapper script.",
+    "Set working_directory to the engine folder if blank cwd does not work.",
+    "Use dry-run first; then run with an actual engine to create evidence."
+  ]
+}

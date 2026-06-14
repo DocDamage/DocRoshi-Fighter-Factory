@@ -1,0 +1,39 @@
+{
+  "root": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory",
+  "exists": true,
+  "file_counts": {
+    ".bat": 1,
+    ".csv": 9,
+    ".html": 1,
+    ".json": 12,
+    ".md": 46,
+    ".py": 114,
+    ".pyc": 106,
+    ".txt": 12,
+    ".zip": 1
+  },
+  "character_files": {
+    "def": "",
+    "air": "",
+    "cmd": "",
+    "cns": "",
+    "sff": "",
+    "snd": ""
+  },
+  "air_actions": 0,
+  "cmd_commands": 0,
+  "states": 0,
+  "controllers": 0,
+  "scan_warnings": [],
+  "missing_required": [
+    ".def",
+    ".air",
+    ".cmd",
+    ".cns",
+    ".sff",
+    ".snd"
+  ],
+  "missing_references": [],
+  "code_issues": [],
+  "asset_issues": []
+}

@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+*.egg-info/
+*.zip
+*.rar
+*.7z
+
+# Local third-party IKEMEN/MUGEN asset downloads and extracted staging.
+game mechanics/
+resource_downloads/
+third_party_characters/
+stages/
+scratch/
+!scratch/*.json
+!scratch/*.html

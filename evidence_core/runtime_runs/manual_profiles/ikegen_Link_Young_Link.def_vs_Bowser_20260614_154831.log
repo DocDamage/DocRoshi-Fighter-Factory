@@ -1,0 +1,75 @@
+table: 0xc034b828a0 {
+  ["MatchTime"] => 60
+  ["RoundTime"] => 60
+  ["WinSide"] => 1
+  ["LastRound"] => 1
+  ["Draws"] => 0
+  ["Wins"] => table: 0xc034b82900 {
+                [1] => 0
+                [2] => 1
+              }
+  ["TeamModes"] => table: 0xc034b82960 {
+                     [1] => 0
+                     [2] => 0
+                   }
+  ["TotalScore"] => table: 0xc034b829c0 {
+                      [1] => 0
+                      [2] => 27400
+                    }
+  ["Rounds"] => table: 0xc034b82a20 {
+                  [1] => table: 0xc034b82a80 {
+                           ["Index"] => 1
+                           ["Timer"] => 60
+                           ["Score"] => table: 0xc034b82ae0 {
+                                          [1] => 0
+                                          [2] => 27400
+                                        }
+                           ["Fighters"] => table: 0xc034b82b40 {
+                                             [1] => table: 0xc034b82ba0 {
+                                                      [1] => table: 0xc034b82c00 {
+                                                               ["Name"] => "Link"
+                                                               ["ID"] => 56
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 0
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 931
+                                                               ["LifeMax"] => 1000
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => false
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => false
+                                                               ["WinPerfect"] => false
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => false
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                             [2] => table: 0xc034b82c60 {
+                                                      [1] => table: 0xc034b82cc0 {
+                                                               ["Name"] => "Bowser"
+                                                               ["ID"] => 57
+                                                               ["MemberNo"] => 0
+                                                               ["SelectNo"] => 1
+                                                               ["AILevel"] => 8
+                                                               ["PalNo"] => 1
+                                                               ["Life"] => 1200
+                                                               ["LifeMax"] => 1200
+                                                               ["WinQuote"] => -1
+                                                               ["Win"] => true
+                                                               ["WinKO"] => false
+                                                               ["WinTime"] => true
+                                                               ["WinPerfect"] => true
+                                                               ["WinSpecial"] => false
+                                                               ["WinHyper"] => false
+                                                               ["DrawGame"] => false
+                                                               ["KO"] => false
+                                                               ["OverKO"] => false
+                                                             }
+                                                    }
+                                           }
+                         }
+                }
+}

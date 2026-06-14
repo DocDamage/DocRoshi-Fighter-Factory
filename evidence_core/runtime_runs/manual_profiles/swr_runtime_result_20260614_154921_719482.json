@@ -1,0 +1,31 @@
+{
+  "profile": "swr",
+  "command": [
+    "C:\\Users\\dferr\\tools\\Ikemen-GO-SWR-Lifebar\\Ikemen_GO.exe",
+    "-windowed",
+    "-nosound",
+    "-nojoy",
+    "-log",
+    "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\swr_Adachi_vs_Ruby_20260614_154921_719482.log",
+    "-p1",
+    "Adachi",
+    "-p1.ai",
+    "8",
+    "-p2",
+    "Ruby",
+    "-p2.ai",
+    "8",
+    "-s",
+    "stages/TrainingGrid.def",
+    "-rounds",
+    "1",
+    "-time",
+    "1"
+  ],
+  "cwd": "C:\\Users\\dferr\\tools\\Ikemen-GO-SWR-Lifebar",
+  "returncode": 0,
+  "status": "pass",
+  "log": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\swr_Adachi_vs_Ruby_20260614_154921_719482.log",
+  "stdout_tail": "Check A: Selecting Renderer\nCheck B: Initializing GFX\nCheck C: Initializing GFX Font\nCheck D: We are GOOD\n",
+  "stderr_tail": ".cns, line 12348: Duplicate 'darken' parameter\nWARNING: Ruby Rose's state 8060 in Ruby.cns, line 12465: Unknown state controller parameter(s): persisent\nWARNING: Ruby Rose's state 4101 in Helpers.cns, line 767: Duplicate 'guard.kill' parameter\nWARNING: Ruby Rose's state 3959 in Helpers.cns, line 1226: Duplicate 'ignorehitpause' parameter\nWARNING: Ruby Rose's state 3959 in Helpers.cns, line 1241: Duplicate 'ignorehitpause' parameter\nWARNING: Ruby Rose's state 3959 in Helpers.cns, line 1248: Duplicate 'ignorehitpause' parameter\nWARNING: Ruby Rose's state 3959 in Helpers.cns, line 1262: Duplicate 'ignorehitpause' parameter\nWARNING: Ruby Rose's state 3959 in Helpers.cns, line 1269: Duplicate 'ignorehitpause' parameter\nWARNING: Ruby Rose's state 3959 in Helpers.cns, line 1282: Duplicate 'ignorehitpause' parameter\nWARNING: Ruby Rose's state 3959 in Helpers.cns, line 1289: Duplicate 'ignorehitpause' parameter\nWARNING: Ruby Rose's state 9877 in Helpers.cns, line 1517: Unknown state controller parameter(s): sprpriority\nWARNING: Ruby Rose's state 9878 in Helpers.cns, line 1570: Duplicate 'sprpriority' parameter\nWARNING: Ruby Rose's state 9878 in Helpers.cns, line 1595: Duplicate 'sprpriority' parameter\nWARNING: Ruby Rose's state 9878 in Helpers.cns, line 1618: Duplicate 'sprpriority' parameter\nWARNING: Ruby Rose's state 9878 in Helpers.cns, line 1643: Duplicate 'sprpriority' parameter\nWARNING: Ruby Rose's state 9878 in Helpers.cns, line 1672: Duplicate 'sprpriority' parameter\nWARNING: Ruby Rose's state 9878 in Helpers.cns, line 1694: Duplicate 'sprpriority' parameter\nWARNING: Ruby Rose's state 9883 in Helpers.cns, line 1856: Duplicate 'ignorehitpause' parameter\nWARNING: Ruby Rose's state 9883 in Helpers.cns, line 1871: Duplicate 'ignorehitpause' parameter\nWARNING: Ruby Rose's state 9883 in Helpers.cns, line 1878: Duplicate 'ignorehitpause' parameter\nWARNING: Ruby Rose's state 9883 in Helpers.cns, line 1892: Duplicate 'ignorehitpause' parameter\nWARNING: Ruby Rose's state 9883 in Helpers.cns, line 1899: Duplicate 'ignorehitpause' parameter\nWARNING: Ruby Rose's state 9883 in Helpers.cns, line 1912: Duplicate 'ignorehitpause' parameter\nWARNING: Ruby Rose's state 9883 in Helpers.cns, line 1919: Duplicate 'ignorehitpause' parameter\nWARNING: Ruby Rose's state 9884 in Helpers.cns, line 2023: Unknown state controller parameter(s): persisent\nWARNING: Ruby Rose's state 9884 in Helpers.cns, line 2043: Unknown state controller parameter(s): persisent\nWARNING: Ruby Rose's state 9884 in Helpers.cns, line 2062: Unknown state controller parameter(s): persisent\nWARNING: Ruby Rose's state -2 in -2-3.cns, line 136: Duplicate 'sprpriority' parameter\nWARNING: Ruby Rose's state -2 in -2-3.cns, line 159: Duplicate 'sprpriority' parameter\nWARNING: Ruby Rose's state -2 in -2-3.cns, line 182: Duplicate 'sprpriority' parameter\nWARNING: Ruby Rose's state -2 in -2-3.cns, line 205: Duplicate 'sprpriority' parameter\nWARNING: Animation missing sprite 50,0 from data/SWR_Arranged/fight.sff\n"
+}

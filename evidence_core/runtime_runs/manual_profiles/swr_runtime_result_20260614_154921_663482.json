@@ -1,0 +1,31 @@
+{
+  "profile": "swr",
+  "command": [
+    "C:\\Users\\dferr\\tools\\Ikemen-GO-SWR-Lifebar\\Ikemen_GO.exe",
+    "-windowed",
+    "-nosound",
+    "-nojoy",
+    "-log",
+    "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\swr_SheHulkMVC_SheHulkMVC_SheHulkMVC.def_vs_T.Hawk_T.Hawk_T.Hawk.def_20260614_154921_663482.log",
+    "-p1",
+    "SheHulkMVC/SheHulkMVC/SheHulkMVC.def",
+    "-p1.ai",
+    "8",
+    "-p2",
+    "T.Hawk/T.Hawk/T.Hawk.def",
+    "-p2.ai",
+    "8",
+    "-s",
+    "stages/TrainingGrid.def",
+    "-rounds",
+    "1",
+    "-time",
+    "1"
+  ],
+  "cwd": "C:\\Users\\dferr\\tools\\Ikemen-GO-SWR-Lifebar",
+  "returncode": 0,
+  "status": "pass",
+  "log": "C:\\Users\\dferr\\OneDrive\\Desktop\\DocRoshi-Fighter-Factory\\evidence_core\\runtime_runs\\manual_profiles\\swr_SheHulkMVC_SheHulkMVC_SheHulkMVC.def_vs_T.Hawk_T.Hawk_T.Hawk.def_20260614_154921_663482.log",
+  "stdout_tail": "Check A: Selecting Renderer\nCheck B: Initializing GFX\nCheck C: Initializing GFX Font\nCheck D: We are GOOD\n",
+  "stderr_tail": "troller parameter(s): spriority\nWARNING: Jenifer Walters's state 192 in Shehulk.cns, line 1574: Unknown state controller parameter(s): spriority\nWARNING: Jenifer Walters's state 1200 in Shehulk.cns, line 6487: Duplicate 'postype' parameter\nWARNING: Jenifer Walters's state 1206 in Shehulk.cns, line 7117: Duplicate 'ground.hittime' parameter\nWARNING: Jenifer Walters's state 1213 in Shehulk.cns, line 7605: Duplicate 'ground.hittime' parameter\nWARNING: Jenifer Walters's state 1214 in Shehulk.cns, line 7693: Duplicate 'ground.hittime' parameter\nWARNING: Jenifer Walters's state 1216 in Shehulk.cns, line 7844: Duplicate 'ground.hittime' parameter\nWARNING: Jenifer Walters's state 3000 in Shehulk.cns, line 8023: Duplicate 'ground.hittime' parameter\nWARNING: Jenifer Walters's state 3003 in Shehulk.cns, line 8146: Unknown state controller parameter(s): x, y\nWARNING: Jenifer Walters's state 3008 in Shehulk.cns, line 8519: Duplicate 'ground.hittime' parameter\nWARNING: Jenifer Walters's state 3206 in Shehulk.cns, line 9556: Duplicate 'palfx.color' parameter\nWARNING: Jenifer Walters's state -2 in Shehulk.cns, line 10007: Unknown state controller parameter(s): size.shadowoffset\nWARNING: Jenifer Walters's state 3905 in VS_Engine.cns, line 452: Duplicate 'type' parameter\nWARNING: Jenifer Walters's state 3853 in VS_Engine.cns, line 874: Unknown state controller parameter(s): x, y\nWARNING: Jenifer Walters's state 3855 in VS_Engine.cns, line 984: Unknown state controller parameter(s): x, y\nWARNING: Jenifer Walters's state 33000 in VS_Engine.cns, line 3412: Duplicate 'ground.hittime' parameter\nWARNING: T.Hawk's state 801 in Normal.st, line 2577: Unknown state controller parameter(s): value\nWARNING: T.Hawk's state 1000 in Special.st, line 103: Unknown state controller parameter(s): air.recover\nWARNING: T.Hawk's state 1000 in Special.st, line 129: Unknown state controller parameter(s): air.recover\nWARNING: T.Hawk's state 1000 in Special.st, line 156: Unknown state controller parameter(s): air.recover\nWARNING: T.Hawk's state 1030 in Special.st, line 733: Unknown state controller parameter(s): air.recover\nWARNING: T.Hawk's state 1030 in Special.st, line 759: Unknown state controller parameter(s): air.recover\nWARNING: T.Hawk's state 3000 in Super.st, line 166: Unknown state controller parameter(s): air.recover\nWARNING: T.Hawk's state 3000 in Super.st, line 189: Unknown state controller parameter(s): air.recover\nWARNING: T.Hawk's state 3050 in Super.st, line 900: Unknown state controller parameter(s): air.recover\nWARNING: T.Hawk's state 3050 in Super.st, line 923: Unknown state controller parameter(s): air.recover\nWARNING: T.Hawk's state 3400 in Super.st, line 4287: Unknown state controller parameter(s): air.recover\nWARNING: T.Hawk's state 3400 in Super.st, line 4310: Unknown state controller parameter(s): air.recover\nWARNING: Animation missing sprite 50,0 from data/SWR_Arranged/fight.sff\nWARNING: Animation missing sprite 9105,6 from chars/SheHulkMVC/SheHulkMVC/Shehulk.sff\n"
+}

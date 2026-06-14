@@ -1,0 +1,1 @@
+Drop runtime logs, screenshots, videos, replays, and manual notes here, then run Evidence Ingest again.
